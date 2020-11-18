@@ -1,4 +1,10 @@
 #!/usr/local/bin/python3
+import os, os.path
+
+def removeFilesFromDir( directoryName ):
+  for root, dirs, files in os.walk(directoryName):
+    for file in files:
+        os.remove(os.path.join(root, file))  
 
 def main():
     # Define input file
@@ -12,11 +18,15 @@ def main():
 
     eventNum = 0
     heatNum = 0
+    eventLine = ""
 
+
+    ## Remove files from last run
+    removeFilesFromDir( output_dir )
+    
     with open(heat_sheet_file, "r") as heat_sheet_file:
         for line in heat_sheet_file:
 
-            eventLine = ""
             ## Remove all the blank lines
             if line != '\n':
 
@@ -25,7 +35,6 @@ def main():
 
                 ## Ignore these lines
                 if line.lower().startswith((" seton", "seton", "meet", "lane")):
-                    #headerLine = line
                     continue
 
                 ## Start with Event
@@ -38,6 +47,7 @@ def main():
                     # Get the line number
                     eventStr = cleanEventStr.split(' ', 4)
                     eventNum = int(eventStr[1].strip())
+                    continue
 
 
                 # Remove "Timed Finals" from Heat line
@@ -54,8 +64,9 @@ def main():
                     print( f"Event {eventNum}: Heat {heatNum}" )
                     newFileName = output_dir + f"Entry_Event{eventNum:0>2}_Heat{heatNum:0>2}.txt"
                     print(f"output_dir {newFileName}")
-                    eventHeatFile = open( newFileName, "w+" )
-                    eventHeatFile.write( eventLine  + '\n')
+                    if eventNum > 0 and heatNum > 0:
+                        eventHeatFile = open( newFileName, "w+" )
+                        eventHeatFile.write( eventLine  + '\n')
 
                     
                 ## Replace long school name with short name
@@ -68,7 +79,7 @@ def main():
 
                 if line.lower().startswith(("heat")):
                     print(  f"{headerLine}" )
-                    eventHeatFile.write( line + '\n')
+                    eventHeatFile.write( headerLine + '\n')
 
 
 
