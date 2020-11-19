@@ -7,10 +7,17 @@ from pathlib import Path
 
 #meetName = "14th Annual VISAA Division II Invitational"
 #shortenSchoolNames = True
+DEBUG=False
 eventNumIndividual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22]
 eventNumRelay  = [1,2,17,18,23,24]
 eventNumDiving = [9,10]
-    
+
+
+
+def logger( logString):
+    if DEBUG:
+        print( logString )
+
 def removeFilesFromDir( directoryName ):
   for root, dirs, files in os.walk(directoryName):
     for file in files:
@@ -101,7 +108,7 @@ def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolName
                     heatNum = int(splitHeatStr[1])
 
                     ## Open New file for Event/Heat info
-                    print( f"Event {eventNum}: Heat {heatNum}" )
+                    logger( f"Event {eventNum}: Heat {heatNum}" )
                     newFileName = output_dir + f"Entry_Event{eventNum:0>2}_Heat{heatNum:0>2}.txt"
                     if eventNum > 0 and heatNum > 0:
                         eventHeatFile = open( newFileName, "w+" )
@@ -118,7 +125,7 @@ def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolName
                 if eventNum > 0 and heatNum > 0:
                     ## Remove space after lane# 10 for formatting
                     line = re.sub('^%s' % '10 ', '10', line)
-                    print(  f"{line}" )
+                    logger(  f"{line}" )
                     eventHeatFile.write(line  + '\n')
 
                 if line.lower().startswith(("heat")):
@@ -132,7 +139,7 @@ def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolName
                     if eventNum in eventNumRelay:
                         reportHeader = headerLineRelay
 
-                    print(  f"{reportHeader}" )
+                    logger(  f"{reportHeader}" )
                     eventHeatFile.write( reportHeader + '\n')
 
 if __name__ == "__main__":
@@ -140,12 +147,18 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="../data",     required=True, help="input directory for MM extract report")
     parser.add_argument('-m', '--meetname',         dest='meetname',            default="SST Meet",    required=True, help="Name of the meet. Need to remove this from report")
-    parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="../output",                  help="output directory for wirecast heat files")
+    parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="../output/",  help="output directory for wirecast heat files. MUST CONTAIN TRAILING SLASH")
     parser.add_argument('-s', '--shortschoolnames', dest='shortschoolnames',    action='store_true',   help="Use Short School names for Indiviual Entries")
     parser.add_argument('-l', '--longschoolnames',  dest='shortschoolnames',    action='store_false',  help="Use Long School names for Indiviual Entries")
+    parser.add_argument('-d', '--debug',            dest='debug',               action='store_true',   help="Print out results to console")
     parser.set_defaults(shortschoolnames=True)
+    parser.set_defaults(DEBUG=False)
+    
     args = parser.parse_args()
     
+    ## Set global debug flag
+    DEBUG = args.debug
     print( f"DEBUG: {Path(__file__).stem}: Parms: InputDir '{args.inputdir}': MeetName '{args.meetname}': OutputDir '{args.outputdir}':  Short School Names: '{args.shortschoolnames}'")
 
+    ## main function to generate heat files for Wirecast
     generateHeatFiles( args.inputdir, args.outputdir, args.meetname, args.shortschoolnames )
