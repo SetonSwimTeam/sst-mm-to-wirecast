@@ -20,6 +20,7 @@ from pathlib import Path
 ## Globals
 DEBUG=False
 
+## Define the types of events in this meet (Individual, Relay and Diving)
 eventNumIndividual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22]
 eventNumRelay  = [1,2,17,18,23,24]
 eventNumDiving = [9,10]
@@ -124,11 +125,19 @@ def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolName
             # if line.lower().startswith((" seton", "seton", "meet", "lane")):
             #     continue
 
+            ## Meet Manager license name
             if re.search("^(\s+)Seton School", line):
                 continue
+
+            ## Meet Manager report type
             if re.search("^(\s+)Meet Program", line):
                 continue
-            if re.search("^(\s*)Lane(\s+)Team", line):
+
+            ## For Individual Events
+            if re.search("^(\s*)Lane(\s*)Name", line):
+                continue
+            ## For All Events
+            if re.search("^(\s*)Lane(\s*)Team", line):
                 continue
 
             #####################################################################################
@@ -161,6 +170,8 @@ def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolName
             #####################################################################################
             if line.lower().startswith(("heat", "flight")):
                 line = line.replace("Timed Finals", "")
+                ## Add a new line after HEAT
+                line = re.sub("$", "\n", line)
                 ## Remove all those extra spaces in the line
                 splitHeatStr = line.split()
                 splitHeatStr = " ".join(splitHeatStr)
@@ -186,9 +197,8 @@ def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolName
                     line = re.sub('^(\d\d) ', r'\1',line )
 
             #####################################################################################
-            ## Processing specific to Individual Entries
-            #####################################################################################
             ## Replace long school name with short name for individual events
+            #####################################################################################
             if shortenSchoolNames == True and eventNum in eventNumIndividual:
                 for k,v in schoolNameDict.items():
                     line = line.replace(k.ljust(schoolNameDictFullNameLen,' '), v.ljust(schoolNameDictShortNameLen, ' '))
@@ -205,10 +215,11 @@ def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolName
                 if m:
                     line = re.sub(r'(\S)([2-4]\))', r'\1 \2',line )
 
-                ## IF we are splitting replays into multiple file, then put a blank line between each lane
-                if addNewLineToRelayEntries and (re.search('^\d ', line) or re.search('^\d\d ', line)):
-                    line = f"\n{line}"
-
+                ## IF we are splitting replays into multiple file, then put a blank line after each lane and name
+                # if addNewLineToRelayEntries and (re.search('^[2-9] ', line) or re.search('^\d\d ', line)):
+                #     line = f"\n{line}"
+                if addNewLineToRelayEntries and re.search('^1\)', line):
+                    line = f"{line}\n"
 
             #####################################################################################
             #####################################################################################
@@ -238,7 +249,7 @@ def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolName
             ## Relays with at least 6 lanes, split the result up in two files
             ## Manually added the Event/Heat and Header info into second file
             #####################################################################################
-            if splitRelaysToMultipleFiles and eventNum in eventNumRelay:
+            if eventNum in eventNumRelay and splitRelaysToMultipleFiles:
                 if (addNewLineToRelayEntries and re.search('^\n6 ', line)) or (not addNewLineToRelayEntries and re.search('^6 ', line)):
                     ## Look for lane Relay 5
                     total_files_generated += 1 
@@ -258,9 +269,9 @@ def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolName
                 if shortenSchoolNames and eventNum in eventNumIndividual:
                     reportHeader = headerLineShort
                 
-                ## Special header for relay events
-                if eventNum in eventNumRelay:
-                    reportHeader = headerLineRelay
+                # ## Special header for relay events
+                # if eventNum in eventNumRelay:
+                #     reportHeader = headerLineRelay
 
                 logger(  f"{reportHeader}" )
                 eventHeatFile.write( reportHeader + '\n')
