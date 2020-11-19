@@ -121,7 +121,20 @@ def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolName
                         line = line.replace(k.ljust(25,' '), v.ljust(6, ' '))
                         #print( f"just: '{k.ljust(25,' ')} with {v.ljust(6, ' ')}")
 
+                ## If this is a relay, see if there are spaces between swimmer numbers
+                ## If so, add a space between the last swimmer name and the next swimmer number
+                ## This line  1) LastName1, All2) LastName2, Ashley3) LastName3, All4) LastName4, Eri
+                ## becomes    1) LastName1, All 2) LastName2, Ashley 3) LastName3, All 4) LastName4, Eri
+                if eventNum in eventNumRelay:
+                    m = re.search('\S[2-4]\)',line)
+                    if m:
+                        line = re.sub(r'(\S)([2-4]\))', r'\1 \2',line )
 
+                ##################################################################
+                ##################################################################
+                ##### Done updating lines, start outputing data
+                ##################################################################
+                ##################################################################
                 if eventNum > 0 and heatNum > 0:
                     ## Remove space after lane# 10 for formatting
                     line = re.sub('^%s' % '10 ', '10', line)
@@ -129,7 +142,6 @@ def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolName
                     eventHeatFile.write(line  + '\n')
 
                 if line.lower().startswith(("heat")):
-
                     # Determin heading based on short or full school name
                     reportHeader = headerLineLong
                     if shortenSchoolNames and eventNum in eventNumIndividual:
