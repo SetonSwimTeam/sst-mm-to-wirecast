@@ -15,7 +15,7 @@ import os, os.path
 import re
 import argparse
 from pathlib import Path
-
+import glob
 
 ## Globals
 DEBUG=False
@@ -69,17 +69,22 @@ def removeFilesFromDir( directoryName ):
             os.remove(os.path.join(root, file))  
 
 
-def create_event_heat_file( eventNum, heatNum, relaySplitFile ):
+def create_event_heat_file( fileNamePrefix, eventHeatFile, eventNum, heatNum, relaySplitFile ):
     """ Generate the filename and open the next file """
+
+    ## If File Hander then close
+    if eventHeatFile:
+        eventHeatFile.close()
+
     if eventNum in eventNumRelay:
-        eventHeatFileName = output_dir + f"Entry_Event{eventNum:0>2}_Heat{heatNum:0>2}_{relaySplitFile:0>2}.txt"
+        eventHeatFileName = output_dir + f"{fileNamePrefix}_Event{eventNum:0>2}_Heat{heatNum:0>2}_{relaySplitFile:0>2}.txt"
     else:
-        eventHeatFileName = output_dir + f"Entry_Event{eventNum:0>2}_Heat{heatNum:0>2}.txt"
+        eventHeatFileName = output_dir + f"{fileNamePrefix}_Event{eventNum:0>2}_Heat{heatNum:0>2}.txt"
     eventHeatFile = open( eventHeatFileName, "w+" )
     return eventHeatFile
 
 
-def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolNames, splitRelaysToMultipleFiles, addNewLineToRelayEntries ):
+def generateHeatFiles( meet_report_filename, output_dir, meet_name, shortenSchoolNames, splitRelaysToMultipleFiles, addNewLineToRelayEntries ):
     """ Given the input file formatted in a specific manner,
         generate indiviual Event/Heat files for use in Wirecast displays """
     
@@ -104,14 +109,15 @@ def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolName
     heatNum = 0
     eventLine = ""
     heatLine = ""
-
+    eventHeatFile = None
+    fileNamePrefix = "Entry"
     num_heats_files_generated=0
     total_files_generated=0
     ## Remove files from last run
     removeFilesFromDir( output_dir )
     
-    with open(heat_sheet_file, "r") as heat_sheet_file:
-        for line in heat_sheet_file:
+    with open(meet_report_filename, "r") as meet_report_file:
+        for line in meet_report_file:
 
             #####################################################################################
             ## Ignore all the blank lines             
@@ -120,24 +126,28 @@ def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolName
                 continue
 
             #####################################################################################
+            ## Remove the extra newline at end of line
+            #####################################################################################
+            line = line.strip()
+
+            #####################################################################################
             ## Ignore these meet program header lines                
             #####################################################################################
-            # if line.lower().startswith((" seton", "seton", "meet", "lane")):
-            #     continue
 
             ## Meet Manager license name
-            if re.search("^(\s+)Seton School", line):
+            if re.search("^Seton School", line):
                 continue
 
             ## Meet Manager report type
-            if re.search("^(\s+)Meet Program", line):
+            if re.search("^Meet Program", line):
                 continue
 
             ## For Individual Events
-            if re.search("^(\s*)Lane(\s*)Name", line):
+            if re.search("^Lane(\s*)Name", line):
                 continue
-            ## For All Events
-            if re.search("^(\s*)Lane(\s*)Team", line):
+
+            ## For Replay Events
+            if re.search("^Lane(\s*)Team", line):
                 continue
 
             #####################################################################################
@@ -147,12 +157,9 @@ def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolName
                 continue
 
             #####################################################################################
-            ## Remove the extra newline at end of line
-            #####################################################################################
-            line = line.strip()
-
-            #####################################################################################
-            ## Start with Event line.  Clean it up
+            ## Start with Event line.  
+            ##  Get the Event Number from the report
+            ##  Clean it up
             #####################################################################################
             if line.lower().startswith(("event")):
                 eventLine = line
@@ -240,7 +247,7 @@ def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolName
                 total_files_generated += 1
                 heatLine = line
                 if eventNum > 0 and heatNum > 0:
-                    eventHeatFile = create_event_heat_file( eventNum, heatNum, 1 )
+                    eventHeatFile = create_event_heat_file( fileNamePrefix, eventHeatFile, eventNum, heatNum, 1 )
 
                     ## Every New file starts with Event Number/Name
                     eventHeatFile.write( eventLine  + '\n')
@@ -253,7 +260,7 @@ def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolName
                 if (addNewLineToRelayEntries and re.search('^\n6 ', line)) or (not addNewLineToRelayEntries and re.search('^6 ', line)):
                     ## Look for lane Relay 5
                     total_files_generated += 1 
-                    eventHeatFile = create_event_heat_file( eventNum, heatNum, 2 )
+                    eventHeatFile = create_event_heat_file( fileNamePrefix, eventNum, heatNum, 2 )
                     eventHeatFile.write( eventLine  + '\n')
                     eventHeatFile.write( heatLine  + '\n')
                     eventHeatFile.write( headerLineRelay  + '\n')
@@ -278,7 +285,16 @@ def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolName
 
     return num_heats_files_generated, total_files_generated
 
+def cleanup_new_files( filePrefix, output_dir ):
+    """ Remove the one or many blank lines at end of the file """
 
+    txtfiles = []
+    fileGlob = f"{output_dir}{filePrefix}*.txt"
+    for file in glob.glob(fileGlob):
+        txtfiles.append(file)
+    
+    for file in txtfiles:
+        print(f"Filename: {file}")
 
 #####################################################################################
 #####################################################################################
@@ -325,4 +341,6 @@ if __name__ == "__main__":
     ## main function to generate heat files for Wirecast
     num_heats_files_generated,total_files_generated = generateHeatFiles( args.inputdir, output_dir, args.meetname, args.shortschoolnames, args.splitrelays, args.spacerelaynames )
 
+    ## We probably add multiple blank lines at end of file.  Go clean those up
+    #cleanup_new_files( "Entry", output_dir )
     print(f"Process Completed: \n\tNumber of Heat Files Generated: {num_heats_files_generated}  \n\tTotal Number of files generated: {total_files_generated}")
