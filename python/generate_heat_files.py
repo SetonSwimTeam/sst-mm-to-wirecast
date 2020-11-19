@@ -19,36 +19,12 @@ from pathlib import Path
 
 ## Globals
 DEBUG=False
+
 eventNumIndividual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22]
 eventNumRelay  = [1,2,17,18,23,24]
 eventNumDiving = [9,10]
 
-
-
-def logger( log_string ):
-    """ Prints out logs if DEBUG command line parm was enabled """
-    if DEBUG:
-        print( log_string )
-
-def removeFilesFromDir( directoryName ):
-    """ Remove files from previous run/meet so there are no extra heats/events left over"""
-    for root, dirs, files in os.walk(directoryName):
-        for file in files:
-            os.remove(os.path.join(root, file))  
-
-def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolNames ):
-    """ Given the input file formatted in a specific manner,
-        generate indiviual Event/Heat files for use in Wirecast displays """
-    
-
-    #####################################################################################
-    ## The names are what appear in the report, and may be abbreviated, 
-    ##  and not the actual full school name
-    ## Multiple version of a school may be listed here for clean output
-    #####################################################################################
-    schoolNameDictFullNameLen = 25
-    schoolNameDictShortNameLen = 6  # Four character name plus spaces for padding between EntryTime
-    schoolNameDict = { 
+schoolNameDict = { 
         "Benedictine College Prep": "BCP",
         "Bishop O'Connell-PV": "DJO",
         "Bishop Ireton Swim and Di": "BI",
@@ -80,17 +56,56 @@ def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolName
     } 
     
 
+def logger( log_string ):
+    """ Prints out logs if DEBUG command line parm was enabled """
+    if DEBUG:
+        print( log_string )
+
+def removeFilesFromDir( directoryName ):
+    """ Remove files from previous run/meet so there are no extra heats/events left over"""
+    for root, dirs, files in os.walk(directoryName):
+        for file in files:
+            os.remove(os.path.join(root, file))  
+
+
+def create_event_heat_file( eventNum, heatNum, relaySplitFile ):
+    """ Generate the filename and open the next file """
+    if eventNum in eventNumRelay:
+        eventHeatFileName = output_dir + f"Entry_Event{eventNum:0>2}_Heat{heatNum:0>2}_{relaySplitFile:0>2}.txt"
+    else:
+        eventHeatFileName = output_dir + f"Entry_Event{eventNum:0>2}_Heat{heatNum:0>2}.txt"
+    eventHeatFile = open( eventHeatFileName, "w+" )
+    return eventHeatFile
+
+
+def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolNames, splitRelaysToMultipleFiles, addNewLineToRelayEntries ):
+    """ Given the input file formatted in a specific manner,
+        generate indiviual Event/Heat files for use in Wirecast displays """
+    
+    #####################################################################################
+    ## The names are what appear in the report, and may be abbreviated, 
+    ##  and not the actual full school name
+    ## Multiple version of a school may be listed here for clean output
+    #####################################################################################
+    schoolNameDictFullNameLen = 25
+    schoolNameDictShortNameLen = 6  # Four character name plus spaces for padding between EntryTime
+
+
     ## NOTE: Do not align up these headers with the TXT output.  
     ##  Wirecast will center all lines and it will be in proper position then
     headerLineLong  = "Lane  Name                    Year School      Seed Time"
     headerLineShort = "Lane  Name                 Year School Seed Time"
     headerLineRelay = "Lane  Team                         Relay                   Seed Time"         
 
+
+    ## Define local variables
     eventNum = 0
     heatNum = 0
     eventLine = ""
+    heatLine = ""
 
-
+    num_heats_files_generated=0
+    total_files_generated=0
     ## Remove files from last run
     removeFilesFromDir( output_dir )
     
@@ -109,9 +124,11 @@ def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolName
             # if line.lower().startswith((" seton", "seton", "meet", "lane")):
             #     continue
 
-            if re.search("Seton School", line):
+            if re.search("^(\s+)Seton School", line):
                 continue
-            if re.search("Meet Program", line):
+            if re.search("^(\s+)Meet Program", line):
+                continue
+            if re.search("^(\s*)Lane(\s+)Team", line):
                 continue
 
             #####################################################################################
@@ -119,7 +136,6 @@ def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolName
             #####################################################################################
             if re.search(meet_name, line):
                 continue
-
 
             #####################################################################################
             ## Remove the extra newline at end of line
@@ -148,24 +164,27 @@ def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolName
                 ## Remove all those extra spaces in the line
                 splitHeatStr = line.split()
                 splitHeatStr = " ".join(splitHeatStr)
-                # Get the heat number
+
+                # Get the heat/flight number
                 splitHeatStr = splitHeatStr.split(' ', 4)
                 heatNum = int(splitHeatStr[1])
 
-            
-            ## Remove space after lane# 10 for formatting
+            #####################################################################################
+            ## Remove space after lane# 10 for formatting so names all align up evenly
             ## 10 must be on the beginning of the line 
+            #####################################################################################
             if eventNum not in eventNumDiving:
                 line = re.sub('^%s' % '10 ', '10', line)
 
-            ## For Diving Events, remove extra space in diver # 10 and above for formatting 
-            ## so it lines up with diver 1-9
+            #####################################################################################
+            ## For Diving Events, remove extra space from diver # 10 and above for formatting 
+            ## so names lines up with diver 1-9
+            #####################################################################################
             if eventNum in eventNumDiving:
                 matched = re.search('^(\d\d) ', line)
                 if matched:
                     line = re.sub('^(\d\d) ', r'\1',line )
 
-                
             #####################################################################################
             ## Processing specific to Individual Entries
             #####################################################################################
@@ -186,20 +205,47 @@ def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolName
                 if m:
                     line = re.sub(r'(\S)([2-4]\))', r'\1 \2',line )
 
+                ## IF we are splitting replays into multiple file, then put a blank line between each lane
+                if addNewLineToRelayEntries and (re.search('^\d ', line) or re.search('^\d\d ', line)):
+                    line = f"\n{line}"
+
+
             #####################################################################################
             #####################################################################################
-            ##### Done updating lines, start outputing data
+            #####
+            ##### Done updating.formatting lines, start outputing data
+            #####
             #####################################################################################
             #####################################################################################
-            
-            ## Heats are used for swimming.  Flight is used for diving events
+    
+            #####################################################################################
+            ## Start a new Output Event/Heat file 
+            ##      Heats are used for swimming.  
+            ##      Flights are used for diving events
+            #####################################################################################
             if line.lower().startswith(("heat", "flight")):
                 ## Open New file for Event/Heat info
-                logger( f"Event {eventNum}: Heat {heatNum}" )
-                newFileName = output_dir + f"Entry_Event{eventNum:0>2}_Heat{heatNum:0>2}.txt"
+                num_heats_files_generated += 1
+                total_files_generated += 1
+                heatLine = line
                 if eventNum > 0 and heatNum > 0:
-                    eventHeatFile = open( newFileName, "w+" )
+                    eventHeatFile = create_event_heat_file( eventNum, heatNum, 1 )
+
+                    ## Every New file starts with Event Number/Name
                     eventHeatFile.write( eventLine  + '\n')
+            
+            #####################################################################################
+            ## Relays with at least 6 lanes, split the result up in two files
+            ## Manually added the Event/Heat and Header info into second file
+            #####################################################################################
+            if splitRelaysToMultipleFiles and eventNum in eventNumRelay:
+                if (addNewLineToRelayEntries and re.search('^\n6 ', line)) or (not addNewLineToRelayEntries and re.search('^6 ', line)):
+                    ## Look for lane Relay 5
+                    total_files_generated += 1 
+                    eventHeatFile = create_event_heat_file( eventNum, heatNum, 2 )
+                    eventHeatFile.write( eventLine  + '\n')
+                    eventHeatFile.write( heatLine  + '\n')
+                    eventHeatFile.write( headerLineRelay  + '\n')
 
 
             if eventNum > 0 and heatNum > 0:
@@ -219,16 +265,32 @@ def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolName
                 logger(  f"{reportHeader}" )
                 eventHeatFile.write( reportHeader + '\n')
 
+    return num_heats_files_generated, total_files_generated
+
+
+
+#####################################################################################
+#####################################################################################
+##  M A I N
+#####################################################################################
+#####################################################################################
 if __name__ == "__main__":
 
+    #####################################################################################
+    ## Parse out command line arguments
+    #####################################################################################
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="../data",     required=True,   help="input directory for MM extract report")
     parser.add_argument('-m', '--meetname',         dest='meetname',            default="SST Meet",    required=True,   help="Name of the meet. Need to remove this from report")
     parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="../output/",                   help="output directory for wirecast heat files.")
     parser.add_argument('-s', '--shortschoolnames', dest='shortschoolnames',    action='store_true',                    help="Use Short School names for Indiviual Entries")
     parser.add_argument('-l', '--longschoolnames',  dest='shortschoolnames',    action='store_false',                   help="Use Long School names for Indiviual Entries")
+    parser.add_argument('-r', '--splitrelays',      dest='splitrelays',         action='store_true',                   help="Split Relays into multiple files")
+    parser.add_argument('-n', '--spacerelaynames',  dest='spacerelaynames',     action='store_true',                   help="Add a new line between relay names")
     parser.add_argument('-d', '--debug',            dest='debug',               action='store_true',                    help="Print out results to console")
     parser.set_defaults(shortschoolnames=True)
+    parser.set_defaults(splitrelays=False)
+    parser.set_defaults(spacerelaynames=False)
     parser.set_defaults(DEBUG=False)
     
     args = parser.parse_args()
@@ -240,8 +302,16 @@ if __name__ == "__main__":
     ## The outputdir string MUST have a trailing slash.  Check string and add it if necesssary
     if output_dir[-1] != '/':
         output_dir = f"{output_dir}/"
-
-    print( f"DEBUG: {Path(__file__).stem}: Parms: InputDir '{args.inputdir}': MeetName '{args.meetname}': OutputDir '{output_dir}':  Short School Names: '{args.shortschoolnames}'")
+        logargs = f"{Path(__file__).stem} Params: \n" + \
+            f"\tInputDir \t\t{args.inputdir} \n" + \
+            f"\tMeetName \t\t{args.meetname} \n" + \
+            f"\tOutputDir \t\t{output_dir} \n" + \
+            f"\tShort School Names \t{args.shortschoolnames} \n" + \
+            f"\tSplit Relays \t\t{args.splitrelays} \n"+ \
+            f"\tSpaces in Relay Names \t{args.spacerelaynames}\n"
+    print( logargs )
 
     ## main function to generate heat files for Wirecast
-    generateHeatFiles( args.inputdir, output_dir, args.meetname, args.shortschoolnames )
+    num_heats_files_generated,total_files_generated = generateHeatFiles( args.inputdir, output_dir, args.meetname, args.shortschoolnames, args.splitrelays, args.spacerelaynames )
+
+    print(f"Process Completed: \n\tNumber of Heat Files Generated: {num_heats_files_generated}  \n\tTotal Number of files generated: {total_files_generated}")
