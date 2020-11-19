@@ -145,12 +145,12 @@ def generateHeatFiles( heat_sheet_file, output_dir, meet_name, shortenSchoolName
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="../data",     required=True, help="input directory for MM extract report")
-    parser.add_argument('-m', '--meetname',         dest='meetname',            default="SST Meet",    required=True, help="Name of the meet. Need to remove this from report")
-    parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="../output/",  help="output directory for wirecast heat files. MUST CONTAIN TRAILING SLASH")
-    parser.add_argument('-s', '--shortschoolnames', dest='shortschoolnames',    action='store_true',   help="Use Short School names for Indiviual Entries")
-    parser.add_argument('-l', '--longschoolnames',  dest='shortschoolnames',    action='store_false',  help="Use Long School names for Indiviual Entries")
-    parser.add_argument('-d', '--debug',            dest='debug',               action='store_true',   help="Print out results to console")
+    parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="../data",     required=True,   help="input directory for MM extract report")
+    parser.add_argument('-m', '--meetname',         dest='meetname',            default="SST Meet",    required=True,   help="Name of the meet. Need to remove this from report")
+    parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="../output/",                   help="output directory for wirecast heat files.")
+    parser.add_argument('-s', '--shortschoolnames', dest='shortschoolnames',    action='store_true',                    help="Use Short School names for Indiviual Entries")
+    parser.add_argument('-l', '--longschoolnames',  dest='shortschoolnames',    action='store_false',                   help="Use Long School names for Indiviual Entries")
+    parser.add_argument('-d', '--debug',            dest='debug',               action='store_true',                    help="Print out results to console")
     parser.set_defaults(shortschoolnames=True)
     parser.set_defaults(DEBUG=False)
     
@@ -158,7 +158,13 @@ if __name__ == "__main__":
     
     ## Set global debug flag
     DEBUG = args.debug
-    print( f"DEBUG: {Path(__file__).stem}: Parms: InputDir '{args.inputdir}': MeetName '{args.meetname}': OutputDir '{args.outputdir}':  Short School Names: '{args.shortschoolnames}'")
+
+    output_dir = args.outputdir
+    ## The outputdir string MUST have a trailing slash.  Check string and add it if necesssary
+    if output_dir[-1] != '/':
+        output_dir = f"{output_dir}/"
+
+    print( f"DEBUG: {Path(__file__).stem}: Parms: InputDir '{args.inputdir}': MeetName '{args.meetname}': OutputDir '{output_dir}':  Short School Names: '{args.shortschoolnames}'")
 
     ## main function to generate heat files for Wirecast
-    generateHeatFiles( args.inputdir, args.outputdir, args.meetname, args.shortschoolnames )
+    generateHeatFiles( args.inputdir, output_dir, args.meetname, args.shortschoolnames )
