@@ -64,9 +64,9 @@ def logger( log_string ):
     if DEBUG:
         print( log_string )
 
-def remove_files_from_dir( directoryName ):
+def remove_files_from_dir( directory_name ):
     """ Remove files from previous run/meet so there are no extra heats/events left over"""
-    for root, dirs, files in os.walk(directoryName):
+    for root, dirs, files in os.walk(directory_name):
         for file in files:
             os.remove(os.path.join(root, file))  
 
@@ -74,30 +74,30 @@ def remove_files_from_dir( directoryName ):
 def create_output_file( report_type, outputFileHandler, eventNum, heatNum, relaySplitFile ):
     """ Generate the filename and open the next file """
     if report_type == report_type_program:
-        fileNamePrefix = "Entry"
+        file_name_prefix = "Entry"
     else: 
-        fileNamePrefix = "Results"
+        file_name_prefix = "Results"
 
     ## If File Hander then close
     if outputFileHandler:
         outputFileHandler.close()
 
     if report_type == report_type_program and eventNum in eventNumRelay:
-        outputFileName = output_dir + f"{fileNamePrefix}_Event{eventNum:0>2}_Heat{heatNum:0>2}_{relaySplitFile:0>2}.txt"
+        output_file_name = output_dir + f"{file_name_prefix}_Event{eventNum:0>2}_Heat{heatNum:0>2}_{relaySplitFile:0>2}.txt"
     elif report_type == report_type_program and eventNum in eventNumIndividual:
-        outputFileName = output_dir + f"{fileNamePrefix}_Event{eventNum:0>2}_Heat{heatNum:0>2}.txt"
+        output_file_name = output_dir + f"{file_name_prefix}_Event{eventNum:0>2}_Heat{heatNum:0>2}.txt"
     elif report_type == report_type_program and eventNum in eventNumDiving:
-        outputFileName = output_dir + f"{fileNamePrefix}_Event{eventNum:0>2}.txt"
+        output_file_name = output_dir + f"{file_name_prefix}_Event{eventNum:0>2}.txt"
     elif report_type == report_type_results:
-        outputFileName = output_dir + f"{fileNamePrefix}_Event{eventNum:0>2}.txt"
+        output_file_name = output_dir + f"{file_name_prefix}_Event{eventNum:0>2}.txt"
     else:
-        outputFileName = output_dir + f"Unknown_Event{eventNum:0>2}.txt"
+        output_file_name = output_dir + f"Unknown_Event{eventNum:0>2}.txt"
 
-    outputFileHandler = open( outputFileName, "w+" )
+    outputFileHandler = open( output_file_name, "w+" )
     return outputFileHandler
 
 
-def generateHeatFiles( report_type, meet_report_filename, output_dir, meet_name, shortenSchoolNames, splitRelaysToMultipleFiles, addNewLineToRelayEntries ):
+def generate_wirecast_files( report_type, meet_report_filename, output_dir, meet_name, shortenSchoolNames, splitRelaysToMultipleFiles, addNewLineToRelayEntries ):
     """ Given the input file formatted in a specific manner,
         generate indiviual Event/Heat files for use in Wirecast displays """
     
@@ -117,7 +117,7 @@ def generateHeatFiles( report_type, meet_report_filename, output_dir, meet_name,
     program_headerLineRelay = "\nLane  Team                         Relay                   Seed Time"       
     result_headerLineLong   = "\nName                    Yr School                 Seed Time  Finals Time      Points"
     result_headerLineShort  = "\nName                    Yr School Seed Time  Finals Time      Points"
-    result_headerLineRelay = "\nTeam                       Relay                  Seed Time  Finals Time      Points"
+    result_headerLineRelay  = "\nTeam                       Relay                  Seed Time  Finals Time      Points"
   
 
 
@@ -128,9 +128,7 @@ def generateHeatFiles( report_type, meet_report_filename, output_dir, meet_name,
     heatLine = ""
     eventHeatFile = None
 
-
-    num_heats_files_generated=0
-    total_files_generated=0
+    num_files_generated=0
     
     with open(meet_report_filename, "r") as meet_report_file:
         for line in meet_report_file:
@@ -189,11 +187,11 @@ def generateHeatFiles( report_type, meet_report_filename, output_dir, meet_name,
                 eventLine = line
 
                 ## Remove all those extra spaces in the line
-                cleanEventStr = eventLine.split()
-                cleanEventStr = " ".join(cleanEventStr)
+                clean_event_str = eventLine.split()
+                clean_event_str = " ".join(clean_event_str)
                 # Get the line number
-                eventStr = cleanEventStr.split(' ', 4)
-                eventNum = int(eventStr[1].strip())
+                event_str = clean_event_str.split(' ', 4)
+                eventNum = int(event_str[1].strip())
 
                 ## For Program, we stop here and go to next line looking for heat
                 ## For Result, we continue one
@@ -205,15 +203,15 @@ def generateHeatFiles( report_type, meet_report_filename, output_dir, meet_name,
             #####################################################################################
             if line.lower().startswith(("heat", "flight")):
                 line = line.replace("Timed Finals", "")
-                # ## Add a new line after HEAT
-                # line = re.sub("$", "\n", line)
                 ## Remove all those extra spaces in the line
-                splitHeatStr = line.split()
-                splitHeatStr = " ".join(splitHeatStr)
+                split_heat_str = line.split()
+                split_heat_str = " ".join(split_heat_str)
 
-                # Get the heat/flight number
-                splitHeatStr = splitHeatStr.split(' ', 4)
-                heatNum = int(splitHeatStr[1])
+                #####################################################################################
+                # Get the heat/flight number for user later on
+                #####################################################################################
+                split_heat_str = split_heat_str.split(' ', 4)
+                heatNum = int(split_heat_str[1])
 
             #####################################################################################
             ## Remove space after lane# 10 for formatting so names all align up evenly
@@ -290,9 +288,9 @@ def generateHeatFiles( report_type, meet_report_filename, output_dir, meet_name,
             #####################################################################################
             #####################################################################################
             #####################################################################################
-            #####
-            #####     Done updating.formatting lines, start outputing data
-            #####
+            ##########
+            ##########     Done updating.formatting lines, start outputing data
+            ##########
             #####################################################################################
             #####################################################################################
             #####################################################################################
@@ -305,10 +303,9 @@ def generateHeatFiles( report_type, meet_report_filename, output_dir, meet_name,
             #####################################################################################
             if report_type == report_type_program and line.lower().startswith(("heat", "flight")):
                 ## Open New file for Event/Heat info
-                num_heats_files_generated += 1
-                total_files_generated += 1
                 heatLine = line
                 if eventNum > 0 and heatNum > 0:
+                    num_files_generated += 1
                     eventHeatFile = create_output_file( report_type, eventHeatFile, eventNum, heatNum, 1 )
                     ## Every New file starts with Event Number/Name
                     eventHeatFile.write( eventLine  + '\n')
@@ -317,19 +314,18 @@ def generateHeatFiles( report_type, meet_report_filename, output_dir, meet_name,
                 print(f"eventnum: {eventNum}")
                 if eventNum > 0:
                     heatNum = 1
+                    num_files_generated += 1
                     eventHeatFile = create_output_file( report_type, eventHeatFile, eventNum, 0, 0 )
-                    ## Every New file starts with Event Number/Name
-                    #eventHeatFile.write( eventLine  + '\n')
 
             #####################################################################################
             ## Relays with at least 6 lanes, split the result up in two files
             ## Manually added the Event/Heat and Header info into second file
             #####################################################################################
             if eventNum in eventNumRelay and splitRelaysToMultipleFiles:
-                if (addNewLineToRelayEntries and re.search('^\n6 ', line)) or (not addNewLineToRelayEntries and re.search('^6 ', line)):
+                if (addNewLineToRelayEntries and re.search('^6 ', line)) or (not addNewLineToRelayEntries and re.search('^(\s*)6 ', line)):
                     ## Look for lane Relay 5
-                    total_files_generated += 1 
-                    eventHeatFile = create_output_file( report_type, eventNum, heatNum, 2 )
+                    num_files_generated += 1 
+                    eventHeatFile = create_output_file( report_type, eventHeatFile, eventNum, heatNum, 2 )
                     eventHeatFile.write( eventLine  + '\n')
                     eventHeatFile.write( heatLine  + '\n')
                     eventHeatFile.write( program_headerLineRelay  + '\n')
@@ -337,7 +333,6 @@ def generateHeatFiles( report_type, meet_report_filename, output_dir, meet_name,
             #####################################################################################
             ## output the actual data line
             #####################################################################################
-
             if eventNum > 0 and heatNum > 0:
                 logger(  f"{line}" )
                 eventHeatFile.write(line  + '\n')
@@ -352,7 +347,10 @@ def generateHeatFiles( report_type, meet_report_filename, output_dir, meet_name,
                 logger(  f"{nameListHeader}" )
                 eventHeatFile.write( nameListHeader + '\n')
 
-    return num_heats_files_generated, total_files_generated
+    #####################################################################################
+    ## All done. Return counts of files created
+    #####################################################################################
+    return num_files_generated
 
 def cleanup_new_files( filePrefix, output_dir ):
     """ Remove the one or many blank lines at end of the file """
@@ -418,8 +416,8 @@ if __name__ == "__main__":
         remove_files_from_dir( output_dir )
 
     ## main function to generate heat files for Wirecast
-    num_heats_files_generated,total_files_generated = generateHeatFiles( args.reporttype, args.inputdir, output_dir, args.meetname, args.shortschoolnames, args.splitrelays, args.spacerelaynames )
+    total_files_generated = generate_wirecast_files( args.reporttype, args.inputdir, output_dir, args.meetname, args.shortschoolnames, args.splitrelays, args.spacerelaynames )
 
     ## We probably add multiple blank lines at end of file.  Go clean those up
     #cleanup_new_files( "Entry", output_dir )
-    print(f"Process Completed: \n\tNumber of Heat Files Generated: {num_heats_files_generated}  \n\tTotal Number of files generated: {total_files_generated}")
+    print(f"Process Completed: \n\tTotal Number of files generated: {total_files_generated}")
