@@ -84,8 +84,10 @@ def create_output_file( report_type, outputFileHandler, eventNum, heatNum, relay
 
     if report_type == report_type_program and eventNum in eventNumRelay:
         outputFileName = output_dir + f"{fileNamePrefix}_Event{eventNum:0>2}_Heat{heatNum:0>2}_{relaySplitFile:0>2}.txt"
-    elif report_type == report_type_program:
+    elif report_type == report_type_program and eventNum in eventNumIndividual:
         outputFileName = output_dir + f"{fileNamePrefix}_Event{eventNum:0>2}_Heat{heatNum:0>2}.txt"
+    elif report_type == report_type_program and eventNum in eventNumDiving:
+        outputFileName = output_dir + f"{fileNamePrefix}_Event{eventNum:0>2}.txt"
     elif report_type == report_type_results:
         outputFileName = output_dir + f"{fileNamePrefix}_Event{eventNum:0>2}.txt"
     else:
@@ -115,7 +117,7 @@ def generateHeatFiles( report_type, meet_report_filename, output_dir, meet_name,
     program_headerLineRelay = "\nLane  Team                         Relay                   Seed Time"       
     result_headerLineLong   = "\nName                    Yr School                 Seed Time  Finals Time      Points"
     result_headerLineShort  = "\nName                    Yr School Seed Time  Finals Time      Points"
-    result_headerLineReplay = "\nTeam                       Relay                  Seed Time  Finals Time      Points"
+    result_headerLineRelay = "\nTeam                       Relay                  Seed Time  Finals Time      Points"
   
 
 
@@ -129,22 +131,20 @@ def generateHeatFiles( report_type, meet_report_filename, output_dir, meet_name,
 
     num_heats_files_generated=0
     total_files_generated=0
-    ## Remove files from last run
-    remove_files_from_dir( output_dir )
     
     with open(meet_report_filename, "r") as meet_report_file:
         for line in meet_report_file:
 
             #####################################################################################
-            ## Ignore all the blank lines             
-            #####################################################################################
-            if line == '\n':
-                continue
-
-            #####################################################################################
             ## Remove the extra newline at end of line
             #####################################################################################
             line = line.strip()
+
+            #####################################################################################
+            ## Ignore all the blank lines             
+            #####################################################################################
+            if line == '\n' or line == '':
+                continue
 
             #####################################################################################
             ## Ignore these meet program header lines                
@@ -163,7 +163,7 @@ def generateHeatFiles( report_type, meet_report_filename, output_dir, meet_name,
                 if re.search("^Lane(\s*)Name", line):
                     continue
 
-                ## For Replay Events
+                ## For Relay Events
                 if re.search("^Lane(\s*)Team", line):
                     continue
                 
@@ -220,13 +220,13 @@ def generateHeatFiles( report_type, meet_report_filename, output_dir, meet_name,
             ## 10 must be on the beginning of the line 
             #####################################################################################
             if report_type == report_type_program and eventNum not in eventNumDiving:
-                line = re.sub('^%s' % '10 ', '10', line)
+                line = re.sub('^%s' % '10  ', '10 ', line)
 
             #####################################################################################
             ## For Diving Events, remove extra space from diver # 10 and above for formatting 
             ## so names lines up with diver 1-9
             #####################################################################################
-            if eventNum in eventNumDiving:
+            if report_type == report_type_program and eventNum in eventNumDiving:
                 matched = re.search('^(\d\d) ', line)
                 if matched:
                     line = re.sub('^(\d\d) ', r'\1',line )
@@ -250,11 +250,17 @@ def generateHeatFiles( report_type, meet_report_filename, output_dir, meet_name,
                 if m:
                     line = re.sub(r'(\S)([2-4]\))', r'\1 \2',line )
 
-                ## IF we are splitting replays into multiple file, then put a blank line after each lane and name
+                ## IF we are splitting relays into multiple file, then put a blank line after each lane and name
                 # if addNewLineToRelayEntries and (re.search('^[2-9] ', line) or re.search('^\d\d ', line)):
                 #     line = f"\n{line}"
                 if addNewLineToRelayEntries and re.search('^1\)', line):
                     line = f"{line}\n"
+
+            #####################################################################################
+            ## For results on replays, only display relay team, not individual names
+            #####################################################################################
+            if report_type == report_type_results and re.search('^1\) ',line):
+                continue
 
             #####################################################################################
             ## Set nameListHeader to be displayed above the list of swimmers
@@ -267,7 +273,9 @@ def generateHeatFiles( report_type, meet_report_filename, output_dir, meet_name,
                 
             if report_type == report_type_results and line.lower().startswith(("event")):
                 # Determin heading based on short or full school name
-                nameListHeader = result_headerLineLong
+                nameListHeader=""
+                if eventNum in eventNumIndividual:
+                    nameListHeader = result_headerLineLong
                 if shortenSchoolNames and eventNum in eventNumIndividual:
                     nameListHeader = result_headerLineShort
 
@@ -370,17 +378,19 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="../data",     required=True,   help="input directory for MM extract report")
     parser.add_argument('-m', '--meetname',         dest='meetname',            default="SST Meet",    required=True,   help="Name of the meet. Need to remove this from report")
-    parser.add_argument('-t', '--reporttype',       dest='reporttype',          default=report_type_program,     choices=['program','result'], help="Program type, Meet Program or Meet Results")
+    parser.add_argument('-t', '--reporttype',       dest='reporttype',          default=report_type_program, choices=['program','result'], help="Program type, Meet Program or Meet Results")
     parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="../output/",                   help="output directory for wirecast heat files.")
     parser.add_argument('-s', '--shortschoolnames', dest='shortschoolnames',    action='store_true',                    help="Use Short School names for Indiviual Entries")
     parser.add_argument('-l', '--longschoolnames',  dest='shortschoolnames',    action='store_false',                   help="Use Long School names for Indiviual Entries")
-    parser.add_argument('-r', '--splitrelays',      dest='splitrelays',         action='store_true',                   help="Split Relays into multiple files")
-    parser.add_argument('-n', '--spacerelaynames',  dest='spacerelaynames',     action='store_true',                   help="Add a new line between relay names")
+    parser.add_argument('-r', '--splitrelays',      dest='splitrelays',         action='store_true',                    help="Split Relays into multiple files")
+    parser.add_argument('-n', '--spacerelaynames',  dest='spacerelaynames',     action='store_true',                    help="Add a new line between relay names")
     parser.add_argument('-d', '--debug',            dest='debug',               action='store_true',                    help="Print out results to console")
+    parser.add_argument('-D', '--delete',           dest='delete',              action='store_true',                    help="Delete existing files in OUTPUT_DIR")
     parser.set_defaults(shortschoolnames=True)
     parser.set_defaults(splitrelays=False)
     parser.set_defaults(spacerelaynames=False)
     parser.set_defaults(DEBUG=False)
+    parser.set_defaults(delete=False)
     
     args = parser.parse_args()
     
@@ -398,8 +408,14 @@ if __name__ == "__main__":
             f"\tOutputDir \t\t{output_dir} \n" + \
             f"\tShort School Names \t{args.shortschoolnames} \n" + \
             f"\tSplit Relays \t\t{args.splitrelays} \n"+ \
-            f"\tSpaces in Relay Names \t{args.spacerelaynames}\n"
+            f"\tSpaces in Relay Names \t{args.spacerelaynames}\n" + \
+            f"\tDelete exiting output files \t{args.delete}\n"
     print( logargs )
+
+
+    ## Remove files from last run
+    if args.delete:
+        remove_files_from_dir( output_dir )
 
     ## main function to generate heat files for Wirecast
     num_heats_files_generated,total_files_generated = generateHeatFiles( args.reporttype, args.inputdir, output_dir, args.meetname, args.shortschoolnames, args.splitrelays, args.spacerelaynames )
