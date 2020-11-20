@@ -321,9 +321,8 @@ def generate_wirecast_files( report_type, meet_report_filename, output_dir, meet
             ## Relays with at least 6 lanes, split the result up in two files
             ## Manually added the Event/Heat and Header info into second file
             #####################################################################################
-            if eventNum in eventNumRelay and splitRelaysToMultipleFiles:
+            if report_type == report_type_program and splitRelaysToMultipleFiles and eventNum in eventNumRelay:
                 if (addNewLineToRelayEntries and re.search('^6 ', line)) or (not addNewLineToRelayEntries and re.search('^(\s*)6 ', line)):
-                    ## Look for lane Relay 5
                     num_files_generated += 1 
                     eventHeatFile = create_output_file( report_type, eventHeatFile, eventNum, heatNum, 2 )
                     eventHeatFile.write( eventLine  + '\n')
@@ -373,6 +372,8 @@ if __name__ == "__main__":
     #####################################################################################
     ## Parse out command line arguments
     #####################################################################################
+
+    spacerelaynames = True
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="../data",     required=True,   help="input directory for MM extract report")
     parser.add_argument('-m', '--meetname',         dest='meetname',            default="SST Meet",    required=True,   help="Name of the meet. Need to remove this from report")
@@ -381,12 +382,12 @@ if __name__ == "__main__":
     parser.add_argument('-s', '--shortschoolnames', dest='shortschoolnames',    action='store_true',                    help="Use Short School names for Indiviual Entries")
     parser.add_argument('-l', '--longschoolnames',  dest='shortschoolnames',    action='store_false',                   help="Use Long School names for Indiviual Entries")
     parser.add_argument('-r', '--splitrelays',      dest='splitrelays',         action='store_true',                    help="Split Relays into multiple files")
-    parser.add_argument('-n', '--spacerelaynames',  dest='spacerelaynames',     action='store_true',                    help="Add a new line between relay names")
+    # parser.add_argument('-n', '--spacerelaynames',  dest='spacerelaynames',     action='store_true',                    help="Add a new line between relay names")
     parser.add_argument('-d', '--debug',            dest='debug',               action='store_true',                    help="Print out results to console")
     parser.add_argument('-D', '--delete',           dest='delete',              action='store_true',                    help="Delete existing files in OUTPUT_DIR")
     parser.set_defaults(shortschoolnames=True)
     parser.set_defaults(splitrelays=False)
-    parser.set_defaults(spacerelaynames=False)
+    # parser.set_defaults(spacerelaynames=True)
     parser.set_defaults(DEBUG=False)
     parser.set_defaults(delete=False)
     
@@ -406,17 +407,20 @@ if __name__ == "__main__":
             f"\tOutputDir \t\t{output_dir} \n" + \
             f"\tShort School Names \t{args.shortschoolnames} \n" + \
             f"\tSplit Relays \t\t{args.splitrelays} \n"+ \
-            f"\tSpaces in Relay Names \t{args.spacerelaynames}\n" + \
+            f"\tSpaces in Relay Names \t{spacerelaynames}\n" + \
             f"\tDelete exiting output files \t{args.delete}\n"
     print( logargs )
 
-
+    #####################################################################################
     ## Remove files from last run
+    #####################################################################################
     if args.delete:
         remove_files_from_dir( output_dir )
 
+    #####################################################################################
     ## main function to generate heat files for Wirecast
-    total_files_generated = generate_wirecast_files( args.reporttype, args.inputdir, output_dir, args.meetname, args.shortschoolnames, args.splitrelays, args.spacerelaynames )
+    #####################################################################################
+    total_files_generated = generate_wirecast_files( args.reporttype, args.inputdir, output_dir, args.meetname, args.shortschoolnames, args.splitrelays, spacerelaynames )
 
     ## We probably add multiple blank lines at end of file.  Go clean those up
     #cleanup_new_files( "Entry", output_dir )
