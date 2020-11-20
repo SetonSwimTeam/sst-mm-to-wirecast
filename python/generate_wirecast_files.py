@@ -74,9 +74,9 @@ def remove_files_from_dir( directory_name ):
 def create_output_file( report_type, outputFileHandler, eventNum, heatNum, relaySplitFile ):
     """ Generate the filename and open the next file """
     if report_type == report_type_program:
-        file_name_prefix = "Entry"
+        file_name_prefix = "program"
     else: 
-        file_name_prefix = "Results"
+        file_name_prefix = "results"
 
     ## If File Hander then close
     if outputFileHandler:
@@ -97,7 +97,18 @@ def create_output_file( report_type, outputFileHandler, eventNum, heatNum, relay
     return outputFileHandler
 
 
-def generate_wirecast_files( report_type, meet_report_filename, output_dir, meet_name, shortenSchoolNames, splitRelaysToMultipleFiles, addNewLineToRelayEntries ):
+#####################################################################################
+#####################################################################################
+#####################################################################################
+#####################################################################################
+##########
+##########    P R O G R A M
+##########
+#####################################################################################
+#####################################################################################
+#####################################################################################
+#####################################################################################
+def generate_program_files( report_type, meet_report_filename, output_dir, meet_name, shortenSchoolNames, splitRelaysToMultipleFiles, addNewLineToRelayEntries ):
     """ Given the input file formatted in a specific manner,
         generate indiviual Event/Heat files for use in Wirecast displays """
     
@@ -112,14 +123,10 @@ def generate_wirecast_files( report_type, meet_report_filename, output_dir, meet
 
     ## NOTE: Do not align up these headers with the TXT output.  
     ##  Wirecast will center all lines and it will be in proper position then
-    program_headerLineLong  = "\nLane  Name                    Year School      Seed Time"
-    program_headerLineShort = "\nLane  Name                 Year School Seed Time"
-    program_headerLineRelay = "\nLane  Team                         Relay                   Seed Time"       
-    result_headerLineLong   = "\nName                    Yr School                 Seed Time  Finals Time      Points"
-    result_headerLineShort  = "\nName                    Yr School Seed Time  Finals Time      Points"
-    result_headerLineRelay  = "\nTeam                       Relay                  Seed Time  Finals Time      Points"
-  
-
+    program_headerLineLong   = "\nLane  Name                    Year School      Seed Time"
+    program_headerLineShort  = "\nLane  Name                 Year School Seed Time"
+    program_headerLineDiving = "\nLane  Name                 Year School      Seed Points"
+    program_headerLineRelay  = "\nLane  Team                         Relay                   Seed Time"         
 
     ## Define local variables
     eventNum = 0
@@ -129,7 +136,10 @@ def generate_wirecast_files( report_type, meet_report_filename, output_dir, meet
     eventHeatFile = None
 
     num_files_generated=0
-    
+
+    #####################################################################################
+    ## Loop through each line of the input file
+    #####################################################################################
     with open(meet_report_filename, "r") as meet_report_file:
         for line in meet_report_file:
 
@@ -152,25 +162,17 @@ def generate_wirecast_files( report_type, meet_report_filename, output_dir, meet
             if re.search("^Seton School", line):
                 continue
 
-            if report_type == report_type_program:
-                ## Meet Manager report type
-                if re.search("^Meet Program", line):
-                    continue
+            ## Meet Manager report type
+            if re.search("^Meet Program", line):
+                continue
 
-                ## For Individual Events
-                if re.search("^Lane(\s*)Name", line):
-                    continue
+            ## For Individual Events
+            if re.search("^Lane(\s*)Name", line):
+                continue
 
-                ## For Relay Events
-                if re.search("^Lane(\s*)Team", line):
-                    continue
-                
-            if report_type == report_type_results:
-                if re.search("^Results", line):
-                    continue
-                ## For Individual Events
-                if re.search("^Name(\s*)Yr", line):
-                    continue
+            ## For Relay Events
+            if re.search("^Lane(\s*)Team", line):
+                continue
 
             #####################################################################################
             ## Ignore meet name line from output
@@ -194,9 +196,7 @@ def generate_wirecast_files( report_type, meet_report_filename, output_dir, meet
                 eventNum = int(event_str[1].strip())
 
                 ## For Program, we stop here and go to next line looking for heat
-                ## For Result, we continue one
-                if report_type == report_type_program:
-                    continue
+                continue
 
             #####################################################################################
             ## Remove "Timed Finals" from Heat (and flight) line
@@ -217,14 +217,14 @@ def generate_wirecast_files( report_type, meet_report_filename, output_dir, meet
             ## Remove space after lane# 10 for formatting so names all align up evenly
             ## 10 must be on the beginning of the line 
             #####################################################################################
-            if report_type == report_type_program and eventNum not in eventNumDiving:
+            if eventNum not in eventNumDiving:
                 line = re.sub('^%s' % '10  ', '10 ', line)
 
             #####################################################################################
             ## For Diving Events, remove extra space from diver # 10 and above for formatting 
             ## so names lines up with diver 1-9
             #####################################################################################
-            if report_type == report_type_program and eventNum in eventNumDiving:
+            if eventNum in eventNumDiving:
                 matched = re.search('^(\d\d) ', line)
                 if matched:
                     line = re.sub('^(\d\d) ', r'\1',line )
@@ -254,35 +254,17 @@ def generate_wirecast_files( report_type, meet_report_filename, output_dir, meet
                 if addNewLineToRelayEntries and re.search('^1\)', line):
                     line = f"{line}\n"
 
-            #####################################################################################
-            ## For results on replays, only display relay team, not individual names
-            #####################################################################################
-            if report_type == report_type_results and re.search('^1\) ',line):
-                continue
 
             #####################################################################################
             ## Set nameListHeader to be displayed above the list of swimmers
             #####################################################################################
-            if report_type == report_type_program and line.lower().startswith(("heat")):
-                # Determin heading based on short or full school name
+            if line.lower().startswith(("heat", "flight")):
+                # Determine heading based on short or full school name
                 nameListHeader = program_headerLineLong
                 if shortenSchoolNames and eventNum in eventNumIndividual:
                     nameListHeader = program_headerLineShort
-                
-            if report_type == report_type_results and line.lower().startswith(("event")):
-                # Determin heading based on short or full school name
-                nameListHeader=""
-                if eventNum in eventNumIndividual:
-                    nameListHeader = result_headerLineLong
-                if shortenSchoolNames and eventNum in eventNumIndividual:
-                    nameListHeader = result_headerLineShort
-
-            #####################################################################################
-            ## For results, add a space after top 1-9 swimmers so names line up with 10-12 place
-            #####################################################################################
-            if report_type == report_type_results and re.search("^[1-9] ", line):
-                line = re.sub('^([1-9]) ', r'\1  ', line )
-    
+                if eventNum in eventNumDiving:
+                    nameListHeader = program_headerLineDiving
 
             #####################################################################################
             #####################################################################################
@@ -301,7 +283,7 @@ def generate_wirecast_files( report_type, meet_report_filename, output_dir, meet
             ##      Heats are used for swimming.  
             ##      Flights are used for diving events
             #####################################################################################
-            if report_type == report_type_program and line.lower().startswith(("heat", "flight")):
+            if line.lower().startswith(("heat", "flight")):
                 ## Open New file for Event/Heat info
                 heatLine = line
                 if eventNum > 0 and heatNum > 0:
@@ -310,18 +292,11 @@ def generate_wirecast_files( report_type, meet_report_filename, output_dir, meet
                     ## Every New file starts with Event Number/Name
                     eventHeatFile.write( eventLine  + '\n')
 
-            if report_type == report_type_results and line.lower().startswith(("event")):
-                print(f"eventnum: {eventNum}")
-                if eventNum > 0:
-                    heatNum = 1
-                    num_files_generated += 1
-                    eventHeatFile = create_output_file( report_type, eventHeatFile, eventNum, 0, 0 )
-
             #####################################################################################
             ## Relays with at least 6 lanes, split the result up in two files
             ## Manually added the Event/Heat and Header info into second file
             #####################################################################################
-            if report_type == report_type_program and splitRelaysToMultipleFiles and eventNum in eventNumRelay:
+            if splitRelaysToMultipleFiles and eventNum in eventNumRelay:
                 if (addNewLineToRelayEntries and re.search('^6 ', line)) or (not addNewLineToRelayEntries and re.search('^(\s*)6 ', line)):
                     num_files_generated += 1 
                     eventHeatFile = create_output_file( report_type, eventHeatFile, eventNum, heatNum, 2 )
@@ -339,10 +314,7 @@ def generate_wirecast_files( report_type, meet_report_filename, output_dir, meet
             #####################################################################################
             ## output the individual swimmer list headers
             #####################################################################################
-            if report_type == report_type_program and line.lower().startswith(("heat")):
-                logger(  f"{nameListHeader}" )
-                eventHeatFile.write( nameListHeader + '\n')
-            if report_type == report_type_results and line.lower().startswith(("event")):
+            if line.lower().startswith(("heat", "flight")):
                 logger(  f"{nameListHeader}" )
                 eventHeatFile.write( nameListHeader + '\n')
 
@@ -350,6 +322,185 @@ def generate_wirecast_files( report_type, meet_report_filename, output_dir, meet
     ## All done. Return counts of files created
     #####################################################################################
     return num_files_generated
+
+
+#####################################################################################
+#####################################################################################
+#####################################################################################
+#####################################################################################
+##########
+##########     R E S U L T S 
+##########
+#####################################################################################
+#####################################################################################
+#####################################################################################
+#####################################################################################
+def generate_results_files( report_type, meet_report_filename, output_dir, meet_name, shortenSchoolNames, addNewLineToRelayEntries ):
+    """ Given the MeetManager results file file formatted in a specific manner,
+        generate indiviual result files for use in Wirecast displays """
+    
+    #####################################################################################
+    ## The names are what appear in the report, and may be abbreviated, 
+    ##  and not the actual full school name
+    ## Multiple version of a school may be listed here for clean output
+    #####################################################################################
+    schoolNameDictFullNameLen = 25
+    schoolNameDictShortNameLen = 6  # Four character name plus spaces for padding between EntryTime
+
+    displayRelaySwimmerNames = False
+
+    ## NOTE: Do not align up these headers with the TXT output.  
+    ##  Wirecast will center all lines and it will be in proper position then
+    result_headerLineLong   = "\nName                    Yr School                 Seed Time  Finals Time      Points"
+    result_headerLineShort  = "\nName                    Yr School Seed Time  Finals Time      Points"
+    result_headerLineRelay  = "\nTeam                       Relay                  Seed Time  Finals Time      Points"
+  
+
+    ## Define local variables
+    eventNum = 0
+    eventLine = ""
+    outputResultFile = None
+    num_files_generated=0
+    
+#####################################################################################
+## Loop through each line of the input file
+#####################################################################################
+    with open(meet_report_filename, "r") as meet_report_file:
+        for line in meet_report_file:
+
+            #####################################################################################
+            ## Remove the extra newline at end of line
+            #####################################################################################
+            line = line.strip()
+
+            #####################################################################################
+            ## Ignore all the blank lines             
+            #####################################################################################
+            if line == '\n' or line == '':
+                continue
+
+            #####################################################################################
+            ## Ignore these meet program header lines                
+            #####################################################################################
+
+            ## Meet Manager license name
+            if re.search("^Seton School", line):
+                continue
+            ## Meet Manager report type  
+            if re.search("^Results", line):
+                continue
+            ## For Individual Events
+            if re.search("^Name(\s*)Yr", line):
+                continue
+
+            #####################################################################################
+            ## Ignore meet name line from output
+            #####################################################################################
+            if re.search(meet_name, line):
+                continue
+
+            #####################################################################################
+            ## Start with Event line.  
+            ##  Get the Event Number from the report
+            ##  Clean it up
+            #####################################################################################
+            if line.lower().startswith(("event")):
+                eventLine = line
+
+                ## Remove all those extra spaces in the line
+                clean_event_str = eventLine.split()
+                clean_event_str = " ".join(clean_event_str)
+                # Get the line number
+                event_str = clean_event_str.split(' ', 4)
+                eventNum = int(event_str[1].strip())
+
+            #####################################################################################
+            ## Replace long school name with short name for individual events
+            #####################################################################################
+            if shortenSchoolNames == True and eventNum in eventNumIndividual:
+                for k,v in schoolNameDict.items():
+                    line = line.replace(k.ljust(schoolNameDictFullNameLen,' '), v.ljust(schoolNameDictShortNameLen, ' '))
+            
+            #####################################################################################
+            ## Processing specific to RELAY Entries
+            #####################################################################################
+            ## If this is a relay, see if there are spaces between swimmer numbers
+            ## If so, add a space between the last swimmer name and the next swimmer number
+            ## This line  1) LastName1, All2) LastName2, Ashley3) LastName3, All4) LastName4, Eri
+            ## becomes    1) LastName1, All 2) LastName2, Ashley 3) LastName3, All 4) LastName4, Eri
+            if eventNum in eventNumRelay:
+                m = re.search('\S[2-4]\)',line)
+                if m:
+                    line = re.sub(r'(\S)([2-4]\))', r'\1 \2',line )
+
+            #####################################################################################
+            ## For results on relays, only display relay team, not individual names
+            ## TODO: Make this a command line parm
+            #####################################################################################
+            if not displayRelaySwimmerNames and re.search('^1\) ',line):
+                continue
+
+            #####################################################################################
+            ## Set nameListHeader to be displayed above the list of swimmers
+            #####################################################################################
+            if line.lower().startswith(("event")):
+                # Determin heading based on short or full school name
+                nameListHeader=""
+                if eventNum in eventNumIndividual:
+                    nameListHeader = result_headerLineLong
+                if shortenSchoolNames and eventNum in eventNumIndividual:
+                    nameListHeader = result_headerLineShort
+
+            #####################################################################################
+            ## For results, add a space after top 1-9 swimmers so names line up with 10-12 place
+            #####################################################################################
+            if re.search("^[1-9] ", line):
+                line = re.sub('^([1-9]) ', r'\1  ', line )
+    
+
+
+            #####################################################################################
+            #####################################################################################
+            #####################################################################################
+            #####################################################################################
+            ##########
+            ##########     Done updating.formatting lines, start outputing data
+            ##########
+            #####################################################################################
+            #####################################################################################
+            #####################################################################################
+            #####################################################################################
+    
+            #####################################################################################
+            ## Start a new Output Event/Heat file 
+            ##      Heats are used for swimming.  
+            ##      Flights are used for diving events
+            #####################################################################################
+            if line.lower().startswith(("event")):
+                print(f"eventnum: {eventNum}")
+                if eventNum > 0:
+                    num_files_generated += 1
+                    outputResultFile = create_output_file( report_type, outputResultFile, eventNum, 0, 0 )
+
+            #####################################################################################
+            ## output the actual data line
+            #####################################################################################
+            if eventNum > 0:
+                logger(  f"{line}" )
+                outputResultFile.write(line  + '\n')
+
+            #####################################################################################
+            ## output the individual swimmer list headers
+            #####################################################################################
+            if line.lower().startswith(("event")):
+                logger(  f"{nameListHeader}" )
+                outputResultFile.write( nameListHeader + '\n')
+
+    #####################################################################################
+    ## All done. Return counts of files created
+    #####################################################################################
+    return num_files_generated
+
 
 def cleanup_new_files( filePrefix, output_dir ):
     """ Remove the one or many blank lines at end of the file """
@@ -420,8 +571,14 @@ if __name__ == "__main__":
     #####################################################################################
     ## main function to generate heat files for Wirecast
     #####################################################################################
-    total_files_generated = generate_wirecast_files( args.reporttype, args.inputdir, output_dir, args.meetname, args.shortschoolnames, args.splitrelays, spacerelaynames )
+    total_files_generated = 0
 
+    if args.reporttype == report_type_program:
+        total_files_generated = generate_program_files( args.reporttype, args.inputdir, output_dir, args.meetname, args.shortschoolnames, args.splitrelays, spacerelaynames )
+
+    if args.reporttype == report_type_results:
+        total_files_generated=  generate_results_files( args.reporttype, args.inputdir, output_dir, args.meetname, args.shortschoolnames, spacerelaynames )
+    
     ## We probably add multiple blank lines at end of file.  Go clean those up
     #cleanup_new_files( "Entry", output_dir )
     print(f"Process Completed: \n\tTotal Number of files generated: {total_files_generated}")
