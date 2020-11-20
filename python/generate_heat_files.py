@@ -257,14 +257,13 @@ def generateHeatFiles( report_type, meet_report_filename, output_dir, meet_name,
                     line = f"{line}\n"
 
             #####################################################################################
-            ## Processing specific to RELAY Entries
+            ## Set nameListHeader to be displayed above the list of swimmers
             #####################################################################################
             if report_type == report_type_program and line.lower().startswith(("heat")):
                 # Determin heading based on short or full school name
                 nameListHeader = program_headerLineLong
                 if shortenSchoolNames and eventNum in eventNumIndividual:
                     nameListHeader = program_headerLineShort
-
                 
             if report_type == report_type_results and line.lower().startswith(("event")):
                 # Determin heading based on short or full school name
@@ -272,12 +271,22 @@ def generateHeatFiles( report_type, meet_report_filename, output_dir, meet_name,
                 if shortenSchoolNames and eventNum in eventNumIndividual:
                     nameListHeader = result_headerLineShort
 
+            #####################################################################################
+            ## For results, add a space after top 1-9 swimmers so names line up with 10-12 place
+            #####################################################################################
+            if report_type == report_type_results and re.search("^[1-9] ", line):
+                line = re.sub('^([1-9]) ', r'\1  ', line )
+    
 
             #####################################################################################
             #####################################################################################
+            #####################################################################################
+            #####################################################################################
             #####
-            ##### Done updating.formatting lines, start outputing data
+            #####     Done updating.formatting lines, start outputing data
             #####
+            #####################################################################################
+            #####################################################################################
             #####################################################################################
             #####################################################################################
     
