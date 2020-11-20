@@ -105,6 +105,81 @@ def create_output_file_results( output_file_handler, event_num ):
     output_file_handler = open( output_file_name, "w+" )
     return output_file_handler
 
+def get_report_header_info( report_type, meet_report_filename ):
+    """ Get the header info from the reports first X lines """
+            
+    #####################################################################################
+    ## Example headers we are processing
+    ##
+    ## Seton School                             HY-TEK's MEET MANAGER 8.0 - 10:02 AM  11/19/2020
+    ##               2020 NoVa Catholic Invitational Championship - 1/11/2020
+    ##                                     Meet Program
+    #####################################################################################
+
+    line_num = 0
+    line1_header = ""
+    line2_header = ""
+    line3_header = ""
+
+    with open(meet_report_filename, "r") as meet_report_file:
+        for line in meet_report_file:
+            line_num += 1
+
+            #####################################################################################
+            ## Remove the extra newline at end of line
+            #####################################################################################
+            line = line.strip()
+
+            #####################################################################################
+            ## Line1: Seton School                             HY-TEK's MEET MANAGER 8.0 - 10:02 AM  11/19/2020                 
+            #####################################################################################
+            if line_num == 1:
+                line1_header = line
+
+            #####################################################################################
+            ## Line2:               2020 NoVa Catholic Invitational Championship - 1/11/2020                
+            #####################################################################################
+            if line_num == 2:
+                line2_header = line
+
+            #####################################################################################
+            ## Line3:                                    Meet Program               
+            #####################################################################################
+            if line_num == 3:
+                line3_header = line
+
+                ## Stop the loop now. We have our headers
+                break
+
+        logger(f"Header1: {line1_header}")
+        logger(f"Header2: {line2_header}")
+        logger(f"Header3: {line3_header}")
+
+
+        #####################################################################################
+        ## Header1.  Break about license name (school name)            
+        #####################################################################################
+        line1_list = re.findall('^(.*?) HY-TEK',line1_header )
+        license_name = line1_list[0].strip()
+        logger(f"license_name: '{license_name}' ")
+
+        #####################################################################################
+        ## Header2.  Break about meet name and meet date               
+        #####################################################################################
+        line2_list = re.findall('^(.*?) - (\d+/\d+/\d+)',line2_header )
+        meet_name = line2_list[0][0]
+        meet_date = line2_list[0][1]
+        logger(f"meet_name: '{meet_name}' \nmeet_date: '{meet_date}'")
+
+        #####################################################################################
+        ## Header2.  Break about meet name and meet date               
+        #####################################################################################
+        report_type = line3_header
+        logger(f"report_type: '{report_type}'")
+
+        return meet_name, meet_date, license_name, report_type
+
+
 
 #####################################################################################
 #####################################################################################
@@ -143,7 +218,7 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
     eventLine = ""
     heatLine = ""
     eventHeatFile = None
-
+    meet_name = None
     num_files_generated=0
     num_header_lines = 3
     found_header_line = 0
@@ -178,6 +253,8 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
             # ignore these X lines
             if 0 < found_header_line < num_header_lines:
                 found_header_line += 1
+                if not meet_name and found_header_line == 2:
+                    meet_name = line
                 continue
 
             ## For Relay Individual Events
@@ -372,6 +449,7 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
     num_files_generated=0
     num_header_lines = 3
     found_header_line = 0
+    meet_name = None
 
     #####################################################################################
     ## RESULTS: Loop through each line of the input file
@@ -403,6 +481,8 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
             # ignore these X lines
             if 0 < found_header_line < num_header_lines:
                 found_header_line += 1
+                if not meet_name and found_header_line == 2:
+                    meet_name = line
                 continue
 
             ## For Individual Events
@@ -544,7 +624,7 @@ if __name__ == "__main__":
     parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="../data",              required=True,   
                                                                                                                 help="input directory for MM extract report")
     parser.add_argument('-m', '--license_name',     dest='license_name',        default="Seton School",         help="MM license name as printed out on reports")
-    parser.add_argument('-t', '--reporttype',       dest='reporttype',          default=report_type_program,    choices=['program','result'], 
+    parser.add_argument('-t', '--reporttype',       dest='reporttype',          default=report_type_program,    choices=['program','result', 'headers'], 
                                                                                                                 help="Program type, Meet Program or Meet Results")
     parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="../output/",           help="output directory for wirecast heat files.")
     parser.add_argument('-s', '--shortschoolnames', dest='shortschoolnames',    action='store_true',            help="Use Short School names for Indiviual Entries")
@@ -568,15 +648,15 @@ if __name__ == "__main__":
     ## The outputdir string MUST have a trailing slash.  Check string and add it if necesssary
     if output_dir[-1] != '/':
         output_dir = f"{output_dir}/"
-        logargs = f"{Path(__file__).stem} Params: \n" + \
-            f"\tReportType \t\t{args.reporttype} \n" + \
-            f"\tInputDir \t\t{args.inputdir} \n" + \
-            f"\tMeetName \t\t{args.license_name} \n" + \
-            f"\tOutputDir \t\t{output_dir} \n" + \
-            f"\tShort School Names \t{args.shortschoolnames} \n" + \
-            f"\tSplit Relays \t\t{args.splitrelays} \n"+ \
-            f"\tSpaces in Relay Names \t{spacerelaynames}\n" + \
-            f"\tDelete exiting output files \t{args.delete}\n"
+    logargs = f"{Path(__file__).stem} Params: \n" + \
+              f"\tReportType \t\t{args.reporttype} \n" + \
+              f"\tInputDir \t\t{args.inputdir} \n" + \
+              f"\tMeetName \t\t{args.license_name} \n" + \
+              f"\tOutputDir \t\t{output_dir} \n" + \
+              f"\tShort School Names \t{args.shortschoolnames} \n" + \
+              f"\tSplit Relays \t\t{args.splitrelays} \n"+ \
+              f"\tSpaces in Relay Names \t{spacerelaynames}\n" + \
+              f"\tDelete exiting output files \t{args.delete}\n"
     print( logargs )
 
     #####################################################################################
@@ -590,9 +670,20 @@ if __name__ == "__main__":
     #####################################################################################
     total_files_generated = 0
 
+    #####################################################################################
+    ## Get header info from the meet file
+    #####################################################################################
+    meet_name, meet_date, license_name, report_type = get_report_header_info( args.reporttype, args.inputdir )
+
+    #####################################################################################
+    ## Generate wirecast files from a MEET PROGRAM txt file
+    #####################################################################################
     if args.reporttype == report_type_program:
         total_files_generated = generate_program_files( args.reporttype, args.inputdir, output_dir, args.license_name, args.shortschoolnames, args.splitrelays, spacerelaynames )
 
+    #####################################################################################
+    ## Generate wirecast files from a MEET RESULTS txt file
+    #####################################################################################
     if args.reporttype == report_type_results:
         total_files_generated=  generate_results_files( args.reporttype, args.inputdir, output_dir, args.license_name, args.shortschoolnames, spacerelaynames )
     
