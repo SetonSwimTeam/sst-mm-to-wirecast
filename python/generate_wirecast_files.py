@@ -117,7 +117,7 @@ def create_output_file_results( output_file_handler, event_num ):
 #####################################################################################
 #####################################################################################
 #####################################################################################
-def generate_program_files( report_type, meet_report_filename, output_dir, meet_name, shortenSchoolNames, splitRelaysToMultipleFiles, addNewLineToRelayEntries ):
+def generate_program_files( report_type, meet_report_filename, output_dir, mm_license_name, shortenSchoolNames, splitRelaysToMultipleFiles, addNewLineToRelayEntries ):
     """ Given the input file formatted in a specific manner,
         generate indiviual Event/Heat files for use in Wirecast displays """
     
@@ -145,6 +145,8 @@ def generate_program_files( report_type, meet_report_filename, output_dir, meet_
     eventHeatFile = None
 
     num_files_generated=0
+    num_header_lines = 3
+    found_header_line = 0
 
     #####################################################################################
     ## PROGRAM: Loop through each line of the input file
@@ -168,25 +170,21 @@ def generate_program_files( report_type, meet_report_filename, output_dir, meet_
             #####################################################################################
 
             ## Meet Manager license name
-            if re.search("^Seton School", line):
+            if re.search("^%s" % mm_license_name, line):
+                found_header_line = 1
                 continue
 
-            ## Meet Manager report type
-            if re.search("^Meet Program", line):
+            # There are X number of header lines, starting with "Seton School"
+            # ignore these X lines
+            if 0 < found_header_line < num_header_lines:
+                found_header_line += 1
                 continue
 
-            ## For Individual Events
+            ## For Relay Individual Events
             if re.search("^Lane(\s*)Name", line):
                 continue
-
             ## For Relay Events
             if re.search("^Lane(\s*)Team", line):
-                continue
-
-            #####################################################################################
-            ## PROGRAM: Ignore meet name line from output
-            #####################################################################################
-            if re.search(meet_name, line):
                 continue
 
             #####################################################################################
@@ -227,7 +225,7 @@ def generate_program_files( report_type, meet_report_filename, output_dir, meet_
             ## 10 must be on the beginning of the line 
             #####################################################################################
             if eventNum not in eventNumDiving:
-                line = re.sub('^%s' % '10  ', '10 ', line)
+                line = re.sub('^10  ', '10 ', line)
 
             #####################################################################################
             ## PROGRAM: For Diving Events, remove extra space from diver # 10 and above for formatting 
@@ -258,8 +256,6 @@ def generate_program_files( report_type, meet_report_filename, output_dir, meet_
                     line = re.sub(r'(\S)([2-4]\))', r'\1 \2',line )
 
                 ## IF we are splitting relays into multiple file, then put a blank line after each lane and name
-                # if addNewLineToRelayEntries and (re.search('^[2-9] ', line) or re.search('^\d\d ', line)):
-                #     line = f"\n{line}"
                 if addNewLineToRelayEntries and re.search('^1\)', line):
                     line = f"{line}\n"
 
@@ -274,6 +270,8 @@ def generate_program_files( report_type, meet_report_filename, output_dir, meet_
                     nameListHeader = program_headerLineShort
                 if eventNum in eventNumDiving:
                     nameListHeader = program_headerLineDiving
+
+
 
             #####################################################################################
             #####################################################################################
@@ -345,7 +343,7 @@ def generate_program_files( report_type, meet_report_filename, output_dir, meet_
 #####################################################################################
 #####################################################################################
 #####################################################################################
-def generate_results_files( report_type, meet_report_filename, output_dir, meet_name, shortenSchoolNames, addNewLineToRelayEntries ):
+def generate_results_files( report_type, meet_report_filename, output_dir, mm_license_name, shortenSchoolNames, addNewLineToRelayEntries ):
     """ Given the MeetManager results file file formatted in a specific manner,
         generate indiviual result files for use in Wirecast displays """
     
@@ -364,13 +362,16 @@ def generate_results_files( report_type, meet_report_filename, output_dir, meet_
     result_headerLineLong   = "\nName                    Yr School                 Seed Time  Finals Time      Points"
     result_headerLineShort  = "\nName                    Yr School Seed Time  Finals Time      Points"
     result_headerLineRelay  = "\nTeam                       Relay                  Seed Time  Finals Time      Points"
-  
+    result_headerLineDiving = "\nName                    Yr School                           Finals Score      Points"
+
 
     ## Define local variables
     eventNum = 0
     eventLine = ""
     outputResultFile = None
     num_files_generated=0
+    num_header_lines = 3
+    found_header_line = 0
 
     #####################################################################################
     ## RESULTS: Loop through each line of the input file
@@ -393,22 +394,24 @@ def generate_results_files( report_type, meet_report_filename, output_dir, meet_
             ## RESULTS: Ignore these meet program header lines                
             #####################################################################################
 
-            ## Meet Manager license name
-            if re.search("^Seton School", line):
+           ## Meet Manager license name
+            if re.search("^%s" % mm_license_name, line):
+                found_header_line = 1
                 continue
-            ## Meet Manager report type  
-            if re.search("^Results", line):
+
+            # There are X number of header lines, starting with "Seton School"
+            # ignore these X lines
+            if 0 < found_header_line < num_header_lines:
+                found_header_line += 1
                 continue
+
             ## For Individual Events
             if re.search("^Name(\s*)Yr", line):
                 continue
-
-            #####################################################################################
-            ## RESULTS: Ignore meet name line from output
-            #####################################################################################
-            if re.search(meet_name, line):
+            ## For Relay Events
+            if re.search("^Team(\s*)Relay", line):
                 continue
-
+                       
             #####################################################################################
             ## RESULTS: Start with Event line.  
             ##  Get the Event Number from the report
@@ -460,6 +463,8 @@ def generate_results_files( report_type, meet_report_filename, output_dir, meet_
                     nameListHeader = result_headerLineLong
                 if shortenSchoolNames and eventNum in eventNumIndividual:
                     nameListHeader = result_headerLineShort
+                if eventNum in eventNumDiving:
+                    nameListHeader = result_headerLineDiving
 
             #####################################################################################
             ## RESULTS: For results, add a space after top 1-9 swimmers so names line up with 10-12 place
@@ -488,7 +493,6 @@ def generate_results_files( report_type, meet_report_filename, output_dir, meet_
             ##      Flights are used for diving events
             #####################################################################################
             if line.lower().startswith(("event")):
-                print(f"eventnum: {eventNum}")
                 if eventNum > 0:
                     num_files_generated += 1
                     outputResultFile = create_output_file_results( outputResultFile, eventNum )
@@ -537,16 +541,18 @@ if __name__ == "__main__":
 
     spacerelaynames = True
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="../data",     required=True,   help="input directory for MM extract report")
-    parser.add_argument('-m', '--meetname',         dest='meetname',            default="SST Meet",    required=True,   help="Name of the meet. Need to remove this from report")
-    parser.add_argument('-t', '--reporttype',       dest='reporttype',          default=report_type_program, choices=['program','result'], help="Program type, Meet Program or Meet Results")
-    parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="../output/",                   help="output directory for wirecast heat files.")
-    parser.add_argument('-s', '--shortschoolnames', dest='shortschoolnames',    action='store_true',                    help="Use Short School names for Indiviual Entries")
-    parser.add_argument('-l', '--longschoolnames',  dest='shortschoolnames',    action='store_false',                   help="Use Long School names for Indiviual Entries")
-    parser.add_argument('-r', '--splitrelays',      dest='splitrelays',         action='store_true',                    help="Split Relays into multiple files")
-    # parser.add_argument('-n', '--spacerelaynames',  dest='spacerelaynames',     action='store_true',                    help="Add a new line between relay names")
-    parser.add_argument('-d', '--debug',            dest='debug',               action='store_true',                    help="Print out results to console")
-    parser.add_argument('-D', '--delete',           dest='delete',              action='store_true',                    help="Delete existing files in OUTPUT_DIR")
+    parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="../data",              required=True,   
+                                                                                                                help="input directory for MM extract report")
+    parser.add_argument('-m', '--license_name',     dest='license_name',        default="Seton School",         help="MM license name as printed out on reports")
+    parser.add_argument('-t', '--reporttype',       dest='reporttype',          default=report_type_program,    choices=['program','result'], 
+                                                                                                                help="Program type, Meet Program or Meet Results")
+    parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="../output/",           help="output directory for wirecast heat files.")
+    parser.add_argument('-s', '--shortschoolnames', dest='shortschoolnames',    action='store_true',            help="Use Short School names for Indiviual Entries")
+    parser.add_argument('-l', '--longschoolnames',  dest='shortschoolnames',    action='store_false',           help="Use Long School names for Indiviual Entries")
+    parser.add_argument('-r', '--splitrelays',      dest='splitrelays',         action='store_true',            help="Split Relays into multiple files")
+    # parser.add_argument('-n', '--spacerelaynames',  dest='spacerelaynames',     action='store_true',          help="Add a new line between relay names")
+    parser.add_argument('-d', '--debug',            dest='debug',               action='store_true',            help="Print out results to console")
+    parser.add_argument('-D', '--delete',           dest='delete',              action='store_true',            help="Delete existing files in OUTPUT_DIR")
     parser.set_defaults(shortschoolnames=True)
     parser.set_defaults(splitrelays=False)
     # parser.set_defaults(spacerelaynames=True)
@@ -565,7 +571,7 @@ if __name__ == "__main__":
         logargs = f"{Path(__file__).stem} Params: \n" + \
             f"\tReportType \t\t{args.reporttype} \n" + \
             f"\tInputDir \t\t{args.inputdir} \n" + \
-            f"\tMeetName \t\t{args.meetname} \n" + \
+            f"\tMeetName \t\t{args.license_name} \n" + \
             f"\tOutputDir \t\t{output_dir} \n" + \
             f"\tShort School Names \t{args.shortschoolnames} \n" + \
             f"\tSplit Relays \t\t{args.splitrelays} \n"+ \
@@ -585,10 +591,10 @@ if __name__ == "__main__":
     total_files_generated = 0
 
     if args.reporttype == report_type_program:
-        total_files_generated = generate_program_files( args.reporttype, args.inputdir, output_dir, args.meetname, args.shortschoolnames, args.splitrelays, spacerelaynames )
+        total_files_generated = generate_program_files( args.reporttype, args.inputdir, output_dir, args.license_name, args.shortschoolnames, args.splitrelays, spacerelaynames )
 
     if args.reporttype == report_type_results:
-        total_files_generated=  generate_results_files( args.reporttype, args.inputdir, output_dir, args.meetname, args.shortschoolnames, spacerelaynames )
+        total_files_generated=  generate_results_files( args.reporttype, args.inputdir, output_dir, args.license_name, args.shortschoolnames, spacerelaynames )
     
     ## We probably add multiple blank lines at end of file.  Go clean those up
     #cleanup_new_files( "Entry", output_dir )
