@@ -116,19 +116,28 @@ def create_output_file_results( output_file_handler, event_num ):
     output_file_handler = open( output_file_name, "w+" )
     return output_file_handler
 
-def create_output_file_crawler( output_file_handler, event_num ):
-    """ Generate the filename and open the next file """
+
+#####################################################################################
+## create_output_file_crawler
+##
+## Given a list of tuples (evnt num, crawler_string), generate output files
+#####################################################################################
+def create_output_file_crawler( crawler_list ):
+    """ Given a list of tuples (evnt num, crawler_string), generate output files """
    
+    num_files_generated=0
     file_name_prefix = "crawler"
+    for crawler_event in crawler_list:
+        event_num = crawler_event[0]
+        crawler_text = crawler_event[1]
 
-    ## If File Hander then close
-    if output_file_handler:
+        output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}.txt"
+        output_file_handler = open( output_file_name, "w+" )
+        output_file_handler.write( crawler_text )
         output_file_handler.close()
+        num_files_generated += 1
 
-    output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}.txt"
-
-    output_file_handler = open( output_file_name, "w+" )
-    return output_file_handler
+    return num_files_generated
 
 
 #####################################################################################
@@ -655,16 +664,16 @@ def cleanup_new_files( filePrefix, output_dir ):
 #####################################################################################
 def generate_crawler_files( report_type, meet_report_filename, output_dir, mm_license_name, shorten_school_names, display_swimmers_in_relay ):
     """  From the Meet Results File, generate the crawler files per event """
-    total_files_generated = 0
-    eventLine = ""
+
     eventNum = 0
     crawler_string = ""
     found_header_line = 0
     num_header_lines = 0
     schoolNameDictFullNameLen = 25
     schoolNameDictShortNameLen = 6  # Four character name plus spaces for padding between EntryTime
-    outputResultFile = None
-    num_files_generated = 0
+
+    crawler_list = []
+
 
     #####################################################################################
     ## CRAWLER: Loop through each line of the input file
@@ -714,21 +723,18 @@ def generate_crawler_files( report_type, meet_report_filename, output_dir, mm_li
             #####################################################################################
             if line.lower().startswith(("event")):
                 ## Found an event.  If its not the first one, the we are done generating the string
-                ## from the last event. Write it out and prepare for next event
+                ## from the last event. Save this event data and prepare for next event
                 if eventNum > 0:
-                    if eventNum > 0:
-                        num_files_generated += 1
-                        outputResultFile = create_output_file_crawler( outputResultFile, eventNum )
-                        outputResultFile.write(str(crawler_string))
-                        outputResultFile.close()
+                    crawler_list.append( (eventNum, crawler_string  ))
 
-
-                eventLine = line
+                ##
+                ## Start processing next event
+                ##
 
                 ## Remove all those extra spaces in the line
-                clean_event_str = eventLine.split()
+                clean_event_str = line.split()
                 clean_event_str = " ".join(clean_event_str)
-                # Get the line number
+                # Get the event number
                 event_str = clean_event_str.split(' ', 4)
                 eventNum = int(event_str[1].strip())
 
@@ -741,12 +747,12 @@ def generate_crawler_files( report_type, meet_report_filename, output_dir, mm_li
   
 
             #####################################################################################
-            ## CRAWLER: Replace long school name with short name for individual events
+            ## CRAWLER: Replace long school name with short name for ALL events
             #####################################################################################
-            if shorten_school_names == True and eventNum in eventNumIndividual:
-                for k,v in schoolNameDict.items():
-                    line = line.replace(k.ljust(schoolNameDictFullNameLen,' '), v.ljust(schoolNameDictShortNameLen, ' '))
+            for k,v in schoolNameDict.items():
+                line = line.replace(k.ljust(schoolNameDictFullNameLen,' '), v.ljust(schoolNameDictShortNameLen, ' '))
             
+
             #####################################################################################
             ## CRAWLER: Processing specific to RELAY Entries
             #####################################################################################
@@ -767,17 +773,17 @@ def generate_crawler_files( report_type, meet_report_filename, output_dir, mm_li
                 continue
 
             #####################################################################################
-            ## CRAWLER: Find the Place Winner line, place, name, school, time, points, etc
+            ## CRAWLER: INDIVIDUAL Find the Place Winner line, place, name, school, time, points, etc
             ## i.e. 1 Last, First           SR SCH   5:31.55      5:23.86        16
             ## Note: For ties an asterick is placed before the place number and the points could have a decimal
             #####################################################################################
             if eventNum in eventNumIndividual and re.search('^[*]?\d{1,2} ', line):
-                print( f"PlaceWinner: {line}")
+                #print( f"PlaceWinner: {line}")
                 #                               place     last first   GR         SCHOOL           SEEDTIME    FINALTIME      POINTS
                 place_line_list = re.findall('^([*]?\d{1,2}) (\w+, \w+)\s+(\w+) ([A-Z0-9]{1,4})\s+([0-9:.]+)\s+([0-9:.]+)\s+([0-9.])*', line)
                 #                               place     last first   GR         SCHOOL           SEEDTIME    FINALTIME      POINTS
                 if place_line_list:
-                    print( f"place_line: place_line_list ")
+                    #print( f"place_line: place_line_list ")
                     placeline_place     = str(place_line_list[0][0])
                     placeline_name      = str(place_line_list[0][1])
                     placeline_grade     = str(place_line_list[0][2])
@@ -786,26 +792,36 @@ def generate_crawler_files( report_type, meet_report_filename, output_dir, mm_li
                     placeline_finaltime = str(place_line_list[0][5])
                     placeline_points    = str(place_line_list[0][6])
 
-                    print(f"placeline place {placeline_place}: name {placeline_name}: grade {placeline_grade}: school {placeline_school}: seed {placeline_seedtime}: final {placeline_finaltime}: point {placeline_points}")
+                    #print(f"placeline place {placeline_place}: name {placeline_name}: grade {placeline_grade}: school {placeline_school}: seed {placeline_seedtime}: final {placeline_finaltime}: point {placeline_points}")
 
                     output_str = f" {placeline_place}) {placeline_name} {placeline_school}"
                     crawler_string += output_str
-
-
-            #####################################################################################
-            #####################################################################################
-            #####################################################################################
-            #####################################################################################
-            ##########
-            ##########    CRAWLER: 
-            ##########     Done updating.formatting lines, start outputing data
-            ##########
-            #####################################################################################
-            #####################################################################################
-            #####################################################################################
-            #####################################################################################
     
+            #####################################################################################
+            ## CRAWLER: RELAY Find the Place Winner line, place, name, school, time, points, etc
+            ## 1 SST            A                    1:46.82      1:40.65        32
+            ## Note: For ties an asterick is placed before the place number and the points could have a decimal
+            #####################################################################################
+            if eventNum in eventNumRelay and re.search('^[*]?\d{1,2} ', line):
+                #                               PLACE        SCHOOL    RELAY     SEEDTIME    FINALTIME      POINTS
+                place_line_list = re.findall('^([*]?\d{1,2}) (\w+) \s+([A-Z])\s+([0-9:.]+)\s+([0-9:.]+)\s+([0-9.])*', line)
+                #                               PLACE        SCHOOL    RELAY     SEEDTIME    FINALTIME      POINTS
+                if place_line_list:
+                    #print( f"RELAY place_line: {place_line_list} ")
+                    placeline_place     = str(place_line_list[0][0])
+                    placeline_school    = str(place_line_list[0][1])
+                    placeline_relay     = str(place_line_list[0][2])
+                    placeline_seedtime  = str(place_line_list[0][3])
+                    placeline_finaltime = str(place_line_list[0][4])
+                    placeline_points    = str(place_line_list[0][5])
 
+                    #print(f"placeline place {placeline_place}: school {placeline_school}: placeline_relay {placeline_relay}: seed {placeline_seedtime}: final {placeline_finaltime}: point {placeline_points}")
+
+                    output_str = f" {placeline_place}) {placeline_school} {placeline_relay}"
+                    crawler_string += output_str  
+
+
+    total_files_generated = create_output_file_crawler( crawler_list )
 
     return total_files_generated
 
