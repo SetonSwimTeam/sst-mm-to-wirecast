@@ -777,7 +777,7 @@ def generate_crawler_files( report_type, meet_report_filename, output_dir, mm_li
             ## i.e. 1 Last, First           SR SCH   5:31.55      5:23.86        16
             ## Note: For ties an asterick is placed before the place number and the points could have a decimal
             #####################################################################################
-            if eventNum in eventNumIndividual and re.search('^[*]?\d{1,2} ', line):
+            if (eventNum in eventNumIndividual  or eventNum in eventNumDiving) and re.search('^[*]?\d{1,2} ', line):
                 #print( f"PlaceWinner: {line}")
                 #                               place     last first   GR         SCHOOL           SEEDTIME    FINALTIME      POINTS
                 place_line_list = re.findall('^([*]?\d{1,2}) (\w+, \w+)\s+(\w+) ([A-Z0-9]{1,4})\s+([0-9:.]+)\s+([0-9:.]+)\s+([0-9.])*', line)
