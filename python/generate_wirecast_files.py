@@ -33,6 +33,11 @@ report_type_results = "result"
 report_type_program = "program"
 report_type_crawler = "crawler"
 
+## Define the header types in the output list so we can include/exclude as necessary
+headerNum1 = -1   ## HyTek licensee and HytTek software
+headerNum2 = -2   ## Meet Name
+headerNum3 = -3   ## Report type
+
 ## Define the types of events in this meet (Individual, Relay and Diving)
 eventNumIndividual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22]
 eventNumRelay  = [1,2,17,18,23,24]
@@ -121,21 +126,29 @@ def create_output_file_results( output_file_handler, event_num ):
 ## create_output_file_crawler
 ##
 ## Given a list of tuples (evnt num, crawler_string), generate output files
+## Generate crawler files for actual events (event_num > 0) and for meet name (event_num = -2)
 #####################################################################################
-def create_output_file_crawler( crawler_list ):
+def create_output_file_crawler( report_type, crawler_list ):
     """ Given a list of tuples (evnt num, crawler_string), generate output files """
-   
+    print( f"crawler_list: {crawler_list}" )
     num_files_generated=0
     file_name_prefix = "crawler"
     for crawler_event in crawler_list:
         event_num = crawler_event[0]
         crawler_text = crawler_event[1]
 
-        output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}.txt"
-        output_file_handler = open( output_file_name, "w+" )
-        output_file_handler.write( crawler_text )
-        output_file_handler.close()
-        num_files_generated += 1
+        if event_num > 0:
+            output_file_name = output_dir + f"{file_name_prefix}_{report_type}_event{event_num:0>2}.txt"
+        elif event_num == headerNum2:
+            output_file_name = output_dir + f"{file_name_prefix}__MeetName.txt"
+        else:
+            output_file_name = None
+
+        if output_file_name:
+            output_file_handler = open( output_file_name, "w+" )
+            output_file_handler.write( crawler_text )
+            output_file_handler.close()
+            num_files_generated += 1
 
     return num_files_generated
 
@@ -662,16 +675,20 @@ def cleanup_new_files( filePrefix, output_dir ):
 #####################################################################################
 #####################################################################################
 #####################################################################################
-def generate_crawler_files( report_type, meet_report_filename, output_dir, mm_license_name, shorten_school_names, display_swimmers_in_relay ):
+def generate_crawler_result_files( report_type, meet_report_filename, output_dir, mm_license_name, shorten_school_names, display_swimmers_in_relay ):
     """  From the Meet Results File, generate the crawler files per event """
 
     eventNum = 0
-    crawler_string = ""
+    crawler_string = report_type.upper()
     found_header_line = 0
-    num_header_lines = 0
+    num_header_lines = 3
     schoolNameDictFullNameLen = 25
     schoolNameDictShortNameLen = 6  # Four character name plus spaces for padding between EntryTime
 
+    # TODO: Put these into a single arrary
+    recorded_header1 = False
+    recorded_header2 = False
+    recorded_header3 = False
     crawler_list = []
 
 
@@ -695,20 +712,30 @@ def generate_crawler_files( report_type, meet_report_filename, output_dir, mm_li
             #####################################################################################
             ## CRAWLER: Ignore these meet program header lines                
             #####################################################################################
-
            ## Meet Manager license name
             if re.search("^%s" % mm_license_name, line):
                 found_header_line = 1
+                if not recorded_header1:
+                    recorded_header1 = True
+                    crawler_list.append( (headerNum1, line ))
                 continue
 
             # There are X number of header lines, starting with "Seton School"
+            print(f"found_header_line1 {found_header_line} recorded_header2 {recorded_header2} ")
             # ignore these X lines
             if 0 < found_header_line < num_header_lines:
                 found_header_line += 1
-                if not meet_name and found_header_line == 2:
-                    meet_name = line
+                print(f"found_header_line {found_header_line} recorded_header2 {recorded_header2} ")
+                if not recorded_header2 and found_header_line == 2:
+                    crawler_list.append( (headerNum2, line ))
+                    recorded_header2 = True
+                elif not recorded_header3 and found_header_line == 3:
+                    crawler_list.append( (headerNum3, line ))
+                    recorded_header3 = True
+
                 continue
 
+            ## Ignore these lines too
             ## For Individual Events
             if re.search("^Name(\s*)Yr", line):
                 continue
@@ -726,6 +753,8 @@ def generate_crawler_files( report_type, meet_report_filename, output_dir, mm_li
                 ## from the last event. Save this event data and prepare for next event
                 if eventNum > 0:
                     crawler_list.append( (eventNum, crawler_string  ))
+                    upper_report_type = report_type.upper()
+                    crawler_string = f"{upper_report_type} "
 
                 ##
                 ## Start processing next event
@@ -742,9 +771,8 @@ def generate_crawler_files( report_type, meet_report_filename, output_dir, mm_li
                 output_str = ""
                 for element in event_str:
                     output_str += f" {element}"
-                crawler_string = output_str
+                crawler_string += output_str
 
-  
 
             #####################################################################################
             ## CRAWLER: Replace long school name with short name for ALL events
@@ -821,7 +849,7 @@ def generate_crawler_files( report_type, meet_report_filename, output_dir, mm_li
                     crawler_string += output_str  
 
 
-    total_files_generated = create_output_file_crawler( crawler_list )
+    total_files_generated = create_output_file_crawler( report_type, crawler_list )
 
     return total_files_generated
 
@@ -909,7 +937,7 @@ if __name__ == "__main__":
     ## Generate wirecast files for the crawler of results
     #####################################################################################
     if args.reporttype == report_type_crawler:
-        total_files_generated=   generate_crawler_files( args.reporttype, args.inputdir, output_dir, args.license_name, args.shortschoolnames, args.displayRelayNames )
+        total_files_generated=   generate_crawler_result_files( "results", args.inputdir, output_dir, args.license_name, args.shortschoolnames, args.displayRelayNames )
     
     ## We probably add multiple blank lines at end of file.  Go clean those up
     #cleanup_new_files( "Entry", output_dir )
