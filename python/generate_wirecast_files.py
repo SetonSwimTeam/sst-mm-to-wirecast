@@ -82,7 +82,6 @@ def logger( log_string ):
 
 def remove_files_from_dir( reporttype, directory_name ):
     """ Remove files from previous run/meet so there are no extra heats/events left over"""
-    print("remove_files_from_dir")
     for root, dirs, files in os.walk(directory_name):
         for file in files:
             if file.startswith((reporttype)):
@@ -124,6 +123,15 @@ def create_output_file_results( output_file_handler, event_num ):
 
 
 #####################################################################################
+## CRAWLER:  Generate the actual output file
+#####################################################################################
+def write_output_file_crawler( output_file_name, output_str ):
+    """ generate the actual crawler output file """
+    output_file_handler = open( output_file_name, "w+" )
+    output_file_handler.write( output_str )
+    output_file_handler.close()
+    
+#####################################################################################
 ## create_output_file_crawler
 ##
 ## Given a list of tuples (evnt num, crawler_string), generate output files
@@ -131,60 +139,55 @@ def create_output_file_results( output_file_handler, event_num ):
 #####################################################################################
 def create_output_file_crawler( report_type, output_dir_root, crawler_list ):
     """ Given a list of tuples (evnt num, crawler_string), generate output files """
-
-    print(f"create_output_file_crawler: {crawler_list}")
+    
     file_name_prefix = "crawler"
-
     output_dir = f"{output_dir_root}{file_name_prefix}/"
+    num_files_generated=0
+
+    ## Create output dir if not exists
     if not os.path.exists( output_dir ):
         os.makedirs( output_dir )
-
-    num_files_generated=0
 
     ## Generate individual files per meet
     for crawler_event in crawler_list:
         event_num = crawler_event[0]
         crawler_text = crawler_event[1]
 
+        ## Generate event specific file
         if event_num > 0:
             output_file_name = output_dir + f"{file_name_prefix}_{report_type}_event{event_num:0>2}.txt"
+            write_output_file_crawler( output_file_name, crawler_text )
+            num_files_generated += 1
+        ## Genreate special file for the meet name
         elif event_num == headerNum2:
             output_file_name = output_dir + f"{file_name_prefix}__MeetName.txt"
-        else:
-            output_file_name = None
-
-        if output_file_name:
-            output_file_handler = open( output_file_name, "w+" )
-            output_file_handler.write( crawler_text )
-            output_file_handler.close()
+            write_output_file_crawler( output_file_name, crawler_text )
             num_files_generated += 1
 
-    ## Generate single file for all scored events in reverse order
-    ## Output the meet name first
-    full_str = ""
 
-    numEvents = len(crawler_list)
+    ## Generate single file for all scored events in reverse order
+    crawler_text = ""
     meet_name = ""
-    for num in range( numEvents-1, 0,-1):
-    # for crawler_event in crawler_list:
+    num_events = len(crawler_list)
+
+    ## Loop through list in reverse order
+    for num in range( num_events-1, -1, -1):
         crawler_event = crawler_list[num]
         event_num = crawler_event[0]
-        crawler_text = crawler_event[1]
+        event_text = crawler_event[1]
 
-        if event_num == headerNum2:
-            meet_name = crawler_text
-        
+        ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
         if event_num > 0:
-            full_str += f" | {crawler_text}"
+            crawler_text += f" | {event_text}"
+        elif event_num == headerNum2:
+            meet_name = event_text
         
     ## Add meet_name to front of string
-    full_str = f"{meet_name} {full_str}"
-    print(f"crawler2: crawler: {full_str}")
+    crawler_text = f"{meet_name} {crawler_text}"
 
+    ## Create the crawler file with ALL events completed so far
     output_file_name = output_dir + f"{file_name_prefix}__AllEventsReverse.txt"
-    output_file_handler = open( output_file_name, "w+" )
-    output_file_handler.write( full_str )
-    output_file_handler.close()
+    write_output_file_crawler( output_file_name, crawler_text )
     num_files_generated += 1
 
     return num_files_generated
@@ -239,11 +242,6 @@ def get_report_header_info( report_type, meet_report_filename ):
 
                 ## Stop the loop now. We have our headers
                 break
-
-        logger(f"Header1: {line1_header}")
-        logger(f"Header2: {line2_header}")
-        logger(f"Header3: {line3_header}")
-
 
         #####################################################################################
         ## Header1.  Break about license name (school name)            
@@ -758,11 +756,9 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
                 continue
 
             # There are X number of header lines, starting with "Seton School"
-            print(f"found_header_line1 {found_header_line} recorded_header2 {recorded_header2} ")
             # ignore these X lines
             if 0 < found_header_line < num_header_lines:
                 found_header_line += 1
-                print(f"found_header_line {found_header_line} recorded_header2 {recorded_header2} ")
                 if not recorded_header2 and found_header_line == 2:
                     crawler_list.append( (headerNum2, line ))
                     recorded_header2 = True
@@ -929,20 +925,31 @@ if __name__ == "__main__":
     ## Set global debug flag
     DEBUG = args.debug
 
+
+    #####################################################################################
+    ## Get header info from the meet file
+    #####################################################################################
+    meet_name, meet_date, license_name, report_type = get_report_header_info( args.reporttype, args.inputdir )
+
     output_dir = args.outputdir
     ## The outputdir string MUST have a trailing slash.  Check string and add it if necesssary
     if output_dir[-1] != '/':
         output_dir = f"{output_dir}/"
-    logargs = f"{Path(__file__).stem} Params: \n" + \
-              f"\tReportType \t\t{args.reporttype} \n" + \
+    logargs = f"{Path(__file__).stem}  \n" + \
+              f"\tMeet Name: \t\t{meet_name} \n" + \
+              f"\tMeet Date: \t\t{meet_date} \n" + \
+              f"\tLicensee: \t\t{license_name} \n" + \
+              f"\tSourceReport: \t\t{report_type} \n" + \
+              f"\n   Params: \n" + \
+              f"\tOutputReportType \t{args.reporttype} \n" + \
               f"\tInputDir \t\t{args.inputdir} \n" + \
               f"\tMeetName \t\t{args.license_name} \n" + \
               f"\tOutputDir \t\t{output_dir} \n" + \
               f"\tShort School Names \t{args.shortschoolnames} \n" + \
               f"\tSplit Relays \t\t{args.splitrelays} \n"+ \
-              f"\tDisplay Relays Names \t\t{args.displayRelayNames} \n"+ \
+              f"\tDisplay Relays Names \t{args.displayRelayNames} \n"+ \
               f"\tSpaces in Relay Names \t{spacerelaynames}\n" + \
-              f"\tDelete exiting output files \t{args.delete}\n"
+              f"\tDelete exiting files \t{args.delete}\n"
     print( logargs )
 
     #####################################################################################
@@ -956,10 +963,7 @@ if __name__ == "__main__":
     #####################################################################################
     total_files_generated = 0
 
-    #####################################################################################
-    ## Get header info from the meet file
-    #####################################################################################
-    meet_name, meet_date, license_name, report_type = get_report_header_info( args.reporttype, args.inputdir )
+
 
     #####################################################################################
     ## Generate wirecast files from a MEET PROGRAM txt file
@@ -981,4 +985,4 @@ if __name__ == "__main__":
     
     ## We probably add multiple blank lines at end of file.  Go clean those up
     #cleanup_new_files( "Entry", output_dir )
-    print(f"Process Completed: \n\tTotal Number of files generated: {total_files_generated}")
+    print(f"Process Completed: \n\tNumber of files generated: {total_files_generated}")
