@@ -88,6 +88,7 @@ def remove_files_from_dir( reporttype, directory_name ):
             if file.startswith((reporttype)):
                 os.remove(os.path.join(root, file))  
 
+
 def create_output_file_program(  output_file_handler, event_num, heat_num, relay_split_file_num ):
     """ Generate the filename and open the next file """
     file_name_prefix = "program"
@@ -128,11 +129,19 @@ def create_output_file_results( output_file_handler, event_num ):
 ## Given a list of tuples (evnt num, crawler_string), generate output files
 ## Generate crawler files for actual events (event_num > 0) and for meet name (event_num = -2)
 #####################################################################################
-def create_output_file_crawler( report_type, crawler_list ):
+def create_output_file_crawler( report_type, output_dir_root, crawler_list ):
     """ Given a list of tuples (evnt num, crawler_string), generate output files """
-    print( f"crawler_list: {crawler_list}" )
-    num_files_generated=0
+
+    print(f"create_output_file_crawler: {crawler_list}")
     file_name_prefix = "crawler"
+
+    output_dir = f"{output_dir_root}{file_name_prefix}/"
+    if not os.path.exists( output_dir ):
+        os.makedirs( output_dir )
+
+    num_files_generated=0
+
+    ## Generate individual files per meet
     for crawler_event in crawler_list:
         event_num = crawler_event[0]
         crawler_text = crawler_event[1]
@@ -149,6 +158,34 @@ def create_output_file_crawler( report_type, crawler_list ):
             output_file_handler.write( crawler_text )
             output_file_handler.close()
             num_files_generated += 1
+
+    ## Generate single file for all scored events in reverse order
+    ## Output the meet name first
+    full_str = ""
+
+    numEvents = len(crawler_list)
+    meet_name = ""
+    for num in range( numEvents-1, 0,-1):
+    # for crawler_event in crawler_list:
+        crawler_event = crawler_list[num]
+        event_num = crawler_event[0]
+        crawler_text = crawler_event[1]
+
+        if event_num == headerNum2:
+            meet_name = crawler_text
+        
+        if event_num > 0:
+            full_str += f" | {crawler_text}"
+        
+    ## Add meet_name to front of string
+    full_str = f"{meet_name} | {full_str}"
+    print(f"crawler2: crawler: {full_str}")
+
+    output_file_name = output_dir + f"{file_name_prefix}__AllEventsReverse.txt"
+    output_file_handler = open( output_file_name, "w+" )
+    output_file_handler.write( full_str )
+    output_file_handler.close()
+    num_files_generated += 1
 
     return num_files_generated
 
@@ -849,7 +886,7 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
                     crawler_string += output_str  
 
 
-    total_files_generated = create_output_file_crawler( report_type, crawler_list )
+    total_files_generated = create_output_file_crawler( report_type, output_dir, crawler_list )
 
     return total_files_generated
 
