@@ -178,7 +178,7 @@ def create_output_file_crawler( report_type, output_dir_root, crawler_list ):
             full_str += f" | {crawler_text}"
         
     ## Add meet_name to front of string
-    full_str = f"{meet_name} | {full_str}"
+    full_str = f"{meet_name} {full_str}"
     print(f"crawler2: crawler: {full_str}")
 
     output_file_name = output_dir + f"{file_name_prefix}__AllEventsReverse.txt"
@@ -886,6 +886,9 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
                     crawler_string += output_str  
 
 
+    ## Write out last event
+    crawler_list.append( (eventNum, crawler_string  ))
+
     total_files_generated = create_output_file_crawler( report_type, output_dir, crawler_list )
 
     return total_files_generated
@@ -974,7 +977,7 @@ if __name__ == "__main__":
     ## Generate wirecast files for the crawler of results
     #####################################################################################
     if args.reporttype == report_type_crawler:
-        total_files_generated=   generate_crawler_result_files( "results", args.inputdir, output_dir, args.license_name, args.shortschoolnames, args.displayRelayNames )
+        total_files_generated=   generate_crawler_result_files( "Unofficial Results", args.inputdir, output_dir, args.license_name, args.shortschoolnames, args.displayRelayNames )
     
     ## We probably add multiple blank lines at end of file.  Go clean those up
     #cleanup_new_files( "Entry", output_dir )
