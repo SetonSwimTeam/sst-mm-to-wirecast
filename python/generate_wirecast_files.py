@@ -107,10 +107,17 @@ def create_output_file_program(  output_file_handler, event_num, heat_num, relay
     return output_file_handler
 
 
-def create_output_file_results( output_file_handler, event_num ):
+def create_output_file_results( output_file_handler, output_dir_root, event_num ):
     """ Generate the filename and open the next file """
    
     file_name_prefix = "results"
+
+    output_dir = f"{output_dir_root}{file_name_prefix}/"
+    num_files_generated=0
+
+    ## Create output dir if not exists
+    if not os.path.exists( output_dir ):
+        os.makedirs( output_dir )
 
     ## If File Hander then close
     if output_file_handler:
@@ -664,7 +671,7 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
             if line.lower().startswith(("event")):
                 if eventNum > 0:
                     num_files_generated += 1
-                    outputResultFile = create_output_file_results( outputResultFile, eventNum )
+                    outputResultFile = create_output_file_results( outputResultFile, output_dir, eventNum )
 
             #####################################################################################
             ## RESULTS: output the actual data line
@@ -720,12 +727,9 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
     schoolNameDictFullNameLen = 25
     schoolNameDictShortNameLen = 6  # Four character name plus spaces for padding between EntryTime
 
-    # TODO: Put these into a single arrary
-    recorded_header1 = False
-    recorded_header2 = False
-    recorded_header3 = False
+    ## Tracking searcing for/finding/processing the three header records on each input file
+    processed_header_list = {"found_header_1": False, "found_header_2": False, "found_header_3": False}
     crawler_list = []
-
 
     #####################################################################################
     ## CRAWLER: Loop through each line of the input file
@@ -745,26 +749,28 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
                 continue
 
             #####################################################################################
-            ## CRAWLER: Ignore these meet program header lines                
+            ## CRAWLER: Ignore these meet program header lines    
+            ##  Once we find the first header line, the next two lines we process are also headers            
             #####################################################################################
-           ## Meet Manager license name
+            ## Meet Manager license name
             if re.search("^%s" % mm_license_name, line):
                 found_header_line = 1
-                if not recorded_header1:
-                    recorded_header1 = True
+                #if not recorded_header1:
+                if not processed_header_list['found_header_1']:
+                    processed_header_list['found_header_1'] = True
                     crawler_list.append( (headerNum1, line ))
                 continue
 
-            # There are X number of header lines, starting with "Seton School"
-            # ignore these X lines
+            ## if the previous line was the first header (found_header_line=1)
+            ## then ignore the next two lines which are also part of the header
             if 0 < found_header_line < num_header_lines:
                 found_header_line += 1
-                if not recorded_header2 and found_header_line == 2:
+                if not not processed_header_list['found_header_2'] and found_header_line == 2:
                     crawler_list.append( (headerNum2, line ))
-                    recorded_header2 = True
-                elif not recorded_header3 and found_header_line == 3:
+                    processed_header_list['found_header_2'] = True
+                elif not processed_header_list['found_header_3'] and found_header_line == 3:
                     crawler_list.append( (headerNum3, line ))
-                    recorded_header3 = True
+                    processed_header_list['found_header_3'] = True
 
                 continue
 
@@ -789,9 +795,9 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
                     upper_report_type = report_type.upper()
                     crawler_string = f"{upper_report_type} "
 
-                ##
+                #####################################################################################
                 ## Start processing next event
-                ##
+                #####################################################################################
 
                 ## Remove all those extra spaces in the line
                 clean_event_str = line.split()
@@ -813,7 +819,6 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
             for k,v in schoolNameDict.items():
                 line = line.replace(k.ljust(schoolNameDictFullNameLen,' '), v.ljust(schoolNameDictShortNameLen, ' '))
             
-
             #####################################################################################
             ## CRAWLER: Processing specific to RELAY Entries
             #####################################################################################
@@ -839,12 +844,9 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
             ## Note: For ties an asterick is placed before the place number and the points could have a decimal
             #####################################################################################
             if (eventNum in eventNumIndividual  or eventNum in eventNumDiving) and re.search('^[*]?\d{1,2} ', line):
-                #print( f"PlaceWinner: {line}")
-                #                               place     last first   GR         SCHOOL           SEEDTIME    FINALTIME      POINTS
                 place_line_list = re.findall('^([*]?\d{1,2}) (\w+, \w+)\s+(\w+) ([A-Z0-9]{1,4})\s+([0-9:.]+)\s+([0-9:.]+)\s+([0-9.])*', line)
-                #                               place     last first   GR         SCHOOL           SEEDTIME    FINALTIME      POINTS
+                #                               TIE? place    last first   GR    SCHOOL           SEEDTIME    FINALTIME      POINTS
                 if place_line_list:
-                    #print( f"place_line: place_line_list ")
                     placeline_place     = str(place_line_list[0][0])
                     placeline_name      = str(place_line_list[0][1])
                     placeline_grade     = str(place_line_list[0][2])
@@ -852,8 +854,6 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
                     placeline_seedtime  = str(place_line_list[0][4])
                     placeline_finaltime = str(place_line_list[0][5])
                     placeline_points    = str(place_line_list[0][6])
-
-                    #print(f"placeline place {placeline_place}: name {placeline_name}: grade {placeline_grade}: school {placeline_school}: seed {placeline_seedtime}: final {placeline_finaltime}: point {placeline_points}")
 
                     output_str = f" {placeline_place}) {placeline_name} {placeline_school}"
                     crawler_string += output_str
@@ -864,11 +864,9 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
             ## Note: For ties an asterick is placed before the place number and the points could have a decimal
             #####################################################################################
             if eventNum in eventNumRelay and re.search('^[*]?\d{1,2} ', line):
-                #                               PLACE        SCHOOL    RELAY     SEEDTIME    FINALTIME      POINTS
                 place_line_list = re.findall('^([*]?\d{1,2}) (\w+) \s+([A-Z])\s+([0-9:.]+)\s+([0-9:.]+)\s+([0-9.])*', line)
-                #                               PLACE        SCHOOL    RELAY     SEEDTIME    FINALTIME      POINTS
+                #  REGEX Positions              TIE? PLACE   SCHOOL    RELAY     SEEDTIME    FINALTIME     POINTS
                 if place_line_list:
-                    #print( f"RELAY place_line: {place_line_list} ")
                     placeline_place     = str(place_line_list[0][0])
                     placeline_school    = str(place_line_list[0][1])
                     placeline_relay     = str(place_line_list[0][2])
@@ -876,15 +874,18 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
                     placeline_finaltime = str(place_line_list[0][4])
                     placeline_points    = str(place_line_list[0][5])
 
-                    #print(f"placeline place {placeline_place}: school {placeline_school}: placeline_relay {placeline_relay}: seed {placeline_seedtime}: final {placeline_finaltime}: point {placeline_points}")
 
                     output_str = f" {placeline_place}) {placeline_school} {placeline_relay}"
                     crawler_string += output_str  
 
+    #####################################################################################
+    ## Save last event string
+    #####################################################################################
+    crawler_list.append( (eventNum, crawler_string ))
 
-    ## Write out last event
-    crawler_list.append( (eventNum, crawler_string  ))
-
+    #####################################################################################
+    ## Write data saved in list to files
+    #####################################################################################
     total_files_generated = create_output_file_crawler( report_type, output_dir, crawler_list )
 
     return total_files_generated
@@ -907,7 +908,7 @@ if __name__ == "__main__":
     parser.add_argument('-m', '--license_name',     dest='license_name',        default="Seton School",         help="MM license name as printed out on reports")
     parser.add_argument('-t', '--reporttype',       dest='reporttype',          default=report_type_program,    choices=['program','result', 'crawler',' headers'], 
                                                                                                                 help="Program type, Meet Program or Meet Results")
-    parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="../output/",           help="output directory for wirecast heat files.")
+    parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="../output/",           help="root output directory for wirecast heat files.")
     parser.add_argument('-s', '--shortschoolnames', dest='shortschoolnames',    action='store_true',            help="Use Short School names for Indiviual Entries")
     parser.add_argument('-l', '--longschoolnames',  dest='shortschoolnames',    action='store_false',           help="Use Long School names for Indiviual Entries")
     parser.add_argument('-r', '--splitrelays',      dest='splitrelays',         action='store_true',            help="Split Relays into multiple files")
@@ -943,7 +944,6 @@ if __name__ == "__main__":
               f"\n   Params: \n" + \
               f"\tOutputReportType \t{args.reporttype} \n" + \
               f"\tInputDir \t\t{args.inputdir} \n" + \
-              f"\tMeetName \t\t{args.license_name} \n" + \
               f"\tOutputDir \t\t{output_dir} \n" + \
               f"\tShort School Names \t{args.shortschoolnames} \n" + \
               f"\tSplit Relays \t\t{args.splitrelays} \n"+ \
@@ -964,25 +964,20 @@ if __name__ == "__main__":
     total_files_generated = 0
 
 
-
     #####################################################################################
     ## Generate wirecast files from a MEET PROGRAM txt file
     #####################################################################################
     if args.reporttype == report_type_program:
         total_files_generated = generate_program_files( args.reporttype, args.inputdir, output_dir, args.license_name, args.shortschoolnames, args.splitrelays, spacerelaynames )
+        print(f"Process Completed: \n\tNumber of files generated: {total_files_generated}")
 
     #####################################################################################
     ## Generate wirecast files from a MEET RESULTS txt file
     #####################################################################################
     if args.reporttype == report_type_results:
-        total_files_generated =  generate_results_files( args.reporttype, args.inputdir, output_dir, args.license_name, args.shortschoolnames, spacerelaynames )
-    
-    #####################################################################################
-    ## Generate wirecast files for the crawler of results
-    #####################################################################################
-    if args.reporttype == report_type_crawler:
-        total_files_generated=   generate_crawler_result_files( "Unofficial Results", args.inputdir, output_dir, args.license_name, args.shortschoolnames, args.displayRelayNames )
-    
-    ## We probably add multiple blank lines at end of file.  Go clean those up
-    #cleanup_new_files( "Entry", output_dir )
-    print(f"Process Completed: \n\tNumber of files generated: {total_files_generated}")
+        total_files_generated_results =  generate_results_files( args.reporttype, args.inputdir, output_dir, args.license_name, args.shortschoolnames, spacerelaynames )
+        total_files_generated_crawler =  generate_crawler_result_files( "Unofficial Results", args.inputdir, output_dir, args.license_name, args.shortschoolnames, args.displayRelayNames )
+        total_files_generated = total_files_generated_results + total_files_generated_crawler
+        print(f"Process Completed: \n\tNumber of files generated total:\t{total_files_generated}")
+        print(f"\tNumber of files generated results:\t{total_files_generated_results}")
+        print(f"\tNumber of files generated crawler:\t{total_files_generated_crawler}")
