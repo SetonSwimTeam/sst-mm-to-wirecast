@@ -107,7 +107,7 @@ def create_output_file_program(  output_file_handler, event_num, heat_num, relay
     return output_file_handler
 
 
-def create_output_file_results( output_file_handler, output_dir_root, event_num, output_list ):
+def create_output_file_results_OLD( output_file_handler, output_dir_root, event_num, output_list ):
     """ Generate the filename and open the next file """
    
     print( f"\bcreate_output_file_results: Event {event_num}" )
@@ -136,6 +136,50 @@ def create_output_file_results( output_file_handler, output_dir_root, event_num,
     output_file_handler = open( output_file_name, "w+" )
     return output_file_handler
 
+
+def create_output_file_results( output_dir_root, event_num, output_list ):
+    """ Generate the filename and open the next file """
+   
+    output_str = ""
+    print( f"\bcreate_output_file_results: Event {event_num}" )
+    for row in output_list:
+        rowid = row[0]
+        rowtext = row[1]
+        print(f"list: id {rowid} text {rowtext} ")
+
+
+    file_name_prefix = "results"
+
+    output_dir = f"{output_dir_root}{file_name_prefix}/"
+
+    ## Create output dir if not exists
+    if not os.path.exists( output_dir ):
+        os.makedirs( output_dir )
+
+
+
+      ## Loop through list in reverse order
+    #for num in range( num_events-1, -1, -1):
+    for output_tuple in output_list:
+        row_type = output_tuple[0]
+        row_text = output_tuple[1]
+
+        ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
+        if row_type == 'H4':
+            output_str += row_text + '\n'
+            output_str += '\n'
+
+        elif row_type == 'H5':
+            output_str += row_text + '\n'
+        elif row_type == 'PLACE':
+            output_str += row_text + '\n'
+
+    output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}.txt"
+    output_file_handler = open( output_file_name, "w+" )
+    output_file_handler.writelines( output_str )
+    output_file_handler.close()
+
+    return 
 
 #####################################################################################
 ## CRAWLER:  Generate the actual output file
@@ -580,7 +624,10 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
            ## Meet Manager license name
             if re.search("^%s" % mm_license_name, line):
                 found_header_line = 1
-                output_list.append( (headerNum1, line ))
+                create_output_file_results( output_dir, eventNum, output_list )
+
+                output_list = []
+                output_list.append( ('H1', line ))
                 continue
 
             ## if the previous line was the first header (found_header_line=1)
@@ -588,9 +635,9 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
             if 0 < found_header_line < num_header_lines:
                 found_header_line += 1
                 if found_header_line == 2:
-                    output_list.append( (headerNum2, line ))
+                    output_list.append( ('H2', line ))
                 elif found_header_line == 3:
-                    output_list.append( (headerNum3, line ))
+                    output_list.append( ('H3', line ))
 
                 continue
 
@@ -615,7 +662,7 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                 # Get the line number
                 event_str = clean_event_str.split(' ', 4)
                 eventNum = int(event_str[1].strip())
-                output_list.append(('R1', line))
+                output_list.append(('H4', line))
 
                 #####################################################################################
                 ## RESULTS: Set nameListHeader to be displayed above the list of swimmers
@@ -624,13 +671,15 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                 nameListHeader=""
                 if eventNum in eventNumIndividual:
                     nameListHeader = result_headerLineLong
-                if shortenSchoolNames and eventNum in eventNumIndividual:
+                elif shortenSchoolNames and eventNum in eventNumIndividual:
                     nameListHeader = result_headerLineShort
-                if eventNum in eventNumDiving:
+                elif eventNum in eventNumDiving:
                     nameListHeader = result_headerLineDiving
+                elif eventNum in eventNumRelay:
+                    nameListHeader = result_headerLineRelay
 
                 if nameListHeader != "":
-                    output_list.append(('R2', nameListHeader))
+                    output_list.append(('H5', nameListHeader))
 
                 
             #####################################################################################
@@ -686,7 +735,27 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
 
                     # output_str = f" {placeline_place}) {placeline_name} {placeline_school}"
                     output_list.append(('PLACE', line))
+            
+            #####################################################################################
+            ## RESULTS: RELAY Find the Place Winner line, place, name, school, time, points, etc
+            ## 1 SST            A                    1:46.82      1:40.65        32
+            ## Note: For ties an asterick is placed before the place number and the points could have a decimal
+            #####################################################################################
+            if eventNum in eventNumRelay and re.search('^[*]?\d{1,2} ', line):
+                # place_line_list = re.findall('^([*]?\d{1,2}) (\w+) \s+([A-Z])\s+([0-9:.]+)\s+([0-9:.]+)\s+([0-9.])*', line)
+                # #  REGEX Positions              TIE? PLACE   SCHOOL    RELAY     SEEDTIME    FINALTIME     POINTS
+                # if place_line_list:
+                #     placeline_place     = str(place_line_list[0][0])
+                #     placeline_school    = str(place_line_list[0][1])
+                #     placeline_relay     = str(place_line_list[0][2])
+                #     placeline_seedtime  = str(place_line_list[0][3])
+                #     placeline_finaltime = str(place_line_list[0][4])
+                #     placeline_points    = str(place_line_list[0][5])
 
+
+                    # output_str = f" {placeline_place}) {placeline_school} {placeline_relay}"
+                    # crawler_string += output_str  
+                output_list.append(( "PLACE", line ))
             #####################################################################################
             #####################################################################################
             #####################################################################################
@@ -708,22 +777,26 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
             if line.lower().startswith(("event")):
                 if eventNum > 0:
                     num_files_generated += 1
-                    outputResultFile = create_output_file_results( outputResultFile, output_dir, eventNum, output_list )
-                    output_list = []
+                    #outputResultFile = create_output_file_results( outputResultFile, output_dir, eventNum, output_list )
+                    #output_list = []
 
             #####################################################################################
             ## RESULTS: output the actual data line
             #####################################################################################
             if eventNum > 0:
                 logger(  f"{line}" )
-                outputResultFile.write(line  + '\n')
+                #outputResultFile.write(line  + '\n')
 
             #####################################################################################
             ## RESULTS: output the individual swimmer list headers
             #####################################################################################
             if line.lower().startswith(("event")):
                 logger(  f"{nameListHeader}" )
-                outputResultFile.write( nameListHeader + '\n')
+                #outputResultFile.write( nameListHeader + '\n')
+
+
+    ## Write out last event
+    create_output_file_results( output_dir, eventNum, output_list )
 
     #####################################################################################
     ## RESULTS: All done. Return counts of files created
