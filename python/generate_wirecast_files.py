@@ -107,9 +107,17 @@ def create_output_file_program(  output_file_handler, event_num, heat_num, relay
     return output_file_handler
 
 
-def create_output_file_results( output_file_handler, output_dir_root, event_num ):
+def create_output_file_results( output_file_handler, output_dir_root, event_num, output_list ):
     """ Generate the filename and open the next file """
    
+    print( f"\bcreate_output_file_results: Event {event_num}" )
+    for row in output_list:
+        rowid = row[0]
+        rowtext = row[1]
+        print(f"list: id {rowid} text {rowtext} ")
+
+
+
     file_name_prefix = "results"
 
     output_dir = f"{output_dir_root}{file_name_prefix}/"
@@ -532,10 +540,10 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
 
     ## NOTE: Do not align up these headers with the TXT output.  
     ##  Wirecast will center all lines and it will be in proper position then
-    result_headerLineLong   = "\nName                    Yr School                 Seed Time  Finals Time      Points"
-    result_headerLineShort  = "\nName                    Yr School Seed Time  Finals Time      Points"
-    result_headerLineRelay  = "\nTeam                       Relay                  Seed Time  Finals Time      Points"
-    result_headerLineDiving = "\nName                    Yr School                           Finals Score      Points"
+    result_headerLineLong   = "Name                    Yr School                 Seed Time  Finals Time      Points"
+    result_headerLineShort  = "Name                    Yr School Seed Time  Finals Time      Points"
+    result_headerLineRelay  = "Team                       Relay                  Seed Time  Finals Time      Points"
+    result_headerLineDiving = "Name                    Yr School                           Finals Score      Points"
 
 
     ## Define local variables
@@ -546,6 +554,7 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
     num_header_lines = 3
     found_header_line = 0
     meet_name = None
+    output_list = []
 
     #####################################################################################
     ## RESULTS: Loop through each line of the input file
@@ -571,14 +580,18 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
            ## Meet Manager license name
             if re.search("^%s" % mm_license_name, line):
                 found_header_line = 1
+                output_list.append( (headerNum1, line ))
                 continue
 
-            # There are X number of header lines, starting with "Seton School"
-            # ignore these X lines
+            ## if the previous line was the first header (found_header_line=1)
+            ## then ignore the next two lines which are also part of the header
             if 0 < found_header_line < num_header_lines:
                 found_header_line += 1
-                if not meet_name and found_header_line == 2:
-                    meet_name = line
+                if found_header_line == 2:
+                    output_list.append( (headerNum2, line ))
+                elif found_header_line == 3:
+                    output_list.append( (headerNum3, line ))
+
                 continue
 
             ## For Individual Events
@@ -602,7 +615,24 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                 # Get the line number
                 event_str = clean_event_str.split(' ', 4)
                 eventNum = int(event_str[1].strip())
+                output_list.append(('R1', line))
 
+                #####################################################################################
+                ## RESULTS: Set nameListHeader to be displayed above the list of swimmers
+                #####################################################################################
+                # Determin heading based on short or full school name
+                nameListHeader=""
+                if eventNum in eventNumIndividual:
+                    nameListHeader = result_headerLineLong
+                if shortenSchoolNames and eventNum in eventNumIndividual:
+                    nameListHeader = result_headerLineShort
+                if eventNum in eventNumDiving:
+                    nameListHeader = result_headerLineDiving
+
+                if nameListHeader != "":
+                    output_list.append(('R2', nameListHeader))
+
+                
             #####################################################################################
             ## RESULTS: Replace long school name with short name for individual events
             #####################################################################################
@@ -618,8 +648,8 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
             ## This line  1) LastName1, All2) LastName2, Ashley3) LastName3, All4) LastName4, Eri
             ## becomes    1) LastName1, All 2) LastName2, Ashley 3) LastName3, All 4) LastName4, Eri
             if eventNum in eventNumRelay:
-                m = re.search('\S[2-4]\)',line)
-                if m:
+                found = re.search('\S[2-4]\)',line)
+                if found:
                     line = re.sub(r'(\S)([2-4]\))', r'\1 \2',line )
 
             #####################################################################################
@@ -627,28 +657,35 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
             ## TODO: Make this a command line parm
             #####################################################################################
             if not displayRelaySwimmerNames and re.search('^1\) ',line):
+                output_list.append(('NAME', line))
                 continue
 
-            #####################################################################################
-            ## RESULTS: Set nameListHeader to be displayed above the list of swimmers
-            #####################################################################################
-            if line.lower().startswith(("event")):
-                # Determin heading based on short or full school name
-                nameListHeader=""
-                if eventNum in eventNumIndividual:
-                    nameListHeader = result_headerLineLong
-                if shortenSchoolNames and eventNum in eventNumIndividual:
-                    nameListHeader = result_headerLineShort
-                if eventNum in eventNumDiving:
-                    nameListHeader = result_headerLineDiving
-
+  
             #####################################################################################
             ## RESULTS: For results, add a space after top 1-9 swimmers so names line up with 10-12 place
             #####################################################################################
             if re.search("^[1-9] ", line):
                 line = re.sub('^([1-9]) ', r'\1  ', line )
     
+            #####################################################################################
+            ## RESULTS: INDIVIDUAL Find the Place Winner line, place, name, school, time, points, etc
+            ## i.e. 1 Last, First           SR SCH   5:31.55      5:23.86        16
+            ## Note: For ties an asterick is placed before the place number and the points could have a decimal
+            #####################################################################################
+            if (eventNum in eventNumIndividual  or eventNum in eventNumDiving) and re.search('^[*]?\d{1,2} ', line):
+                # place_line_list = re.findall('^([*]?\d{1,2}) (\w+, \w+)\s+(\w+) ([A-Z0-9]{1,4})\s+([0-9:.]+)\s+([0-9:.]+)\s+([0-9.])*', line)
+                # #                               TIE? place    last first   GR    SCHOOL           SEEDTIME    FINALTIME      POINTS
+                # if place_line_list:
+                #     placeline_place     = str(place_line_list[0][0])
+                #     placeline_name      = str(place_line_list[0][1])
+                #     placeline_grade     = str(place_line_list[0][2])
+                #     placeline_school    = str(place_line_list[0][3])
+                #     placeline_seedtime  = str(place_line_list[0][4])
+                #     placeline_finaltime = str(place_line_list[0][5])
+                #     placeline_points    = str(place_line_list[0][6])
 
+                    # output_str = f" {placeline_place}) {placeline_name} {placeline_school}"
+                    output_list.append(('PLACE', line))
 
             #####################################################################################
             #####################################################################################
@@ -671,7 +708,8 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
             if line.lower().startswith(("event")):
                 if eventNum > 0:
                     num_files_generated += 1
-                    outputResultFile = create_output_file_results( outputResultFile, output_dir, eventNum )
+                    outputResultFile = create_output_file_results( outputResultFile, output_dir, eventNum, output_list )
+                    output_list = []
 
             #####################################################################################
             ## RESULTS: output the actual data line
@@ -709,9 +747,9 @@ def cleanup_new_files( filePrefix, output_dir ):
 #####################################################################################
 #####################################################################################
 #####################################################################################
-##########
-##########     R E S U L T S    C R A W L E R
-##########    generate_crawler_files
+########## 
+##########    C R A W L E R    R E S U L T S    
+##########    generate_crawler_result_files
 ##########
 #####################################################################################
 #####################################################################################
@@ -765,7 +803,7 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
             ## then ignore the next two lines which are also part of the header
             if 0 < found_header_line < num_header_lines:
                 found_header_line += 1
-                if not not processed_header_list['found_header_2'] and found_header_line == 2:
+                if not processed_header_list['found_header_2'] and found_header_line == 2:
                     crawler_list.append( (headerNum2, line ))
                     processed_header_list['found_header_2'] = True
                 elif not processed_header_list['found_header_3'] and found_header_line == 3:
@@ -944,7 +982,7 @@ if __name__ == "__main__":
               f"\n   Params: \n" + \
               f"\tOutputReportType \t{args.reporttype} \n" + \
               f"\tInputDir \t\t{args.inputdir} \n" + \
-              f"\tOutputDir \t\t{output_dir} \n" + \
+              f"\tRoot OutputDir \t\t{output_dir} \n" + \
               f"\tShort School Names \t{args.shortschoolnames} \n" + \
               f"\tSplit Relays \t\t{args.splitrelays} \n"+ \
               f"\tDisplay Relays Names \t{args.displayRelayNames} \n"+ \
