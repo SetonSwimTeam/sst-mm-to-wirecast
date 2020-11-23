@@ -1062,7 +1062,7 @@ if __name__ == "__main__":
         print(f"Process Completed: \n\tNumber of files generated: {total_files_generated}")
 
     #####################################################################################
-    ## Generate wirecast files from a MEET RESULTS txt file
+    ## Generate wirecast files RESULTS and CRAWLER from a MEET RESULTS txt file
     #####################################################################################
     if args.reporttype == report_type_results:
         total_files_generated_results =  generate_results_files( args.reporttype, args.inputdir, output_dir, args.license_name, args.shortschoolnames, spacerelaynames, args.displayRelayNames )
@@ -1071,3 +1071,10 @@ if __name__ == "__main__":
         print(f"Process Completed: \n\tNumber of files generated total:\t{total_files_generated}")
         print(f"\tNumber of files generated results:\t{total_files_generated_results}")
         print(f"\tNumber of files generated crawler:\t{total_files_generated_crawler}")
+
+    #####################################################################################
+    ## Generate wirecast CRAWLER iles from a MEET RESULTS txt file
+    #####################################################################################
+    if args.reporttype == report_type_crawler:
+        total_files_generated_crawler =  generate_crawler_result_files( "Unofficial Results", args.inputdir, output_dir, args.license_name, args.shortschoolnames, args.displayRelayNames )
+        print(f"Process Completed: \n\tNumber of files generated total:\t{total_files_generated_crawler}")
