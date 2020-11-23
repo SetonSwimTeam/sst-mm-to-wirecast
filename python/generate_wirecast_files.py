@@ -37,6 +37,7 @@ report_type_crawler = "crawler"
 headerNum1 = -1   ## HyTek licensee and HytTek software
 headerNum2 = -2   ## Meet Name
 headerNum3 = -3   ## Report type
+unofficial_results = "    ** UNOFFICIAL RESULTS **"
 
 ## Define the types of events in this meet (Individual, Relay and Diving)
 eventNumIndividual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22]
@@ -593,11 +594,9 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
     ## Define local variables
     eventNum = 0
     eventLine = ""
-    outputResultFile = None
     num_files_generated=0
     num_header_lines = 3
     found_header_line = 0
-    meet_name = None
     output_list = []
 
     #####################################################################################
@@ -618,29 +617,34 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                 continue
 
             #####################################################################################
-            ## RESULTS: Ignore these meet program header lines                
+            ## RESULTS: Capture the first three header lines                
             #####################################################################################
 
            ## Meet Manager license name
             if re.search("^%s" % mm_license_name, line):
                 found_header_line = 1
+                
+                ## Start the next event file
                 create_output_file_results( output_dir, eventNum, output_list )
+                num_files_generated += 1
 
                 output_list = []
                 output_list.append( ('H1', line ))
                 continue
 
+            #####################################################################################
             ## if the previous line was the first header (found_header_line=1)
             ## then ignore the next two lines which are also part of the header
+            #####################################################################################
             if 0 < found_header_line < num_header_lines:
                 found_header_line += 1
                 if found_header_line == 2:
                     output_list.append( ('H2', line ))
                 elif found_header_line == 3:
                     output_list.append( ('H3', line ))
-
                 continue
 
+            ## Ignore the Header for the place winners
             ## For Individual Events
             if re.search("^Name(\s*)Yr", line):
                 continue
@@ -662,13 +666,14 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                 # Get the line number
                 event_str = clean_event_str.split(' ', 4)
                 eventNum = int(event_str[1].strip())
-                output_list.append(('H4', line))
+
+                ## H4 is the Event number/name line
+                output_list.append(('H4', f"{line} {unofficial_results}" ))
 
                 #####################################################################################
                 ## RESULTS: Set nameListHeader to be displayed above the list of swimmers
                 #####################################################################################
                 # Determin heading based on short or full school name
-                nameListHeader=""
                 if eventNum in eventNumIndividual:
                     nameListHeader = result_headerLineLong
                 elif shortenSchoolNames and eventNum in eventNumIndividual:
@@ -677,6 +682,8 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                     nameListHeader = result_headerLineDiving
                 elif eventNum in eventNumRelay:
                     nameListHeader = result_headerLineRelay
+                else:
+                     nameListHeader = ""
 
                 if nameListHeader != "":
                     output_list.append(('H5', nameListHeader))
@@ -705,6 +712,8 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
             ## RESULTS: For results on relays, only display relay team, not individual names
             ## TODO: Make this a command line parm
             #####################################################################################
+
+            ## TODO ??????????
             if not displayRelaySwimmerNames and re.search('^1\) ',line):
                 output_list.append(('NAME', line))
                 continue
@@ -721,6 +730,8 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
             ## i.e. 1 Last, First           SR SCH   5:31.55      5:23.86        16
             ## Note: For ties an asterick is placed before the place number and the points could have a decimal
             #####################################################################################
+
+            #### TODO:  Exgract Team Name by number of characters
             if (eventNum in eventNumIndividual  or eventNum in eventNumDiving) and re.search('^[*]?\d{1,2} ', line):
                 # place_line_list = re.findall('^([*]?\d{1,2}) (\w+, \w+)\s+(\w+) ([A-Z0-9]{1,4})\s+([0-9:.]+)\s+([0-9:.]+)\s+([0-9.])*', line)
                 # #                               TIE? place    last first   GR    SCHOOL           SEEDTIME    FINALTIME      POINTS
@@ -756,47 +767,13 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                     # output_str = f" {placeline_place}) {placeline_school} {placeline_relay}"
                     # crawler_string += output_str  
                 output_list.append(( "PLACE", line ))
-            #####################################################################################
-            #####################################################################################
-            #####################################################################################
-            #####################################################################################
-            ##########
-            ##########    RESULTS: 
-            ##########     Done updating.formatting lines, start outputing data
-            ##########
-            #####################################################################################
-            #####################################################################################
-            #####################################################################################
-            #####################################################################################
-    
-            #####################################################################################
-            ## RESULTS: Start a new Output Event/Heat file 
-            ##      Heats are used for swimming.  
-            ##      Flights are used for diving events
-            #####################################################################################
-            if line.lower().startswith(("event")):
-                if eventNum > 0:
-                    num_files_generated += 1
-                    #outputResultFile = create_output_file_results( outputResultFile, output_dir, eventNum, output_list )
-                    #output_list = []
-
-            #####################################################################################
-            ## RESULTS: output the actual data line
-            #####################################################################################
-            if eventNum > 0:
-                logger(  f"{line}" )
-                #outputResultFile.write(line  + '\n')
-
-            #####################################################################################
-            ## RESULTS: output the individual swimmer list headers
-            #####################################################################################
-            if line.lower().startswith(("event")):
-                logger(  f"{nameListHeader}" )
+       
                 #outputResultFile.write( nameListHeader + '\n')
 
 
     ## Write out last event
     create_output_file_results( output_dir, eventNum, output_list )
+    num_files_generated += 1
 
     #####################################################################################
     ## RESULTS: All done. Return counts of files created
