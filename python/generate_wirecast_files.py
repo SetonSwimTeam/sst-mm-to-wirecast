@@ -44,6 +44,11 @@ eventNumIndividual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22]
 eventNumRelay  = [1,2,17,18,23,24]
 eventNumDiving = [9,10]
 
+#####################################################################################
+## Text used for REGEX to convert long names to short names
+## Some names are truncated. May be able to define full name and then define max
+## lenght of school name depending on report
+#####################################################################################
 schoolNameDict = { 
         "Benedictine College Prep": "BCP",
         "Bishop O'Connell-PV": "DJO",
@@ -75,12 +80,18 @@ schoolNameDict = {
         "Williamsburg Christian Ac": "WCA",
     } 
     
-
+#####################################################################################
+## Control logging/not logging of messages with CLI param
+#####################################################################################
 def logger( log_string ):
     """ Prints out logs if DEBUG command line parm was enabled """
     if DEBUG:
         print( log_string )
 
+#####################################################################################
+## CLI param to remove existing files from directory.  This is needed when
+## old heats won't be overwritten so we need to make sure they are removed
+#####################################################################################
 def remove_files_from_dir( reporttype, directory_name ):
     """ Remove files from previous run/meet so there are no extra heats/events left over"""
     for root, dirs, files in os.walk(directory_name):
@@ -88,7 +99,8 @@ def remove_files_from_dir( reporttype, directory_name ):
             if file.startswith((reporttype)):
                 os.remove(os.path.join(root, file))  
 
-
+#####################################################################################
+#####################################################################################
 def create_output_file_program(  output_file_handler, event_num, heat_num, relay_split_file_num ):
     """ Generate the filename and open the next file """
     file_name_prefix = "program"
@@ -107,37 +119,9 @@ def create_output_file_program(  output_file_handler, event_num, heat_num, relay
     output_file_handler = open( output_file_name, "w+" )
     return output_file_handler
 
-
-def create_output_file_results_OLD( output_file_handler, output_dir_root, event_num, output_list ):
-    """ Generate the filename and open the next file """
-   
-    print( f"\bcreate_output_file_results: Event {event_num}" )
-    for row in output_list:
-        rowid = row[0]
-        rowtext = row[1]
-        print(f"list: id {rowid} text {rowtext} ")
-
-
-
-    file_name_prefix = "results"
-
-    output_dir = f"{output_dir_root}{file_name_prefix}/"
-    num_files_generated=0
-
-    ## Create output dir if not exists
-    if not os.path.exists( output_dir ):
-        os.makedirs( output_dir )
-
-    ## If File Hander then close
-    if output_file_handler:
-        output_file_handler.close()
-
-    output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}.txt"
-
-    output_file_handler = open( output_file_name, "w+" )
-    return output_file_handler
-
-
+#####################################################################################
+## Given an array of data lines PER EVENT, generate the output file
+#####################################################################################
 def create_output_file_results( output_dir_root, event_num, output_list, displayRelaySwimmerNames ):
     """ Generate the filename and open the next file """
    
@@ -156,8 +140,6 @@ def create_output_file_results( output_dir_root, event_num, output_list, display
     ## Create output dir if not exists
     if not os.path.exists( output_dir ):
         os.makedirs( output_dir )
-
-
 
       ## Loop through list in reverse order
     #for num in range( num_events-1, -1, -1):
@@ -182,8 +164,7 @@ def create_output_file_results( output_dir_root, event_num, output_list, display
     output_file_handler = open( output_file_name, "w+" )
     output_file_handler.writelines( output_str )
     output_file_handler.close()
-
-    return 
+ 
 
 #####################################################################################
 ## CRAWLER:  Generate the actual output file
@@ -992,11 +973,10 @@ if __name__ == "__main__":
     #####################################################################################
 
     spacerelaynames = True
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="../data",              required=True,   
                                                                                                                 help="input directory for MM extract report")
-    parser.add_argument('-m', '--license_name',     dest='license_name',        default="Seton School",         help="MM license name as printed out on reports")
-    parser.add_argument('-t', '--reporttype',       dest='reporttype',          default=report_type_program,    choices=['program','result', 'crawler',' headers'], 
+    parser.add_argument('-t', '--reporttype',       dest='reporttype',          default=report_type_program,    choices=['program','result', 'crawler', 'headers'], 
                                                                                                                 help="Program type, Meet Program or Meet Results")
     parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="../output/",           help="root output directory for wirecast heat files.")
     parser.add_argument('-s', '--shortschoolnames', dest='shortschoolnames',    action='store_true',            help="Use Short School names for Indiviual Entries")
@@ -1005,6 +985,7 @@ if __name__ == "__main__":
     parser.add_argument('-R', '--displayRelayNames',dest='displayRelayNames',   action='store_true',            help="Display relay swimmer names, not just the team name in results")
     parser.add_argument('-d', '--debug',            dest='debug',               action='store_true',            help="Print out results to console")
     parser.add_argument('-D', '--delete',           dest='delete',              action='store_true',            help="Delete existing files in OUTPUT_DIR")
+    parser.add_argument('-h', '--help',             dest='help',                action='help', default=argparse.SUPPRESS,                 help="Tested with MM 8")
     parser.set_defaults(shortschoolnames=True)
     parser.set_defaults(splitrelays=False)
     parser.set_defaults(displayRelayNames=False)
@@ -1015,22 +996,24 @@ if __name__ == "__main__":
     
     ## Set global debug flag
     DEBUG = args.debug
+    total_files_generated = 0
 
 
     #####################################################################################
     ## Get header info from the meet file
+    ## We need to dynamically get the meet name and license_name for use in processing files
+    ## The license_name is the first line on the start of every new page/event/heat
     #####################################################################################
     meet_name, meet_date, license_name, report_type = get_report_header_info( args.reporttype, args.inputdir )
+    logger( f"Meet Name:\t {meet_name}")
+
 
     output_dir = args.outputdir
     ## The outputdir string MUST have a trailing slash.  Check string and add it if necesssary
     if output_dir[-1] != '/':
         output_dir = f"{output_dir}/"
+    
     logargs = f"{Path(__file__).stem}  \n" + \
-              f"\tMeet Name: \t\t{meet_name} \n" + \
-              f"\tMeet Date: \t\t{meet_date} \n" + \
-              f"\tLicensee: \t\t{license_name} \n" + \
-              f"\tSourceReport: \t\t{report_type} \n" + \
               f"\n   Params: \n" + \
               f"\tOutputReportType \t{args.reporttype} \n" + \
               f"\tInputDir \t\t{args.inputdir} \n" + \
@@ -1039,7 +1022,12 @@ if __name__ == "__main__":
               f"\tSplit Relays \t\t{args.splitrelays} \n"+ \
               f"\tDisplay Relays Names \t{args.displayRelayNames} \n"+ \
               f"\tSpaces in Relay Names \t{spacerelaynames}\n" + \
-              f"\tDelete exiting files \t{args.delete}\n"
+              f"\tDelete exiting files \t{args.delete}\n" + \
+              f"\n   Headers: \n" + \
+              f"\tMeet Name: \t\t{meet_name} \n" + \
+              f"\tMeet Date: \t\t{meet_date} \n" + \
+              f"\tLicensee: \t\t{license_name} \n" + \
+              f"\tSourceReport: \t\t{report_type} \n" 
     print( logargs )
 
     #####################################################################################
@@ -1047,12 +1035,6 @@ if __name__ == "__main__":
     #####################################################################################
     if args.delete:
         remove_files_from_dir( args.reporttype, output_dir )
-
-    #####################################################################################
-    ## main function to generate heat files for Wirecast
-    #####################################################################################
-    total_files_generated = 0
-
 
     #####################################################################################
     ## Generate wirecast files from a MEET PROGRAM txt file
