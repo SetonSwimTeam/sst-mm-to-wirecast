@@ -138,7 +138,7 @@ def create_output_file_results_OLD( output_file_handler, output_dir_root, event_
     return output_file_handler
 
 
-def create_output_file_results( output_dir_root, event_num, output_list ):
+def create_output_file_results( output_dir_root, event_num, output_list, displayRelaySwimmerNames ):
     """ Generate the filename and open the next file """
    
     output_str = ""
@@ -174,6 +174,9 @@ def create_output_file_results( output_dir_root, event_num, output_list ):
             output_str += row_text + '\n'
         elif row_type == 'PLACE':
             output_str += row_text + '\n'
+        elif row_type == 'NAME' and displayRelaySwimmerNames:
+            output_str += row_text + '\n'
+
 
     output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}.txt"
     output_file_handler = open( output_file_name, "w+" )
@@ -569,7 +572,7 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
 #####################################################################################
 #####################################################################################
 #####################################################################################
-def generate_results_files( report_type, meet_report_filename, output_dir, mm_license_name, shortenSchoolNames, addNewLineToRelayEntries ):
+def generate_results_files( report_type, meet_report_filename, output_dir, mm_license_name, shortenSchoolNames, addNewLineToRelayEntries, displayRelaySwimmerNames ):
     """ Given the MeetManager results file file formatted in a specific manner,
         generate indiviual result files for use in Wirecast displays """
     
@@ -580,8 +583,6 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
     #####################################################################################
     schoolNameDictFullNameLen = 25
     schoolNameDictShortNameLen = 6  # Four character name plus spaces for padding between EntryTime
-
-    displayRelaySwimmerNames = False
 
     ## NOTE: Do not align up these headers with the TXT output.  
     ##  Wirecast will center all lines and it will be in proper position then
@@ -625,7 +626,7 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                 found_header_line = 1
                 
                 ## Start the next event file
-                create_output_file_results( output_dir, eventNum, output_list )
+                create_output_file_results( output_dir, eventNum, output_list, displayRelaySwimmerNames )
                 num_files_generated += 1
 
                 output_list = []
@@ -708,19 +709,17 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                 if found:
                     line = re.sub(r'(\S)([2-4]\))', r'\1 \2',line )
 
-            #####################################################################################
-            ## RESULTS: For results on relays, only display relay team, not individual names
-            ## TODO: Make this a command line parm
-            #####################################################################################
-
-            ## TODO ??????????
-            if not displayRelaySwimmerNames and re.search('^1\) ',line):
-                output_list.append(('NAME', line))
-                continue
+                #####################################################################################
+                ## RESULTS: For results on relays and the swimmers name as well to the list
+                ##          Its up to the output function to determine to display them or not
+                #####################################################################################
+                if displayRelaySwimmerNames and re.search('^1\) ',line):
+                    output_list.append(('NAME', line))
 
   
             #####################################################################################
-            ## RESULTS: For results, add a space after top 1-9 swimmers so names line up with 10-12 place
+            ## RESULTS: For place winner results, add a space after top 1-9 swimmers 
+            ##          so names line up with 10-12 place
             #####################################################################################
             if re.search("^[1-9] ", line):
                 line = re.sub('^([1-9]) ', r'\1  ', line )
@@ -731,7 +730,8 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
             ## Note: For ties an asterick is placed before the place number and the points could have a decimal
             #####################################################################################
 
-            #### TODO:  Exgract Team Name by number of characters
+            #### TODO:  Extract Team Name by number of characters
+            #### TOD:   Swap first_name, last_name
             if (eventNum in eventNumIndividual  or eventNum in eventNumDiving) and re.search('^[*]?\d{1,2} ', line):
                 # place_line_list = re.findall('^([*]?\d{1,2}) (\w+, \w+)\s+(\w+) ([A-Z0-9]{1,4})\s+([0-9:.]+)\s+([0-9:.]+)\s+([0-9.])*', line)
                 # #                               TIE? place    last first   GR    SCHOOL           SEEDTIME    FINALTIME      POINTS
@@ -745,7 +745,7 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                 #     placeline_points    = str(place_line_list[0][6])
 
                     # output_str = f" {placeline_place}) {placeline_name} {placeline_school}"
-                    output_list.append(('PLACE', line))
+                output_list.append(('PLACE', line))
             
             #####################################################################################
             ## RESULTS: RELAY Find the Place Winner line, place, name, school, time, points, etc
@@ -767,12 +767,14 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                     # output_str = f" {placeline_place}) {placeline_school} {placeline_relay}"
                     # crawler_string += output_str  
                 output_list.append(( "PLACE", line ))
-       
-                #outputResultFile.write( nameListHeader + '\n')
+    
 
-
+    #####################################################################################
+    ## Reached end of file
     ## Write out last event
-    create_output_file_results( output_dir, eventNum, output_list )
+    #####################################################################################
+
+    create_output_file_results( output_dir, eventNum, output_list, displayRelaySwimmerNames )
     num_files_generated += 1
 
     #####################################################################################
@@ -1063,7 +1065,7 @@ if __name__ == "__main__":
     ## Generate wirecast files from a MEET RESULTS txt file
     #####################################################################################
     if args.reporttype == report_type_results:
-        total_files_generated_results =  generate_results_files( args.reporttype, args.inputdir, output_dir, args.license_name, args.shortschoolnames, spacerelaynames )
+        total_files_generated_results =  generate_results_files( args.reporttype, args.inputdir, output_dir, args.license_name, args.shortschoolnames, spacerelaynames, args.displayRelayNames )
         total_files_generated_crawler =  generate_crawler_result_files( "Unofficial Results", args.inputdir, output_dir, args.license_name, args.shortschoolnames, args.displayRelayNames )
         total_files_generated = total_files_generated_results + total_files_generated_crawler
         print(f"Process Completed: \n\tNumber of files generated total:\t{total_files_generated}")
