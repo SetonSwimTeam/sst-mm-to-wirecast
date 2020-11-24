@@ -140,7 +140,7 @@ def create_output_file_results( output_dir_root, event_num, output_list, display
         if row_type == 'H4':
             output_str += row_text + '\n'
             output_str += '\n'
-        elif row_type == 'H5':
+        elif row_type == 'H6':
             output_str += row_text + '\n'
         elif row_type == 'PLACE':
             output_str += row_text + '\n'
@@ -165,12 +165,12 @@ def create_output_file_program( output_dir_root, event_num, heat_num, output_lis
     split_num = 1
     output_str = ""
     
-    # if event_num in eventNumRelay:
+    if event_num in eventNumRelay:
 
-    #     for row in output_list:
-    #         rowid = row[0]
-    #         rowtext = row[1]
-    #         print(f"list: id {rowid} text {rowtext} ")
+        for row in output_list:
+            rowid = row[0]
+            rowtext = row[1]
+            print(f"list: {event_num}:{heat_num} id {rowid} text {rowtext} ")
 
     file_name_prefix = "program"
     output_dir = f"{output_dir_root}{file_name_prefix}/"
@@ -188,7 +188,7 @@ def create_output_file_program( output_dir_root, event_num, heat_num, output_lis
         for output_tuple in output_list:
             row_type = output_tuple[0]
             
-            if row_type == 'NAME':
+            if row_type == 'LANE':
                 num_relay_lane += 1
 
     header_list = ['H4', 'H5', 'H6']
@@ -204,11 +204,17 @@ def create_output_file_program( output_dir_root, event_num, heat_num, output_lis
         if row_type in header_list:
             output_str += row_text + '\n'
             header_str += row_text + '\n'
-        elif row_type == 'NAME':
+        elif row_type == 'LANE':
             output_str += row_text + '\n'
+        elif row_type == 'NAME' and displayRelaySwimmerNames:
+            output_str += row_text + '\n'
+            ## If split, space it out for readability
+            if splitRelaysToMultipleFiles:
+                output_str += '\n'
 
         ## If we have more then 6 relay entries create second output file
-        if splitRelaysToMultipleFiles and num_relay_lane > 7 and count == 10:
+        if splitRelaysToMultipleFiles and num_relay_lane > 7 and count == 5:
+            count = -99
             output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}_Split{split_num:0>2}.txt"
             output_file_handler = open( output_file_name, "w+" )
             output_file_handler.writelines( output_str )
@@ -218,8 +224,12 @@ def create_output_file_program( output_dir_root, event_num, heat_num, output_lis
             num_files_created += 1
             split_num += 1
             output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}_Split{split_num:0>2}.txt"
+            ## IF we are splitting relays into multiple file, then put a blank line after each lane and name
+            #if addNewLineToRelayEntries and re.search('^1\)', line):
+            #    line = f"{line}\n"
 
-        count += 1
+        if row_type == 'LANE':
+            count += 1
 
     output_file_handler = open( output_file_name, "w+" )
     output_file_handler.writelines( output_str )
@@ -514,7 +524,7 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                 heatNum = int(split_heat_str[1])
 
                 ## H6 is the Heat info
-                output_list.append(('H6', f"{line}" ))
+                output_list.append(('H5', f"{line}" ))
 
                 #####################################################################################
                 ## PROGRAM: Set nameListHeader to be displayed above the list of swimmers
@@ -535,48 +545,8 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                         nameListHeader = program_headerLineRelayShort
 
                 if nameListHeader != "":
-                    output_list.append(('H5', nameListHeader))
+                    output_list.append(('H6', nameListHeader))
 
-
-            #####################################################################################
-            ## PROGRAM: Remove space after lane# 10 for formatting so names all align up evenly
-            ## 10 must be on the beginning of the line 
-            #####################################################################################
-            if eventNum not in eventNumDiving:
-                line = re.sub('^10  ', '10 ', line)
-
-            #####################################################################################
-            ## PROGRAM: For Diving Events, remove extra space from diver # 10 and above for formatting 
-            ## so names lines up with diver 1-9
-            #####################################################################################
-            if eventNum in eventNumDiving:
-                matched = re.search('^(\d\d) ', line)
-                if matched:
-                    line = re.sub('^(\d\d) ', r'\1',line )
-
-            # #####################################################################################
-            # ## PROGRAM: Replace long school name with short name for individual events
-            # #####################################################################################
-            # if shortenSchoolNames == True and eventNum in eventNumIndividual:
-            #     for k,v in schoolNameDict.items():
-            #         line = line.replace(k.ljust(programIndDictFullNameLen,' ')[:programIndDictFullNameLen], v.ljust(schoolNameDictShortNameLen, ' '))
-
-            
-            #####################################################################################
-            ## PROGRAM: Processing specific to RELAY Entries
-            #####################################################################################
-            ## If this is a relay, see if there are spaces between swimmer numbers
-            ## If so, add a space between the last swimmer name and the next swimmer number
-            ## This line  1) LastName1, All2) LastName2, Ashley3) LastName3, All4) LastName4, Eri
-            ## becomes    1) LastName1, All 2) LastName2, Ashley 3) LastName3, All 4) LastName4, Eri
-            if eventNum in eventNumRelay:
-                m = re.search('\S[2-4]\)',line)
-                if m:
-                    line = re.sub(r'(\S)([2-4]\))', r'\1 \2',line )
-
-                ## IF we are splitting relays into multiple file, then put a blank line after each lane and name
-                if addNewLineToRelayEntries and re.search('^1\)', line):
-                    line = f"{line}\n"
 
             #####################################################################################
             ## PROGRAM: INDIVIDUAL Find the Place Winner line, place, name, school, time, points, etc
@@ -623,7 +593,7 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                     if shortenSchoolNames:
                         output_str = f" {entry_lane:2} {entry_name:<25} {entry_grade:<2} {entry_sch_short:<4} {entry_seedtime}"
                     
-                    output_list.append(('NAME', output_str))
+                    output_list.append(('LANE', output_str))
             
             #####################################################################################
             ## PROGRAM: RELAY Find the Place Winner line, place, name, school, time, points, etc
@@ -652,7 +622,25 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                 else:
                     output_str = f"{entryline_place:2} {entryline_sch_long:<25} {entryline_relay:1} {entryline_seedtime}"
 
-                output_list.append(( "NAME", output_str ))
+                output_list.append(( "LANE", output_str ))
+
+            #####################################################################################
+            ## PROGRAM: RELAY Add the swimmers name to the list as well
+            #####################################################################################
+            #####################################################################################
+            ## PROGRAM: Processing specific to RELAY Entries
+            #####################################################################################
+            ## If this is a relay, see if there are spaces between swimmer numbers
+            ## If so, add a space between the last swimmer name and the next swimmer number
+            ## This line  1) LastName1, All2) LastName2, Ashley3) LastName3, All4) LastName4, Eri
+            ## becomes    1) LastName1, All 2) LastName2, Ashley 3) LastName3, All 4) LastName4, Eri
+            if eventNum in eventNumRelay:
+                #found = re.search('\S[2-4]\)',line)
+                found = re.search('1\)',line)
+                if found:
+                    output_str = re.sub(r'(\S)([2-4]\))', r'\1 \2',line )
+                    output_list.append(( "NAME", output_str ))
+
 
     #####################################################################################
     ## Reached end of file
@@ -805,7 +793,7 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                         nameListHeader = result_headerLineRelayShort
 
                 if nameListHeader != "":
-                    output_list.append(('H5', nameListHeader))
+                    output_list.append(('H6', nameListHeader))
 
             #####################################################################################
             ## RESULTS: Replace long school name with short name for individual events
