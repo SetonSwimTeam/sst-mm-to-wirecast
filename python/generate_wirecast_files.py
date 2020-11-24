@@ -79,7 +79,9 @@ schoolNameDict = {
         "Wakefield H2owls-VA": "WAKE",
         "Williamsburg Christian Ac": "WCA",
     } 
-    
+
+
+
 #####################################################################################
 ## Control logging/not logging of messages with CLI param
 #####################################################################################
@@ -87,6 +89,8 @@ def logger( log_string ):
     """ Prints out logs if DEBUG command line parm was enabled """
     if DEBUG:
         print( log_string )
+
+
 
 #####################################################################################
 ## CLI param to remove existing files from directory.  This is needed when
@@ -99,25 +103,7 @@ def remove_files_from_dir( reporttype, directory_name ):
             if file.startswith((reporttype)):
                 os.remove(os.path.join(root, file))  
 
-#####################################################################################
-#####################################################################################
-def create_output_file_programOLD(  output_file_handler, event_num, heat_num, relay_split_file_num ):
-    """ Generate the filename and open the next file """
-    file_name_prefix = "program"
 
-    ## If File Hander then close
-    if output_file_handler:
-        output_file_handler.close()
-
-    if  event_num in eventNumRelay:
-        output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}_{relay_split_file_num:0>2}.txt"
-    elif  event_num in eventNumIndividual:
-        output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}.txt"
-    else:
-        output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}.txt"
-
-    output_file_handler = open( output_file_name, "w+" )
-    return output_file_handler
 
 #####################################################################################
 ## Given an array of data lines PER EVENT, generate the output file
@@ -151,7 +137,6 @@ def create_output_file_results( output_dir_root, event_num, output_list, display
         if row_type == 'H4':
             output_str += row_text + '\n'
             output_str += '\n'
-
         elif row_type == 'H5':
             output_str += row_text + '\n'
         elif row_type == 'PLACE':
@@ -165,55 +150,84 @@ def create_output_file_results( output_dir_root, event_num, output_list, display
     output_file_handler.writelines( output_str )
     output_file_handler.close()
  
+
+
 ####################################################################################
-## Given an array of data lines PER EVENT, generate the output file
+## Given an array of data lines PER HEAT, generate the output file
 #####################################################################################
 def create_output_file_program( output_dir_root, event_num, heat_num, output_list, displayRelaySwimmerNames ):
     """ Generate the filename and open the next file """
    
     num_files_created = 0
+    split_num = 1
     output_str = ""
     print( f"\bcreate_output_file_results: Event {event_num}" )
-    for row in output_list:
-        rowid = row[0]
-        rowtext = row[1]
-        print(f"list: id {rowid} text {rowtext} ")
+    
+    if event_num in eventNumRelay:
 
+        for row in output_list:
+            rowid = row[0]
+            rowtext = row[1]
+            print(f"list: id {rowid} text {rowtext} ")
 
     file_name_prefix = "program"
-
     output_dir = f"{output_dir_root}{file_name_prefix}/"
 
     ## Create output dir if not exists
     if not os.path.exists( output_dir ):
         os.makedirs( output_dir )
+    
+    ## For non relay events
+    output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}.txt"
 
-      ## Loop through list in reverse order
+    ## Count the number of lanes in the RELAY
+    num_relay_lane = 0
+    if event_num in eventNumRelay:
+        for output_tuple in output_list:
+            row_type = output_tuple[0]
+            
+            if row_type == 'NAME':
+                num_relay_lane += 1
+
+        print(f"Found {num_relay_lane} relay entries") 
+
+    header_list = ['H4', 'H5', 'H6']
+    header_str = ""
+    ## Loop through list in reverse order
     #for num in range( num_events-1, -1, -1):
+    count =0 
     for output_tuple in output_list:
         row_type = output_tuple[0]
         row_text = output_tuple[1]
 
         ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
-        if row_type == 'H4':
+        if row_type in header_list:
             output_str += row_text + '\n'
-            #output_str += '\n'
-
-        elif row_type == 'H5':
-            output_str += row_text + '\n'
-        elif row_type == 'H6':
-            output_str += row_text + '\n'
+            header_str += row_text + '\n'
         elif row_type == 'NAME':
             output_str += row_text + '\n'
 
+        ## If we have more then 6 relay entries create second output file
+        if num_relay_lane > 7 and count == 10:
+            output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}_Split{split_num:0>2}.txt"
+            output_file_handler = open( output_file_name, "w+" )
+            output_file_handler.writelines( output_str )
+            output_file_handler.close()
+            output_str = header_str
+            ## Regenerate the header?  Need a better way to do this
+            num_files_created += 1
+            split_num += 1
+            output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}_Split{split_num:0>2}.txt"
 
-    output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}.txt"
+        count += 1
+
     output_file_handler = open( output_file_name, "w+" )
     output_file_handler.writelines( output_str )
     output_file_handler.close()
     num_files_created += 1
 
     return num_files_created
+
 
 #####################################################################################
 ## CRAWLER:  Generate the actual output file
@@ -223,7 +237,9 @@ def write_output_file_crawler( output_file_name, output_str ):
     output_file_handler = open( output_file_name, "w+" )
     output_file_handler.write( output_str )
     output_file_handler.close()
-    
+
+
+
 #####################################################################################
 ## create_output_file_crawler
 ##
@@ -257,7 +273,6 @@ def create_output_file_crawler( report_type, output_dir_root, crawler_list ):
             write_output_file_crawler( output_file_name, crawler_text )
             num_files_generated += 1
 
-
     ## Generate single file for all scored events in reverse order
     crawler_text = ""
     meet_name = ""
@@ -284,6 +299,7 @@ def create_output_file_crawler( report_type, output_dir_root, crawler_list ):
     num_files_generated += 1
 
     return num_files_generated
+
 
 
 #####################################################################################
