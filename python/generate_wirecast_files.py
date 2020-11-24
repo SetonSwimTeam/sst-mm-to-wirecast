@@ -399,7 +399,7 @@ def get_report_header_info( report_type, meet_report_filename ):
 #####################################################################################
 #####################################################################################
 #####################################################################################
-def generate_program_files( report_type, meet_report_filename, output_dir, mm_license_name, shortenSchoolNames, splitRelaysToMultipleFiles, addNewLineToRelayEntries, displayRelaySwimmerNames ):
+def generate_program_files( report_type, meet_report_filename, output_dir, mm_license_name, shortenSchoolNames, splitRelaysToMultipleFiles, addNewLineToRelayEntries, displayRelaySwimmerNames, namesfirstlast ):
     """ Given the input file formatted in a specific manner,
         generate indiviual Event/Heat files for use in Wirecast displays """
     
@@ -409,26 +409,24 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
     ## Multiple version of a school may be listed here for clean output
     #####################################################################################
     programRelayDictFullNameLen = 24
-    programIndDictFullNameLen  = 25
-    programDiveDictFullNameLen = 25    
-    schoolNameDictShortNameLen = 4  # Four character name plus spaces for padding between EntryTime
-    unofficial_results = ""
-    use_name_last_first = True
+    programIndDictFullNameLen   = 25
+    programDiveDictFullNameLen  = 25    
+    schoolNameDictShortNameLen  = 4  
+
+    unofficial_results = ""  ## Not used for Programs
 
     ## NOTE: Do not align up these headers with the TXT output.  
     ##  Wirecast will center all lines and it will be in proper position then
-    program_headerLineLong   = "\nLane  Name                    Year School      Seed Time"
-    program_headerLineShort  = "\nLane  Name                 Year School Seed Time"
-    program_headerLineDivingLong = "\nLane  Name                 Year School      Seed Points"
+    program_headerLineLong        = "\nLane  Name                    Year School      Seed Time"
+    program_headerLineShort       = "\nLane  Name                 Year School Seed Time"
+    program_headerLineDivingLong  = "\nLane  Name                 Year School      Seed Points"
     program_headerLineDivingShort = "\nLane  Name Year School      Seed Points"
-    program_headerLineRelayLong  = "\nLane  Team                         Relay                   Seed Time"         
+    program_headerLineRelayLong   = "\nLane  Team                         Relay                   Seed Time"         
     program_headerLineRelayShort  = "\nLane  Team Relay Seed Time"         
 
     ## Define local variables
     eventNum = 0
     heatNum = 0
-    eventLine = ""
-    heatLine = ""
     num_files_generated = 0
     num_header_lines = 3
     found_header_line = 0
@@ -452,24 +450,23 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                 continue
 
             #####################################################################################
-            ## PROGRAM: Ignore these meet program header lines                
-            #####################################################################################
-
             ## Meet Manager license name
+            ## We have one event/heat per page, so this starts the next event/heat
+            #####################################################################################
             if re.search("^%s" % mm_license_name, line):
                 found_header_line = 1
                 
-                ## Start the next event file
                 num_files = create_output_file_program( output_dir, eventNum, heatNum, output_list, displayRelaySwimmerNames, splitRelaysToMultipleFiles )
                 num_files_generated += num_files
 
+                ## Reset and start processing the next event/heat
                 output_list = []
                 output_list.append( ('H1', line ))
                 continue
 
             #####################################################################################
             ## if the previous line was the first header (found_header_line=1)
-            ## then ignore the next two lines which are also part of the header
+            ## then save  the next two lines which are also part of the header and got to next line
             #####################################################################################
             if 0 < found_header_line < num_header_lines:
                 found_header_line += 1
@@ -480,7 +477,7 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                 continue
 
             #####################################################################################
-            ## Ignore these lines
+            ## Ignore these lines as we will add our own back in depending on the output format
             #####################################################################################
             ## For Relay Individual Events
             if re.search("^Lane(\s*)Name", line):
@@ -495,10 +492,9 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
             ##  Clean it up
             #####################################################################################
             if line.lower().startswith(("event")):
-                eventLine = line
 
                 ## Remove all those extra spaces in the line
-                clean_event_str = eventLine.split()
+                clean_event_str = line.split()
                 clean_event_str = " ".join(clean_event_str)
                 # Get the line number
                 event_str = clean_event_str.split(' ', 4)
@@ -549,26 +545,21 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
 
 
             #####################################################################################
-            ## PROGRAM: INDIVIDUAL Find the Place Winner line, place, name, school, time, points, etc
-            ## 2   Robison, Ryan            JR  Bishop O'Connell-PV      X2:22.35                        
-            ## Note: For ties an asterick is placed before the place number and the points could have a decimal
+            ## PROGRAM: INDIVIDUAL Extract the individual Entry Line
+            ## i.e. 2   Robison, Ryan            JR  Bishop O'Connell-PV      X2:22.35                        
             #####################################################################################
-
-            #### TODO:  Extract Team Name by number of characters
-            #### TOD:   Swap first_name, last_name
             if (eventNum in eventNumIndividual or eventNum in eventNumDiving) and re.search('^\d{1,2} ', line):
                 entry_line_list = re.findall('^(\d{1,2})\s+(\w+, [A-z ]+) ([A-Z0-9]{1,2})\s+([A-Z \'.].*)\s+([X]?[0-9:.]+|NT|XNT)*', line)
-                #                                  LANE    last first   GR    SCHOOL           SEEDTIME 
+                #                                  LANE    LAST, FIRST   GR    SCHOOL           SEEDTIME 
                 if entry_line_list:
-                    entry_lane            = str(entry_line_list[0][0])
-                    entry_name_last_first = str(entry_line_list[0][1])
-                    entry_grade           = str(entry_line_list[0][2])
+                    entry_lane            = str(entry_line_list[0][0]).strip()
+                    entry_name_last_first = str(entry_line_list[0][1]).strip()
+                    entry_grade           = str(entry_line_list[0][2]).strip()
                     entry_sch_long        = str(entry_line_list[0][3]).strip()
-                    entry_seedtime        = str(entry_line_list[0][4])
+                    entry_seedtime        = str(entry_line_list[0][4]).strip()
                     
                     ## If we want to use Shortened School Names, run the lookup
                     if shortenSchoolNames:
-
                         ## The length of the school name in the MM report varies by event type
                         school_name_len = programDiveDictFullNameLen if eventNum in eventNumDiving else programIndDictFullNameLen
 
@@ -578,16 +569,16 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                             if entry_sch_short != entry_sch_long:
                                 break
 
-                    ## We can display name as given (Last, First) or change it to First Last
-                    if use_name_last_first:
+                    ## We can display name as given (Last, First) or change it to First Last with cli parameter
+                    if namesfirstlast:
                         entry_name_last, entry_name_first = entry_name_last_first.split(',',1)
                         entry_name_first = entry_name_first.strip()
                         entry_name_last  = entry_name_last.strip()
                         entry_name_first_last = f"{entry_name_first} {entry_name_last}"
-                        entry_name = entry_name_last_first
-                    else:
                         entry_name = entry_name_first_last
-                    
+                    else:
+                        entry_name = entry_name_last_first
+
                     ## Format the output lines with either long (per meet program) or short school names
                     output_str = f" {entry_lane:2} {entry_name:<25} {entry_grade:2} {entry_sch_long:25} {entry_seedtime}"
                     if shortenSchoolNames:
@@ -596,8 +587,8 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                     output_list.append(('LANE', output_str))
             
             #####################################################################################
-            ## PROGRAM: RELAY Find the Place Winner line, place, name, school, time, points, etc
-            ## 1 SST            A                    1:46.82      1:40.65        32
+            ## PROGRAM: RELAY Find the replay line with LANE, SCHOOL, RELAY TEAM SEEDTIME
+            ## 1 Seton Swim            A                    1:46.82      1:40.65        32
             ## Note: For ties an asterick is placed before the place number and the points could have a decimal
             #####################################################################################
             if eventNum in eventNumRelay and re.search('^[*]?\d{1,2} ', line):
@@ -627,11 +618,7 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
             #####################################################################################
             ## PROGRAM: RELAY Add the swimmers name to the list as well
             #####################################################################################
-            #####################################################################################
-            ## PROGRAM: Processing specific to RELAY Entries
-            #####################################################################################
-            ## If this is a relay, see if there are spaces between swimmer numbers
-            ## If so, add a space between the last swimmer name and the next swimmer number
+            ## If this is a relay, add a space between the last swimmer name and the next swimmer number
             ## This line  1) LastName1, All2) LastName2, Ashley3) LastName3, All4) LastName4, Eri
             ## becomes    1) LastName1, All 2) LastName2, Ashley 3) LastName3, All 4) LastName4, Eri
             if eventNum in eventNumRelay:
@@ -694,7 +681,6 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
 
     ## Define local variables
     eventNum = 0
-    eventLine = ""
     num_files_generated = 0
     num_header_lines = 3
     found_header_line = 0
@@ -762,10 +748,9 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
             ##  Clean it up
             #####################################################################################
             if line.lower().startswith(("event")):
-                eventLine = line
 
                 ## Remove all those extra spaces in the line
-                clean_event_str = eventLine.split()
+                clean_event_str = line.split()
                 clean_event_str = " ".join(clean_event_str)
                 # Get the line number
                 event_str = clean_event_str.split(' ', 4)
@@ -1120,9 +1105,10 @@ if __name__ == "__main__":
     parser.add_argument('-t', '--reporttype',       dest='reporttype',          default=report_type_program,    choices=['program','result', 'crawler', 'headers'], 
                                                                                                                 help="Program type, Meet Program or Meet Results")
     parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="../output/",           help="root output directory for wirecast heat files.")
+    parser.add_argument('-n', '--namesfirstlast',   dest='namesfirstlast',      action='store_true',            help="Swap Non Relay names to First Last from Last, First")
     parser.add_argument('-s', '--shortschoolnames', dest='shortschoolnames',    action='store_true',            help="Use Short School names for Indiviual Entries")
     parser.add_argument('-l', '--longschoolnames',  dest='shortschoolnames',    action='store_false',           help="Use Long School names for Indiviual Entries")
-    parser.add_argument('-L', '--licenseName',      dest='licenseName',        default="Seton School",         help="MM license name as printed out on reports")
+    parser.add_argument('-L', '--licenseName',      dest='licenseName',         default="Seton School",         help="MM license name as printed out on reports")
     parser.add_argument('-r', '--splitrelays',      dest='splitrelays',         action='store_true',            help="Split Relays into multiple files")
     parser.add_argument('-R', '--displayRelayNames',dest='displayRelayNames',   action='store_true',            help="Display relay swimmer names, not just the team name in results")
     parser.add_argument('-d', '--debug',            dest='debug',               action='store_true',            help="Print out results to console")
@@ -1131,6 +1117,7 @@ if __name__ == "__main__":
     parser.set_defaults(shortschoolnames=True)
     parser.set_defaults(splitrelays=False)
     parser.set_defaults(displayRelayNames=False)
+    parser.set_defaults(namesfirstlast=False)
     parser.set_defaults(DEBUG=False)
     parser.set_defaults(delete=False)
 
@@ -1160,8 +1147,9 @@ if __name__ == "__main__":
               f"\tOutputReportType \t{args.reporttype} \n" + \
               f"\tInputDir \t\t{args.inputdir} \n" + \
               f"\tRoot OutputDir \t\t{output_dir} \n" + \
-             f"\tLicensee: \t\t'{args.licenseName}' \n" + \
+              f"\tLicensee: \t\t'{args.licenseName}' \n" + \
               f"\tShort School Names \t{args.shortschoolnames} \n" + \
+              f"\tNamesFirstlast \t{args.namesfirstlast} \n" + \
               f"\tSplit Relays \t\t{args.splitrelays} \n"+ \
               f"\tDisplay Relays Names \t{args.displayRelayNames} \n"+ \
               f"\tSpaces in Relay Names \t{spacerelaynames}\n" + \
@@ -1183,7 +1171,7 @@ if __name__ == "__main__":
     ## Generate wirecast files from a MEET PROGRAM txt file
     #####################################################################################
     if args.reporttype == report_type_program:
-        total_files_generated = generate_program_files( args.reporttype, args.inputdir, output_dir, args.licenseName, args.shortschoolnames, args.splitrelays, spacerelaynames, args.displayRelayNames )
+        total_files_generated = generate_program_files( args.reporttype, args.inputdir, output_dir, args.licenseName, args.shortschoolnames, args.splitrelays, spacerelaynames, args.displayRelayNames, args.namesfirstlast )
         print(f"Process Completed: \n\tNumber of files generated: {total_files_generated}")
 
     # l = 'Seton School'
