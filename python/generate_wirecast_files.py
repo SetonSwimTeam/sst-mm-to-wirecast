@@ -52,7 +52,7 @@ eventNumDiving = [9,10]
 schoolNameDict = { 
         "Benedictine College Prep": "BCP",
         "Bishop O'Connell-PV": "DJO",
-        "Bishop Ireton Swim and Di": "BI",
+        "Bishop Ireton Swim and Dive": "BI",
         "BBVST": "BVST",
         "Broadwater Academy-VA": "BVST",
         "Carmel School Wildcats": "WILD",
@@ -567,14 +567,14 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                     line = f"{line}\n"
 
             #####################################################################################
-            ## RESULTS: INDIVIDUAL Find the Place Winner line, place, name, school, time, points, etc
-            ## i.e. 1 Last, First           SR SCH   5:31.55      5:23.86        16
+            ## PROGRAM: INDIVIDUAL Find the Place Winner line, place, name, school, time, points, etc
+            ## 2   Robison, Ryan            JR  Bishop O'Connell-PV      X2:22.35                        
             ## Note: For ties an asterick is placed before the place number and the points could have a decimal
             #####################################################################################
 
             #### TODO:  Extract Team Name by number of characters
             #### TOD:   Swap first_name, last_name
-            if (eventNum in eventNumIndividual  or eventNum in eventNumDiving) and re.search('^[*]?\d{1,2} ', line):
+            if (eventNum in eventNumIndividual or eventNum in eventNumDiving) and re.search('^[*]?\d{1,2} ', line):
                 # place_line_list = re.findall('^([*]?\d{1,2}) (\w+, \w+)\s+(\w+) ([A-Z0-9]{1,4})\s+([0-9:.]+)\s+([0-9:.]+)\s+([0-9.])*', line)
                 # #                               TIE? place    last first   GR    SCHOOL           SEEDTIME    FINALTIME      POINTS
                 # if place_line_list:
@@ -590,7 +590,7 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                 output_list.append(('NAME', line))
             
             #####################################################################################
-            ## RESULTS: RELAY Find the Place Winner line, place, name, school, time, points, etc
+            ## PROGRAM: RELAY Find the Place Winner line, place, name, school, time, points, etc
             ## 1 SST            A                    1:46.82      1:40.65        32
             ## Note: For ties an asterick is placed before the place number and the points could have a decimal
             #####################################################################################
@@ -645,15 +645,19 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
     ##  and not the actual full school name
     ## Multiple version of a school may be listed here for clean output
     #####################################################################################
-    schoolNameDictFullNameLen = 25
+    resultRelayDictFullNameLen = 22
+    resultsIndDictFullNameLen = 25
     schoolNameDictShortNameLen = 6  # Four character name plus spaces for padding between EntryTime
+    resultsDiveDictFullNameLen = 25
 
     ## NOTE: Do not align up these headers with the TXT output.  
     ##  Wirecast will center all lines and it will be in proper position then
     result_headerLineLong   = "Name                    Yr School                 Seed Time  Finals Time      Points"
     result_headerLineShort  = "Name                    Yr School Seed Time  Finals Time      Points"
-    result_headerLineRelay  = "Team                       Relay                  Seed Time  Finals Time      Points"
-    result_headerLineDiving = "Name                    Yr School                           Finals Score      Points"
+    result_headerLineRelayLong  = "   Team                       Relay                  Seed Time  Finals Time      Points"
+    result_headerLineRelayShort = "   Team       Relay Seed Time  Finals Time Points"
+    result_headerLineDivingLong  = "Name                    Yr School                           Finals Score      Points"
+    result_headerLineDivingShort = "Name    Yr School                           Finals Score      Points"
 
 
     ## Define local variables
@@ -741,29 +745,45 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                 #####################################################################################
                 ## RESULTS: Set nameListHeader to be displayed above the list of swimmers
                 #####################################################################################
-                # Determin heading based on short or full school name
+                # Set the default (LONG) headers here. 
+                nameListHeader = ""
                 if eventNum in eventNumIndividual:
                     nameListHeader = result_headerLineLong
-                elif shortenSchoolNames and eventNum in eventNumIndividual:
-                    nameListHeader = result_headerLineShort
+                    if shortenSchoolNames:
+                        nameListHeader = result_headerLineShort
                 elif eventNum in eventNumDiving:
-                    nameListHeader = result_headerLineDiving
+                    nameListHeader = result_headerLineDivingLong
+                    if shortenSchoolNames:
+                        nameListHeader = result_headerLineDivingShort
                 elif eventNum in eventNumRelay:
-                    nameListHeader = result_headerLineRelay
-                else:
-                     nameListHeader = ""
+                    nameListHeader = result_headerLineRelayLong
+                    if shortenSchoolNames:
+                        nameListHeader = result_headerLineRelayShort
 
                 if nameListHeader != "":
                     output_list.append(('H5', nameListHeader))
 
-                
             #####################################################################################
             ## RESULTS: Replace long school name with short name for individual events
             #####################################################################################
             if shortenSchoolNames == True and eventNum in eventNumIndividual:
                 for k,v in schoolNameDict.items():
-                    line = line.replace(k.ljust(schoolNameDictFullNameLen,' '), v.ljust(schoolNameDictShortNameLen, ' '))
-            
+                    line = line.replace(k.ljust(resultsIndDictFullNameLen,' ')[:resultsIndDictFullNameLen], v.ljust(schoolNameDictShortNameLen, ' '))
+
+            #####################################################################################
+            ## RESULTS: Replace long school name with short name for DIVING events
+            #####################################################################################
+            if shortenSchoolNames == True and eventNum in eventNumDiving:
+                for k,v in schoolNameDict.items():
+                    line = line.replace(k.ljust(resultsDiveDictFullNameLen,' ')[:resultsDiveDictFullNameLen], v.ljust(schoolNameDictShortNameLen, ' '))
+
+            #####################################################################################
+            ## RESULTS: Replace long school name with short name for RELAY events
+            #####################################################################################
+            if shortenSchoolNames == True and eventNum in eventNumRelay:
+                for k,v in schoolNameDict.items():
+                    line = line.replace(k.ljust(resultRelayDictFullNameLen,' ')[:resultRelayDictFullNameLen], v.ljust(schoolNameDictShortNameLen, ' '))
+
             #####################################################################################
             ## RESULTS: Processing specific to RELAY Entries
             #####################################################################################
@@ -799,20 +819,20 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
 
             #### TODO:  Extract Team Name by number of characters
             #### TOD:   Swap first_name, last_name
-            if (eventNum in eventNumIndividual  or eventNum in eventNumDiving) and re.search('^[*]?\d{1,2} ', line):
-                # place_line_list = re.findall('^([*]?\d{1,2}) (\w+, \w+)\s+(\w+) ([A-Z0-9]{1,4})\s+([0-9:.]+)\s+([0-9:.]+)\s+([0-9.])*', line)
-                # #                               TIE? place    last first   GR    SCHOOL           SEEDTIME    FINALTIME      POINTS
-                # if place_line_list:
-                #     placeline_place     = str(place_line_list[0][0])
-                #     placeline_name      = str(place_line_list[0][1])
-                #     placeline_grade     = str(place_line_list[0][2])
-                #     placeline_school    = str(place_line_list[0][3])
-                #     placeline_seedtime  = str(place_line_list[0][4])
-                #     placeline_finaltime = str(place_line_list[0][5])
-                #     placeline_points    = str(place_line_list[0][6])
+            if (eventNum in eventNumIndividual or eventNum in eventNumDiving) and re.search('^[*]?\d{1,2} ', line):
+                place_line_list = re.findall('^([*]?\d{1,2})\s+(\w+, \w+)\s+(\w+) ([A-Z \'.].*)\s+([0-9:.]+|NT)\s+([0-9:.]+)\s+([0-9]*)', line)
+                # #                             TIE? place    last first   GR    SCHOOL           SEEDTIME|NT    FINALTIME      POINTS
+                if place_line_list:
+                    placeline_place     = str(place_line_list[0][0])
+                    placeline_name      = str(place_line_list[0][1])
+                    placeline_grade     = str(place_line_list[0][2])
+                    placeline_school    = str(place_line_list[0][3])
+                    placeline_seedtime  = str(place_line_list[0][4])
+                    placeline_finaltime = str(place_line_list[0][5])
+                    placeline_points    = str(place_line_list[0][6])
 
-                    # output_str = f" {placeline_place}) {placeline_name} {placeline_school}"
-                output_list.append(('PLACE', line))
+                    output_str = f"{placeline_place} {placeline_name} {placeline_school} {placeline_seedtime} {placeline_finaltime} {placeline_points}"
+                    output_list.append(('PLACE', output_str))
             
             #####################################################################################
             ## RESULTS: RELAY Find the Place Winner line, place, name, school, time, points, etc
@@ -820,20 +840,23 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
             ## Note: For ties an asterick is placed before the place number and the points could have a decimal
             #####################################################################################
             if eventNum in eventNumRelay and re.search('^[*]?\d{1,2} ', line):
-                # place_line_list = re.findall('^([*]?\d{1,2}) (\w+) \s+([A-Z])\s+([0-9:.]+)\s+([0-9:.]+)\s+([0-9.])*', line)
-                # #  REGEX Positions              TIE? PLACE   SCHOOL    RELAY     SEEDTIME    FINALTIME     POINTS
-                # if place_line_list:
-                #     placeline_place     = str(place_line_list[0][0])
-                #     placeline_school    = str(place_line_list[0][1])
-                #     placeline_relay     = str(place_line_list[0][2])
-                #     placeline_seedtime  = str(place_line_list[0][3])
-                #     placeline_finaltime = str(place_line_list[0][4])
-                #     placeline_points    = str(place_line_list[0][5])
+                #place_line_list = re.findall('^([*]?\d{1,2})\s+([A-Z \'.]+)\s+([A-Z])\s+([0-9:.]+)\s+([0-9:.]+)\s+([0-9.])*', line)
+                place_line_list = re.findall('^([*]?\d{1,2})\s+([A-Z \'.].*)\s+([A-Z])\s+([0-9:.]+|NT)\s+([0-9:.]+)\s+([0-9]*)', line)
+                # #  REGEX Positions              TIE? PLACE   SCHOOL           RELAY     SEEDTIME|NT    FINALTIME     POINTS
+                if place_line_list:
+                    placeline_place     = str(place_line_list[0][0])
+                    placeline_school    = str(place_line_list[0][1])
+                    placeline_relay     = str(place_line_list[0][2])
+                    placeline_seedtime  = str(place_line_list[0][3])
+                    placeline_finaltime = str(place_line_list[0][4])
+                    placeline_points    = str(place_line_list[0][5])
 
+                    output_str = f" {placeline_place:2} {placeline_school:25} {placeline_relay} {placeline_seedtime} {placeline_finaltime} {placeline_points}"
+                    if shortenSchoolNames:
+                        output_str = f" {placeline_place:2} {placeline_school:6} {placeline_relay} {placeline_seedtime} {placeline_finaltime} {placeline_points}"
 
-                    # output_str = f" {placeline_place}) {placeline_school} {placeline_relay}"
-                    # crawler_string += output_str  
-                output_list.append(( "PLACE", line ))
+                    #print(f"RESULT REL: {eventNum} -- {output_str} {placeline_relay} {placeline_seedtime} {placeline_finaltime} {placeline_points}")
+                    output_list.append(( "PLACE", output_str ))
     
 
     #####################################################################################
