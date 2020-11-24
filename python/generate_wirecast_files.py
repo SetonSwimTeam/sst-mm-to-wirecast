@@ -398,11 +398,12 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
     ##  and not the actual full school name
     ## Multiple version of a school may be listed here for clean output
     #####################################################################################
-    programRelayDictFullNameLen = 22
+    programRelayDictFullNameLen = 24
     programIndDictFullNameLen  = 25
     programDiveDictFullNameLen = 25    
-    schoolNameDictShortNameLen = 6  # Four character name plus spaces for padding between EntryTime
+    schoolNameDictShortNameLen = 4  # Four character name plus spaces for padding between EntryTime
     unofficial_results = ""
+    use_name_last_first = True
 
     ## NOTE: Do not align up these headers with the TXT output.  
     ##  Wirecast will center all lines and it will be in proper position then
@@ -411,7 +412,7 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
     program_headerLineDivingLong = "\nLane  Name                 Year School      Seed Points"
     program_headerLineDivingShort = "\nLane  Name Year School      Seed Points"
     program_headerLineRelayLong  = "\nLane  Team                         Relay                   Seed Time"         
-    program_headerLineRelayShort  = "\nLane  Team         Relay                   Seed Time"         
+    program_headerLineRelayShort  = "\nLane  Team Relay Seed Time"         
 
     ## Define local variables
     eventNum = 0
@@ -553,26 +554,12 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                 if matched:
                     line = re.sub('^(\d\d) ', r'\1',line )
 
-            #####################################################################################
-            ## PROGRAM: Replace long school name with short name for individual events
-            #####################################################################################
-            if shortenSchoolNames == True and eventNum in eventNumIndividual:
-                for k,v in schoolNameDict.items():
-                    line = line.replace(k.ljust(programIndDictFullNameLen,' ')[:programIndDictFullNameLen], v.ljust(schoolNameDictShortNameLen, ' '))
-
-            #####################################################################################
-            ## PROGRAM: Replace long school name with short name for DIVING events
-            #####################################################################################
-            if shortenSchoolNames == True and eventNum in eventNumDiving:
-                for k,v in schoolNameDict.items():
-                    line = line.replace(k.ljust(programDiveDictFullNameLen,' ')[:programDiveDictFullNameLen], v.ljust(schoolNameDictShortNameLen, ' '))
-
-            #####################################################################################
-            ## PROGRAM: Replace long school name with short name for RELAY events
-            #####################################################################################
-            if shortenSchoolNames == True and eventNum in eventNumRelay:
-                for k,v in schoolNameDict.items():
-                    line = line.replace(k.ljust(programRelayDictFullNameLen,' ')[:programRelayDictFullNameLen], v.ljust(schoolNameDictShortNameLen, ' '))
+            # #####################################################################################
+            # ## PROGRAM: Replace long school name with short name for individual events
+            # #####################################################################################
+            # if shortenSchoolNames == True and eventNum in eventNumIndividual:
+            #     for k,v in schoolNameDict.items():
+            #         line = line.replace(k.ljust(programIndDictFullNameLen,' ')[:programIndDictFullNameLen], v.ljust(schoolNameDictShortNameLen, ' '))
 
             
             #####################################################################################
@@ -600,18 +587,42 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
             #### TODO:  Extract Team Name by number of characters
             #### TOD:   Swap first_name, last_name
             if (eventNum in eventNumIndividual or eventNum in eventNumDiving) and re.search('^\d{1,2} ', line):
-                entry_line_list = re.findall('^(\d{1,2})\s+(\w+, \w+)\s+(\w+)\s+([A-Z \'.].*)\s+([X]?[0-9:.]+|NT)*', line)
+                entry_line_list = re.findall('^(\d{1,2})\s+(\w+, [A-z ]+) ([A-Z0-9]{1,2})\s+([A-Z \'.].*)\s+([X]?[0-9:.]+|NT|XNT)*', line)
                 #                                  LANE    last first   GR    SCHOOL           SEEDTIME 
                 if entry_line_list:
-                    entry_lane      = str(entry_line_list[0][0])
-                    entry_name      = str(entry_line_list[0][1])
-                    entry_grade     = str(entry_line_list[0][2])
-                    entry_school    = str(entry_line_list[0][3])
-                    entry_seedtime  = str(entry_line_list[0][4])
+                    entry_lane            = str(entry_line_list[0][0])
+                    entry_name_last_first = str(entry_line_list[0][1])
+                    entry_grade           = str(entry_line_list[0][2])
+                    entry_sch_long        = str(entry_line_list[0][3]).strip()
+                    entry_seedtime        = str(entry_line_list[0][4])
                     
-                    output_str = f" {entry_lane:2} {entry_name:25} {entry_grade:2} {entry_school:25} {entry_seedtime}"
+                    ## If we want to use Shortened School Names, run the lookup
                     if shortenSchoolNames:
-                        output_str = f" {entry_lane:2} {entry_name:25} {entry_grade:2} {entry_school:6} {entry_seedtime}"
+
+                        ## The length of the school name in the MM report varies by event type
+                        school_name_len = programDiveDictFullNameLen if eventNum in eventNumDiving else programIndDictFullNameLen
+
+                        entry_sch_short = entry_sch_long
+                        for k,v in schoolNameDict.items():
+                            entry_sch_short = entry_sch_short.replace(k[:school_name_len], v.ljust(schoolNameDictShortNameLen, ' '))
+                            if entry_sch_short != entry_sch_long:
+                                break
+
+                    ## We can display name as given (Last, First) or change it to First Last
+                    if use_name_last_first:
+                        entry_name_last, entry_name_first = entry_name_last_first.split(',',1)
+                        entry_name_first = entry_name_first.strip()
+                        entry_name_last  = entry_name_last.strip()
+                        entry_name_first_last = f"{entry_name_first} {entry_name_last}"
+                        entry_name = entry_name_last_first
+                    else:
+                        entry_name = entry_name_first_last
+                    
+                    ## Format the output lines with either long (per meet program) or short school names
+                    output_str = f" {entry_lane:2} {entry_name:<25} {entry_grade:2} {entry_sch_long:25} {entry_seedtime}"
+                    if shortenSchoolNames:
+                        output_str = f" {entry_lane:2} {entry_name:<25} {entry_grade:<2} {entry_sch_short:<4} {entry_seedtime}"
+                    
                     output_list.append(('NAME', output_str))
             
             #####################################################################################
@@ -620,20 +631,28 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
             ## Note: For ties an asterick is placed before the place number and the points could have a decimal
             #####################################################################################
             if eventNum in eventNumRelay and re.search('^[*]?\d{1,2} ', line):
-                # place_line_list = re.findall('^([*]?\d{1,2}) (\w+) \s+([A-Z])\s+([0-9:.]+)\s+([0-9:.]+)\s+([0-9.])*', line)
-                # #  REGEX Positions              TIE? PLACE   SCHOOL    RELAY     SEEDTIME    FINALTIME     POINTS
-                # if place_line_list:
-                #     placeline_place     = str(place_line_list[0][0])
-                #     placeline_school    = str(place_line_list[0][1])
-                #     placeline_relay     = str(place_line_list[0][2])
-                #     placeline_seedtime  = str(place_line_list[0][3])
-                #     placeline_finaltime = str(place_line_list[0][4])
-                #     placeline_points    = str(place_line_list[0][5])
+                entry_line_list = re.findall('^(\d{1,2})\s+([A-Z \'.].*)\s+([A-Z])\s+([X]?[0-9:.]+|NT|XNT)*', line)
+                #  REGEX Positions                 LANE   SCHOOL    RELAY     SEEDTIME
+                if entry_line_list:
+                    entryline_place     = str(entry_line_list[0][0])
+                    entryline_sch_long  = str(entry_line_list[0][1])
+                    entryline_relay     = str(entry_line_list[0][2])
+                    entryline_seedtime  = str(entry_line_list[0][3])
 
-
-                    # output_str = f" {placeline_place}) {placeline_school} {placeline_relay}"
-                    # crawler_string += output_str  
-                output_list.append(( "NAME", line ))
+                #####################################################################################
+                ## PROGRAM: Replace long school name with short name for RELAY events
+                #####################################################################################
+                if shortenSchoolNames:
+                    entryline_sch_short = entryline_sch_long
+                    for k,v in schoolNameDict.items():
+                        entryline_sch_short = entryline_sch_short.replace(k.ljust(programRelayDictFullNameLen,' ')[:programRelayDictFullNameLen], v.ljust(schoolNameDictShortNameLen, ' '))
+                        if entryline_sch_short != entryline_sch_long:
+                            break
+                    output_str = f"{entryline_place:2} {entryline_sch_short:<4} {entryline_relay:1} {entryline_seedtime}"
+                else:
+                    output_str = f"{entryline_place:2} {entryline_sch_long:<25} {entryline_relay:1} {entryline_seedtime}"
+                    
+                output_list.append(( "NAME", output_str ))
 
     #####################################################################################
     ## Reached end of file
