@@ -165,12 +165,12 @@ def create_output_file_program( output_dir_root, event_num, heat_num, output_lis
     split_num = 1
     output_str = ""
     
-    if event_num in eventNumRelay:
+    # if event_num in eventNumRelay:
 
-        for row in output_list:
-            rowid = row[0]
-            rowtext = row[1]
-            print(f"list: {event_num}:{heat_num} id {rowid} text {rowtext} ")
+        # for row in output_list:
+        #     rowid = row[0]
+        #     rowtext = row[1]
+        #     print(f"list: {event_num}:{heat_num} id {rowid} text {rowtext} ")
 
     file_name_prefix = "program"
     output_dir = f"{output_dir_root}{file_name_prefix}/"
@@ -519,27 +519,22 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                 split_heat_str = split_heat_str.split(' ', 4)
                 heatNum = int(split_heat_str[1])
 
-                ## H6 is the Heat info
+                ## H6 is the Heat info, save it in case we want to output it later
                 output_list.append(('H5', f"{line}" ))
 
                 #####################################################################################
                 ## PROGRAM: Set nameListHeader to be displayed above the list of swimmers
+                ##          This is only set once per Event/Heat so moving this is probablimetic
                 #####################################################################################
                 # Determin heading based on short or full school name
                 nameListHeader = ""
                 if eventNum in eventNumIndividual:
-                    nameListHeader = program_headerLineLong
-                    if shortenSchoolNames:
-                        nameListHeader = program_headerLineShort
+                    nameListHeader = program_headerLineShort if shortenSchoolNames else program_headerLineLong   
                 elif eventNum in eventNumDiving:
-                    nameListHeader = program_headerLineDivingLong
-                    if shortenSchoolNames:
-                        nameListHeader = program_headerLineDivingShort
+                    nameListHeader = program_headerLineDivingShort if shortenSchoolNames else program_headerLineDivingLong
                 elif eventNum in eventNumRelay:
-                    nameListHeader = program_headerLineRelayLong
-                    if shortenSchoolNames:
-                        nameListHeader = program_headerLineRelayShort
-
+                    nameListHeader = program_headerLineRelayShort if shortenSchoolNames else program_headerLineRelayLong
+                
                 if nameListHeader != "":
                     output_list.append(('H6', nameListHeader))
 
@@ -549,8 +544,12 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
             ## i.e. 2   Robison, Ryan            JR  Bishop O'Connell-PV      X2:22.35                        
             #####################################################################################
             if (eventNum in eventNumIndividual or eventNum in eventNumDiving) and re.search('^\d{1,2} ', line):
-                entry_line_list = re.findall('^(\d{1,2})\s+(\w+, [A-z ]+) ([A-Z0-9]{1,2})\s+([A-Z \'.].*)\s+([X]?[0-9:.]+|NT|XNT)*', line)
-                #                                  LANE    LAST, FIRST   GR    SCHOOL           SEEDTIME 
+                ## Fix for case where School Name butts up to the X in seed time
+                if re.search('[A-z]X\d', line):
+                    line = re.sub(r'([A-z])(X\d)', r'\1 \2',line )
+
+                entry_line_list = re.findall('^(\d{1,2})\s+([A-z\' \.]+, [A-z ]+) ([A-Z0-9]{1,2})\s+([A-Z \'.].*)\s+([X]?[0-9:.]+|NT|XNT|NP|XNP)*', line)
+                #                                  LANE     LAST, FIRST        GR          SCHOOL             SEEDTIME 
                 if entry_line_list:
                     entry_lane            = str(entry_line_list[0][0]).strip()
                     entry_name_last_first = str(entry_line_list[0][1]).strip()
@@ -558,6 +557,7 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                     entry_sch_long        = str(entry_line_list[0][3]).strip()
                     entry_seedtime        = str(entry_line_list[0][4]).strip()
                     
+                    #print(f"School Name: {entry_sch_long}")
                     ## If we want to use Shortened School Names, run the lookup
                     if shortenSchoolNames:
                         ## The length of the school name in the MM report varies by event type
@@ -605,6 +605,7 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                 #####################################################################################
                 if shortenSchoolNames:
                     entryline_sch_short = entryline_sch_long
+
                     for k,v in schoolNameDict.items():
                         entryline_sch_short = entryline_sch_short.replace(k.ljust(programRelayDictFullNameLen,' ')[:programRelayDictFullNameLen], v.ljust(schoolNameDictShortNameLen, ' '))
                         if entryline_sch_short != entryline_sch_long:
@@ -872,7 +873,6 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                     if shortenSchoolNames:
                         output_str = f" {placeline_place:2} {placeline_school:6} {placeline_relay} {placeline_seedtime} {placeline_finaltime} {placeline_points}"
 
-                    #print(f"RESULT REL: {eventNum} -- {output_str} {placeline_relay} {placeline_seedtime} {placeline_finaltime} {placeline_points}")
                     output_list.append(( "PLACE", output_str ))
     
 
