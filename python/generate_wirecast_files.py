@@ -127,7 +127,7 @@ def create_output_file_results( output_dir_root, event_num, output_list, display
     if not os.path.exists( output_dir ):
         os.makedirs( output_dir )
 
-      ## Loop through list in reverse order
+    ## Loop through list in reverse order
     #for num in range( num_events-1, -1, -1):
     for output_tuple in output_list:
         row_type = output_tuple[0]
@@ -161,14 +161,13 @@ def create_output_file_program( output_dir_root, event_num, heat_num, output_lis
     num_files_created = 0
     split_num = 1
     output_str = ""
-    print( f"\bcreate_output_file_results: Event {event_num}" )
     
-    if event_num in eventNumRelay:
+    # if event_num in eventNumRelay:
 
-        for row in output_list:
-            rowid = row[0]
-            rowtext = row[1]
-            print(f"list: id {rowid} text {rowtext} ")
+    #     for row in output_list:
+    #         rowid = row[0]
+    #         rowtext = row[1]
+    #         print(f"list: id {rowid} text {rowtext} ")
 
     file_name_prefix = "program"
     output_dir = f"{output_dir_root}{file_name_prefix}/"
@@ -188,8 +187,6 @@ def create_output_file_program( output_dir_root, event_num, heat_num, output_lis
             
             if row_type == 'NAME':
                 num_relay_lane += 1
-
-        print(f"Found {num_relay_lane} relay entries") 
 
     header_list = ['H4', 'H5', 'H6']
     header_str = ""
@@ -356,7 +353,7 @@ def get_report_header_info( report_type, meet_report_filename ):
         ## Header1.  Break about license name (school name)            
         #####################################################################################
         line1_list = re.findall('^(.*?) HY-TEK',line1_header )
-        license_name = line1_list[0].strip()
+        license_name = str(line1_list[0].strip())
         logger(f"license_name: '{license_name}' ")
 
         #####################################################################################
@@ -1070,6 +1067,7 @@ if __name__ == "__main__":
     parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="../output/",           help="root output directory for wirecast heat files.")
     parser.add_argument('-s', '--shortschoolnames', dest='shortschoolnames',    action='store_true',            help="Use Short School names for Indiviual Entries")
     parser.add_argument('-l', '--longschoolnames',  dest='shortschoolnames',    action='store_false',           help="Use Long School names for Indiviual Entries")
+    parser.add_argument('-L', '--licenseName',      dest='licenseName',        default="Seton School",         help="MM license name as printed out on reports")
     parser.add_argument('-r', '--splitrelays',      dest='splitrelays',         action='store_true',            help="Split Relays into multiple files")
     parser.add_argument('-R', '--displayRelayNames',dest='displayRelayNames',   action='store_true',            help="Display relay swimmer names, not just the team name in results")
     parser.add_argument('-d', '--debug',            dest='debug',               action='store_true',            help="Print out results to console")
@@ -1094,8 +1092,7 @@ if __name__ == "__main__":
     ## The license_name is the first line on the start of every new page/event/heat
     #####################################################################################
     meet_name, meet_date, license_name, report_type = get_report_header_info( args.reporttype, args.inputdir )
-    logger( f"Meet Name:\t {meet_name}")
-    logger( f"License Name:\t {license_name}")
+
 
 
     output_dir = args.outputdir
@@ -1108,6 +1105,7 @@ if __name__ == "__main__":
               f"\tOutputReportType \t{args.reporttype} \n" + \
               f"\tInputDir \t\t{args.inputdir} \n" + \
               f"\tRoot OutputDir \t\t{output_dir} \n" + \
+             f"\tLicensee: \t\t'{args.licenseName}' \n" + \
               f"\tShort School Names \t{args.shortschoolnames} \n" + \
               f"\tSplit Relays \t\t{args.splitrelays} \n"+ \
               f"\tDisplay Relays Names \t{args.displayRelayNames} \n"+ \
@@ -1130,16 +1128,23 @@ if __name__ == "__main__":
     ## Generate wirecast files from a MEET PROGRAM txt file
     #####################################################################################
     if args.reporttype == report_type_program:
-        total_files_generated = generate_program_files( args.reporttype, args.inputdir, output_dir, 'Seton School', args.shortschoolnames, args.splitrelays, spacerelaynames, args.displayRelayNames )
+        total_files_generated = generate_program_files( args.reporttype, args.inputdir, output_dir, args.licenseName, args.shortschoolnames, args.splitrelays, spacerelaynames, args.displayRelayNames )
         print(f"Process Completed: \n\tNumber of files generated: {total_files_generated}")
 
-    print(f"License: h: 'Seton School' g: '{license_name}'")
+    # l = 'Seton School'
+    # str_match = False
+    # if str(license_name) == str(l):
+    #     str_match = True
+    # print( "type1: ", type(license_name.strip()))
+    # print( "type2: ", type(l))
+
+    # print(f"License: h: 'Seton School' g: '{license_name}' Matched: {str_match}")
     #####################################################################################
     ## Generate wirecast files RESULTS and CRAWLER from a MEET RESULTS txt file
     #####################################################################################
     if args.reporttype == report_type_results:
-        total_files_generated_results =  generate_results_files( args.reporttype, args.inputdir, output_dir, 'Seton School', args.shortschoolnames, spacerelaynames, args.displayRelayNames )
-        total_files_generated_crawler =  generate_crawler_result_files( "Unofficial Results", args.inputdir, output_dir, 'Seton School', args.shortschoolnames, args.displayRelayNames )
+        total_files_generated_results =  generate_results_files( args.reporttype, args.inputdir, output_dir, args.licenseName, args.shortschoolnames, spacerelaynames, args.displayRelayNames )
+        total_files_generated_crawler =  generate_crawler_result_files( "Unofficial Results", args.inputdir, output_dir, args.licenseName, args.shortschoolnames, args.displayRelayNames )
         total_files_generated = total_files_generated_results + total_files_generated_crawler
         print(f"Process Completed: \n\tNumber of files generated total:\t{total_files_generated}")
         print(f"\tNumber of files generated results:\t{total_files_generated_results}")
@@ -1149,5 +1154,5 @@ if __name__ == "__main__":
     ## Generate wirecast CRAWLER iles from a MEET RESULTS txt file
     #####################################################################################
     if args.reporttype == report_type_crawler:
-        total_files_generated_crawler =  generate_crawler_result_files( "Unofficial Results", args.inputdir, output_dir, 'Seton School', args.shortschoolnames, args.displayRelayNames )
+        total_files_generated_crawler =  generate_crawler_result_files( "Unofficial Results", args.inputdir, output_dir, args.licenseName, args.shortschoolnames, args.displayRelayNames )
         print(f"Process Completed: \n\tNumber of files generated total:\t{total_files_generated_crawler}")
