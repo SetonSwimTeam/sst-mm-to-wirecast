@@ -158,7 +158,7 @@ def create_output_file_results( output_dir_root, event_num, output_list, display
 ####################################################################################
 ## Given an array of data lines PER HEAT, generate the output file
 #####################################################################################
-def create_output_file_program( output_dir_root, event_num, heat_num, output_list, displayRelaySwimmerNames ):
+def create_output_file_program( output_dir_root, event_num, heat_num, output_list, displayRelaySwimmerNames, splitRelaysToMultipleFiles ):
     """ Generate the filename and open the next file """
    
     num_files_created = 0
@@ -208,7 +208,7 @@ def create_output_file_program( output_dir_root, event_num, heat_num, output_lis
             output_str += row_text + '\n'
 
         ## If we have more then 6 relay entries create second output file
-        if num_relay_lane > 7 and count == 10:
+        if splitRelaysToMultipleFiles and num_relay_lane > 7 and count == 10:
             output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}_Split{split_num:0>2}.txt"
             output_file_handler = open( output_file_name, "w+" )
             output_file_handler.writelines( output_str )
@@ -450,7 +450,7 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                 found_header_line = 1
                 
                 ## Start the next event file
-                num_files = create_output_file_program( output_dir, eventNum, heatNum, output_list, displayRelaySwimmerNames )
+                num_files = create_output_file_program( output_dir, eventNum, heatNum, output_list, displayRelaySwimmerNames, splitRelaysToMultipleFiles )
                 num_files_generated += num_files
 
                 output_list = []
@@ -651,7 +651,7 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                     output_str = f"{entryline_place:2} {entryline_sch_short:<4} {entryline_relay:1} {entryline_seedtime}"
                 else:
                     output_str = f"{entryline_place:2} {entryline_sch_long:<25} {entryline_relay:1} {entryline_seedtime}"
-                    
+
                 output_list.append(( "NAME", output_str ))
 
     #####################################################################################
@@ -659,7 +659,7 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
     ## Write out last event
     #####################################################################################
 
-    num_files = create_output_file_program( output_dir, eventNum, heatNum, output_list, displayRelaySwimmerNames )
+    num_files = create_output_file_program( output_dir, eventNum, heatNum, output_list, displayRelaySwimmerNames, splitRelaysToMultipleFiles )
     num_files_generated += num_files
 
     #####################################################################################
