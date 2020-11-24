@@ -52,12 +52,17 @@ eventNumDiving = [9,10]
 schoolNameDict = { 
         "Benedictine College Prep": "BCP",
         "Bishop O'Connell-PV": "DJO",
+        "Bishop O'Connell": "DJO",
         "Bishop Ireton Swim and Dive": "BI",
+        "Bishop Sullivan Catholic High": "BSCHS",
         "BBVST": "BVST",
         "Broadwater Academy-VA": "BVST",
+        "Cape Henry Collegiate": "CHC",
         "Carmel School Wildcats": "WILD",
         "CCS-VA": "CCS",
-        "Christchurch School Swi": "CCS",
+        "Chatham Hall": "CH",
+        "Christchurch School Swim Team": "CCS",
+        "Collegiate School": "COOL",
         "Fredericksburg Academy-VA": "FAST",
         "Fredericksburg Christian-": "FCS",
         "Hampton Roads Academy": "HRA",
@@ -81,7 +86,6 @@ schoolNameDict = {
     } 
 
 
-
 #####################################################################################
 ## Control logging/not logging of messages with CLI param
 #####################################################################################
@@ -89,7 +93,6 @@ def logger( log_string ):
     """ Prints out logs if DEBUG command line parm was enabled """
     if DEBUG:
         print( log_string )
-
 
 
 #####################################################################################
@@ -395,17 +398,20 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
     ##  and not the actual full school name
     ## Multiple version of a school may be listed here for clean output
     #####################################################################################
-    schoolNameDictFullNameLen = 25
+    programRelayDictFullNameLen = 22
+    programIndDictFullNameLen  = 25
+    programDiveDictFullNameLen = 25    
     schoolNameDictShortNameLen = 6  # Four character name plus spaces for padding between EntryTime
-    
     unofficial_results = ""
 
     ## NOTE: Do not align up these headers with the TXT output.  
     ##  Wirecast will center all lines and it will be in proper position then
     program_headerLineLong   = "\nLane  Name                    Year School      Seed Time"
     program_headerLineShort  = "\nLane  Name                 Year School Seed Time"
-    program_headerLineDiving = "\nLane  Name                 Year School      Seed Points"
-    program_headerLineRelay  = "\nLane  Team                         Relay                   Seed Time"         
+    program_headerLineDivingLong = "\nLane  Name                 Year School      Seed Points"
+    program_headerLineDivingShort = "\nLane  Name Year School      Seed Points"
+    program_headerLineRelayLong  = "\nLane  Team                         Relay                   Seed Time"         
+    program_headerLineRelayShort  = "\nLane  Team         Relay                   Seed Time"         
 
     ## Define local variables
     eventNum = 0
@@ -513,19 +519,23 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                 ## PROGRAM: Set nameListHeader to be displayed above the list of swimmers
                 #####################################################################################
                 # Determin heading based on short or full school name
+                nameListHeader = ""
                 if eventNum in eventNumIndividual:
                     nameListHeader = program_headerLineLong
-                elif shortenSchoolNames and eventNum in eventNumIndividual:
-                    nameListHeader = program_headerLineShort
+                    if shortenSchoolNames:
+                        nameListHeader = program_headerLineShort
                 elif eventNum in eventNumDiving:
-                    nameListHeader = program_headerLineDiving
+                    nameListHeader = program_headerLineDivingLong
+                    if shortenSchoolNames:
+                        nameListHeader = program_headerLineDivingShort
                 elif eventNum in eventNumRelay:
-                    nameListHeader = program_headerLineRelay
-                else:
-                     nameListHeader = ""
+                    nameListHeader = program_headerLineRelayLong
+                    if shortenSchoolNames:
+                        nameListHeader = program_headerLineRelayShort
 
                 if nameListHeader != "":
                     output_list.append(('H5', nameListHeader))
+
 
             #####################################################################################
             ## PROGRAM: Remove space after lane# 10 for formatting so names all align up evenly
@@ -544,11 +554,26 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                     line = re.sub('^(\d\d) ', r'\1',line )
 
             #####################################################################################
-            ## PROGRAM: replace long school name with short name for individual events
+            ## PROGRAM: Replace long school name with short name for individual events
             #####################################################################################
             if shortenSchoolNames == True and eventNum in eventNumIndividual:
                 for k,v in schoolNameDict.items():
-                    line = line.replace(k.ljust(schoolNameDictFullNameLen,' '), v.ljust(schoolNameDictShortNameLen, ' '))
+                    line = line.replace(k.ljust(programIndDictFullNameLen,' ')[:programIndDictFullNameLen], v.ljust(schoolNameDictShortNameLen, ' '))
+
+            #####################################################################################
+            ## PROGRAM: Replace long school name with short name for DIVING events
+            #####################################################################################
+            if shortenSchoolNames == True and eventNum in eventNumDiving:
+                for k,v in schoolNameDict.items():
+                    line = line.replace(k.ljust(programDiveDictFullNameLen,' ')[:programDiveDictFullNameLen], v.ljust(schoolNameDictShortNameLen, ' '))
+
+            #####################################################################################
+            ## PROGRAM: Replace long school name with short name for RELAY events
+            #####################################################################################
+            if shortenSchoolNames == True and eventNum in eventNumRelay:
+                for k,v in schoolNameDict.items():
+                    line = line.replace(k.ljust(programRelayDictFullNameLen,' ')[:programRelayDictFullNameLen], v.ljust(schoolNameDictShortNameLen, ' '))
+
             
             #####################################################################################
             ## PROGRAM: Processing specific to RELAY Entries
@@ -574,20 +599,20 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
 
             #### TODO:  Extract Team Name by number of characters
             #### TOD:   Swap first_name, last_name
-            if (eventNum in eventNumIndividual or eventNum in eventNumDiving) and re.search('^[*]?\d{1,2} ', line):
-                # place_line_list = re.findall('^([*]?\d{1,2}) (\w+, \w+)\s+(\w+) ([A-Z0-9]{1,4})\s+([0-9:.]+)\s+([0-9:.]+)\s+([0-9.])*', line)
-                # #                               TIE? place    last first   GR    SCHOOL           SEEDTIME    FINALTIME      POINTS
-                # if place_line_list:
-                #     placeline_place     = str(place_line_list[0][0])
-                #     placeline_name      = str(place_line_list[0][1])
-                #     placeline_grade     = str(place_line_list[0][2])
-                #     placeline_school    = str(place_line_list[0][3])
-                #     placeline_seedtime  = str(place_line_list[0][4])
-                #     placeline_finaltime = str(place_line_list[0][5])
-                #     placeline_points    = str(place_line_list[0][6])
-
-                    # output_str = f" {placeline_place}) {placeline_name} {placeline_school}"
-                output_list.append(('NAME', line))
+            if (eventNum in eventNumIndividual or eventNum in eventNumDiving) and re.search('^\d{1,2} ', line):
+                entry_line_list = re.findall('^(\d{1,2})\s+(\w+, \w+)\s+(\w+)\s+([A-Z \'.].*)\s+([X]?[0-9:.]+|NT)*', line)
+                #                                  LANE    last first   GR    SCHOOL           SEEDTIME 
+                if entry_line_list:
+                    entry_lane      = str(entry_line_list[0][0])
+                    entry_name      = str(entry_line_list[0][1])
+                    entry_grade     = str(entry_line_list[0][2])
+                    entry_school    = str(entry_line_list[0][3])
+                    entry_seedtime  = str(entry_line_list[0][4])
+                    
+                    output_str = f" {entry_lane:2} {entry_name:25} {entry_grade:2} {entry_school:25} {entry_seedtime}"
+                    if shortenSchoolNames:
+                        output_str = f" {entry_lane:2} {entry_name:25} {entry_grade:2} {entry_school:6} {entry_seedtime}"
+                    output_list.append(('NAME', output_str))
             
             #####################################################################################
             ## PROGRAM: RELAY Find the Place Winner line, place, name, school, time, points, etc
