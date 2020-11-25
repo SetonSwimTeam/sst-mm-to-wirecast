@@ -270,6 +270,7 @@ def create_output_file_crawler( report_type, output_dir_root, crawler_list ):
         event_num = crawler_event[0]
         crawler_text = crawler_event[1]
 
+        logger(f"crawler: e: {event_num} t: {crawler_text}")
         ## Generate event specific file
         if event_num > 0:
             output_file_name = output_dir + f"{file_name_prefix}_{report_type}_event{event_num:0>2}.txt"
@@ -575,7 +576,6 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                     entry_sch_long        = str(entry_line_list[0][3]).strip()
                     entry_seedtime        = str(entry_line_list[0][4]).strip()
                     
-                    #print(f"School Name: {entry_sch_long}")
                     ## If we want to use Shortened School Names, run the lookup
                     if shortenSchoolNames:
                         ## The length of the school name in the MM report varies by event type
@@ -714,9 +714,10 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
 
     re_results_lane = re.compile('^[*]?\d{1,2} ')
 
-    # #                                 TIE? place    last first   GR    SCHOOL           SEEDTIME|NT    FINALTIME      POINTS
-    re_results_lane_ind = re.compile('^([*]?\d{1,2})\s+(\w+, \w+)\s+(\w+) ([A-Z \'.].*?)\s*([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
-    
+    # #                                 TIE? PLACE       LAST          FIRST     GR           SCHOOL           SEEDTIME|NT    FINALTIME      POINTS
+    #re_results_lane_ind = re.compile('^([*]?\d{1,2})\s+(\w+, \w+)\s+(\w+) ([A-Z \'.].*?)\s*([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
+    re_results_lane_ind  = re.compile('^([*]?\d{1,2})\s+([A-z\' \.]+, [A-z ]+) ([A-Z0-9]{1,2})\s+([A-Z \'.].*?)\s*([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
+
     #                                     TIE? PLACE   SCHOOL           RELAY     SEEDTIME|NT    FINALTIME     POINTS
     re_results_lane_relay = re.compile('^([*]?\d{1,2})\s+([A-Z \'.].*)\s+([A-Z])\s+([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
 
@@ -834,6 +835,7 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                     placeline_finaltime   = str(place_line_list[0][5]).strip()
                     placeline_points      = str(place_line_list[0][6]).strip()
 
+                    logger(f"RESULTS: place {placeline_place}: name {placeline_name_last_first}: grade {placeline_grade}: sch {placeline_school_long}: seed {placeline_seedtime}: final {placeline_finaltime}: points {placeline_points}:")
                     ## If we want to use Shortened School Names, run the lookup
                     if shortenSchoolNames:
                         ## The length of the school name in the MM report varies by event type
@@ -857,9 +859,9 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                         result_name = placeline_name_last_first
 
                     ## Format the output lines with either long (per meet program) or short school names
-                    output_str = f"{placeline_place:>3} {result_name:<25} {placeline_school_long:<25} {placeline_seedtime:>8} {placeline_finaltime:>8} {placeline_points:>2}"
+                    output_str = f"{placeline_place:>3} {result_name:<25} {placeline_grade:>2} {placeline_school_long:<25} {placeline_seedtime:>8} {placeline_finaltime:>8} {placeline_points:>2}"
                     if shortenSchoolNames:
-                        output_str = f"{placeline_place:>3} {result_name:<25} {placeline_school_short:<4} {placeline_seedtime:>8} {placeline_finaltime:>8} {placeline_points:>2}"
+                        output_str = f"{placeline_place:>3} {result_name:<25} {placeline_school_short:<4} {placeline_grade:>2} {placeline_seedtime:>8} {placeline_finaltime:>8} {placeline_points:>2}"
                     
                     output_list.append(('PLACE', output_str))
             
@@ -956,7 +958,9 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
     """  From the Meet Results File, generate the crawler files per event """
 
     eventNum = 0
-    crawler_string = report_type.upper()
+    #official_results = "OFFICIAL RESULTS"
+    official_results = "UNOFFICIAL RESULTS"
+    crawler_string = official_results
     found_header_line = 0
     num_header_lines = 3
     schoolNameDictFullNameLen = 25
@@ -1036,8 +1040,7 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
                 ## from the last event. Save this event data and prepare for next event
                 if eventNum > 0:
                     crawler_list.append( (eventNum, crawler_string  ))
-                    upper_report_type = report_type.upper()
-                    crawler_string = f"{upper_report_type} "
+                    crawler_string = official_results
 
                 #####################################################################################
                 ## Start processing next event
@@ -1227,20 +1230,13 @@ if __name__ == "__main__":
         total_files_generated = generate_program_files( args.reporttype, args.inputdir, output_dir, args.licenseName, args.shortschoolnames, args.splitrelays, spacerelaynames, args.displayRelayNames, args.namesfirstlast )
         print(f"Process Completed: \n\tNumber of files generated: {total_files_generated}")
 
-    # l = 'Seton School'
-    # str_match = False
-    # if str(license_name) == str(l):
-    #     str_match = True
-    # print( "type1: ", type(license_name.strip()))
-    # print( "type2: ", type(l))
 
-    # print(f"License: h: 'Seton School' g: '{license_name}' Matched: {str_match}")
     #####################################################################################
     ## Generate wirecast files RESULTS and CRAWLER from a MEET RESULTS txt file
     #####################################################################################
     if args.reporttype == report_type_results:
-        total_files_generated_results =  generate_results_files( args.reporttype, args.inputdir, output_dir, args.licenseName, args.shortschoolnames, spacerelaynames, args.displayRelayNames, args.namesfirstlast )
-        total_files_generated_crawler =  generate_crawler_result_files( "Unofficial Results", args.inputdir, output_dir, args.licenseName, args.shortschoolnames, args.displayRelayNames )
+        total_files_generated_results =  generate_results_files( report_type_results, args.inputdir, output_dir, args.licenseName, args.shortschoolnames, args.displayRelayNames, args.displayRelayNames, args.namesfirstlast )
+        total_files_generated_crawler =  generate_crawler_result_files( report_type_results, args.inputdir, output_dir, args.licenseName, args.shortschoolnames, args.displayRelayNames )
         total_files_generated = total_files_generated_results + total_files_generated_crawler
         print(f"Process Completed: \n\tNumber of files generated total:\t{total_files_generated}")
         print(f"\tNumber of files generated results:\t{total_files_generated_results}")
@@ -1250,5 +1246,5 @@ if __name__ == "__main__":
     ## Generate wirecast CRAWLER iles from a MEET RESULTS txt file
     #####################################################################################
     if args.reporttype == report_type_crawler:
-        total_files_generated_crawler =  generate_crawler_result_files( "Unofficial Results", args.inputdir, output_dir, args.licenseName, args.shortschoolnames, args.displayRelayNames )
+        total_files_generated_crawler =  generate_crawler_result_files( report_type_results, args.inputdir, output_dir, args.licenseName, args.shortschoolnames, args.displayRelayNames )
         print(f"Process Completed: \n\tNumber of files generated total:\t{total_files_generated_crawler}")
