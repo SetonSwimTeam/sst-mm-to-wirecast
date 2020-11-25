@@ -587,10 +587,14 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                     else:
                         entry_name = entry_name_last_first
 
+                    ## Still issues with School names ending in - or -VA
+                    entry_sch_long = re.sub(r'(.*?)-$', r'\1', entry_sch_long)
+                    entry_sch_long = re.sub(r'(.*?)-VA$', r'\1', entry_sch_long)
                     ## Format the output lines with either long (per meet program) or short school names
-                    output_str = f" {entry_lane:2} {entry_name:<25} {entry_grade:2} {entry_sch_long:25} {entry_seedtime}"
+                    output_str = f" {entry_lane:>2} {entry_name:<25} {entry_grade:>2} {entry_sch_long:<25} {entry_seedtime:>8}"
+
                     if shortenSchoolNames:
-                        output_str = f" {entry_lane:2} {entry_name:<25} {entry_grade:<2} {entry_sch_short:<4} {entry_seedtime}"
+                        output_str = f" {entry_lane:>2} {entry_name:<25} {entry_grade:>2} {entry_sch_short:<4} {entry_seedtime:>8}"
                     
                     output_list.append(('LANE', output_str))
             
@@ -619,7 +623,11 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                             break
                     output_str = f"{entryline_place:>2} {entryline_sch_short:<4} {entryline_relay:1} {entryline_seedtime:>8}"
                 else:
-                    output_str = f"{entryline_place:>2} {entryline_sch_long:<25} {entryline_relay:1} {entryline_seedtime:>8}"
+                    ## Still issues with School names ending in - or -VA
+                    entryline_sch_long = re.sub(r'(.*?)-$', r'\1', entryline_sch_long)
+                    entryline_sch_long = re.sub(r'(.*?)-VA(\s*?)$', r'\1', entryline_sch_long)
+
+                    output_str = f"{entryline_place:>2} {entryline_sch_long:<28} {entryline_relay:1} {entryline_seedtime:>8}"
 
                 output_list.append(( "LANE", output_str ))
 
@@ -811,7 +819,7 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
             ## Note: For ties an asterick is placed before the place number and the points could have a decimal
             #####################################################################################
             if (eventNum in eventNumIndividual or eventNum in eventNumDiving) and re.search('^[*]?\d{1,2} ', line):
-                place_line_list = re.findall('^([*]?\d{1,2})\s+(\w+, \w+)\s+(\w+) ([A-Z \'.].*)\s+([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)', line)
+                place_line_list = re.findall('^([*]?\d{1,2})\s+(\w+, \w+)\s+(\w+) ([A-Z \'.].*?)\s*([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)', line)
                 # #                             TIE? place    last first   GR    SCHOOL           SEEDTIME|NT    FINALTIME      POINTS
                 print(f"IND: {line}")
                 if place_line_list:
@@ -846,9 +854,9 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                         result_name = placeline_name_last_first
 
                     ## Format the output lines with either long (per meet program) or short school names
-                    output_str = f"'{placeline_place:>2}' '{result_name:<25}' '{placeline_school_long:<25}' '{placeline_seedtime:>8}' '{placeline_finaltime:>8}' '{placeline_points:>2}'"
+                    output_str = f"{placeline_place:>3} {result_name:<25} {placeline_school_long:<25} {placeline_seedtime:>8} {placeline_finaltime:>8} {placeline_points:>2}"
                     if shortenSchoolNames:
-                        output_str = f"'{placeline_place:>2}' '{result_name:<25}' '{placeline_school_short:<4}' '{placeline_seedtime:>8}' '{placeline_finaltime:>8}' '{placeline_points:>2}'"
+                        output_str = f"{placeline_place:>3} {result_name:<25} {placeline_school_short:<4} {placeline_seedtime:>8} {placeline_finaltime:>8} {placeline_points:>2}"
                     
                     output_list.append(('PLACE', output_str))
             
@@ -879,9 +887,9 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                             if placeline_sch_short != placeline_sch_long:
                                 break
 
-                        output_str = f" {placeline_place:2} {placeline_sch_short:<4} {placeline_relay} {placeline_seedtime:<8} {placeline_finaltime:<8} {placeline_points}"
+                        output_str = f" {placeline_place:>3} {placeline_sch_short:<4} {placeline_relay} {placeline_seedtime:>8} {placeline_finaltime:>8} {placeline_points:>2}"
                     else:
-                        output_str = f" '{placeline_place:2}' '{placeline_sch_long:<25}' '{placeline_relay}' '{placeline_seedtime:<8}' '{placeline_finaltime:<8}' '{placeline_points}'"
+                        output_str = f" {placeline_place:>3} {placeline_sch_long:<25} {placeline_relay} {placeline_seedtime:>8} {placeline_finaltime:>8} {placeline_points:>2}"
                     output_list.append(( "PLACE", output_str ))
 
             #####################################################################################
