@@ -440,6 +440,26 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
     found_header_line = 0
     output_list = []
 
+    re_program_lane = re.compile('^[*]?\d{1,2} ')
+    re_program_lane_ind = re.compile('^(\d{1,2})\s+([A-z\' \.]+, [A-z ]+) ([A-Z0-9]{1,2})\s+([A-Z \'.].*)\s+([X]?[0-9:.]+|NT|XNT|NP|XNP)*')
+    re_program_lane_relay = re.compile('^(\d{1,2})\s+([A-Z \'.].*)\s+([A-Z])\s+([X]?[0-9:.]+|NT|XNT)*')
+
+    ## Remove the trailing hyphen (-) and -VA from school name
+    re_program_sch_cleanup1 = re.compile(r'(.*?)-VA(\s*)$')
+    re_program_sch_cleanup2 = re.compile(r'(.*?)-$(\s*)$')
+
+    ## Search for headers to remove
+    re_program_header_ind   = re.compile("^Lane(\s*)Name")
+    re_program_header_relay = re.compile("^Lane(\s*)Team")
+
+    ## Search for case where team time butts up against seed time.  
+    ## Need to add a space here so main regex works
+    re_program_space_team_seed = re.compile(r'([A-z])(X\d)')
+
+    ## For relays add a space between the persons name and next swimmer number
+    re_program_space_relay_name = re.compile(r'(\S)([2-4]\))')
+    re_program_check_relay_name_line = re.compile('1\)')
+
     #####################################################################################
     ## PROGRAM: Loop through each line of the input file
     #####################################################################################
@@ -488,10 +508,10 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
             ## Ignore these lines as we will add our own back in depending on the output format
             #####################################################################################
             ## For Relay Individual Events
-            if re.search("^Lane(\s*)Name", line):
+            if re_program_header_ind.search(line):
                 continue
             ## For Relay Events
-            if re.search("^Lane(\s*)Team", line):
+            if re_program_header_relay.search(line):
                 continue
 
             #####################################################################################
@@ -551,12 +571,12 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
             ## PROGRAM: INDIVIDUAL Extract the individual Entry Line
             ## i.e. 2   Robison, Ryan            JR  Bishop O'Connell-PV      X2:22.35                        
             #####################################################################################
-            if (eventNum in eventNumIndividual or eventNum in eventNumDiving) and re.search('^\d{1,2} ', line):
+            if (eventNum in eventNumIndividual or eventNum in eventNumDiving) and re_program_lane.search(line):
                 ## Fix for case where School Name butts up to the X in seed time
-                if re.search('[A-z]X\d', line):
-                    line = re.sub(r'([A-z])(X\d)', r'\1 \2',line )
+                #if re.search('[A-z]X\d', line):
+                line = re_program_space_team_seed.sub(r'\1 \2', line )
 
-                entry_line_list = re.findall('^(\d{1,2})\s+([A-z\' \.]+, [A-z ]+) ([A-Z0-9]{1,2})\s+([A-Z \'.].*)\s+([X]?[0-9:.]+|NT|XNT|NP|XNP)*', line)
+                entry_line_list = re_program_lane_ind.findall(line)
                 #                                  LANE     LAST, FIRST        GR          SCHOOL             SEEDTIME 
                 if entry_line_list:
                     entry_lane            = str(entry_line_list[0][0]).strip()
@@ -588,8 +608,8 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                         entry_name = entry_name_last_first
 
                     ## Still issues with School names ending in - or -VA
-                    entry_sch_long = re.sub(r'(.*?)-$', r'\1', entry_sch_long)
-                    entry_sch_long = re.sub(r'(.*?)-VA$', r'\1', entry_sch_long)
+                    entry_sch_long = re_program_sch_cleanup1.sub(r'\1', entry_sch_long)
+                    entry_sch_long = re_program_sch_cleanup2.sub(r'\1', entry_sch_long)
                     ## Format the output lines with either long (per meet program) or short school names
                     output_str = f" {entry_lane:>2} {entry_name:<25} {entry_grade:>2} {entry_sch_long:<25} {entry_seedtime:>8}"
 
@@ -602,8 +622,8 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
             ## PROGRAM: RELAY Find the replay line with LANE, SCHOOL, RELAY TEAM SEEDTIME
             ## 1 Seton Swim            A                    1:46.82      1:40.65        32
             #####################################################################################
-            if eventNum in eventNumRelay and re.search('^[*]?\d{1,2} ', line):
-                entry_line_list = re.findall('^(\d{1,2})\s+([A-Z \'.].*)\s+([A-Z])\s+([X]?[0-9:.]+|NT|XNT)*', line)
+            if eventNum in eventNumRelay and re_program_lane.search(line):
+                entry_line_list = re_program_lane_relay.findall(line)
                 #  REGEX Positions                 LANE   SCHOOL    RELAY     SEEDTIME
                 if entry_line_list:
                     entryline_place     = str(entry_line_list[0][0])
@@ -611,21 +631,21 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                     entryline_relay     = str(entry_line_list[0][2])
                     entryline_seedtime  = str(entry_line_list[0][3])
 
-                #####################################################################################
-                ## PROGRAM: Replace long school name with short name for RELAY events
-                #####################################################################################
-                if shortenSchoolNames:
-                    entryline_sch_short = entryline_sch_long
+                    #####################################################################################
+                    ## PROGRAM: Replace long school name with short name for RELAY events
+                    #####################################################################################
+                    if shortenSchoolNames:
+                        entryline_sch_short = entryline_sch_long
 
-                    for k,v in schoolNameDict.items():
-                        entryline_sch_short = entryline_sch_short.replace(k.ljust(programRelayDictFullNameLen,' ')[:programRelayDictFullNameLen], v.ljust(schoolNameDictShortNameLen, ' '))
-                        if entryline_sch_short != entryline_sch_long:
-                            break
-                    output_str = f"{entryline_place:>2} {entryline_sch_short:<4} {entryline_relay:1} {entryline_seedtime:>8}"
-                else:
-                    ## Still issues with School names ending in - or -VA
-                    entryline_sch_long = re.sub(r'(.*?)-$', r'\1', entryline_sch_long)
-                    entryline_sch_long = re.sub(r'(.*?)-VA(\s*?)$', r'\1', entryline_sch_long)
+                        for k,v in schoolNameDict.items():
+                            entryline_sch_short = entryline_sch_short.replace(k.ljust(programRelayDictFullNameLen,' ')[:programRelayDictFullNameLen], v.ljust(schoolNameDictShortNameLen, ' '))
+                            if entryline_sch_short != entryline_sch_long:
+                                break
+                        output_str = f"{entryline_place:>2} {entryline_sch_short:<4} {entryline_relay:1} {entryline_seedtime:>8}"
+                    else:
+                        ## Still issues with School names ending in - or -VA
+                        entryline_sch_long = re_program_sch_cleanup1.sub(r'\1', entryline_sch_long)
+                        entryline_sch_long = re_program_sch_cleanup2.sub(r'\1', entryline_sch_long)
 
                     output_str = f"{entryline_place:>2} {entryline_sch_long:<28} {entryline_relay:1} {entryline_seedtime:>8}"
 
@@ -639,9 +659,9 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
             ## becomes    1) LastName1, All 2) LastName2, Ashley 3) LastName3, All 4) LastName4, Eri
             if eventNum in eventNumRelay:
                 #found = re.search('\S[2-4]\)',line)
-                found = re.search('1\)',line)
+                found = re_program_check_relay_name_line.search(line)
                 if found:
-                    output_str = re.sub(r'(\S)([2-4]\))', r'\1 \2',line )
+                    output_str = re_program_space_relay_name.sub( r'\1 \2',line )
                     output_list.append(( "NAME", output_str ))
 
 
