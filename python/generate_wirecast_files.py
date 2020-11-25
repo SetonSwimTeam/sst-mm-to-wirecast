@@ -345,12 +345,14 @@ def get_report_header_info( report_type, meet_report_filename ):
             #####################################################################################
             if line_num == 1:
                 line1_header = line
+                continue
 
             #####################################################################################
             ## Line2:               2020 NoVa Catholic Invitational Championship - 1/11/2020                
             #####################################################################################
             if line_num == 2:
                 line2_header = line
+                continue
 
             #####################################################################################
             ## Line3:                                    Meet Program               
@@ -362,29 +364,27 @@ def get_report_header_info( report_type, meet_report_filename ):
                 break
 
         #####################################################################################
-        ## Header1.  Break about license name (school name)            
+        ## Header1.  Break about license name (school name)       
+        #  There can be some garbage on the first line before the license name. Ignore that     
         #####################################################################################
-        line1_list = re.findall('^(.*?) HY-TEK',line1_header )
+        line1_list = re.findall('^.*?([A-z0-9 \'-]+?)\s+HY-TEK',line1_header )
         license_name = str(line1_list[0].strip())
-        logger(f"license_name: '{license_name}' ")
 
         #####################################################################################
         ## Header2.  Break about meet name and meet date               
         #####################################################################################
         line2_list = re.findall('^(.*?) - (\d+/\d+/\d+)',line2_header )
-        meet_name = line2_list[0][0]
-        meet_date = line2_list[0][1]
-        logger(f"meet_name: '{meet_name}' \nmeet_date: '{meet_date}'")
+        meet_name = line2_list[0][0].strip()
+        meet_date = line2_list[0][1].strip()
 
         #####################################################################################
         ## Header2.  Break about meet name and meet date               
         #####################################################################################
         report_type = line3_header
-        logger(f"report_type: '{report_type}'")
+        
+        #logger(f"Header: licensee '{license_name}' meet_name: '{meet_name}' meet_date: '{meet_date}' report_type: '{report_type}'")
 
         return meet_name, meet_date, license_name, report_type
-
-
 
 #####################################################################################
 #####################################################################################
@@ -1165,7 +1165,7 @@ if __name__ == "__main__":
     parser.add_argument('-n', '--namesfirstlast',   dest='namesfirstlast',      action='store_true',            help="Swap Non Relay names to First Last from Last, First")
     parser.add_argument('-s', '--shortschoolnames', dest='shortschoolnames',    action='store_true',            help="Use Short School names for Indiviual Entries")
     parser.add_argument('-l', '--longschoolnames',  dest='shortschoolnames',    action='store_false',           help="Use Long School names for Indiviual Entries")
-    parser.add_argument('-L', '--licenseName',      dest='licenseName',         default="Seton School",         help="MM license name as printed out on reports")
+    #parser.add_argument('-L', '--licenseName',      dest='licenseName',         default="Seton School",         help="MM license name as printed out on reports")
     parser.add_argument('-r', '--splitrelays',      dest='splitrelays',         action='store_true',            help="Split Relays into multiple files")
     parser.add_argument('-R', '--displayRelayNames',dest='displayRelayNames',   action='store_true',            help="Display relay swimmer names, not just the team name in results")
     parser.add_argument('-d', '--debug',            dest='debug',               action='store_true',            help="Print out results to console")
@@ -1204,7 +1204,6 @@ if __name__ == "__main__":
               f"\tOutputReportType \t{args.reporttype} \n" + \
               f"\tInputDir \t\t{args.inputdir} \n" + \
               f"\tRoot OutputDir \t\t{output_dir} \n" + \
-              f"\tLicensee: \t\t'{args.licenseName}' \n" + \
               f"\tShort School Names \t{args.shortschoolnames} \n" + \
               f"\tNamesFirstlast \t{args.namesfirstlast} \n" + \
               f"\tSplit Relays \t\t{args.splitrelays} \n"+ \
@@ -1218,6 +1217,9 @@ if __name__ == "__main__":
               f"\tSourceReport: \t\t'{report_type}' \n" 
     print( logargs )
 
+
+
+
     #####################################################################################
     ## Remove files from last run
     #####################################################################################
@@ -1228,7 +1230,7 @@ if __name__ == "__main__":
     ## Generate wirecast files from a MEET PROGRAM txt file
     #####################################################################################
     if args.reporttype == report_type_program:
-        total_files_generated = generate_program_files( args.reporttype, args.inputdir, output_dir, args.licenseName, args.shortschoolnames, args.splitrelays, spacerelaynames, args.displayRelayNames, args.namesfirstlast )
+        total_files_generated = generate_program_files( args.reporttype, args.inputdir, output_dir, license_name, args.shortschoolnames, args.splitrelays, spacerelaynames, args.displayRelayNames, args.namesfirstlast )
         print(f"Process Completed: \n\tNumber of files generated: {total_files_generated}")
 
 
@@ -1236,8 +1238,8 @@ if __name__ == "__main__":
     ## Generate wirecast files RESULTS and CRAWLER from a MEET RESULTS txt file
     #####################################################################################
     if args.reporttype == report_type_results:
-        total_files_generated_results =  generate_results_files( report_type_results, args.inputdir, output_dir, args.licenseName, args.shortschoolnames, args.displayRelayNames, args.displayRelayNames, args.namesfirstlast )
-        total_files_generated_crawler =  generate_crawler_result_files( report_type_results, args.inputdir, output_dir, args.licenseName, args.shortschoolnames, args.displayRelayNames )
+        total_files_generated_results =  generate_results_files( report_type_results, args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames, args.displayRelayNames, args.namesfirstlast )
+        total_files_generated_crawler =  generate_crawler_result_files( report_type_results, args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames )
         total_files_generated = total_files_generated_results + total_files_generated_crawler
         print(f"Process Completed: \n\tNumber of files generated total:\t{total_files_generated}")
         print(f"\tNumber of files generated results:\t{total_files_generated_results}")
@@ -1247,5 +1249,5 @@ if __name__ == "__main__":
     ## Generate wirecast CRAWLER iles from a MEET RESULTS txt file
     #####################################################################################
     if args.reporttype == report_type_crawler:
-        total_files_generated_crawler =  generate_crawler_result_files( report_type_results, args.inputdir, output_dir, args.licenseName, args.shortschoolnames, args.displayRelayNames )
+        total_files_generated_crawler =  generate_crawler_result_files( report_type_results, args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames )
         print(f"Process Completed: \n\tNumber of files generated total:\t{total_files_generated_crawler}")
