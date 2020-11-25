@@ -121,11 +121,6 @@ def create_output_file_results( output_dir_root, event_num, output_list, display
     
     num_files_generated = 0
     output_str = ""
-    print( f"\bcreate_output_file_results: Event {event_num}" )
-    for row in output_list:
-        rowid = row[0]
-        rowtext = row[1]
-        print(f"list: id {rowid} text {rowtext} ")
 
 
     file_name_prefix = "results"
@@ -142,6 +137,8 @@ def create_output_file_results( output_dir_root, event_num, output_list, display
         row_type = output_tuple[0]
         row_text = output_tuple[1]
 
+        logger(f"RESULTS: e: {event_num} id: {row_type} t: {row_text}")
+
         ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
         if row_type == 'H4':
             output_str += row_text + '\n'
@@ -152,7 +149,6 @@ def create_output_file_results( output_dir_root, event_num, output_list, display
             output_str += row_text + '\n'
         elif row_type == 'NAME' and displayRelaySwimmerNames:
             output_str += row_text + '\n'
-
 
     output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}.txt"
     output_file_handler = open( output_file_name, "w+" )
@@ -173,12 +169,6 @@ def create_output_file_program( output_dir_root, event_num, heat_num, output_lis
     split_num = 1
     output_str = ""
     
-    # if event_num in eventNumRelay:
-
-        # for row in output_list:
-        #     rowid = row[0]
-        #     rowtext = row[1]
-        #     print(f"list: {event_num}:{heat_num} id {rowid} text {rowtext} ")
 
     file_name_prefix = "program"
     output_dir = f"{output_dir_root}{file_name_prefix}/"
@@ -279,8 +269,6 @@ def create_output_file_crawler( report_type, output_dir_root, crawler_list ):
     for crawler_event in crawler_list:
         event_num = crawler_event[0]
         crawler_text = crawler_event[1]
-
-        print( f"C: e: {event_num} : {crawler_text}")
 
         ## Generate event specific file
         if event_num > 0:
@@ -724,6 +712,17 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
     found_header_line = 0
     output_list = []
 
+    re_results_lane = re.compile('^[*]?\d{1,2} ')
+
+    # #                                 TIE? place    last first   GR    SCHOOL           SEEDTIME|NT    FINALTIME      POINTS
+    re_results_lane_ind = re.compile('^([*]?\d{1,2})\s+(\w+, \w+)\s+(\w+) ([A-Z \'.].*?)\s*([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
+    
+    #                                     TIE? PLACE   SCHOOL           RELAY     SEEDTIME|NT    FINALTIME     POINTS
+    re_results_lane_relay = re.compile('^([*]?\d{1,2})\s+([A-Z \'.].*)\s+([A-Z])\s+([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
+
+    re_results_space_relay_name = re.compile(r'(\S)([2-4]\))')
+    re_results_check_relay_name_line = re.compile('1\)')
+
     #####################################################################################
     ## RESULTS: Loop through each line of the input file
     #####################################################################################
@@ -824,10 +823,8 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
             ## i.e. 1 Last, First           SR SCH   5:31.55      5:23.86        16
             ## Note: For ties an asterick is placed before the place number and the points could have a decimal
             #####################################################################################
-            if (eventNum in eventNumIndividual or eventNum in eventNumDiving) and re.search('^[*]?\d{1,2} ', line):
-                place_line_list = re.findall('^([*]?\d{1,2})\s+(\w+, \w+)\s+(\w+) ([A-Z \'.].*?)\s*([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)', line)
-                # #                             TIE? place    last first   GR    SCHOOL           SEEDTIME|NT    FINALTIME      POINTS
-                print(f"IND: {line}")
+            if (eventNum in eventNumIndividual or eventNum in eventNumDiving) and re_results_lane.search(line):
+                place_line_list = re_results_lane_ind.findall(line)
                 if place_line_list:
                     placeline_place       = str(place_line_list[0][0]).strip()
                     placeline_name_last_first = str(place_line_list[0][1]).strip()
@@ -871,9 +868,9 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
             ## 1 SST            A                    1:46.82      1:40.65        32
             ## Note: For ties an asterick is placed before the place number and the points could have a decimal
             #####################################################################################
-            if eventNum in eventNumRelay and re.search('^[*]?\d{1,2} ', line):
-                place_line_list = re.findall('^([*]?\d{1,2})\s+([A-Z \'.].*)\s+([A-Z])\s+([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)', line)
-                # #  REGEX Positions              TIE? PLACE   SCHOOL           RELAY     SEEDTIME|NT    FINALTIME     POINTS
+            if eventNum in eventNumRelay and re_results_lane.search(line):
+                place_line_list = re_results_lane_relay.findall(line)
+
                 if place_line_list:
                     placeline_place     = str(place_line_list[0][0])
                     placeline_sch_long  = str(place_line_list[0][1])
@@ -911,9 +908,9 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
             ##          Its up to the output function to determine to display them or not
             #####################################################################################
             if displayRelaySwimmerNames and eventNum in eventNumRelay:
-                found = re.search('1\)',line)
+                found = re_results_check_relay_name_line.search(line)
                 if found:
-                    line = re.sub(r'(\S)([2-4]\))', r'\1 \2',line )
+                    line = re_results_check_relay_name_line.sub( r'\1 \2',line )
                     output_list.append(( "NAME", line )) 
 
 
@@ -972,11 +969,9 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
 
     re_crawler_lane = re.compile('^[*]?\d{1,2} ')
     #                                     TIE? place    last first   GR    SCHOOL           SEEDTIME    FINALTIME      POINTS
-    #re_crawler_lane_ind = re.compile('^([*]?\d{1,2}) (\w+, \w+)\s+(\w+) ([A-Z0-9]{1,4})\s+([0-9:.]+)\s+([0-9:.]+)\s+([0-9.])*')
     re_crawler_lane_ind = re.compile('^([*]?\d{1,2})\s+(\w+, \w+)\s+(\w+) ([A-Z \'.].*?)\s*([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
     
     #  REGEX Positions                    TIE? PLACE   SCHOOL    RELAY     SEEDTIME    FINALTIME     POINTS
-    #re_crawler_lane_relay = re.compile('^([*]?\d{1,2}) (\w+) \s+([A-Z])\s+([0-9:.]+)\s+([0-9:.]+)\s+([0-9.])*')
     re_crawler_lane_relay = re.compile('^([*]?\d{1,2})\s+([A-Z \'.].*)\s+([A-Z])\s+([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
 
 
@@ -1079,11 +1074,11 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
                 if place_line_list:
                     placeline_place     = str(place_line_list[0][0])
                     placeline_name      = str(place_line_list[0][1])
-                    placeline_grade     = str(place_line_list[0][2])
+                    #placeline_grade     = str(place_line_list[0][2])
                     placeline_sch_long  = str(place_line_list[0][3])
-                    placeline_seedtime  = str(place_line_list[0][4])
-                    placeline_finaltime = str(place_line_list[0][5])
-                    placeline_points    = str(place_line_list[0][6])
+                    #placeline_seedtime  = str(place_line_list[0][4])
+                    #placeline_finaltime = str(place_line_list[0][5])
+                    #placeline_points    = str(place_line_list[0][6])
 
 
                     #####################################################################################
@@ -1114,36 +1109,23 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
                     placeline_place     = str(place_line_list[0][0]).strip()
                     placeline_sch_long  = str(place_line_list[0][1]).strip()
                     placeline_relay     = str(place_line_list[0][2]).strip()
-                    placeline_seedtime  = str(place_line_list[0][3]).strip()
-                    placeline_finaltime = str(place_line_list[0][4]).strip()
-                    placeline_points    = str(place_line_list[0][5]).strip()
+                    #placeline_seedtime  = str(place_line_list[0][3]).strip()
+                    #placeline_finaltime = str(place_line_list[0][4]).strip()
+                    #placeline_points    = str(place_line_list[0][5]).strip()
 
                     if shorten_school_names:
                         placeline_sch_short = placeline_sch_long
                         x = len(placeline_sch_long)
-                        logger(f"DEBUG: short '{placeline_sch_long} {x}'")
 
                         for k,v in schoolNameDict.items():
                             placeline_sch_short = placeline_sch_short.replace(k.ljust(len(k),' '), v)
                             if placeline_sch_short != placeline_sch_long:
-                                print(f"R Found short: {placeline_sch_short} {placeline_sch_long}")
                                 break
                         output_str = f" {placeline_place}) {placeline_sch_short} {placeline_relay}"
                     else:
                         output_str = f" {placeline_place}) {placeline_sch_long} {placeline_relay}"
 
                     crawler_string += output_str  
-
-                    #####################################################################################
-                    ## CRAWLER: Processing specific to RELAY Entries
-                    #####################################################################################
-                    ## If this is a relay, see if there are spaces between swimmer numbers
-                    ## If so, add a space between the last swimmer name and the next swimmer number
-                    ## This line  1) LastName1, All2) LastName2, Ashley3) LastName3, All4) LastName4, Eri
-                    ## becomes    1) LastName1, All 2) LastName2, Ashley 3) LastName3, All 4) LastName4, Eri
-                    # found = re.search('\S[2-4]\)',line)
-                    # if found:
-                    #     line = re.sub(r'(\S)([2-4]\))', r'\1 \2',line )
 
 
     #####################################################################################
