@@ -973,8 +973,9 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
 
     re_crawler_lane = re.compile('^[*]?\d{1,2} ')
     #                                     TIE? place    last first   GR    SCHOOL           SEEDTIME    FINALTIME      POINTS
-    re_crawler_lane_ind = re.compile('^([*]?\d{1,2})\s+(\w+, \w+)\s+(\w+) ([A-Z \'.].*?)\s*([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
-    
+    #re_crawler_lane_ind   = re.compile('^([*]?\d{1,2})\s+(\w+, \w+)\s+(\w+) ([A-Z \'.].*?)\s*([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
+    re_crawler_lane_ind = re.compile('^([*]?\d{1,2})\s+([A-z\' \.]+, [A-z ]+) ([A-Z0-9]{1,2})\s+([A-Z \'.].*?)\s*([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
+
     #  REGEX Positions                    TIE? PLACE   SCHOOL    RELAY     SEEDTIME    FINALTIME     POINTS
     re_crawler_lane_relay = re.compile('^([*]?\d{1,2})\s+([A-Z \'.].*)\s+([A-Z])\s+([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
 
@@ -1075,10 +1076,10 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
             if (eventNum in eventNumIndividual  or eventNum in eventNumDiving) and re_crawler_lane.search(line):
                 place_line_list = re_crawler_lane_ind.findall(line)
                 if place_line_list:
-                    placeline_place     = str(place_line_list[0][0])
-                    placeline_name      = str(place_line_list[0][1])
+                    placeline_place     = str(place_line_list[0][0]).strip()
+                    placeline_name      = str(place_line_list[0][1]).strip()
                     #placeline_grade     = str(place_line_list[0][2])
-                    placeline_sch_long  = str(place_line_list[0][3])
+                    placeline_sch_long  = str(place_line_list[0][3]).strip()
                     #placeline_seedtime  = str(place_line_list[0][4])
                     #placeline_finaltime = str(place_line_list[0][5])
                     #placeline_points    = str(place_line_list[0][6])
