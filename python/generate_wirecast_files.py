@@ -280,6 +280,8 @@ def create_output_file_crawler( report_type, output_dir_root, crawler_list ):
         event_num = crawler_event[0]
         crawler_text = crawler_event[1]
 
+        print( f"C: e: {event_num} : {crawler_text}")
+
         ## Generate event specific file
         if event_num > 0:
             output_file_name = output_dir + f"{file_name_prefix}_{report_type}_event{event_num:0>2}.txt"
@@ -811,22 +813,6 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                     output_list.append(('H6', nameListHeader))
 
             #####################################################################################
-            ## RESULTS: Replace long school name with short name for individual events
-            #####################################################################################
-            # if shortenSchoolNames == True and eventNum in eventNumIndividual:
-            #     for k,v in schoolNameDict.items():
-            #         line = line.replace(k.ljust(resultsIndDictFullNameLen,' ')[:resultsIndDictFullNameLen], v.ljust(schoolNameDictShortNameLen, ' '))
-
-            #####################################################################################
-            ## RESULTS: Replace long school name with short name for DIVING events
-            #####################################################################################
-            # if shortenSchoolNames == True and eventNum in eventNumDiving:
-            #     for k,v in schoolNameDict.items():
-            #         line = line.replace(k.ljust(resultsDiveDictFullNameLen,' ')[:resultsDiveDictFullNameLen], v.ljust(schoolNameDictShortNameLen, ' '))
-
-
-  
-            #####################################################################################
             ## RESULTS: For place winner results, add a space after top 1-9 swimmers 
             ##          so names line up with 10-12 place
             #####################################################################################
@@ -977,11 +963,22 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
     found_header_line = 0
     num_header_lines = 3
     schoolNameDictFullNameLen = 25
-    schoolNameDictShortNameLen = 6  # Four character name plus spaces for padding between EntryTime
+    schoolNameDictShortNameLen = 4
 
     ## Tracking searcing for/finding/processing the three header records on each input file
+    ## For crawler, we only want the header once
     processed_header_list = {"found_header_1": False, "found_header_2": False, "found_header_3": False}
     crawler_list = []
+
+    re_crawler_lane = re.compile('^[*]?\d{1,2} ')
+    #                                     TIE? place    last first   GR    SCHOOL           SEEDTIME    FINALTIME      POINTS
+    #re_crawler_lane_ind = re.compile('^([*]?\d{1,2}) (\w+, \w+)\s+(\w+) ([A-Z0-9]{1,4})\s+([0-9:.]+)\s+([0-9:.]+)\s+([0-9.])*')
+    re_crawler_lane_ind = re.compile('^([*]?\d{1,2})\s+(\w+, \w+)\s+(\w+) ([A-Z \'.].*?)\s*([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
+    
+    #  REGEX Positions                    TIE? PLACE   SCHOOL    RELAY     SEEDTIME    FINALTIME     POINTS
+    #re_crawler_lane_relay = re.compile('^([*]?\d{1,2}) (\w+) \s+([A-Z])\s+([0-9:.]+)\s+([0-9:.]+)\s+([0-9.])*')
+    re_crawler_lane_relay = re.compile('^([*]?\d{1,2})\s+([A-Z \'.].*)\s+([A-Z])\s+([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
+
 
     #####################################################################################
     ## CRAWLER: Loop through each line of the input file
@@ -1066,24 +1063,6 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
 
 
             #####################################################################################
-            ## CRAWLER: Replace long school name with short name for ALL events
-            #####################################################################################
-            for k,v in schoolNameDict.items():
-                line = line.replace(k.ljust(schoolNameDictFullNameLen,' '), v.ljust(schoolNameDictShortNameLen, ' '))
-            
-            #####################################################################################
-            ## CRAWLER: Processing specific to RELAY Entries
-            #####################################################################################
-            ## If this is a relay, see if there are spaces between swimmer numbers
-            ## If so, add a space between the last swimmer name and the next swimmer number
-            ## This line  1) LastName1, All2) LastName2, Ashley3) LastName3, All4) LastName4, Eri
-            ## becomes    1) LastName1, All 2) LastName2, Ashley 3) LastName3, All 4) LastName4, Eri
-            if eventNum in eventNumRelay:
-                m = re.search('\S[2-4]\)',line)
-                if m:
-                    line = re.sub(r'(\S)([2-4]\))', r'\1 \2',line )
-
-            #####################################################################################
             ## CRAWLER: For results on relays, only display relay team, not individual names
             ## TODO: Make this a command line parm
             #####################################################################################
@@ -1095,40 +1074,77 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
             ## i.e. 1 Last, First           SR SCH   5:31.55      5:23.86        16
             ## Note: For ties an asterick is placed before the place number and the points could have a decimal
             #####################################################################################
-            if (eventNum in eventNumIndividual  or eventNum in eventNumDiving) and re.search('^[*]?\d{1,2} ', line):
-                place_line_list = re.findall('^([*]?\d{1,2}) (\w+, \w+)\s+(\w+) ([A-Z0-9]{1,4})\s+([0-9:.]+)\s+([0-9:.]+)\s+([0-9.])*', line)
-                #                               TIE? place    last first   GR    SCHOOL           SEEDTIME    FINALTIME      POINTS
+            if (eventNum in eventNumIndividual  or eventNum in eventNumDiving) and re_crawler_lane.search(line):
+                place_line_list = re_crawler_lane_ind.findall(line)
                 if place_line_list:
                     placeline_place     = str(place_line_list[0][0])
                     placeline_name      = str(place_line_list[0][1])
                     placeline_grade     = str(place_line_list[0][2])
-                    placeline_school    = str(place_line_list[0][3])
+                    placeline_sch_long  = str(place_line_list[0][3])
                     placeline_seedtime  = str(place_line_list[0][4])
                     placeline_finaltime = str(place_line_list[0][5])
                     placeline_points    = str(place_line_list[0][6])
 
-                    output_str = f" {placeline_place}) {placeline_name} {placeline_school}"
+
+                    #####################################################################################
+                    ## CRAWLER: Replace long school name with short name for ALL events
+                    #####################################################################################
+                    school_name_short = placeline_sch_long
+                    for k,v in schoolNameDict.items():
+                        school_name_short = school_name_short.replace(k, v)
+                        if school_name_short != placeline_sch_long:
+                            break
+                        
+                    if shorten_school_names:
+                        output_str = f" {placeline_place}) {placeline_name} {school_name_short}"
+                    else:
+                        output_str = f" {placeline_place}) {placeline_name} {placeline_sch_long}"
                     crawler_string += output_str
-    
+
+
             #####################################################################################
             ## CRAWLER: RELAY Find the Place Winner line, place, name, school, time, points, etc
             ## 1 SST            A                    1:46.82      1:40.65        32
             ## Note: For ties an asterick is placed before the place number and the points could have a decimal
             #####################################################################################
-            if eventNum in eventNumRelay and re.search('^[*]?\d{1,2} ', line):
-                place_line_list = re.findall('^([*]?\d{1,2}) (\w+) \s+([A-Z])\s+([0-9:.]+)\s+([0-9:.]+)\s+([0-9.])*', line)
-                #  REGEX Positions              TIE? PLACE   SCHOOL    RELAY     SEEDTIME    FINALTIME     POINTS
+            if eventNum in eventNumRelay and re_crawler_lane.search(line):
+                place_line_list = re_crawler_lane_relay.findall(line)
+
                 if place_line_list:
-                    placeline_place     = str(place_line_list[0][0])
-                    placeline_school    = str(place_line_list[0][1])
-                    placeline_relay     = str(place_line_list[0][2])
-                    placeline_seedtime  = str(place_line_list[0][3])
-                    placeline_finaltime = str(place_line_list[0][4])
-                    placeline_points    = str(place_line_list[0][5])
+                    placeline_place     = str(place_line_list[0][0]).strip()
+                    placeline_sch_long  = str(place_line_list[0][1]).strip()
+                    placeline_relay     = str(place_line_list[0][2]).strip()
+                    placeline_seedtime  = str(place_line_list[0][3]).strip()
+                    placeline_finaltime = str(place_line_list[0][4]).strip()
+                    placeline_points    = str(place_line_list[0][5]).strip()
 
+                    if shorten_school_names:
+                        placeline_sch_short = placeline_sch_long
+                        x = len(placeline_sch_long)
+                        logger(f"DEBUG: short '{placeline_sch_long} {x}'")
 
-                    output_str = f" {placeline_place}) {placeline_school} {placeline_relay}"
+                        for k,v in schoolNameDict.items():
+                            placeline_sch_short = placeline_sch_short.replace(k.ljust(len(k),' '), v)
+                            if placeline_sch_short != placeline_sch_long:
+                                print(f"R Found short: {placeline_sch_short} {placeline_sch_long}")
+                                break
+                        output_str = f" {placeline_place}) {placeline_sch_short} {placeline_relay}"
+                    else:
+                        output_str = f" {placeline_place}) {placeline_sch_long} {placeline_relay}"
+
                     crawler_string += output_str  
+
+                    #####################################################################################
+                    ## CRAWLER: Processing specific to RELAY Entries
+                    #####################################################################################
+                    ## If this is a relay, see if there are spaces between swimmer numbers
+                    ## If so, add a space between the last swimmer name and the next swimmer number
+                    ## This line  1) LastName1, All2) LastName2, Ashley3) LastName3, All4) LastName4, Eri
+                    ## becomes    1) LastName1, All 2) LastName2, Ashley 3) LastName3, All 4) LastName4, Eri
+                    # found = re.search('\S[2-4]\)',line)
+                    # if found:
+                    #     line = re.sub(r'(\S)([2-4]\))', r'\1 \2',line )
+
 
     #####################################################################################
     ## Save last event string
