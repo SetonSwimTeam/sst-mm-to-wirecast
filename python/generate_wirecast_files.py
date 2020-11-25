@@ -65,6 +65,7 @@ schoolNameDict = {
         "Collegiate School": "COOL",
         "Fredericksburg Academy-VA": "FAST",
         "Fredericksburg Christian-": "FCS",
+        "Fresta Valley Christian": "FVCS",
         "Hampton Roads Academy": "HRA",
         "Highland Hawks": "HL",
         "Middleburg Academy-VA": "MA",
@@ -82,7 +83,11 @@ schoolNameDict = {
         "Veritas School-VA": "VRTS",
         "Walsingham Academy-VA": "WA",
         "Wakefield H2owls-VA": "WAKE",
+        "H2owls-VA": "WAKE",
         "Williamsburg Christian Ac": "WCA",
+        "Woodberry Forest-VA": "WFS",
+        "Valley Christian School": "VCS",
+        "Valley Christian S": "VCS",
     } 
 
 
@@ -612,9 +617,9 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                         entryline_sch_short = entryline_sch_short.replace(k.ljust(programRelayDictFullNameLen,' ')[:programRelayDictFullNameLen], v.ljust(schoolNameDictShortNameLen, ' '))
                         if entryline_sch_short != entryline_sch_long:
                             break
-                    output_str = f"{entryline_place:2} {entryline_sch_short:<4} {entryline_relay:1} {entryline_seedtime}"
+                    output_str = f"{entryline_place:>2} {entryline_sch_short:<4} {entryline_relay:1} {entryline_seedtime:>8}"
                 else:
-                    output_str = f"{entryline_place:2} {entryline_sch_long:<25} {entryline_relay:1} {entryline_seedtime}"
+                    output_str = f"{entryline_place:>2} {entryline_sch_long:<25} {entryline_relay:1} {entryline_seedtime:>8}"
 
                 output_list.append(( "LANE", output_str ))
 
@@ -806,16 +811,17 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
             ## Note: For ties an asterick is placed before the place number and the points could have a decimal
             #####################################################################################
             if (eventNum in eventNumIndividual or eventNum in eventNumDiving) and re.search('^[*]?\d{1,2} ', line):
-                place_line_list = re.findall('^([*]?\d{1,2})\s+(\w+, \w+)\s+(\w+) ([A-Z \'.].*)\s+([0-9:.]+|NT)\s+([0-9:.]+)\s+([0-9]*)', line)
+                place_line_list = re.findall('^([*]?\d{1,2})\s+(\w+, \w+)\s+(\w+) ([A-Z \'.].*)\s+([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)', line)
                 # #                             TIE? place    last first   GR    SCHOOL           SEEDTIME|NT    FINALTIME      POINTS
+                print(f"IND: {line}")
                 if place_line_list:
-                    placeline_place       = str(place_line_list[0][0])
-                    placeline_name_last_first = str(place_line_list[0][1])
-                    placeline_grade       = str(place_line_list[0][2])
-                    placeline_school_long = str(place_line_list[0][3])
-                    placeline_seedtime    = str(place_line_list[0][4])
-                    placeline_finaltime   = str(place_line_list[0][5])
-                    placeline_points      = str(place_line_list[0][6])
+                    placeline_place       = str(place_line_list[0][0]).strip()
+                    placeline_name_last_first = str(place_line_list[0][1]).strip()
+                    placeline_grade       = str(place_line_list[0][2]).strip()
+                    placeline_school_long = str(place_line_list[0][3]).strip()
+                    placeline_seedtime    = str(place_line_list[0][4]).strip()
+                    placeline_finaltime   = str(place_line_list[0][5]).strip()
+                    placeline_points      = str(place_line_list[0][6]).strip()
 
                     ## If we want to use Shortened School Names, run the lookup
                     if shortenSchoolNames:
@@ -840,9 +846,9 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                         result_name = placeline_name_last_first
 
                     ## Format the output lines with either long (per meet program) or short school names
-                    output_str = f"'{placeline_place:2}' '{result_name:25}' '{placeline_school_long:25}' '{placeline_seedtime:<8}' '{placeline_finaltime:<8}' '{placeline_points}'"
+                    output_str = f"'{placeline_place:>2}' '{result_name:<25}' '{placeline_school_long:<25}' '{placeline_seedtime:>8}' '{placeline_finaltime:>8}' '{placeline_points:>2}'"
                     if shortenSchoolNames:
-                        output_str = f"'{placeline_place:2}' '{result_name:25}' '{placeline_school_short:4}' '{placeline_seedtime:<8}' '{placeline_finaltime:<8}' '{placeline_points}'"
+                        output_str = f"'{placeline_place:>2}' '{result_name:<25}' '{placeline_school_short:<4}' '{placeline_seedtime:>8}' '{placeline_finaltime:>8}' '{placeline_points:>2}'"
                     
                     output_list.append(('PLACE', output_str))
             
@@ -852,7 +858,7 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
             ## Note: For ties an asterick is placed before the place number and the points could have a decimal
             #####################################################################################
             if eventNum in eventNumRelay and re.search('^[*]?\d{1,2} ', line):
-                place_line_list = re.findall('^([*]?\d{1,2})\s+([A-Z \'.].*)\s+([A-Z])\s+([0-9:.]+|NT)\s+([0-9:.]+)\s+([0-9]*)', line)
+                place_line_list = re.findall('^([*]?\d{1,2})\s+([A-Z \'.].*)\s+([A-Z])\s+([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)', line)
                 # #  REGEX Positions              TIE? PLACE   SCHOOL           RELAY     SEEDTIME|NT    FINALTIME     POINTS
                 if place_line_list:
                     placeline_place     = str(place_line_list[0][0])
@@ -862,21 +868,21 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                     placeline_finaltime = str(place_line_list[0][4])
                     placeline_points    = str(place_line_list[0][5])
 
-                #####################################################################################
-                ## RESULTS: Replace long school name with short name for RELAY events
-                #####################################################################################
-                if shortenSchoolNames:
-                    placeline_sch_short = placeline_sch_long
+                    #####################################################################################
+                    ## RESULTS: Replace long school name with short name for RELAY events
+                    #####################################################################################
+                    if shortenSchoolNames:
+                        placeline_sch_short = placeline_sch_long
 
-                    for k,v in schoolNameDict.items():
-                        placeline_sch_short = placeline_sch_short.replace(k.ljust(resultRelayDictFullNameLen,' ')[:resultRelayDictFullNameLen], v.ljust(schoolNameDictShortNameLen, ' '))
-                        if placeline_sch_short != placeline_sch_long:
-                            break
+                        for k,v in schoolNameDict.items():
+                            placeline_sch_short = placeline_sch_short.replace(k.ljust(resultRelayDictFullNameLen,' ')[:resultRelayDictFullNameLen], v.ljust(schoolNameDictShortNameLen, ' '))
+                            if placeline_sch_short != placeline_sch_long:
+                                break
 
-                    output_str = f" {placeline_place:2} {placeline_sch_short:<4} {placeline_relay} {placeline_seedtime:<8} {placeline_finaltime:<8} {placeline_points}"
-                else:
-                    output_str = f" '{placeline_place:2}' '{placeline_sch_long:<25}' '{placeline_relay}' '{placeline_seedtime:<8}' '{placeline_finaltime:<8}' '{placeline_points}'"
-                output_list.append(( "PLACE", output_str ))
+                        output_str = f" {placeline_place:2} {placeline_sch_short:<4} {placeline_relay} {placeline_seedtime:<8} {placeline_finaltime:<8} {placeline_points}"
+                    else:
+                        output_str = f" '{placeline_place:2}' '{placeline_sch_long:<25}' '{placeline_relay}' '{placeline_seedtime:<8}' '{placeline_finaltime:<8}' '{placeline_points}'"
+                    output_list.append(( "PLACE", output_str ))
 
             #####################################################################################
             ## RESULTS: Processing specific to RELAY Entries
