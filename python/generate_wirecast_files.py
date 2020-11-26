@@ -680,13 +680,13 @@ def process_PROGRAM( report_type, meet_report_filename, output_dir, mm_license_n
 #####################################################################################
 ##########
 ##########     R E S U L T S 
-##########    generate_results_files
+##########    process_RESULT
 ##########
 #####################################################################################
 #####################################################################################
 #####################################################################################
 #####################################################################################
-def generate_results_files( report_type, meet_report_filename, output_dir, mm_license_name, shorten_school_names, add_new_line_to_relay_entries, display_relay_swimmer_names, namesfirstlast, quote_output ):
+def process_RESULT( report_type, meet_report_filename, output_dir, mm_license_name, shorten_school_names, add_new_line_to_relay_entries, display_relay_swimmer_names, namesfirstlast, quote_output ):
     """ Given the MeetManager results file file formatted in a specific manner,
         generate indiviual result files for use in Wirecast displays """
     
@@ -956,13 +956,13 @@ def cleanup_new_files( file_prefix, output_dir ):
 #####################################################################################
 ########## 
 ##########    C R A W L E R    R E S U L T S    
-##########    generate_crawler_result_files
+##########    process_CRAWLER
 ##########
 #####################################################################################
 #####################################################################################
 #####################################################################################
 #####################################################################################
-def generate_crawler_result_files( report_type, meet_report_filename, output_dir, mm_license_name, shorten_school_names, display_swimmers_in_relay, quote_output ):
+def process_CRAWLER( report_type, meet_report_filename, output_dir, mm_license_name, shorten_school_names, display_swimmers_in_relay, quote_output ):
     """  From the Meet Results File, generate the crawler files per event """
 
     event_num = 0
@@ -1167,7 +1167,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="../data",              required=True,   
                                                                                                                 help="input directory for MM extract report")
-    parser.add_argument('-t', '--reporttype',       dest='reporttype',          default=report_type_program,    choices=['program','result', 'crawler', 'headers'], 
+    parser.add_argument('-t', '--reporttype',       dest='reporttype',          default="auto",                 choices=['auto','program','results', 'crawler', 'headers'], 
                                                                                                                 help="Program type, Meet Program or Meet Results")
     parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="../output/",           help="root output directory for wirecast heat files.")
     parser.add_argument('-n', '--namesfirstlast',   dest='namesfirstlast',      action='store_true',            help="Swap Non Relay names to First Last from Last, First")
@@ -1189,10 +1189,15 @@ if __name__ == "__main__":
     parser.set_defaults(quote=False)
 
     args = parser.parse_args()
+    process_to_run = {"program": False, "results": False, "crawler": False}
     
+    report_type_to_run = args.reporttype
+
     ## Set global debug flag
     DEBUG = args.debug
-    total_files_generated = 0
+    total_files_generated_program = 0
+    total_files_generated_results = 0
+    total_files_generated_crawler = 0
 
 
     #####################################################################################
@@ -1202,6 +1207,17 @@ if __name__ == "__main__":
     #####################################################################################
     meet_name, meet_date, license_name, report_type = get_report_header_info( args.reporttype, args.inputdir )
 
+    #####################################################################################
+    ##
+    ## Determine report type based on input file header if not specified on CLI
+    #####################################################################################
+    if (report_type_to_run == "program")   or  (report_type_to_run == "auto" and report_type == 'Meet Program'):
+        process_to_run['program'] = True
+    elif (report_type_to_run == "results") or (report_type_to_run == "auto" and report_type == 'Results'):
+        process_to_run['results'] = True
+        process_to_run['crawler'] = True
+    elif (report_type_to_run == "crawler") or (report_type_to_run == "auto" and report_type == 'Results'):
+        process_to_run['crawler'] = True
 
 
     output_dir = args.outputdir
@@ -1225,7 +1241,13 @@ if __name__ == "__main__":
               f"\tMeet Name: \t\t'{meet_name}' \n" + \
               f"\tMeet Date: \t\t'{meet_date}' \n" + \
               f"\tLicensee: \t\t'{license_name}' \n" + \
-              f"\tSourceReport: \t\t'{report_type}' \n" 
+              f"\tSourceReport: \t\t'{report_type}' \n" + \
+              f"\n    Reports to generate: \n" + \
+              f"\tprogram: \t\t'{ process_to_run['program']}' \n" + \
+              f"\tresults: \t\t'{ process_to_run['results']}' \n" + \
+              f"\tcrawler: \t\t'{ process_to_run['crawler']}' \n" + \
+              ""
+
     print( logargs )
 
 
@@ -1240,17 +1262,16 @@ if __name__ == "__main__":
     #####################################################################################
     ## Generate wirecast files from a MEET PROGRAM txt file
     #####################################################################################
-    if args.reporttype == report_type_program:
-        total_files_generated = process_PROGRAM( args.reporttype, args.inputdir, output_dir, license_name, args.shortschoolnames, args.splitrelays, spacerelaynames, args.displayRelayNames, args.namesfirstlast, args.quote )
-        print(f"Process Completed: \n\tNumber of files generated: {total_files_generated}")
+    if process_to_run['program']:
+        total_files_generated_program = process_PROGRAM( args.reporttype, args.inputdir, output_dir, license_name, args.shortschoolnames, args.splitrelays, spacerelaynames, args.displayRelayNames, args.namesfirstlast, args.quote )
 
 
     #####################################################################################
     ## Generate wirecast files RESULTS and CRAWLER from a MEET RESULTS txt file
     #####################################################################################
-    if args.reporttype == report_type_results:
-        total_files_generated_results =  generate_results_files( report_type_results, args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames, args.displayRelayNames, args.namesfirstlast, args.quote )
-        total_files_generated_crawler =  generate_crawler_result_files( report_type_results, args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames, args.quote )
+    if process_to_run['results']:
+        total_files_generated_results =  process_RESULT( report_type_results, args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames, args.displayRelayNames, args.namesfirstlast, args.quote )
+        #total_files_generated_crawler =  process_CRAWLER( report_type_results, args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames, args.quote )
         total_files_generated = total_files_generated_results + total_files_generated_crawler
         print(f"Process Completed: \n\tNumber of files generated total:\t{total_files_generated}")
         print(f"\tNumber of files generated results:\t{total_files_generated_results}")
@@ -1259,6 +1280,16 @@ if __name__ == "__main__":
     #####################################################################################
     ## Generate wirecast CRAWLER iles from a MEET RESULTS txt file
     #####################################################################################
-    if args.reporttype == report_type_crawler:
-        total_files_generated_crawler =  generate_crawler_result_files( report_type_results, args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames, args.quote )
+    if process_to_run['crawler']:
+        total_files_generated_crawler =  process_CRAWLER( report_type_results, args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames, args.quote )
         print(f"Process Completed: \n\tNumber of files generated total:\t{total_files_generated_crawler}")
+
+
+    print(f"Process Completed:")
+    if total_files_generated_program > 0:
+        print(f"\tNumber of 'Program' files generated: {total_files_generated_program}")
+    if total_files_generated_results > 0:
+        print(f"\tNumber of 'Program' files generated: {total_files_generated_results}")
+    if total_files_generated_crawler > 0:
+        print(f"\tNumber of 'Program' files generated: {total_files_generated_crawler}")
+
