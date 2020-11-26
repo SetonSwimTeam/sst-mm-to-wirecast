@@ -1,5 +1,4 @@
 #!/usr/local/bin/python3
-
 #############################################################################################
 #############################################################################################
 ###
@@ -40,16 +39,16 @@ headerNum3 = -3   ## Report type
 unofficial_results = "    ** UNOFFICIAL RESULTS **"
 
 ## Define the types of events in this meet (Individual, Relay and Diving)
-eventNumIndividual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22]
-eventNumRelay  = [1,2,17,18,23,24]
-eventNumDiving = [9,10]
+event_num_individual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22]
+event_num_relay  = [1,2,17,18,23,24]
+event_num_diving = [9,10]
 
 #####################################################################################
 ## Text used for REGEX to convert long names to short names
 ## Some names are truncated. May be able to define full name and then define max
 ## lenght of school name depending on report
 #####################################################################################
-schoolNameDict = { 
+school_name_dict = { 
         "Benedictine College Prep": "BCP",
         "Bishop O'Connell-PV": "DJO",
         "Bishop O'Connell": "DJO",
@@ -116,7 +115,10 @@ def remove_files_from_dir( reporttype, directory_name ):
 #####################################################################################
 ## Given an array of data lines PER EVENT, generate the output file
 #####################################################################################
-def create_output_file_results( output_dir_root, event_num, output_list, displayRelaySwimmerNames ):
+def create_output_file_results( output_dir_root: str, 
+                                event_num: int, 
+                                output_list: list, 
+                                display_relay_swimmer_names: bool ) -> int:
     """ Generate the filename and open the next file """
     
     num_files_generated = 0
@@ -147,7 +149,7 @@ def create_output_file_results( output_dir_root, event_num, output_list, display
             output_str += row_text + '\n'
         elif row_type == 'PLACE':
             output_str += row_text + '\n'
-        elif row_type == 'NAME' and displayRelaySwimmerNames:
+        elif row_type == 'NAME' and display_relay_swimmer_names:
             output_str += row_text + '\n'
 
     output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}.txt"
@@ -162,7 +164,7 @@ def create_output_file_results( output_dir_root, event_num, output_list, display
 ####################################################################################
 ## Given an array of data lines PER HEAT, generate the output file
 #####################################################################################
-def create_output_file_program( output_dir_root, event_num, heat_num, output_list, displayRelaySwimmerNames, splitRelaysToMultipleFiles ):
+def create_output_file_program( output_dir_root, event_num, heat_num, output_list, display_relay_swimmer_names, split_relays_to_multiple_files ):
     """ Generate the filename and open the next file """
    
     num_files_created = 0
@@ -182,7 +184,7 @@ def create_output_file_program( output_dir_root, event_num, heat_num, output_lis
 
     ## Count the number of lanes in the RELAY
     num_relay_lane = 0
-    if event_num in eventNumRelay:
+    if event_num in event_num_relay:
         for output_tuple in output_list:
             row_type = output_tuple[0]
             
@@ -204,14 +206,14 @@ def create_output_file_program( output_dir_root, event_num, heat_num, output_lis
             header_str += row_text + '\n'
         elif row_type == 'LANE':
             output_str += row_text + '\n'
-        elif row_type == 'NAME' and displayRelaySwimmerNames:
+        elif row_type == 'NAME' and display_relay_swimmer_names:
             output_str += row_text + '\n'
             ## If split, space it out for readability
-            if splitRelaysToMultipleFiles:
+            if split_relays_to_multiple_files:
                 output_str += '\n'
 
         ## If we have more then 6 relay entries create second output file
-        if splitRelaysToMultipleFiles and num_relay_lane > 7 and count == 5:
+        if split_relays_to_multiple_files and num_relay_lane > 7 and count == 5:
             count = -99
             output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}_Split{split_num:0>2}.txt"
             output_file_handler = open( output_file_name, "w+" )
@@ -223,7 +225,7 @@ def create_output_file_program( output_dir_root, event_num, heat_num, output_lis
             split_num += 1
             output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}_Split{split_num:0>2}.txt"
             ## IF we are splitting relays into multiple file, then put a blank line after each lane and name
-            #if addNewLineToRelayEntries and re.search('^1\)', line):
+            #if add_new_line_to_relay_entries and re.search('^1\)', line):
             #    line = f"{line}\n"
 
         if row_type == 'LANE':
@@ -392,13 +394,13 @@ def get_report_header_info( report_type, meet_report_filename ):
 #####################################################################################
 ##########
 ##########    P R O G R A M
-##########    generate_program_files
+##########    process_PROGRAM
 ##########
 #####################################################################################
 #####################################################################################
 #####################################################################################
 #####################################################################################
-def generate_program_files( report_type, meet_report_filename, output_dir, mm_license_name, shortenSchoolNames, splitRelaysToMultipleFiles, addNewLineToRelayEntries, displayRelaySwimmerNames, namesfirstlast ):
+def process_PROGRAM( report_type, meet_report_filename, output_dir, mm_license_name, shorten_school_names, split_relays_to_multiple_files, add_new_line_to_relay_entries, display_relay_swimmer_names, namesfirstlast, quote_output ):
     """ Given the input file formatted in a specific manner,
         generate indiviual Event/Heat files for use in Wirecast displays """
     
@@ -407,32 +409,32 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
     ##  and not the actual full school name
     ## Multiple version of a school may be listed here for clean output
     #####################################################################################
-    programRelayDictFullNameLen = 24
-    programIndDictFullNameLen   = 25
-    programDiveDictFullNameLen  = 25    
-    schoolNameDictShortNameLen  = 4  
+    program_relay_dict_full_name_len = 24
+    program_ind_dict_full_name_len   = 25
+    program_dive_dict_full_name_len  = 25    
+    school_name_dict_short_name_len  = 4  
 
     unofficial_results = ""  ## Not used for Programs
 
     ## NOTE: Do not align up these headers with the TXT output.  
     ##  Wirecast will center all lines and it will be in proper position then
-    program_headerLineLong        = "\nLane  Name                    Year School      Seed Time"
-    program_headerLineShort       = "\nLane  Name                 Year School Seed Time"
-    program_headerLineDivingLong  = "\nLane  Name                 Year School      Seed Points"
-    program_headerLineDivingShort = "\nLane  Name Year School      Seed Points"
-    program_headerLineRelayLong   = "\nLane  Team                         Relay                   Seed Time"         
-    program_headerLineRelayShort  = "\nLane  Team Relay Seed Time"         
+    program_header_line_long        = "\nLane  Name                    Year School      Seed Time"
+    program_header_line_short       = "\nLane  Name                 Year School Seed Time"
+    program_header_line_diving_long  = "\nLane  Name                 Year School      Seed Points"
+    program_header_line_diving_short= "\nLane  Name Year School      Seed Points"
+    program_header_line_relay_long  = "\nLane  Team                         Relay                   Seed Time"         
+    program_header_line_relay_short  = "\nLane  Team Relay Seed Time"         
 
     ## Define local variables
-    eventNum = 0
-    heatNum = 0
+    event_num = 0
+    heat_num = 0
     num_files_generated = 0
     num_header_lines = 3
     found_header_line = 0
     output_list = []
 
     re_program_lane = re.compile('^[*]?\d{1,2} ')
-    re_program_lane_ind = re.compile('^(\d{1,2})\s+([A-z\' \.]+, [A-z ]+) ([A-Z0-9]{1,2})\s+([A-Z \'.].*)\s+([X]?[0-9:.]+|NT|XNT|NP|XNP)*')
+    re_program_lane_ind = re.compile('^(\d{1,2})\s+([A-z\' \.]+, [A-z ]+?) ([A-Z0-9]{1,2})\s+([A-Z \'.].*)\s+([X]?[0-9:.]+|NT|XNT|NP|XNP)*')
     re_program_lane_relay = re.compile('^(\d{1,2})\s+([A-Z \'.].*)\s+([A-Z])\s+([X]?[0-9:.]+|NT|XNT)*')
 
     ## Remove the trailing hyphen (-) and -VA from school name
@@ -450,6 +452,9 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
     ## For relays add a space between the persons name and next swimmer number
     re_program_space_relay_name = re.compile(r'(\S)([2-4]\))')
     re_program_check_relay_name_line = re.compile('1\)')
+    
+    ## Quote output for debuggin
+    q = "'" if quote_output else ""
 
     #####################################################################################
     ## PROGRAM: Loop through each line of the input file
@@ -475,7 +480,7 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
             if re.search("^%s" % mm_license_name, line):
                 found_header_line = 1
                 
-                num_files = create_output_file_program( output_dir, eventNum, heatNum, output_list, displayRelaySwimmerNames, splitRelaysToMultipleFiles )
+                num_files = create_output_file_program( output_dir, event_num, heat_num, output_list, display_relay_swimmer_names, split_relays_to_multiple_files )
                 num_files_generated += num_files
 
                 ## Reset and start processing the next event/heat
@@ -517,7 +522,7 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                 clean_event_str = " ".join(clean_event_str)
                 # Get the line number
                 event_str = clean_event_str.split(' ', 4)
-                eventNum = int(event_str[1].strip())
+                event_num = int(event_str[1].strip())
 
                 ## H4 is the Event number/name line
                 output_list.append(('H4', f"{line} {unofficial_results}" ))
@@ -536,33 +541,33 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                 # PROGRAM: Get the heat/flight number for user later on
                 #####################################################################################
                 split_heat_str = split_heat_str.split(' ', 4)
-                heatNum = int(split_heat_str[1])
+                heat_num = int(split_heat_str[1])
 
                 ## H6 is the Heat info, save it in case we want to output it later
                 output_list.append(('H5', f"{line}" ))
 
                 #####################################################################################
-                ## PROGRAM: Set nameListHeader to be displayed above the list of swimmers
+                ## PROGRAM: Set name_list_header to be displayed above the list of swimmers
                 ##          This is only set once per Event/Heat so moving this is probablimetic
                 #####################################################################################
                 # Determin heading based on short or full school name
-                nameListHeader = ""
-                if eventNum in eventNumIndividual:
-                    nameListHeader = program_headerLineShort if shortenSchoolNames else program_headerLineLong   
-                elif eventNum in eventNumDiving:
-                    nameListHeader = program_headerLineDivingShort if shortenSchoolNames else program_headerLineDivingLong
-                elif eventNum in eventNumRelay:
-                    nameListHeader = program_headerLineRelayShort if shortenSchoolNames else program_headerLineRelayLong
+                name_list_header = ""
+                if event_num in event_num_individual:
+                    name_list_header = program_header_line_short if shorten_school_names else program_header_line_long   
+                elif event_num in event_num_diving:
+                    name_list_header = program_header_line_diving_short if shorten_school_names else program_header_line_diving_long
+                elif event_num in event_num_relay:
+                    name_list_header = program_header_line_relay_short if shorten_school_names else program_header_line_relay_long
                 
-                if nameListHeader != "":
-                    output_list.append(('H6', nameListHeader))
+                if name_list_header != "":
+                    output_list.append(('H6', name_list_header))
 
 
             #####################################################################################
             ## PROGRAM: INDIVIDUAL Extract the individual Entry Line
             ## i.e. 2   Robison, Ryan            JR  Bishop O'Connell-PV      X2:22.35                        
             #####################################################################################
-            if (eventNum in eventNumIndividual or eventNum in eventNumDiving) and re_program_lane.search(line):
+            if (event_num in event_num_individual or event_num in event_num_diving) and re_program_lane.search(line):
                 ## Fix for case where School Name butts up to the X in seed time
                 #if re.search('[A-z]X\d', line):
                 line = re_program_space_team_seed.sub(r'\1 \2', line )
@@ -577,13 +582,13 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                     entry_seedtime        = str(entry_line_list[0][4]).strip()
                     
                     ## If we want to use Shortened School Names, run the lookup
-                    if shortenSchoolNames:
+                    if shorten_school_names:
                         ## The length of the school name in the MM report varies by event type
-                        school_name_len = programDiveDictFullNameLen if eventNum in eventNumDiving else programIndDictFullNameLen
+                        school_name_len = program_dive_dict_full_name_len if event_num in event_num_diving else program_ind_dict_full_name_len
 
                         entry_sch_short = entry_sch_long
-                        for k,v in schoolNameDict.items():
-                            entry_sch_short = entry_sch_short.replace(k[:school_name_len], v.ljust(schoolNameDictShortNameLen, ' '))
+                        for k,v in school_name_dict.items():
+                            entry_sch_short = entry_sch_short.replace(k[:school_name_len], v.ljust(school_name_dict_short_name_len, ' '))
                             if entry_sch_short != entry_sch_long:
                                 break
 
@@ -601,10 +606,10 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                     entry_sch_long = re_program_sch_cleanup1.sub(r'\1', entry_sch_long)
                     entry_sch_long = re_program_sch_cleanup2.sub(r'\1', entry_sch_long)
                     ## Format the output lines with either long (per meet program) or short school names
-                    output_str = f" {entry_lane:>2} {entry_name:<25} {entry_grade:>2} {entry_sch_long:<25} {entry_seedtime:>8}"
+                    output_str = f" {q}{entry_lane:>2}{q} {q}{entry_name:<25}{q} {q}{entry_grade:>2}{q} {q}{entry_sch_long:<25}{q} {q}{entry_seedtime:>8}{q}"
 
-                    if shortenSchoolNames:
-                        output_str = f" {entry_lane:>2} {entry_name:<25} {entry_grade:>2} {entry_sch_short:<4} {entry_seedtime:>8}"
+                    if shorten_school_names:
+                        output_str = f" {q}{entry_lane:>2}{q} {q}{entry_name:<25}{q} {q}{entry_grade:>2}{q} {q}{entry_sch_short:<4}{q} {q}{entry_seedtime:>8}{q}"
                     
                     output_list.append(('LANE', output_str))
             
@@ -612,7 +617,7 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
             ## PROGRAM: RELAY Find the replay line with LANE, SCHOOL, RELAY TEAM SEEDTIME
             ## 1 Seton Swim            A                    1:46.82      1:40.65        32
             #####################################################################################
-            if eventNum in eventNumRelay and re_program_lane.search(line):
+            if event_num in event_num_relay and re_program_lane.search(line):
                 entry_line_list = re_program_lane_relay.findall(line)
                 #  REGEX Positions                 LANE   SCHOOL    RELAY     SEEDTIME
                 if entry_line_list:
@@ -624,20 +629,20 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
                     #####################################################################################
                     ## PROGRAM: Replace long school name with short name for RELAY events
                     #####################################################################################
-                    if shortenSchoolNames:
+                    if shorten_school_names:
                         entryline_sch_short = entryline_sch_long
 
-                        for k,v in schoolNameDict.items():
-                            entryline_sch_short = entryline_sch_short.replace(k.ljust(programRelayDictFullNameLen,' ')[:programRelayDictFullNameLen], v.ljust(schoolNameDictShortNameLen, ' '))
+                        for k,v in school_name_dict.items():
+                            entryline_sch_short = entryline_sch_short.replace(k.ljust(program_relay_dict_full_name_len,' ')[:program_relay_dict_full_name_len], v.ljust(school_name_dict_short_name_len, ' '))
                             if entryline_sch_short != entryline_sch_long:
                                 break
-                        output_str = f"{entryline_place:>2} {entryline_sch_short:<4} {entryline_relay:1} {entryline_seedtime:>8}"
+                        output_str = f"{q}{entryline_place:>2}{q} {q}{entryline_sch_short:<4}{q} {q}{entryline_relay:1}{q} {q}{entryline_seedtime:>8}{q}"
                     else:
                         ## Still issues with School names ending in - or -VA
                         entryline_sch_long = re_program_sch_cleanup1.sub(r'\1', entryline_sch_long)
                         entryline_sch_long = re_program_sch_cleanup2.sub(r'\1', entryline_sch_long)
 
-                    output_str = f"{entryline_place:>2} {entryline_sch_long:<28} {entryline_relay:1} {entryline_seedtime:>8}"
+                    output_str = f"{q}{entryline_place:>2}{q} {q}{entryline_sch_long:<28}{q} {q}{entryline_relay:1}{q} {q}{entryline_seedtime:>8}{q}"
 
                 output_list.append(( "LANE", output_str ))
 
@@ -647,7 +652,7 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
             ## If this is a relay, add a space between the last swimmer name and the next swimmer number
             ## This line  1) LastName1, All2) LastName2, Ashley3) LastName3, All4) LastName4, Eri
             ## becomes    1) LastName1, All 2) LastName2, Ashley 3) LastName3, All 4) LastName4, Eri
-            if eventNum in eventNumRelay:
+            if event_num in event_num_relay:
                 #found = re.search('\S[2-4]\)',line)
                 found = re_program_check_relay_name_line.search(line)
                 if found:
@@ -660,7 +665,7 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
     ## Write out last event
     #####################################################################################
 
-    num_files = create_output_file_program( output_dir, eventNum, heatNum, output_list, displayRelaySwimmerNames, splitRelaysToMultipleFiles )
+    num_files = create_output_file_program( output_dir, event_num, heat_num, output_list, display_relay_swimmer_names, split_relays_to_multiple_files )
     num_files_generated += num_files
 
     #####################################################################################
@@ -681,7 +686,7 @@ def generate_program_files( report_type, meet_report_filename, output_dir, mm_li
 #####################################################################################
 #####################################################################################
 #####################################################################################
-def generate_results_files( report_type, meet_report_filename, output_dir, mm_license_name, shortenSchoolNames, addNewLineToRelayEntries, displayRelaySwimmerNames, namesfirstlast ):
+def generate_results_files( report_type, meet_report_filename, output_dir, mm_license_name, shorten_school_names, add_new_line_to_relay_entries, display_relay_swimmer_names, namesfirstlast, quote_output ):
     """ Given the MeetManager results file file formatted in a specific manner,
         generate indiviual result files for use in Wirecast displays """
     
@@ -692,21 +697,21 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
     #####################################################################################
     resultRelayDictFullNameLen = 22
     resultsIndDictFullNameLen  = 25
-    schoolNameDictShortNameLen = 4  # Four character name plus spaces for padding between EntryTime
+    school_name_dict_short_name_len = 4  # Four character name plus spaces for padding between EntryTime
     resultsDiveDictFullNameLen = 25
 
     ## NOTE: Do not align up these headers with the TXT output.  
     ##  Wirecast will center all lines and it will be in proper position then
-    result_headerLineLong   = "Name                    Yr School                 Seed Time  Finals Time      Points"
-    result_headerLineShort  = "Name                    Yr School Seed Time  Finals Time      Points"
-    result_headerLineRelayLong  = "   Team                       Relay                  Seed Time  Finals Time      Points"
-    result_headerLineRelayShort = "   Team       Relay Seed Time  Finals Time Points"
-    result_headerLineDivingLong  = "Name                    Yr School                           Finals Score      Points"
-    result_headerLineDivingShort = "Name    Yr School                           Finals Score      Points"
+    result_header_line_long   = "Name                    Yr School                 Seed Time  Finals Time      Points"
+    result_header_line_short  = "Name                    Yr School Seed Time  Finals Time      Points"
+    result_header_line_relay_long = "   Team                       Relay                  Seed Time  Finals Time      Points"
+    result_header_line_relay_short = "   Team       Relay Seed Time  Finals Time Points"
+    result_header_line_diving_long  = "Name                    Yr School                           Finals Score      Points"
+    result_header_line_diving_short= "Name    Yr School                           Finals Score      Points"
 
 
     ## Define local variables
-    eventNum = 0
+    event_num = 0
     num_files_generated = 0
     num_header_lines = 3
     found_header_line = 0
@@ -716,13 +721,16 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
 
     # #                                 TIE? PLACE       LAST          FIRST     GR           SCHOOL           SEEDTIME|NT    FINALTIME      POINTS
     #re_results_lane_ind = re.compile('^([*]?\d{1,2})\s+(\w+, \w+)\s+(\w+) ([A-Z \'.].*?)\s*([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
-    re_results_lane_ind  = re.compile('^([*]?\d{1,2})\s+([A-z\' \.]+, [A-z ]+) ([A-Z0-9]{1,2})\s+([A-Z \'.].*?)\s*([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
+    re_results_lane_ind  = re.compile('^([*]?\d{1,2})\s+([A-z\' \.]+, [A-z ]+?) ([A-Z0-9]{1,2})\s+([A-Z \'.].*?)([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
 
     #                                     TIE? PLACE   SCHOOL           RELAY     SEEDTIME|NT    FINALTIME     POINTS
     re_results_lane_relay = re.compile('^([*]?\d{1,2})\s+([A-Z \'.].*)\s+([A-Z])\s+([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
 
     re_results_space_relay_name = re.compile(r'(\S)([2-4]\))')
     re_results_check_relay_name_line = re.compile('1\)')
+
+    ## Quote output for debuggin
+    q = "'" if quote_output else ""
 
     #####################################################################################
     ## RESULTS: Loop through each line of the input file
@@ -749,7 +757,7 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                 found_header_line = 1
                 
                 ## Start the next event file
-                num_files = create_output_file_results( output_dir, eventNum, output_list, displayRelaySwimmerNames )
+                num_files = create_output_file_results( output_dir, event_num, output_list, display_relay_swimmer_names )
                 num_files_generated += num_files
 
                 ## Reset and start processing the next event
@@ -792,25 +800,25 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                 clean_event_str = " ".join(clean_event_str)
                 # Get the line number
                 event_str = clean_event_str.split(' ', 4)
-                eventNum = int(event_str[1].strip())
+                event_num = int(event_str[1].strip())
 
                 ## H4 is the Event number/name line
                 output_list.append(('H4', f"{line} {unofficial_results}" ))
 
                 #####################################################################################
-                ## RESULTS: Set nameListHeader to be displayed above the list of swimmers
+                ## RESULTS: Set name_list_header to be displayed above the list of swimmers
                 #####################################################################################
                 # Set the default (LONG) headers here. 
-                nameListHeader = ""
-                if eventNum in eventNumIndividual:
-                    nameListHeader = result_headerLineShort if shortenSchoolNames else result_headerLineLong
-                elif eventNum in eventNumDiving:
-                        nameListHeader = result_headerLineDivingShort if shortenSchoolNames else result_headerLineDivingLong
-                elif eventNum in eventNumRelay:
-                    nameListHeader = result_headerLineRelayShort if shortenSchoolNames else result_headerLineRelayLong
+                name_list_header = ""
+                if event_num in event_num_individual:
+                    name_list_header = result_header_line_short if shorten_school_names else result_header_line_long
+                elif event_num in event_num_diving:
+                        name_list_header = result_header_line_diving_short if shorten_school_names else result_header_line_diving_long
+                elif event_num in event_num_relay:
+                    name_list_header = result_header_line_relay_short if shorten_school_names else result_header_line_relay_long
 
-                if nameListHeader != "":
-                    output_list.append(('H6', nameListHeader))
+                if name_list_header != "":
+                    output_list.append(('H6', name_list_header))
 
             #####################################################################################
             ## RESULTS: For place winner results, add a space after top 1-9 swimmers 
@@ -824,7 +832,7 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
             ## i.e. 1 Last, First           SR SCH   5:31.55      5:23.86        16
             ## Note: For ties an asterick is placed before the place number and the points could have a decimal
             #####################################################################################
-            if (eventNum in eventNumIndividual or eventNum in eventNumDiving) and re_results_lane.search(line):
+            if (event_num in event_num_individual or event_num in event_num_diving) and re_results_lane.search(line):
                 place_line_list = re_results_lane_ind.findall(line)
                 if place_line_list:
                     placeline_place       = str(place_line_list[0][0]).strip()
@@ -833,18 +841,18 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                     placeline_school_long = str(place_line_list[0][3]).strip()
                     placeline_seedtime    = str(place_line_list[0][4]).strip()
                     placeline_finaltime   = str(place_line_list[0][5]).strip()
-                    placeline_points      = str(place_line_list[0][6]).strip()
+                    placeline_points      = str(place_line_list[0][6]).strip()              
 
                     logger(f"RESULTS: place {placeline_place}: name {placeline_name_last_first}: grade {placeline_grade}: sch {placeline_school_long}: seed {placeline_seedtime}: final {placeline_finaltime}: points {placeline_points}:")
                     ## If we want to use Shortened School Names, run the lookup
-                    if shortenSchoolNames:
+                    if shorten_school_names:
                         ## The length of the school name in the MM report varies by event type
-                        school_name_len = resultsIndDictFullNameLen if eventNum in eventNumIndividual else resultsDiveDictFullNameLen
+                        school_name_len = resultsIndDictFullNameLen if event_num in event_num_individual else resultsDiveDictFullNameLen
                         
 
                         placeline_school_short = placeline_school_long
-                        for k,v in schoolNameDict.items():
-                            placeline_school_short = placeline_school_short.replace(k[:school_name_len], v.ljust(schoolNameDictShortNameLen, ' '))
+                        for k,v in school_name_dict.items():
+                            placeline_school_short = placeline_school_short.replace(k[:school_name_len], v.ljust(school_name_dict_short_name_len, ' '))
                             if placeline_school_short != placeline_school_long:
                                 break
 
@@ -859,9 +867,9 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                         result_name = placeline_name_last_first
 
                     ## Format the output lines with either long (per meet program) or short school names
-                    output_str = f"{placeline_place:>3} {result_name:<25} {placeline_grade:>2} {placeline_school_long:<25} {placeline_seedtime:>8} {placeline_finaltime:>8} {placeline_points:>2}"
-                    if shortenSchoolNames:
-                        output_str = f"{placeline_place:>3} {result_name:<25} {placeline_school_short:<4} {placeline_grade:>2} {placeline_seedtime:>8} {placeline_finaltime:>8} {placeline_points:>2}"
+                    output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_grade:>2}{q} {q}{placeline_school_long:<25}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
+                    if shorten_school_names:
+                        output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_school_short:<4}{q} {q}{placeline_grade:>2}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
                     
                     output_list.append(('PLACE', output_str))
             
@@ -870,7 +878,7 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
             ## 1 SST            A                    1:46.82      1:40.65        32
             ## Note: For ties an asterick is placed before the place number and the points could have a decimal
             #####################################################################################
-            if eventNum in eventNumRelay and re_results_lane.search(line):
+            if event_num in event_num_relay and re_results_lane.search(line):
                 place_line_list = re_results_lane_relay.findall(line)
 
                 if place_line_list:
@@ -884,17 +892,17 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
                     #####################################################################################
                     ## RESULTS: Replace long school name with short name for RELAY events
                     #####################################################################################
-                    if shortenSchoolNames:
+                    if shorten_school_names:
                         placeline_sch_short = placeline_sch_long
 
-                        for k,v in schoolNameDict.items():
-                            placeline_sch_short = placeline_sch_short.replace(k.ljust(resultRelayDictFullNameLen,' ')[:resultRelayDictFullNameLen], v.ljust(schoolNameDictShortNameLen, ' '))
+                        for k,v in school_name_dict.items():
+                            placeline_sch_short = placeline_sch_short.replace(k.ljust(resultRelayDictFullNameLen,' ')[:resultRelayDictFullNameLen], v.ljust(school_name_dict_short_name_len, ' '))
                             if placeline_sch_short != placeline_sch_long:
                                 break
 
-                        output_str = f" {placeline_place:>3} {placeline_sch_short:<4} {placeline_relay} {placeline_seedtime:>8} {placeline_finaltime:>8} {placeline_points:>2}"
+                        output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_short:<4}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
                     else:
-                        output_str = f" {placeline_place:>3} {placeline_sch_long:<25} {placeline_relay} {placeline_seedtime:>8} {placeline_finaltime:>8} {placeline_points:>2}"
+                        output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_long:<25}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
                     output_list.append(( "PLACE", output_str ))
 
             #####################################################################################
@@ -909,7 +917,7 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
             ## RESULTS: For results on relays and the swimmers name as well to the list
             ##          Its up to the output function to determine to display them or not
             #####################################################################################
-            if displayRelaySwimmerNames and eventNum in eventNumRelay:
+            if display_relay_swimmer_names and event_num in event_num_relay:
                 found = re_results_check_relay_name_line.search(line)
                 if found:
                     line = re_results_check_relay_name_line.sub( r'\1 \2',line )
@@ -921,7 +929,7 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
     ## Write out last event
     #####################################################################################
 
-    create_output_file_results( output_dir, eventNum, output_list, displayRelaySwimmerNames )
+    create_output_file_results( output_dir, event_num, output_list, display_relay_swimmer_names )
     num_files_generated += 1
 
     #####################################################################################
@@ -930,11 +938,11 @@ def generate_results_files( report_type, meet_report_filename, output_dir, mm_li
     return num_files_generated
 
 
-def cleanup_new_files( filePrefix, output_dir ):
+def cleanup_new_files( file_prefix, output_dir ):
     """ Remove the one or many blank lines at end of the file """
 
     txtfiles = []
-    fileGlob = f"{output_dir}{filePrefix}*.txt"
+    fileGlob = f"{output_dir}{file_prefix}*.txt"
     for file in glob.glob(fileGlob):
         txtfiles.append(file)
     
@@ -954,17 +962,17 @@ def cleanup_new_files( filePrefix, output_dir ):
 #####################################################################################
 #####################################################################################
 #####################################################################################
-def generate_crawler_result_files( report_type, meet_report_filename, output_dir, mm_license_name, shorten_school_names, display_swimmers_in_relay ):
+def generate_crawler_result_files( report_type, meet_report_filename, output_dir, mm_license_name, shorten_school_names, display_swimmers_in_relay, quote_output ):
     """  From the Meet Results File, generate the crawler files per event """
 
-    eventNum = 0
+    event_num = 0
     #official_results = "OFFICIAL RESULTS"
     official_results = "UNOFFICIAL RESULTS"
     crawler_string = official_results
     found_header_line = 0
     num_header_lines = 3
-    schoolNameDictFullNameLen = 25
-    schoolNameDictShortNameLen = 4
+    school_name_dict_full_name_len = 25
+    school_name_dict_short_name_len = 4
 
     ## Tracking searcing for/finding/processing the three header records on each input file
     ## For crawler, we only want the header once
@@ -1039,8 +1047,8 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
             if line.lower().startswith(("event")):
                 ## Found an event.  If its not the first one, the we are done generating the string
                 ## from the last event. Save this event data and prepare for next event
-                if eventNum > 0:
-                    crawler_list.append( (eventNum, crawler_string  ))
+                if event_num > 0:
+                    crawler_list.append( (event_num, crawler_string  ))
                     crawler_string = official_results
 
                 #####################################################################################
@@ -1052,7 +1060,7 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
                 clean_event_str = " ".join(clean_event_str)
                 # Get the event number
                 event_str = clean_event_str.split(' ', 4)
-                eventNum = int(event_str[1].strip())
+                event_num = int(event_str[1].strip())
 
                 ## Clear out old string and start new for next event
                 output_str = ""
@@ -1073,7 +1081,7 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
             ## i.e. 1 Last, First           SR SCH   5:31.55      5:23.86        16
             ## Note: For ties an asterick is placed before the place number and the points could have a decimal
             #####################################################################################
-            if (eventNum in eventNumIndividual  or eventNum in eventNumDiving) and re_crawler_lane.search(line):
+            if (event_num in event_num_individual  or event_num in event_num_diving) and re_crawler_lane.search(line):
                 place_line_list = re_crawler_lane_ind.findall(line)
                 if place_line_list:
                     placeline_place     = str(place_line_list[0][0]).strip()
@@ -1089,7 +1097,7 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
                     ## CRAWLER: Replace long school name with short name for ALL events
                     #####################################################################################
                     school_name_short = placeline_sch_long
-                    for k,v in schoolNameDict.items():
+                    for k,v in school_name_dict.items():
                         school_name_short = school_name_short.replace(k, v)
                         if school_name_short != placeline_sch_long:
                             break
@@ -1106,7 +1114,7 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
             ## 1 SST            A                    1:46.82      1:40.65        32
             ## Note: For ties an asterick is placed before the place number and the points could have a decimal
             #####################################################################################
-            if eventNum in eventNumRelay and re_crawler_lane.search(line):
+            if event_num in event_num_relay and re_crawler_lane.search(line):
                 place_line_list = re_crawler_lane_relay.findall(line)
 
                 if place_line_list:
@@ -1121,7 +1129,7 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
                         placeline_sch_short = placeline_sch_long
                         x = len(placeline_sch_long)
 
-                        for k,v in schoolNameDict.items():
+                        for k,v in school_name_dict.items():
                             placeline_sch_short = placeline_sch_short.replace(k.ljust(len(k),' '), v)
                             if placeline_sch_short != placeline_sch_long:
                                 break
@@ -1135,7 +1143,7 @@ def generate_crawler_result_files( report_type, meet_report_filename, output_dir
     #####################################################################################
     ## Save last event string
     #####################################################################################
-    crawler_list.append( (eventNum, crawler_string ))
+    crawler_list.append( (event_num, crawler_string ))
 
     #####################################################################################
     ## Write data saved in list to files
@@ -1170,6 +1178,7 @@ if __name__ == "__main__":
     parser.add_argument('-R', '--displayRelayNames',dest='displayRelayNames',   action='store_true',            help="Display relay swimmer names, not just the team name in results")
     parser.add_argument('-d', '--debug',            dest='debug',               action='store_true',            help="Print out results to console")
     parser.add_argument('-D', '--delete',           dest='delete',              action='store_true',            help="Delete existing files in OUTPUT_DIR")
+    parser.add_argument('-q', '--quote ',           dest='quote',               action='store_true',            help="Quote the output fields for DEBUGGING")
     parser.add_argument('-h', '--help',             dest='help',                action='help', default=argparse.SUPPRESS,                 help="Tested with MM 8")
     parser.set_defaults(shortschoolnames=True)
     parser.set_defaults(splitrelays=False)
@@ -1177,6 +1186,7 @@ if __name__ == "__main__":
     parser.set_defaults(namesfirstlast=False)
     parser.set_defaults(DEBUG=False)
     parser.set_defaults(delete=False)
+    parser.set_defaults(quote=False)
 
     args = parser.parse_args()
     
@@ -1210,6 +1220,7 @@ if __name__ == "__main__":
               f"\tDisplay Relays Names \t{args.displayRelayNames} \n"+ \
               f"\tSpaces in Relay Names \t{spacerelaynames}\n" + \
               f"\tDelete exiting files \t{args.delete}\n" + \
+              f"\tQuote output fields \t{args.quote}\n" + \
               f"\n   Headers: \n" + \
               f"\tMeet Name: \t\t'{meet_name}' \n" + \
               f"\tMeet Date: \t\t'{meet_date}' \n" + \
@@ -1230,7 +1241,7 @@ if __name__ == "__main__":
     ## Generate wirecast files from a MEET PROGRAM txt file
     #####################################################################################
     if args.reporttype == report_type_program:
-        total_files_generated = generate_program_files( args.reporttype, args.inputdir, output_dir, license_name, args.shortschoolnames, args.splitrelays, spacerelaynames, args.displayRelayNames, args.namesfirstlast )
+        total_files_generated = process_PROGRAM( args.reporttype, args.inputdir, output_dir, license_name, args.shortschoolnames, args.splitrelays, spacerelaynames, args.displayRelayNames, args.namesfirstlast, args.quote )
         print(f"Process Completed: \n\tNumber of files generated: {total_files_generated}")
 
 
@@ -1238,8 +1249,8 @@ if __name__ == "__main__":
     ## Generate wirecast files RESULTS and CRAWLER from a MEET RESULTS txt file
     #####################################################################################
     if args.reporttype == report_type_results:
-        total_files_generated_results =  generate_results_files( report_type_results, args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames, args.displayRelayNames, args.namesfirstlast )
-        total_files_generated_crawler =  generate_crawler_result_files( report_type_results, args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames )
+        total_files_generated_results =  generate_results_files( report_type_results, args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames, args.displayRelayNames, args.namesfirstlast, args.quote )
+        total_files_generated_crawler =  generate_crawler_result_files( report_type_results, args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames, args.quote )
         total_files_generated = total_files_generated_results + total_files_generated_crawler
         print(f"Process Completed: \n\tNumber of files generated total:\t{total_files_generated}")
         print(f"\tNumber of files generated results:\t{total_files_generated_results}")
@@ -1249,5 +1260,5 @@ if __name__ == "__main__":
     ## Generate wirecast CRAWLER iles from a MEET RESULTS txt file
     #####################################################################################
     if args.reporttype == report_type_crawler:
-        total_files_generated_crawler =  generate_crawler_result_files( report_type_results, args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames )
+        total_files_generated_crawler =  generate_crawler_result_files( report_type_results, args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames, args.quote )
         print(f"Process Completed: \n\tNumber of files generated total:\t{total_files_generated_crawler}")
