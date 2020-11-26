@@ -25,9 +25,9 @@ import re
 import argparse
 from pathlib import Path
 import glob
+import logging
 
 ## Globals
-DEBUG=False
 report_type_results = "result"
 report_type_program = "program"
 report_type_crawler = "crawler"
@@ -91,15 +91,6 @@ school_name_dict = {
 
 
 #####################################################################################
-## Control logging/not logging of messages with CLI param
-#####################################################################################
-def logger( log_string ):
-    """ Prints out logs if DEBUG command line parm was enabled """
-    if DEBUG:
-        print( log_string )
-
-
-#####################################################################################
 ## CLI param to remove existing files from directory.  This is needed when
 ## old heats won't be overwritten so we need to make sure they are removed
 #####################################################################################
@@ -139,7 +130,7 @@ def create_output_file_results( output_dir_root: str,
         row_type = output_tuple[0]
         row_text = output_tuple[1]
 
-        logger(f"RESULTS: e: {event_num} id: {row_type} t: {row_text}")
+        logging.debug(f"RESULTS: e: {event_num} id: {row_type} t: {row_text}")
 
         ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
         if row_type == 'H4':
@@ -272,7 +263,7 @@ def create_output_file_crawler( report_type, output_dir_root, crawler_list ):
         event_num = crawler_event[0]
         crawler_text = crawler_event[1]
 
-        logger(f"crawler: e: {event_num} t: {crawler_text}")
+        logging.debug(f"crawler: e: {event_num} t: {crawler_text}")
         ## Generate event specific file
         if event_num > 0:
             output_file_name = output_dir + f"{file_name_prefix}_{report_type}_event{event_num:0>2}.txt"
@@ -390,7 +381,7 @@ def get_report_header_info( meet_report_filename ):
             report_type = report_type.strip()
             report_type_meet_name = report_type_meet_name.strip()
             
-        #logger(f"Header: licensee '{license_name}' meet_name: '{meet_name}' meet_date: '{meet_date}' report_type: '{report_type}'")
+        #logging.debug(f"Header: licensee '{license_name}' meet_name: '{meet_name}' meet_date: '{meet_date}' report_type: '{report_type}'")
 
         return meet_name, meet_date, license_name, report_type, report_type_meet_name
 
@@ -849,7 +840,7 @@ def process_RESULT( report_type, meet_report_filename, output_dir, mm_license_na
                     placeline_finaltime   = str(place_line_list[0][5]).strip()
                     placeline_points      = str(place_line_list[0][6]).strip()              
 
-                    logger(f"RESULTS: place {placeline_place}: name {placeline_name_last_first}: grade {placeline_grade}: sch {placeline_school_long}: seed {placeline_seedtime}: final {placeline_finaltime}: points {placeline_points}:")
+                    logging.debug(f"RESULTS: place {placeline_place}: name {placeline_name_last_first}: grade {placeline_grade}: sch {placeline_school_long}: seed {placeline_seedtime}: final {placeline_finaltime}: points {placeline_points}:")
                     ## If we want to use Shortened School Names, run the lookup
                     if shorten_school_names:
                         ## The length of the school name in the MM report varies by event type
@@ -1158,13 +1149,13 @@ def process_CRAWLER( report_type, meet_report_filename, output_dir, mm_license_n
 
     return total_files_generated
 
+
 #####################################################################################
 #####################################################################################
 ##  M A I N
 #####################################################################################
 #####################################################################################
-if __name__ == "__main__":
-
+def process_MAIN():
     #####################################################################################
     ## Parse out command line arguments
     #####################################################################################
@@ -1182,7 +1173,8 @@ if __name__ == "__main__":
     #parser.add_argument('-L', '--licenseName',      dest='licenseName',         default="Seton School",         help="MM license name as printed out on reports")
     parser.add_argument('-r', '--splitrelays',      dest='splitrelays',         action='store_true',            help="Split Relays into multiple files")
     parser.add_argument('-R', '--displayRelayNames',dest='displayRelayNames',   action='store_true',            help="Display relay swimmer names, not just the team name in results")
-    parser.add_argument('-d', '--debug',            dest='debug',               action='store_true',            help="Print out results to console")
+    parser.add_argument('-d', '--log',              dest='loglevel',          default='info', choices=['error', 'warning', 'info', 'debug'],            
+                                                                                                                help="Set debugging level2")
     parser.add_argument('-D', '--delete',           dest='delete',              action='store_true',            help="Delete existing files in OUTPUT_DIR")
     parser.add_argument('-q', '--quote ',           dest='quote',               action='store_true',            help="Quote the output fields for DEBUGGING")
     parser.add_argument('-h', '--help',             dest='help',                action='help', default=argparse.SUPPRESS,                 help="Tested with MM 8")
@@ -1190,17 +1182,31 @@ if __name__ == "__main__":
     parser.set_defaults(splitrelays=False)
     parser.set_defaults(displayRelayNames=False)
     parser.set_defaults(namesfirstlast=False)
-    parser.set_defaults(DEBUG=False)
     parser.set_defaults(delete=False)
     parser.set_defaults(quote=False)
 
     args = parser.parse_args()
+
+    ## Determine logging logleve
+    loglevel = logging.DEBUG
+    if args.loglevel == "debug":
+        loglevel = logging.DEBUG
+    elif args.loglevel == "info":
+        loglevel = logging.INFO
+    elif args.loglevel == "warning":
+        loglevel = logging.WARNING
+    elif args.loglevel == "error":
+        loglevel = logging.ERROR
+
+    #logging.basicConfig(flogging.DEBUGilename='example.log', filemode='w', level=logging.DEBUG) 
+    # logging.basicConfig( format='%(levelname)s:%(message)s', level=logging.INFO)
+    logging.basicConfig( format='%(message)s', level=loglevel)
+
     process_to_run = {"program": False, "results": False, "crawler": False}
     
     report_type_to_run = args.reporttype
 
     ## Set global debug flag
-    DEBUG = args.debug
     total_files_generated_program = 0
     total_files_generated_results = 0
     total_files_generated_crawler = 0
@@ -1243,6 +1249,7 @@ if __name__ == "__main__":
               f"\tSpaces in Relay Names \t{spacerelaynames}\n" + \
               f"\tDelete exiting files \t{args.delete}\n" + \
               f"\tQuote output fields \t{args.quote}\n" + \
+              f"\tLog Level \t\t{args.loglevel}\n" + \
               f"\n   Headers: \n" + \
               f"\tMeet Name: \t\t'{meet_name}' \n" + \
               f"\tMeet Date: \t\t'{meet_date}' \n" + \
@@ -1255,7 +1262,7 @@ if __name__ == "__main__":
               f"\tcrawler: \t\t'{ process_to_run['crawler']}' \n" + \
               ""
 
-    print( logargs )
+    logging.warning( logargs )
 
 
 
@@ -1272,7 +1279,6 @@ if __name__ == "__main__":
     if process_to_run['program']:
         total_files_generated_program = process_PROGRAM( args.reporttype, args.inputdir, output_dir, license_name, args.shortschoolnames, args.splitrelays, spacerelaynames, args.displayRelayNames, args.namesfirstlast, args.quote )
 
-
     #####################################################################################
     ## Generate wirecast files RESULTS and CRAWLER from a MEET RESULTS txt file
     #####################################################################################
@@ -1280,23 +1286,26 @@ if __name__ == "__main__":
         total_files_generated_results =  process_RESULT( report_type_results, args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames, args.displayRelayNames, args.namesfirstlast, args.quote )
         #total_files_generated_crawler =  process_CRAWLER( report_type_results, args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames, args.quote )
         total_files_generated = total_files_generated_results + total_files_generated_crawler
-        print(f"Process Completed: \n\tNumber of files generated total:\t{total_files_generated}")
-        print(f"\tNumber of files generated results:\t{total_files_generated_results}")
-        print(f"\tNumber of files generated crawler:\t{total_files_generated_crawler}")
 
     #####################################################################################
     ## Generate wirecast CRAWLER iles from a MEET RESULTS txt file
     #####################################################################################
     if process_to_run['crawler']:
         total_files_generated_crawler =  process_CRAWLER( report_type_results, args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames, args.quote )
-        print(f"Process Completed: \n\tNumber of files generated total:\t{total_files_generated_crawler}")
 
 
-    print(f"Process Completed:")
+    logging.warning(f"Process Completed:")
     if total_files_generated_program > 0:
-        print(f"\tNumber of 'Program' files generated: {total_files_generated_program}")
+        logging.warning(f"\tNumber of 'Program' files generated: {total_files_generated_program}")
     if total_files_generated_results > 0:
-        print(f"\tNumber of 'Program' files generated: {total_files_generated_results}")
+        logging.warning(f"\tNumber of 'Program' files generated: {total_files_generated_results}")
     if total_files_generated_crawler > 0:
-        print(f"\tNumber of 'Program' files generated: {total_files_generated_crawler}")
+        logging.warning(f"\tNumber of 'Program' files generated: {total_files_generated_crawler}")
 
+#####################################################################################
+#####################################################################################
+##  M A I N
+#####################################################################################
+#####################################################################################
+if __name__ == "__main__":
+    process_MAIN()
