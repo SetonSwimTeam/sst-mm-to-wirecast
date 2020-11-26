@@ -317,7 +317,7 @@ def create_output_file_crawler( report_type, output_dir_root, crawler_list ):
 ## get_report_header_info
 ## Get the header info from the reports first X lines
 #####################################################################################
-def get_report_header_info( report_type, meet_report_filename ):
+def get_report_header_info( meet_report_filename ):
     """ Get the header info from the reports first X lines """
             
     #####################################################################################
@@ -383,10 +383,16 @@ def get_report_header_info( report_type, meet_report_filename ):
         ## Header2.  Break about meet name and meet date               
         #####################################################################################
         report_type = line3_header
-        
+        report_type_meet_name = ""
+
+        if '-' in line3_header:
+            report_type,report_type_meet_name = line3_header.split('-',1)
+            report_type = report_type.strip()
+            report_type_meet_name = report_type_meet_name.strip()
+            
         #logger(f"Header: licensee '{license_name}' meet_name: '{meet_name}' meet_date: '{meet_date}' report_type: '{report_type}'")
 
-        return meet_name, meet_date, license_name, report_type
+        return meet_name, meet_date, license_name, report_type, report_type_meet_name
 
 #####################################################################################
 #####################################################################################
@@ -1205,7 +1211,7 @@ if __name__ == "__main__":
     ## We need to dynamically get the meet name and license_name for use in processing files
     ## The license_name is the first line on the start of every new page/event/heat
     #####################################################################################
-    meet_name, meet_date, license_name, report_type = get_report_header_info( args.reporttype, args.inputdir )
+    meet_name, meet_date, license_name, report_type, report_type_meet_name = get_report_header_info( args.inputdir )
 
     #####################################################################################
     ##
@@ -1231,7 +1237,7 @@ if __name__ == "__main__":
               f"\tInputDir \t\t{args.inputdir} \n" + \
               f"\tRoot OutputDir \t\t{output_dir} \n" + \
               f"\tShort School Names \t{args.shortschoolnames} \n" + \
-              f"\tNamesFirstlast \t{args.namesfirstlast} \n" + \
+              f"\tNamesFirstlast \t\t{args.namesfirstlast} \n" + \
               f"\tSplit Relays \t\t{args.splitrelays} \n"+ \
               f"\tDisplay Relays Names \t{args.displayRelayNames} \n"+ \
               f"\tSpaces in Relay Names \t{spacerelaynames}\n" + \
@@ -1240,6 +1246,7 @@ if __name__ == "__main__":
               f"\n   Headers: \n" + \
               f"\tMeet Name: \t\t'{meet_name}' \n" + \
               f"\tMeet Date: \t\t'{meet_date}' \n" + \
+              f"\tHeader3 Meet Name: \t'{report_type_meet_name}' \n" + \
               f"\tLicensee: \t\t'{license_name}' \n" + \
               f"\tSourceReport: \t\t'{report_type}' \n" + \
               f"\n    Reports to generate: \n" + \
