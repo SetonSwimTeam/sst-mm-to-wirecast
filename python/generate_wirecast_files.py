@@ -94,7 +94,7 @@ school_name_dict = {
 ## CLI param to remove existing files from directory.  This is needed when
 ## old heats won't be overwritten so we need to make sure they are removed
 #####################################################################################
-def remove_files_from_dir( reporttype, directory_name ):
+def remove_files_from_dir( reporttype: str, directory_name: str ):
     """ Remove files from previous run/meet so there are no extra heats/events left over"""
     for root, dirs, files in os.walk(directory_name):
         for file in files:
@@ -155,7 +155,12 @@ def create_output_file_results( output_dir_root: str,
 ####################################################################################
 ## Given an array of data lines PER HEAT, generate the output file
 #####################################################################################
-def create_output_file_program( output_dir_root, event_num, heat_num, output_list, display_relay_swimmer_names, split_relays_to_multiple_files ):
+def create_output_file_program( output_dir_root: str, 
+                                event_num: int, 
+                                heat_num: int,
+                                output_list: list, 
+                                display_relay_swimmer_names: bool,
+                                split_relays_to_multiple_files: bool ) -> int:
     """ Generate the filename and open the next file """
    
     num_files_created = 0
@@ -247,7 +252,7 @@ def write_output_file_crawler( output_file_name, output_str ):
 ## Given a list of tuples (evnt num, crawler_string), generate output files
 ## Generate crawler files for actual events (event_num > 0) and for meet name (event_num = -2)
 #####################################################################################
-def create_output_file_crawler( report_type, output_dir_root, crawler_list ):
+def create_output_file_crawler( output_dir_root: str, crawler_list: list ):
     """ Given a list of tuples (evnt num, crawler_string), generate output files """
     
     file_name_prefix = "crawler"
@@ -266,7 +271,7 @@ def create_output_file_crawler( report_type, output_dir_root, crawler_list ):
         logging.debug(f"crawler: e: {event_num} t: {crawler_text}")
         ## Generate event specific file
         if event_num > 0:
-            output_file_name = output_dir + f"{file_name_prefix}_{report_type}_event{event_num:0>2}.txt"
+            output_file_name = output_dir + f"{file_name_prefix}_result_event{event_num:0>2}.txt"
             write_output_file_crawler( output_file_name, crawler_text )
             num_files_generated += 1
         ## Genreate special file for the meet name
@@ -391,13 +396,21 @@ def get_report_header_info( meet_report_filename ):
 #####################################################################################
 ##########
 ##########    P R O G R A M
-##########    process_PROGRAM
+##########    process_program
 ##########
 #####################################################################################
 #####################################################################################
 #####################################################################################
 #####################################################################################
-def process_PROGRAM( report_type, meet_report_filename, output_dir, mm_license_name, shorten_school_names, split_relays_to_multiple_files, add_new_line_to_relay_entries, display_relay_swimmer_names, namesfirstlast, quote_output ):
+def process_program( meet_report_filename: str, 
+                     output_dir: str, 
+                     mm_license_name: str, 
+                     shorten_school_names: bool, 
+                     split_relays_to_multiple_files: bool, 
+                     add_new_line_to_relay_entries:bool, 
+                     display_relay_swimmer_names: bool,
+                     namesfirstlast: bool, 
+                    quote_output: bool ) -> int:
     """ Given the input file formatted in a specific manner,
         generate indiviual Event/Heat files for use in Wirecast displays """
     
@@ -677,13 +690,20 @@ def process_PROGRAM( report_type, meet_report_filename, output_dir, mm_license_n
 #####################################################################################
 ##########
 ##########     R E S U L T S 
-##########    process_RESULT
+##########    process_result
 ##########
 #####################################################################################
 #####################################################################################
 #####################################################################################
 #####################################################################################
-def process_RESULT( report_type, meet_report_filename, output_dir, mm_license_name, shorten_school_names, add_new_line_to_relay_entries, display_relay_swimmer_names, namesfirstlast, quote_output ):
+def process_result( meet_report_filename: str, 
+                    output_dir: str, 
+                    mm_license_name: str, 
+                    shorten_school_names: bool, 
+                    add_new_line_to_relay_entries: bool, 
+                    display_relay_swimmer_names: bool, 
+                    namesfirstlast: bool, 
+                    quote_output:bool ) -> int:
     """ Given the MeetManager results file file formatted in a specific manner,
         generate indiviual result files for use in Wirecast displays """
     
@@ -953,13 +973,13 @@ def cleanup_new_files( file_prefix, output_dir ):
 #####################################################################################
 ########## 
 ##########    C R A W L E R    R E S U L T S    
-##########    process_CRAWLER
+##########    process_crawler
 ##########
 #####################################################################################
 #####################################################################################
 #####################################################################################
 #####################################################################################
-def process_CRAWLER( report_type, meet_report_filename, output_dir, mm_license_name, shorten_school_names, display_swimmers_in_relay, quote_output ):
+def process_crawler( meet_report_filename, output_dir, mm_license_name, shorten_school_names, display_swimmers_in_relay, quote_output ):
     """  From the Meet Results File, generate the crawler files per event """
 
     event_num = 0
@@ -1145,7 +1165,7 @@ def process_CRAWLER( report_type, meet_report_filename, output_dir, mm_license_n
     #####################################################################################
     ## Write data saved in list to files
     #####################################################################################
-    total_files_generated = create_output_file_crawler( report_type, output_dir, crawler_list )
+    total_files_generated = create_output_file_crawler( output_dir, crawler_list )
 
     return total_files_generated
 
@@ -1155,7 +1175,7 @@ def process_CRAWLER( report_type, meet_report_filename, output_dir, mm_license_n
 ##  M A I N
 #####################################################################################
 #####################################################################################
-def process_MAIN():
+def process_main():
     #####################################################################################
     ## Parse out command line arguments
     #####################################################################################
@@ -1277,21 +1297,20 @@ def process_MAIN():
     ## Generate wirecast files from a MEET PROGRAM txt file
     #####################################################################################
     if process_to_run['program']:
-        total_files_generated_program = process_PROGRAM( args.reporttype, args.inputdir, output_dir, license_name, args.shortschoolnames, args.splitrelays, spacerelaynames, args.displayRelayNames, args.namesfirstlast, args.quote )
+        total_files_generated_program = process_program( args.inputdir, output_dir, license_name, args.shortschoolnames, args.splitrelays, spacerelaynames, args.displayRelayNames, args.namesfirstlast, args.quote )
 
     #####################################################################################
     ## Generate wirecast files RESULTS and CRAWLER from a MEET RESULTS txt file
     #####################################################################################
     if process_to_run['results']:
-        total_files_generated_results =  process_RESULT( report_type_results, args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames, args.displayRelayNames, args.namesfirstlast, args.quote )
-        #total_files_generated_crawler =  process_CRAWLER( report_type_results, args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames, args.quote )
+        total_files_generated_results =  process_result( args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames, args.displayRelayNames, args.namesfirstlast, args.quote )
         total_files_generated = total_files_generated_results + total_files_generated_crawler
 
     #####################################################################################
     ## Generate wirecast CRAWLER iles from a MEET RESULTS txt file
     #####################################################################################
     if process_to_run['crawler']:
-        total_files_generated_crawler =  process_CRAWLER( report_type_results, args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames, args.quote )
+        total_files_generated_crawler =  process_crawler( args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames, args.quote )
 
 
     logging.warning(f"Process Completed:")
@@ -1308,4 +1327,4 @@ def process_MAIN():
 #####################################################################################
 #####################################################################################
 if __name__ == "__main__":
-    process_MAIN()
+    process_main()
