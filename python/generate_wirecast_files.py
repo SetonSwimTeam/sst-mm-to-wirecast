@@ -238,7 +238,7 @@ def create_output_file_program( output_dir_root: str,
 #####################################################################################
 ## CRAWLER:  Generate the actual output file
 #####################################################################################
-def write_output_file_crawler( output_file_name, output_str ):
+def write_output_file_crawler( output_file_name: str, output_str: str ):
     """ generate the actual crawler output file """
     output_file_handler = open( output_file_name, "w+" )
     output_file_handler.write( output_str )
@@ -313,7 +313,7 @@ def create_output_file_crawler( output_dir_root: str, crawler_list: list ):
 ## get_report_header_info
 ## Get the header info from the reports first X lines
 #####################################################################################
-def get_report_header_info( meet_report_filename ):
+def get_report_header_info( meet_report_filename: str ):
     """ Get the header info from the reports first X lines """
             
     #####################################################################################
@@ -955,7 +955,7 @@ def process_result( meet_report_filename: str,
     return num_files_generated
 
 
-def cleanup_new_files( file_prefix, output_dir ):
+def cleanup_new_files( file_prefix: str, output_dir: str ):
     """ Remove the one or many blank lines at end of the file """
 
     txtfiles = []
@@ -979,7 +979,12 @@ def cleanup_new_files( file_prefix, output_dir ):
 #####################################################################################
 #####################################################################################
 #####################################################################################
-def process_crawler( meet_report_filename, output_dir, mm_license_name, shorten_school_names, display_swimmers_in_relay, quote_output ):
+def process_crawler( meet_report_filename: str, 
+                     output_dir: str, 
+                     mm_license_name: str, 
+                     shorten_school_names: bool, 
+                     display_swimmers_in_relay: bool, 
+                     quote_output: bool ):
     """  From the Meet Results File, generate the crawler files per event """
 
     event_num = 0
