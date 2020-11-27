@@ -156,7 +156,7 @@ def create_output_file_results( output_dir_root: str,
         row_type = output_tuple[0]
         row_text = output_tuple[1]
 
-        logging.debug(f"RESULTS: e: {event_num} id: {row_type} t: {row_text}")
+        logging.info(f"RESULTS: e: {event_num} id: {row_type} t: {row_text}")
 
         ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
         if row_type == 'H4':
@@ -219,6 +219,8 @@ def create_output_file_program( output_dir_root: str,
     for output_tuple in output_list:
         row_type = output_tuple[0]
         row_text = output_tuple[1]
+
+        logging.info(f"PROGRAM: e: {event_num} h: {event_num} id: {row_type} t: {row_text}")
 
         ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
         if row_type in header_list:
@@ -527,8 +529,8 @@ def process_program( meet_report_filename: str,
     re_program_sch_cleanup2 = re.compile(r'(.*?)-$(\s*)$')
 
     ## Search for headers to remove
-    re_program_header_ind   = re.compile("^Lane(\s*)Name")
-    re_program_header_relay = re.compile("^Lane(\s*)Team")
+    # re_program_header_ind   = re.compile("^Lane(\s*)Name")
+    # re_program_header_relay = re.compile("^Lane(\s*)Team")
 
     ## Search for case where team time butts up against seed time.  
     ## Need to add a space here so main regex works
@@ -589,11 +591,11 @@ def process_program( meet_report_filename: str,
             ## Ignore these lines as we will add our own back in depending on the output format
             #####################################################################################
             ## For Relay Individual Events
-            if re_program_header_ind.search(line):
-                continue
-            ## For Relay Events
-            if re_program_header_relay.search(line):
-                continue
+            # if re_program_header_ind.search(line):
+            #     continue
+            # ## For Relay Events
+            # if re_program_header_relay.search(line):
+            #     continue
 
             #####################################################################################
             ## PROGRAM: Start with Event line.  
@@ -695,16 +697,15 @@ def process_program( meet_report_filename: str,
 
                     output_list.append(( "LANE", output_str ))
 
-                #####################################################################################
-                ## PROGRAM: RELAY Add the swimmers name to the list. It may or may not be use for output
-                #####################################################################################
-                ## If this is a relay, add a space between the last swimmer name and the next swimmer number
-                ## This line  1) LastName1, All2) LastName2, Ashley3) LastName3, All4) LastName4, Eri
-                ## becomes    1) LastName1, All 2) LastName2, Ashley 3) LastName3, All 4) LastName4, Eri
-                found = re_program_check_relay_name_line.search(line)
-                if found:
-                    output_str = re_program_space_relay_name.sub( r'\1 \2',line )
-                    output_list.append(( "NAME", output_str ))
+            #####################################################################################
+            ## PROGRAM: RELAY Add the swimmers name to the list. It may or may not be use for output
+            #####################################################################################
+            ## If this is a relay, add a space between the last swimmer name and the next swimmer number
+            ## This line  1) LastName1, All2) LastName2, Ashley3) LastName3, All4) LastName4, Eri
+            ## becomes    1) LastName1, All 2) LastName2, Ashley 3) LastName3, All 4) LastName4, Eri
+            if event_num in event_num_relay and re_program_check_relay_name_line.search(line):
+                output_str = re_program_space_relay_name.sub( r'\1 \2',line )
+                output_list.append(( "NAME", output_str ))
 
     #####################################################################################
     ## Reached end of file
@@ -805,7 +806,7 @@ def process_result( meet_report_filename: str,
             if re.search("^%s" % mm_license_name, line):
                 found_header_line = 1
                 
-                ## Start the next event file
+                ## The start of the next event finished off the last event. Go write out the last event
                 num_files = create_output_file_results( output_dir, event_num, output_list, display_relay_swimmer_names )
                 num_files_generated += num_files
 
@@ -826,16 +827,6 @@ def process_result( meet_report_filename: str,
                     output_list.append( ('H3', line ))
                 continue
 
-            #####################################################################################
-            ## Ignore these lines
-            #####################################################################################
-            ## Ignore the Header for the place winners
-            ## For Individual Events
-            if re.search("^Name(\s*)Yr", line):
-                continue
-            ## For Relay Events
-            if re.search("^Team(\s*)Relay", line):
-                continue
                        
             #####################################################################################
             ## RESULTS: Start with Event line.  
@@ -889,9 +880,10 @@ def process_result( meet_report_filename: str,
 
                     ## We can display name as given (Last, First) or change it to First Last with cli parameter
                     result_name = reverse_lastname_firstname( placeline_name_last_first ) if namesfirstlast else placeline_name_last_first
-                    
+
                     ## Format the output lines with either long (per meet program) or short school names
                     output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_grade:>2}{q} {q}{placeline_school_long:<25}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
+                    
                     if shorten_school_names:
                         output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_school_short:<4}{q} {q}{placeline_grade:>2}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
                     
@@ -916,9 +908,7 @@ def process_result( meet_report_filename: str,
                     #####################################################################################
                     ## RESULTS: Replace long school name with short name for RELAY events
                     #####################################################################################
-                    if shorten_school_names:
-                        # placeline_sch_short = placeline_sch_long
-                        
+                    if shorten_school_names:                        
                         placeline_sch_short = short_school_name_lookup( placeline_sch_long, result_relay_dict_full_name_len )
 
                         ## Relay results are strange.  They give you 30 characters but truncate school to 22 characters
@@ -930,22 +920,12 @@ def process_result( meet_report_filename: str,
                     output_list.append(( "PLACE", output_str ))
 
             #####################################################################################
-            ## RESULTS: Processing specific to RELAY Entries
-            #####################################################################################
-            ## If this is a relay, see if there are spaces between swimmer numbers
-            ## If so, add a space between the last swimmer name and the next swimmer number
-            ## This line  1) LastName1, All2) LastName2, Ashley3) LastName3, All4) LastName4, Eri
-            ## becomes    1) LastName1, All 2) LastName2, Ashley 3) LastName3, All 4) LastName4, Eri
-            #####################################################################################
-            #####################################################################################
             ## RESULTS: For results on relays and the swimmers name as well to the list
             ##          Its up to the output function to determine to display them or not
             #####################################################################################
-            if display_relay_swimmer_names and event_num in event_num_relay:
-                found = re_results_check_relay_name_line.search(line)
-                if found:
-                    line = re_results_check_relay_name_line.sub( r'\1 \2',line )
-                    output_list.append(( "NAME", line )) 
+            if event_num in event_num_relay and re_results_check_relay_name_line.search(line):
+                line = re_results_space_relay_name.sub( r'\1 \2',line )
+                output_list.append(( "NAME", line ))  
 
 
     #####################################################################################
@@ -1127,12 +1107,10 @@ def process_crawler( meet_report_filename: str,
                 
                     logging.debug(f"CRAWLER: e: {event_num} line: {line}")
 
-
                     #####################################################################################
                     ## CRAWLER: Replace long school name with short name for ALL events
                     #####################################################################################
                     school_name_short = short_school_name_lookup( placeline_sch_long, crawler_relay_dict_full_name_len )
-
                         
                     if shorten_school_names:
                         output_str = f" {placeline_place}) {placeline_name} {school_name_short}"
