@@ -500,13 +500,6 @@ def process_program( meet_report_filename: str,
 
     ## NOTE: Do not align up these headers with the TXT output.  
     ##  Wirecast will center all lines and it will be in proper position then
-    program_header_line_long        = "\nLane  Name                    Year School      Seed Time"
-    program_header_line_short       = "\nLane  Name                 Year School Seed Time"
-    program_header_line_diving_long  = "\nLane  Name                 Year School      Seed Points"
-    program_header_line_diving_short= "\nLane  Name Year School      Seed Points"
-    program_header_line_relay_long  = "\nLane  Team                         Relay                   Seed Time"         
-    program_header_line_relay_short  = "\nLane  Team Relay Seed Time"         
-
 
     program_header_dict = {
         'individual_long':   "\nLane  Name                    Year School      Seed Time",
@@ -545,7 +538,7 @@ def process_program( meet_report_filename: str,
     re_program_space_relay_name = re.compile(r'(\S)([2-4]\))')
     re_program_check_relay_name_line = re.compile('1\)')
     
-    ## Quote output for debuggin
+    ## Quote output for debugging
     q = "'" if quote_output else ""
 
     #####################################################################################
@@ -619,15 +612,6 @@ def process_program( meet_report_filename: str,
             if line.lower().startswith(("heat", "flight")):
                 line = line.replace("Timed Finals", "")
                 ## Remove all those extra spaces in the line
-                # split_heat_str = line.split()
-                # split_heat_str = " ".join(split_heat_str)
-
-                # #####################################################################################
-                # # PROGRAM: Get the heat/flight number for user later on
-                # #####################################################################################
-                # split_heat_str = split_heat_str.split(' ', 4)
-                # heat_num = int(split_heat_str[1])
-
                 heat_num = get_heat_num_from_heatline(line)
 
                 ## H6 is the Heat info, save it in case we want to output it later
@@ -638,14 +622,6 @@ def process_program( meet_report_filename: str,
                 ##          This is only set once per Event/Heat so moving this is probablimetic
                 #####################################################################################
                 # Determin heading based on short or full school name
-                # name_list_header = ""
-                # if event_num in event_num_individual:
-                #     name_list_header = program_header_line_short if shorten_school_names else program_header_line_long   
-                # elif event_num in event_num_diving:
-                #     name_list_header = program_header_line_diving_short if shorten_school_names else program_header_line_diving_long
-                # elif event_num in event_num_relay:
-                #     name_list_header = program_header_line_relay_short if shorten_school_names else program_header_line_relay_long
-                
                 name_list_header = get_header_line( event_num, shorten_school_names, program_header_dict ) 
                 if name_list_header != "":
                     output_list.append(('H6', name_list_header))
@@ -657,7 +633,6 @@ def process_program( meet_report_filename: str,
             #####################################################################################
             if (event_num in event_num_individual or event_num in event_num_diving) and re_program_lane.search(line):
                 ## Fix for case where School Name butts up to the X in seed time
-                #if re.search('[A-z]X\d', line):
                 line = re_program_space_team_seed.sub(r'\1 \2', line )
 
                 entry_line_list = re_program_lane_ind.findall(line)
@@ -677,14 +652,12 @@ def process_program( meet_report_filename: str,
                         entry_sch_short = short_school_name_lookup( entry_sch_long, school_name_len )
 
                     ## We can display name as given (Last, First) or change it to First Last with cli parameter
-                    if namesfirstlast:
-                        entry_name = reverse_lastname_firstname( entry_name_last_first )
-                    else:
-                        entry_name = entry_name_last_first
+                    entry_name = reverse_lastname_firstname( entry_name_last_first ) if namesfirstlast else entry_name_last_first
 
                     ## Still issues with School names ending in - or -VA
                     entry_sch_long = re_program_sch_cleanup1.sub(r'\1', entry_sch_long)
                     entry_sch_long = re_program_sch_cleanup2.sub(r'\1', entry_sch_long)
+
                     ## Format the output lines with either long (per meet program) or short school names
                     output_str = f" {q}{entry_lane:>2}{q} {q}{entry_name:<25}{q} {q}{entry_grade:>2}{q} {q}{entry_sch_long:<25}{q} {q}{entry_seedtime:>8}{q}"
 
@@ -777,13 +750,14 @@ def process_result( meet_report_filename: str,
 
     ## NOTE: Do not align up these headers with the TXT output.  
     ##  Wirecast will center all lines and it will be in proper position then
-    result_header_line_long   = "Name                    Yr School                 Seed Time  Finals Time      Points"
-    result_header_line_short  = "Name                    Yr School Seed Time  Finals Time      Points"
-    result_header_line_relay_long = "   Team                       Relay                  Seed Time  Finals Time      Points"
-    result_header_line_relay_short = "   Team       Relay Seed Time  Finals Time Points"
-    result_header_line_diving_long  = "Name                    Yr School                           Finals Score      Points"
-    result_header_line_diving_short= "Name    Yr School                           Finals Score      Points"
-
+    result_header_dict = {
+        'individual_long':   "Name                    Yr School                 Seed Time  Finals Time      Points",
+        'individual_short':  "Name                    Yr School Seed Time  Finals Time      Points",
+        'diving_long':       "Name                    Yr School                           Finals Score      Points",
+        'diving_short':      "Name    Yr School                           Finals Score      Points",
+        'relay_long':         "   Team                       Relay                  Seed Time  Finals Time      Points",        
+        'relay_short':       "   Team       Relay Seed Time  Finals Time Points",    
+    }
 
     ## Define local variables
     event_num = 0
@@ -878,14 +852,7 @@ def process_result( meet_report_filename: str,
                 #####################################################################################
                 ## RESULTS: Set name_list_header to be displayed above the list of swimmers
                 #####################################################################################
-                # Set the default (LONG) headers here. 
-                name_list_header = ""
-                if event_num in event_num_individual:
-                    name_list_header = result_header_line_short if shorten_school_names else result_header_line_long
-                elif event_num in event_num_diving:
-                    name_list_header = result_header_line_diving_short if shorten_school_names else result_header_line_diving_long
-                elif event_num in event_num_relay:
-                    name_list_header = result_header_line_relay_short if shorten_school_names else result_header_line_relay_long
+                name_list_header = get_header_line( event_num, shorten_school_names, result_header_dict ) 
 
                 if name_list_header != "":
                     output_list.append(('H6', name_list_header))
@@ -921,12 +888,8 @@ def process_result( meet_report_filename: str,
                         placeline_school_short = short_school_name_lookup( placeline_school_long, school_name_len )
 
                     ## We can display name as given (Last, First) or change it to First Last with cli parameter
-                    if namesfirstlast:
-                        result_name = reverse_lastname_firstname( placeline_name_last_first )
-
-                    else:
-                        result_name = placeline_name_last_first
-
+                    result_name = reverse_lastname_firstname( placeline_name_last_first ) if namesfirstlast else placeline_name_last_first
+                    
                     ## Format the output lines with either long (per meet program) or short school names
                     output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_grade:>2}{q} {q}{placeline_school_long:<25}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
                     if shorten_school_names:
