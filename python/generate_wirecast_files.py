@@ -110,6 +110,25 @@ def remove_files_from_dir( reporttype: str, directory_name: str ) -> int:
 
     return num_files_removed
 
+
+#####################################################################################
+## Determine which header string to return
+#####################################################################################
+def get_header_line( event_num: int, shorten_school_names: bool, header_dict: dict ) -> str:
+    """ Return the proper header list for the report type """
+
+    name_list_header = ""
+    if event_num in event_num_individual:
+        name_list_header = header_dict['individual_short'] if shorten_school_names else header_dict['individual_long']   
+    elif event_num in event_num_diving:
+        name_list_header = header_dict['diving_short'] if shorten_school_names else header_dict['diving_long']
+    elif event_num in event_num_relay:
+        name_list_header = header_dict['relay_short'] if shorten_school_names else header_dict['relay_long']
+
+    return name_list_header
+
+
+                
 #####################################################################################
 ## Given an array of data lines PER EVENT, generate the output file
 #####################################################################################
@@ -488,6 +507,16 @@ def process_program( meet_report_filename: str,
     program_header_line_relay_long  = "\nLane  Team                         Relay                   Seed Time"         
     program_header_line_relay_short  = "\nLane  Team Relay Seed Time"         
 
+
+    program_header_dict = {
+        'individual_long':   "\nLane  Name                    Year School      Seed Time",
+        'individual_short':  "\nLane  Name                 Year School Seed Time",
+        'diving_long':       "\nLane  Name                 Year School      Seed Points",
+        'diving_short':      "\nLane  Name Year School      Seed Points",
+        'relay_long':        "\nLane  Team                         Relay                   Seed Time" ,        
+        'relay_short':       "\nLane  Team Relay Seed Time",    
+    }
+
     ## Define local variables
     event_num = 0
     heat_num = 0
@@ -579,14 +608,6 @@ def process_program( meet_report_filename: str,
             ##  Clean it up
             #####################################################################################
             if line.lower().startswith(("event")):
-
-                # ## Remove all those extra spaces in the line
-                # clean_event_str = line.split()
-                # clean_event_str = " ".join(clean_event_str)
-                # # Get the line number
-                # event_str = clean_event_str.split(' ', 4)
-                # event_num = int(event_str[1].strip())
-
                 event_num, event_str = get_event_num_from_eventline( line )
                 ## H4 is the Event number/name line
                 output_list.append(('H4', f"{line} {unofficial_results}" ))
@@ -617,14 +638,15 @@ def process_program( meet_report_filename: str,
                 ##          This is only set once per Event/Heat so moving this is probablimetic
                 #####################################################################################
                 # Determin heading based on short or full school name
-                name_list_header = ""
-                if event_num in event_num_individual:
-                    name_list_header = program_header_line_short if shorten_school_names else program_header_line_long   
-                elif event_num in event_num_diving:
-                    name_list_header = program_header_line_diving_short if shorten_school_names else program_header_line_diving_long
-                elif event_num in event_num_relay:
-                    name_list_header = program_header_line_relay_short if shorten_school_names else program_header_line_relay_long
+                # name_list_header = ""
+                # if event_num in event_num_individual:
+                #     name_list_header = program_header_line_short if shorten_school_names else program_header_line_long   
+                # elif event_num in event_num_diving:
+                #     name_list_header = program_header_line_diving_short if shorten_school_names else program_header_line_diving_long
+                # elif event_num in event_num_relay:
+                #     name_list_header = program_header_line_relay_short if shorten_school_names else program_header_line_relay_long
                 
+                name_list_header = get_header_line( event_num, shorten_school_names, program_header_dict ) 
                 if name_list_header != "":
                     output_list.append(('H6', name_list_header))
 
@@ -653,19 +675,9 @@ def process_program( meet_report_filename: str,
                         school_name_len = program_dive_dict_full_name_len if event_num in event_num_diving else program_ind_dict_full_name_len
 
                         entry_sch_short = short_school_name_lookup( entry_sch_long, school_name_len )
-                        # entry_sch_short = entry_sch_long
-                        # for k,v in school_name_dict.items():
-                        #     entry_sch_short = entry_sch_short.replace(k[:school_name_len], v.ljust(school_name_dict_short_name_len, ' '))
-                        #     if entry_sch_short != entry_sch_long:
-                        #         break
 
                     ## We can display name as given (Last, First) or change it to First Last with cli parameter
                     if namesfirstlast:
-                        # entry_name_last, entry_name_first = entry_name_last_first.split(',',1)
-                        # entry_name_first = entry_name_first.strip()
-                        # entry_name_last  = entry_name_last.strip()
-                        # entry_name_first_last = f"{entry_name_first} {entry_name_last}"
-                        # entry_name = entry_name_first_last
                         entry_name = reverse_lastname_firstname( entry_name_last_first )
                     else:
                         entry_name = entry_name_last_first
@@ -700,11 +712,6 @@ def process_program( meet_report_filename: str,
                     if shorten_school_names:
                         entryline_sch_short = entryline_sch_long
                         entryline_sch_short = short_school_name_lookup( entryline_sch_long, len(entryline_sch_long) )
-
-                        # for k,v in school_name_dict.items():
-                        #     entryline_sch_short = entryline_sch_short.replace(k, v.ljust(school_name_dict_short_name_len, ' '))
-                        #     if entryline_sch_short != entryline_sch_long:
-                        #         break
                         output_str = f"{q}{entryline_place:>2}{q} {q}{entryline_sch_short:<4}{q} {q}{entryline_relay:1}{q} {q}{entryline_seedtime:>8}{q}"
                     else:
                         ## Still issues with School names ending in - or -VA
@@ -863,13 +870,6 @@ def process_result( meet_report_filename: str,
             #####################################################################################
             if line.lower().startswith(("event")):
 
-                ## Remove all those extra spaces in the line
-                # clean_event_str = line.split()
-                # clean_event_str = " ".join(clean_event_str)
-                # # Get the line number
-                # event_str = clean_event_str.split(' ', 4)
-                # event_num = int(event_str[1].strip())
-
                 event_num, event_str = get_event_num_from_eventline( line )
 
                 ## H4 is the Event number/name line
@@ -918,23 +918,10 @@ def process_result( meet_report_filename: str,
                     if shorten_school_names:
                         ## The length of the school name in the MM report varies by event type
                         school_name_len = results_ind_dict_full_name_len if event_num in event_num_individual else results_dive_dict_full_nam_len
-                        
                         placeline_school_short = short_school_name_lookup( placeline_school_long, school_name_len )
-
-                        # # placeline_school_short = lookup_short_school_name(placeline_school_long, school_name_len, school_name_dict_short_name_len )
-                        # placeline_school_short = placeline_school_long
-                        # for k,v in school_name_dict.items():
-                        #     placeline_school_short = placeline_school_short.replace(k[:school_name_len], v.ljust(school_name_dict_short_name_len, ' '))
-                        #     if placeline_school_short != placeline_school_long:
-                        #         break
 
                     ## We can display name as given (Last, First) or change it to First Last with cli parameter
                     if namesfirstlast:
-                        # result_name_last, result_name_first = placeline_name_last_first.split(',',1)
-                        # result_name_first = result_name_first.strip()
-                        # result_name_last  = result_name_last.strip()
-                        # placeline_name_first_last = f"{result_name_first} {result_name_last}"
-                        # result_name = placeline_name_first_last
                         result_name = reverse_lastname_firstname( placeline_name_last_first )
 
                     else:
@@ -970,12 +957,6 @@ def process_result( meet_report_filename: str,
                         # placeline_sch_short = placeline_sch_long
                         
                         placeline_sch_short = short_school_name_lookup( placeline_sch_long, result_relay_dict_full_name_len )
-
-                        # long_len = len( placeline_sch_long )
-                        # for k,v in school_name_dict.items():
-                        #     placeline_sch_short = placeline_sch_short.replace(k.ljust(long_len,' ')[:result_relay_dict_full_name_len], v.ljust(school_name_dict_short_name_len, ' '))
-                        #     if placeline_sch_short != placeline_sch_long:
-                        #         break
 
                         ## Relay results are strange.  They give you 30 characters but truncate school to 22 characters
                         ## Remove remaing spaces
@@ -1189,11 +1170,6 @@ def process_crawler( meet_report_filename: str,
                     #####################################################################################
                     school_name_short = short_school_name_lookup( placeline_sch_long, crawler_relay_dict_full_name_len )
 
-                    # school_name_short = placeline_sch_long
-                    # for k,v in school_name_dict.items():
-                    #     school_name_short = school_name_short.replace(k, v)
-                    #     if school_name_short != placeline_sch_long:
-                    #         break
                         
                     if shorten_school_names:
                         output_str = f" {placeline_place}) {placeline_name} {school_name_short}"
@@ -1222,12 +1198,6 @@ def process_crawler( meet_report_filename: str,
                         placeline_sch_short = placeline_sch_long
 
                         school_name_short = short_school_name_lookup( placeline_sch_long, crawler_relay_dict_full_name_len )
-
-                        #logging.debug(f"CRAWER: SHort School {placeline_sch_short} long {placeline_sch_long}")
-                        # for k,v in school_name_dict.items():
-                        #     placeline_sch_short = placeline_sch_short.replace(k.ljust(len(k),' '), v)
-                        #     if placeline_sch_short != placeline_sch_long:
-                        #         break
                         output_str = f" {placeline_place}) {school_name_short} {placeline_relay}"
                     else:
                         output_str = f" {placeline_place}) {placeline_sch_long} {placeline_relay}"
