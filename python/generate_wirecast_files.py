@@ -353,10 +353,12 @@ def short_school_name_lookup( long_school_name: str, long_school_name_len: int, 
         trunc_len = long_school_name_len
 
     for k,v in school_name_dict.items():
-        #logging.debug(f"Sch: s: '{long_school_name}' len: {long_school_name_len} trunc: {trunc_len}")
+        kstr = k[:long_school_name_len][:trunc_len]
+        #logging.debug(f"Sch: s: '{long_school_name}' '{kstr}' len: {long_school_name_len} trunc: {trunc_len}")
         short_school_name = short_school_name.replace(k[:long_school_name_len][:trunc_len], v.ljust(school_name_dict_short_name_len, ' '))
-        if short_school_name != short_school_name:
-         break
+        if short_school_name != long_school_name:
+            #logging.debug(f"Sch: match: {short_school_name}")
+            break
 
     return short_school_name
 
@@ -881,7 +883,7 @@ def process_result( meet_report_filename: str,
                 if event_num in event_num_individual:
                     name_list_header = result_header_line_short if shorten_school_names else result_header_line_long
                 elif event_num in event_num_diving:
-                        name_list_header = result_header_line_diving_short if shorten_school_names else result_header_line_diving_long
+                    name_list_header = result_header_line_diving_short if shorten_school_names else result_header_line_diving_long
                 elif event_num in event_num_relay:
                     name_list_header = result_header_line_relay_short if shorten_school_names else result_header_line_relay_long
 
@@ -1185,7 +1187,7 @@ def process_crawler( meet_report_filename: str,
                     #####################################################################################
                     ## CRAWLER: Replace long school name with short name for ALL events
                     #####################################################################################
-                    school_name_short = short_school_name_lookup( placeline_sch_long, len(placeline_sch_long) )
+                    school_name_short = short_school_name_lookup( placeline_sch_long, crawler_relay_dict_full_name_len )
 
                     # school_name_short = placeline_sch_long
                     # for k,v in school_name_dict.items():
@@ -1219,14 +1221,14 @@ def process_crawler( meet_report_filename: str,
                     if shorten_school_names:
                         placeline_sch_short = placeline_sch_long
 
-                        school_name_short = short_school_name_lookup( placeline_sch_long, len(placeline_sch_long) )
+                        school_name_short = short_school_name_lookup( placeline_sch_long, crawler_relay_dict_full_name_len )
 
                         #logging.debug(f"CRAWER: SHort School {placeline_sch_short} long {placeline_sch_long}")
                         # for k,v in school_name_dict.items():
                         #     placeline_sch_short = placeline_sch_short.replace(k.ljust(len(k),' '), v)
                         #     if placeline_sch_short != placeline_sch_long:
                         #         break
-                        output_str = f" {placeline_place}) {placeline_sch_short} {placeline_relay}"
+                        output_str = f" {placeline_place}) {school_name_short} {placeline_relay}"
                     else:
                         output_str = f" {placeline_place}) {placeline_sch_long} {placeline_relay}"
 
@@ -1379,7 +1381,6 @@ def process_main():
     #####################################################################################
     if process_to_run['results']:
         total_files_generated_results =  process_result( args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames, args.displayRelayNames, args.namesfirstlast, args.quote )
-        total_files_generated = total_files_generated_results + total_files_generated_crawler
 
     #####################################################################################
     ## Generate wirecast CRAWLER iles from a MEET RESULTS txt file
