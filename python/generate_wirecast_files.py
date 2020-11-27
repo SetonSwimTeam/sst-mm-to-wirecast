@@ -892,7 +892,6 @@ def process_result( meet_report_filename: str,
                     if shorten_school_names:
                         ## The length of the school name in the MM report varies by event type
                         school_name_len = result_header_len_dict['individual_long']  if event_num in event_num_individual else result_header_len_dict['diving_long']
-
                         placeline_school_short = short_school_name_lookup( placeline_school_long, school_name_len )
 
                     ## We can display name as given (Last, First) or change it to First Last with cli parameter
@@ -1081,14 +1080,6 @@ def process_crawler( meet_report_filename: str,
                 #####################################################################################
                 ## Start processing next event
                 #####################################################################################
-
-                ## Remove all those extra spaces in the line
-                # clean_event_str = line.split()
-                # clean_event_str = " ".join(clean_event_str)
-                # # Get the event number
-                # event_str = clean_event_str.split(' ', 4)
-                # event_num = int(event_str[1].strip())
-
                 event_num, clean_event_str = get_event_num_from_eventline( line )
 
                 ## Clear out old string and start new for next event
