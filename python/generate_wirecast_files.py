@@ -278,7 +278,7 @@ def write_output_file( output_file_name: str, output_str: str ):
 ## Given a list of tuples (evnt num, crawler_string), generate output files
 ## Generate crawler files for actual events (event_num > 0) and for meet name (event_num = -2)
 #####################################################################################
-def create_output_file_crawler( output_dir_root: str, crawler_list: list, num_results_to_display: int ):
+def create_output_file_crawler( output_dir_root: str, crawler_list: list, num_results_to_display: int, last_num_events: int ):
     """ Given a list of tuples (evnt num, crawler_string), generate output files """
     
     file_name_prefix = "crawler"
@@ -308,10 +308,12 @@ def create_output_file_crawler( output_dir_root: str, crawler_list: list, num_re
 
     ## Generate single file for all scored events in reverse order
     crawler_text = ""
+    crawler_text_last_num_events = ""
     meet_name = ""
     num_events = len(crawler_list)
+    last_num_events_generated = 0
 
-    ## Loop through list in reverse order
+    ## Loop through list in reverse order to generate crawler string with multiple events
     for num in range( num_events-1, -1, -1):
         crawler_event = crawler_list[num]
         event_num = crawler_event[0]
@@ -320,15 +322,25 @@ def create_output_file_crawler( output_dir_root: str, crawler_list: list, num_re
         ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
         if event_num > 0:
             crawler_text += f" | {event_text}"
+            if last_num_events_generated <= last_num_events:
+                crawler_text_last_num_events += f" | {event_text}"
+                last_num_events_generated += 1
         elif event_num == headerNum2:
-            meet_name = event_text
-        
+            meet_name = event_text        
+
     ## Add meet_name to front of string
     crawler_text = f"{meet_name} {crawler_text}"
-
     ## Create the crawler file with ALL events completed so far
-    output_file_name = output_dir + f"{file_name_prefix}__AllEventsReverse.txt"
+    all_events_file_name = f"{file_name_prefix}__AllEventsReverse.txt"
+    output_file_name = output_dir + all_events_file_name
     write_output_file( output_file_name, crawler_text )
+    num_files_generated += 1
+
+    ## Create the crawler file with last_num events
+    #last_xx_events_file_name = f"{file_name_prefix}__Last_{last_num_events:0>2}_events.txt"
+    last_xx_events_file_name = f"{file_name_prefix}__Last_XX_events.txt"
+    output_file_name = output_dir + last_xx_events_file_name
+    write_output_file( output_file_name, crawler_text_last_num_events )
     num_files_generated += 1
 
     return num_files_generated
@@ -1000,7 +1012,8 @@ def process_crawler( meet_report_filename: str,
                      shorten_school_names_individual: bool, 
                      display_swimmers_in_relay: bool, 
                      quote_output: bool,
-                     num_results_to_display: int ):
+                     num_results_to_display: int,
+                     last_num_events: int ):
     """  From the Meet Results File, generate the crawler files per event """
     crawler_relay_dict_full_name_len = 22
 
@@ -1184,7 +1197,7 @@ def process_crawler( meet_report_filename: str,
     #####################################################################################
     ## Write data saved in list to files
     #####################################################################################
-    total_files_generated = create_output_file_crawler( output_dir, crawler_list, num_results_to_display )
+    total_files_generated = create_output_file_crawler( output_dir, crawler_list, num_results_to_display, last_num_events )
 
     return total_files_generated
 
@@ -1208,6 +1221,7 @@ def process_main():
     parser.add_argument('-s', '--shortschind',      dest='shortschoolindividual',action='store_false',          help="Use Short School names for Indiviual Entries")
     parser.add_argument('-d', '--delete',           dest='delete',              action='store_true',            help="Delete existing files in OUTPUT_DIR")
     parser.add_argument('-n', '--numresults',       dest='numresults',          type=int, default='12',         help="Number of results listed per event")
+    parser.add_argument('-c', '--lastnumevents',    dest='lastnumevents',       type=int, default='3',          help="Crawler outputs a separate file with the last N events")
 
     ## Parms not used as often
     parser.add_argument('-S', '--splitrelays',      dest='splitrelays',         action='store_true',            help="Split Relays into multiple files")
@@ -1286,13 +1300,15 @@ def process_main():
               f"\tOutputReportType \t{args.reporttype} \n" + \
               f"\tInputDir \t\t{args.inputdir} \n" + \
               f"\tRoot OutputDir \t\t{output_dir} \n" + \
-              f"\tShort School Names Relays \t{args.shortschoolrelay} \n" + \
-              f"\tShort School Names Individual \t{args.shortschoolindividual} \n" + \
+              f"\tShort Sch Names Relays \t{args.shortschoolrelay} \n" + \
+              f"\tShort Sch Names Indiv \t{args.shortschoolindividual} \n" + \
               f"\tNamesFirstlast \t\t{args.namesfirstlast} \n" + \
               f"\tSplit Relays \t\t{args.splitrelays} \n"+ \
               f"\tDisplay Relays Names \t{args.displayRelayNames} \n"+ \
               f"\tSpaces in Relay Names \t{spacerelaynames}\n" + \
               f"\tDelete exiting files \t{args.delete}\n" + \
+              f"\tCrawler last XX files \t{args.lastnumevents}\n" + \
+              f"\tNum Reslts Generate \t{args.numresults}\n" + \
               f"\tQuote output fields \t{args.quote}\n" + \
               f"\tLog Level \t\t{args.loglevel}\n" + \
               f"\n   Headers: \n" + \
@@ -1359,7 +1375,8 @@ def process_main():
                                                           args.shortschoolindividual,
                                                           args.displayRelayNames, 
                                                           args.quote,
-                                                          args.numresults )
+                                                          args.numresults,
+                                                          args.lastnumevents )
 
 
     logging.warning(f"Process Completed:")
