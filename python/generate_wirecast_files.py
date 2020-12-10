@@ -115,16 +115,16 @@ def remove_files_from_dir( reporttype: str, directory_name: str ) -> int:
 ## The header line is for the list of swimmers/winners.
 ## Determine which header string to return
 #####################################################################################
-def get_header_line( event_num: int, shorten_school_names: bool, header_dict: dict ) -> str:
+def get_header_line( event_num: int, shorten_school_names_relays: bool, shorten_school_names_individual: bool, header_dict: dict ) -> str:
     """ Return the proper header list for the report type """
 
     name_list_header = ""
     if event_num in event_num_individual:
-        name_list_header = header_dict['individual_short'] if shorten_school_names else header_dict['individual_long']   
+        name_list_header = header_dict['individual_short'] if shorten_school_names_individual else header_dict['individual_long']   
     elif event_num in event_num_diving:
-        name_list_header = header_dict['diving_short'] if shorten_school_names else header_dict['diving_long']
+        name_list_header = header_dict['diving_short'] if shorten_school_names_individual else header_dict['diving_long']
     elif event_num in event_num_relay:
-        name_list_header = header_dict['relay_short'] if shorten_school_names else header_dict['relay_long']
+        name_list_header = header_dict['relay_short'] if shorten_school_names_relays else header_dict['relay_long']
 
     return name_list_header
 
@@ -481,7 +481,8 @@ def get_report_header_info( meet_report_filename: str ):
 def process_program( meet_report_filename: str, 
                      output_dir: str, 
                      mm_license_name: str, 
-                     shorten_school_names: bool, 
+                     shorten_school_names_relays: bool, 
+                     shorten_school_names_individual: bool, 
                      split_relays_to_multiple_files: bool, 
                      add_new_line_to_relay_entries:bool, 
                      display_relay_swimmer_names: bool,
@@ -633,7 +634,7 @@ def process_program( meet_report_filename: str,
                 ##          This is only set once per Event/Heat so moving this is probablimetic
                 #####################################################################################
                 # Determin heading based on short or full school name
-                name_list_header = get_header_line( event_num, shorten_school_names, program_header_dict ) 
+                name_list_header = get_header_line( event_num, shorten_school_names_relays, shorten_school_names_individual, program_header_dict ) 
                 if name_list_header != "":
                     output_list.append(('H6', name_list_header))
 
@@ -656,7 +657,7 @@ def process_program( meet_report_filename: str,
                     entry_seedtime        = str(entry_line_list[0][4]).strip()
                     
                     ## If we want to use Shortened School Names, run the lookup
-                    if shorten_school_names:
+                    if shorten_school_names_individual:
                         ## The length of the school name in the MM report varies by event type
                         school_name_len = program_header_len_dict['diving_long'] if event_num in event_num_diving else program_header_len_dict['individual_long']
 
@@ -672,7 +673,7 @@ def process_program( meet_report_filename: str,
                     ## Format the output lines with either long (per meet program) or short school names
                     output_str = f" {q}{entry_lane:>2}{q} {q}{entry_name:<25}{q} {q}{entry_grade:>2}{q} {q}{entry_sch_long:<25}{q} {q}{entry_seedtime:>8}{q}"
 
-                    if shorten_school_names:
+                    if shorten_school_names_individual:
                         output_str = f" {q}{entry_lane:>2}{q} {q}{entry_name:<25}{q} {q}{entry_grade:>2}{q} {q}{entry_sch_short:<4}{q} {q}{entry_seedtime:>8}{q}"
                     
                     output_list.append(('LANE', output_str))
@@ -693,7 +694,7 @@ def process_program( meet_report_filename: str,
                     #####################################################################################
                     ## PROGRAM: Replace long school name with short name for RELAY events
                     #####################################################################################
-                    if shorten_school_names:
+                    if shorten_school_names_relays:
                         entryline_sch_short = entryline_sch_long
                         entryline_sch_short = short_school_name_lookup( entryline_sch_long, len(entryline_sch_long) )
                         output_str = f"{q}{entryline_place:>2}{q} {q}{entryline_sch_short:<4}{q} {q}{entryline_relay:1}{q} {q}{entryline_seedtime:>8}{q}"
@@ -745,7 +746,8 @@ def process_program( meet_report_filename: str,
 def process_result( meet_report_filename: str, 
                     output_dir: str, 
                     mm_license_name: str, 
-                    shorten_school_names: bool, 
+                    shorten_school_names_relays: bool, 
+                    shorten_school_names_individual: bool, 
                     add_new_line_to_relay_entries: bool, 
                     display_relay_swimmer_names: bool, 
                     namesfirstlast: bool, 
@@ -859,7 +861,7 @@ def process_result( meet_report_filename: str,
                 #####################################################################################
                 ## RESULTS: Set name_list_header to be displayed above the list of swimmers
                 #####################################################################################
-                name_list_header = get_header_line( event_num, shorten_school_names, result_header_dict ) 
+                name_list_header = get_header_line( event_num, shorten_school_names_relays, shorten_school_names_individual, result_header_dict ) 
 
                 if name_list_header != "":
                     output_list.append(('H6', name_list_header))
@@ -889,7 +891,7 @@ def process_result( meet_report_filename: str,
 
                     logging.debug(f"RESULTS: place {placeline_place}: name {placeline_name_last_first}: grade {placeline_grade}: sch {placeline_school_long}: seed {placeline_seedtime}: final {placeline_finaltime}: points {placeline_points}:")
                     ## If we want to use Shortened School Names, run the lookup
-                    if shorten_school_names:
+                    if shorten_school_names_individual:
                         ## The length of the school name in the MM report varies by event type
                         school_name_len = result_header_len_dict['individual_long']  if event_num in event_num_individual else result_header_len_dict['diving_long']
                         placeline_school_short = short_school_name_lookup( placeline_school_long, school_name_len )
@@ -900,7 +902,7 @@ def process_result( meet_report_filename: str,
                     ## Format the output lines with either long (per meet program) or short school names
                     output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_grade:>2}{q} {q}{placeline_school_long:<25}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
                     
-                    if shorten_school_names:
+                    if shorten_school_names_individual:
                         output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_school_short:<4}{q} {q}{placeline_grade:>2}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
                     
                     output_list.append(('PLACE', output_str))
@@ -924,7 +926,7 @@ def process_result( meet_report_filename: str,
                     #####################################################################################
                     ## RESULTS: Replace long school name with short name for RELAY events
                     #####################################################################################
-                    if shorten_school_names:                        
+                    if shorten_school_names_relays:                        
                         placeline_sch_short = short_school_name_lookup( placeline_sch_long, result_header_len_dict['relay_long'] )
 
                         ## Relay results are strange.  They give you 30 characters but truncate school to 22 characters
@@ -985,7 +987,8 @@ def cleanup_new_files( file_prefix: str, output_dir: str ):
 def process_crawler( meet_report_filename: str, 
                      output_dir: str, 
                      mm_license_name: str, 
-                     shorten_school_names: bool, 
+                     shorten_school_names_relays: bool, 
+                     shorten_school_names_individual: bool, 
                      display_swimmers_in_relay: bool, 
                      quote_output: bool ):
     """  From the Meet Results File, generate the crawler files per event """
@@ -1120,7 +1123,7 @@ def process_crawler( meet_report_filename: str,
                     #####################################################################################
                     school_name_short = short_school_name_lookup( placeline_sch_long, crawler_relay_dict_full_name_len )
                         
-                    if shorten_school_names:
+                    if shorten_school_names_individual:
                         output_str = f" {placeline_place}) {placeline_name} {school_name_short}"
                     else:
                         output_str = f" {placeline_place}) {placeline_name} {placeline_sch_long}"
@@ -1143,7 +1146,7 @@ def process_crawler( meet_report_filename: str,
                     #placeline_finaltime = str(place_line_list[0][4]).strip()
                     #placeline_points    = str(place_line_list[0][5]).strip()
 
-                    if shorten_school_names:
+                    if shorten_school_names_relays:
                         placeline_sch_short = placeline_sch_long
 
                         school_name_short = short_school_name_lookup( placeline_sch_long, crawler_relay_dict_full_name_len )
@@ -1181,20 +1184,25 @@ def process_main():
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="../data",              required=True,   
                                                                                                                 help="input directory for MM extract report")
-    parser.add_argument('-t', '--reporttype',       dest='reporttype',          default="auto",                 choices=['auto','program','results', 'crawler', 'headers'], 
-                                                                                                                help="Program type, Meet Program or Meet Results")
     parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="../output/",           help="root output directory for wirecast heat files.")
-    parser.add_argument('-n', '--namesfirstlast',   dest='namesfirstlast',      action='store_true',            help="Swap Non Relay names to First Last from Last, First")
-    parser.add_argument('-s', '--shortschoolnames', dest='shortschoolnames',    action='store_true',            help="Use Short School names for Indiviual Entries")
-    parser.add_argument('-l', '--longschoolnames',  dest='shortschoolnames',    action='store_false',           help="Use Long School names for Indiviual Entries")
-    parser.add_argument('-r', '--splitrelays',      dest='splitrelays',         action='store_true',            help="Split Relays into multiple files")
+    parser.add_argument('-r', '--shortschrelay',    dest='shortschoolrelay',     action='store_true',          help="Use Long School names for Relays")
+    parser.add_argument('-s', '--shortschind',      dest='shortschoolindividual',action='store_false',           help="Use Short School names for Indiviual Entries")
+    parser.add_argument('-d', '--delete',           dest='delete',              action='store_true',            help="Delete existing files in OUTPUT_DIR")
+
+    ## Parms not used as often
+    parser.add_argument('-S', '--splitrelays',      dest='splitrelays',         action='store_true',            help="Split Relays into multiple files")
     parser.add_argument('-R', '--displayRelayNames',dest='displayRelayNames',   action='store_true',            help="Display relay swimmer names, not just the team name in results")
-    parser.add_argument('-d', '--log',              dest='loglevel',          default='info', choices=['error', 'warning', 'info', 'debug'],            
+    parser.add_argument('-N', '--namesfirstlast',   dest='namesfirstlast',      action='store_true',            help="Swap Non Relay names to First Last from Last, First")
+    parser.add_argument('-T', '--reporttype',       dest='reporttype',          default="auto",                 choices=['auto','program','results', 'crawler', 'headers'], 
+                                                                                                                help="Program type, Meet Program or Meet Results")
+    ## For debugging
+    parser.add_argument('-v', '--log',              dest='loglevel',          default='info', choices=['error', 'warning', 'info', 'debug'],            
                                                                                                                 help="Set debugging level2")
-    parser.add_argument('-D', '--delete',           dest='delete',              action='store_true',            help="Delete existing files in OUTPUT_DIR")
     parser.add_argument('-q', '--quote ',           dest='quote',               action='store_true',            help="Quote the output fields for DEBUGGING")
-    parser.add_argument('-h', '--help',             dest='help',                action='help', default=argparse.SUPPRESS,                 help="Tested with MM 8")
-    parser.set_defaults(shortschoolnames=True)
+    parser.add_argument('-h', '--help',             dest='help',                action='help', default=argparse.SUPPRESS, help="Tested with MM 8")
+
+    parser.set_defaults(shortschoolrelay=False)
+    parser.set_defaults(shortschoolindividual=True)
     parser.set_defaults(splitrelays=False)
     parser.set_defaults(displayRelayNames=False)
     parser.set_defaults(namesfirstlast=False)
@@ -1258,7 +1266,8 @@ def process_main():
               f"\tOutputReportType \t{args.reporttype} \n" + \
               f"\tInputDir \t\t{args.inputdir} \n" + \
               f"\tRoot OutputDir \t\t{output_dir} \n" + \
-              f"\tShort School Names \t{args.shortschoolnames} \n" + \
+              f"\tShort School Names Relays \t{args.shortschoolrelay} \n" + \
+              f"\tShort School Names Individual \t{args.shortschoolindividual} \n" + \
               f"\tNamesFirstlast \t\t{args.namesfirstlast} \n" + \
               f"\tSplit Relays \t\t{args.splitrelays} \n"+ \
               f"\tDisplay Relays Names \t{args.displayRelayNames} \n"+ \
@@ -1293,28 +1302,51 @@ def process_main():
     ## Generate wirecast files from a MEET PROGRAM txt file
     #####################################################################################
     if process_to_run['program']:
-        total_files_generated_program = process_program( args.inputdir, output_dir, license_name, args.shortschoolnames, args.splitrelays, spacerelaynames, args.displayRelayNames, args.namesfirstlast, args.quote )
+        total_files_generated_program = process_program( args.inputdir, 
+                                                         output_dir, 
+                                                         license_name, 
+                                                         args.shortschoolrelay, 
+                                                         args.shortschoolindividual, 
+                                                         args.splitrelays, 
+                                                         spacerelaynames, 
+                                                         args.displayRelayNames, 
+                                                         args.namesfirstlast, 
+                                                         args.quote )
 
     #####################################################################################
     ## Generate wirecast files RESULTS and CRAWLER from a MEET RESULTS txt file
     #####################################################################################
     if process_to_run['results']:
-        total_files_generated_results =  process_result( args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames, args.displayRelayNames, args.namesfirstlast, args.quote )
+        total_files_generated_results =  process_result( args.inputdir, 
+                                                         output_dir, 
+                                                         license_name, 
+                                                         args.shortschoolrelay, 
+                                                         args.shortschoolindividual, 
+                                                         args.displayRelayNames, 
+                                                         args.displayRelayNames, 
+                                                         args.namesfirstlast, 
+                                                         args.quote )
 
     #####################################################################################
     ## Generate wirecast CRAWLER iles from a MEET RESULTS txt file
     #####################################################################################
     if process_to_run['crawler']:
-        total_files_generated_crawler =  process_crawler( args.inputdir, output_dir, license_name, args.shortschoolnames, args.displayRelayNames, args.quote )
+        total_files_generated_crawler =  process_crawler( args.inputdir, 
+                                                          output_dir, 
+                                                          license_name, 
+                                                          args.shortschoolrelay, 
+                                                          args.shortschoolindividual,
+                                                          args.displayRelayNames, 
+                                                          args.quote )
 
 
     logging.warning(f"Process Completed:")
     if total_files_generated_program > 0:
         logging.warning(f"\tNumber of 'Program' files generated: {total_files_generated_program}")
     if total_files_generated_results > 0:
-        logging.warning(f"\tNumber of 'Program' files generated: {total_files_generated_results}")
+        logging.warning(f"\tNumber of 'Results' files generated: {total_files_generated_results}")
     if total_files_generated_crawler > 0:
-        logging.warning(f"\tNumber of 'Program' files generated: {total_files_generated_crawler}")
+        logging.warning(f"\tNumber of 'Crawler' files generated: {total_files_generated_crawler}")
 
 #####################################################################################
 #####################################################################################
