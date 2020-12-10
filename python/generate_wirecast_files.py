@@ -769,10 +769,10 @@ def process_result( meet_report_filename: str,
     ##  Wirecast will center all lines and it will be in proper position then
     result_header_dict = {
         'individual_long':   "Name                    Yr School                 Seed Time  Finals Time      Points",
-        'individual_short':  "Name                    Yr School Seed Time  Finals Time      Points",
+        'individual_short':  "        Name                  School Yr   Seed   Finals   Pts",
         'diving_long':       "Name                    Yr School                           Finals Score      Points",
-        'diving_short':      "Name    Yr School                           Finals Score      Points",
-        'relay_long':         "   Team                       Relay                  Seed Time  Finals Time      Points",        
+        'diving_short':      "        Name                 School Yr   Seed     Final Pts",
+        'relay_long':         "           Team                    Relay Seed   Finals  Pts",        
         'relay_short':       "   Team       Relay Seed Time  Finals Time Points",    
     }
 
