@@ -514,10 +514,10 @@ def process_program( meet_report_filename: str,
 
     program_header_dict = {
         'individual_long':   "\nLane  Name                    Year School      Seed Time",
-        'individual_short':  "\nLane  Name                 Year School Seed Time",
-        'diving_long':       "\nLane  Name                 Year School      Seed Points",
-        'diving_short':      "\nLane  Name Year School      Seed Points",
-        'relay_long':        "\nLane  Team                         Relay                   Seed Time" ,        
+        'individual_short':  "\n     aLane  Name           Year School Seed Time",
+        'diving_long':       "\nbLane  Name                 Year School      Seed Points",
+        'diving_short':      "\nLane  Name                 Year School      Seed Points",
+        'relay_long':        "\nLane    Team                  Relay Seed Time" ,        
         'relay_short':       "\nLane  Team Relay Seed Time",    
     }
 
