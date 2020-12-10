@@ -136,12 +136,13 @@ def get_header_line( event_num: int, shorten_school_names_relays: bool, shorten_
 def create_output_file_results( output_dir_root: str, 
                                 event_num: int, 
                                 output_list: list, 
-                                display_relay_swimmer_names: bool ) -> int:
+                                display_relay_swimmer_names: bool,
+                                num_results_to_display: int ) -> int:
     """ Generate the filename and open the next file """
     
     num_files_generated = 0
+    num_results_generated = 0
     output_str = ""
-
 
     file_name_prefix = "results"
 
@@ -167,8 +168,12 @@ def create_output_file_results( output_dir_root: str,
             output_str += row_text + '\n'
         elif row_type == 'PLACE':
             output_str += row_text + '\n'
+            num_results_generated += 1
         elif row_type == 'NAME' and display_relay_swimmer_names:
             output_str += row_text + '\n'
+
+        if num_results_generated >= num_results_to_display:
+            break;
 
     output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}.txt"
     write_output_file( output_file_name, output_str )
@@ -273,7 +278,7 @@ def write_output_file( output_file_name: str, output_str: str ):
 ## Given a list of tuples (evnt num, crawler_string), generate output files
 ## Generate crawler files for actual events (event_num > 0) and for meet name (event_num = -2)
 #####################################################################################
-def create_output_file_crawler( output_dir_root: str, crawler_list: list ):
+def create_output_file_crawler( output_dir_root: str, crawler_list: list, num_results_to_display: int ):
     """ Given a list of tuples (evnt num, crawler_string), generate output files """
     
     file_name_prefix = "crawler"
@@ -327,6 +332,9 @@ def create_output_file_crawler( output_dir_root: str, crawler_list: list ):
     num_files_generated += 1
 
     return num_files_generated
+
+
+
 
 def get_event_num_from_eventline( line: str ) -> int:
     """ Extract the event number from the event line """
@@ -751,7 +759,8 @@ def process_result( meet_report_filename: str,
                     add_new_line_to_relay_entries: bool, 
                     display_relay_swimmer_names: bool, 
                     namesfirstlast: bool, 
-                    quote_output:bool ) -> int:
+                    quote_output: bool,
+                    num_results_to_display: int ) -> int:
     """ Given the MeetManager results file file formatted in a specific manner,
         generate indiviual result files for use in Wirecast displays """
     
@@ -825,7 +834,7 @@ def process_result( meet_report_filename: str,
                 found_header_line = 1
                 
                 ## The start of the next event finished off the last event. Go write out the last event
-                num_files = create_output_file_results( output_dir, event_num, output_list, display_relay_swimmer_names )
+                num_files = create_output_file_results( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display )
                 num_files_generated += num_files
 
                 ## Reset and start processing the next event
@@ -951,7 +960,7 @@ def process_result( meet_report_filename: str,
     ## Write out last event
     #####################################################################################
 
-    create_output_file_results( output_dir, event_num, output_list, display_relay_swimmer_names )
+    create_output_file_results( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display )
     num_files_generated += 1
 
     #####################################################################################
@@ -990,11 +999,13 @@ def process_crawler( meet_report_filename: str,
                      shorten_school_names_relays: bool, 
                      shorten_school_names_individual: bool, 
                      display_swimmers_in_relay: bool, 
-                     quote_output: bool ):
+                     quote_output: bool,
+                     num_results_to_display: int ):
     """  From the Meet Results File, generate the crawler files per event """
     crawler_relay_dict_full_name_len = 22
 
     event_num = 0
+    num_results_generated = 0
     #official_results = "OFFICIAL RESULTS"
     official_results = "UNOFFICIAL RESULTS"
     crawler_string = official_results
@@ -1086,6 +1097,7 @@ def process_crawler( meet_report_filename: str,
                 event_num, clean_event_str = get_event_num_from_eventline( line )
 
                 ## Clear out old string and start new for next event
+                num_results_generated = 0
                 output_str = ""
                 for element in clean_event_str:
                     output_str += f" {element}"
@@ -1108,6 +1120,7 @@ def process_crawler( meet_report_filename: str,
             if (event_num in event_num_individual  or event_num in event_num_diving) and re_crawler_lane.search(line):
                 place_line_list = re_crawler_lane_ind.findall(line)
                 if place_line_list:
+                    num_results_generated += 1
                     placeline_place     = str(place_line_list[0][0]).strip()
                     placeline_name      = str(place_line_list[0][1]).strip()
                     #placeline_grade     = str(place_line_list[0][2])
@@ -1127,7 +1140,11 @@ def process_crawler( meet_report_filename: str,
                         output_str = f" {placeline_place}) {placeline_name} {school_name_short}"
                     else:
                         output_str = f" {placeline_place}) {placeline_name} {placeline_sch_long}"
-                    crawler_string += output_str
+
+                    ## Only output given number of results
+                    if num_results_generated <= num_results_to_display:
+                        crawler_string += output_str
+
 
 
             #####################################################################################
@@ -1139,6 +1156,7 @@ def process_crawler( meet_report_filename: str,
                 place_line_list = re_crawler_lane_relay.findall(line)
 
                 if place_line_list:
+                    num_results_generated += 1
                     placeline_place     = str(place_line_list[0][0]).strip()
                     placeline_sch_long  = str(place_line_list[0][1]).strip()
                     placeline_relay     = str(place_line_list[0][2]).strip()
@@ -1154,8 +1172,9 @@ def process_crawler( meet_report_filename: str,
                     else:
                         output_str = f" {placeline_place}) {placeline_sch_long} {placeline_relay}"
 
-                    crawler_string += output_str  
-
+                    ## Only output given number of results
+                    if num_results_generated <= num_results_to_display:
+                        crawler_string += output_str  
 
     #####################################################################################
     ## Save last event string
@@ -1165,7 +1184,7 @@ def process_crawler( meet_report_filename: str,
     #####################################################################################
     ## Write data saved in list to files
     #####################################################################################
-    total_files_generated = create_output_file_crawler( output_dir, crawler_list )
+    total_files_generated = create_output_file_crawler( output_dir, crawler_list, num_results_to_display )
 
     return total_files_generated
 
@@ -1185,9 +1204,10 @@ def process_main():
     parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="../data",              required=True,   
                                                                                                                 help="input directory for MM extract report")
     parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="../output/",           help="root output directory for wirecast heat files.")
-    parser.add_argument('-r', '--shortschrelay',    dest='shortschoolrelay',     action='store_true',          help="Use Long School names for Relays")
-    parser.add_argument('-s', '--shortschind',      dest='shortschoolindividual',action='store_false',           help="Use Short School names for Indiviual Entries")
+    parser.add_argument('-r', '--shortschrelay',    dest='shortschoolrelay',     action='store_true',           help="Use Long School names for Relays")
+    parser.add_argument('-s', '--shortschind',      dest='shortschoolindividual',action='store_false',          help="Use Short School names for Indiviual Entries")
     parser.add_argument('-d', '--delete',           dest='delete',              action='store_true',            help="Delete existing files in OUTPUT_DIR")
+    parser.add_argument('-n', '--numresults',       dest='numresults',          type=int, default='12',         help="Number of results listed per event")
 
     ## Parms not used as often
     parser.add_argument('-S', '--splitrelays',      dest='splitrelays',         action='store_true',            help="Split Relays into multiple files")
@@ -1325,7 +1345,8 @@ def process_main():
                                                          args.displayRelayNames, 
                                                          args.displayRelayNames, 
                                                          args.namesfirstlast, 
-                                                         args.quote )
+                                                         args.quote ,
+                                                         args.numresults)
 
     #####################################################################################
     ## Generate wirecast CRAWLER iles from a MEET RESULTS txt file
@@ -1337,7 +1358,8 @@ def process_main():
                                                           args.shortschoolrelay, 
                                                           args.shortschoolindividual,
                                                           args.displayRelayNames, 
-                                                          args.quote )
+                                                          args.quote,
+                                                          args.numresults )
 
 
     logging.warning(f"Process Completed:")
