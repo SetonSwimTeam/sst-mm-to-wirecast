@@ -69,6 +69,7 @@ school_name_dict = {
         "Fresta Valley Christian": "FVCS",
         "Hampton Roads Academy": "HRA",
         "Highland Hawks": "HL",
+        "Immanuel Christian High S": "ICHS",
         "Middleburg Academy-VA": "MA",
         "Nansemond Suffolk Academy": "NSA",
         "Oakcrest School Chargers": "OAK",
@@ -197,6 +198,9 @@ def create_output_file_program( output_dir_root: str,
     split_num = 1
     output_str = ""
     
+    ## Ignore the case where we get event0 heat0
+    if event_num == 0:
+        return 0
 
     file_name_prefix = "program"
     output_dir = f"{output_dir_root}{file_name_prefix}/"
@@ -402,7 +406,6 @@ def short_school_name_lookup( long_school_name: str, long_school_name_len: int, 
         if short_school_name != long_school_name:
             #logging.debug(f"Sch: match: {short_school_name}")
             break
-
     return short_school_name
 
 #####################################################################################
@@ -535,7 +538,7 @@ def process_program( meet_report_filename: str,
 
     program_header_dict = {
         'individual_long':   "\nLane  Name                    Year School      Seed Time",
-        'individual_short':  "\n     aLane  Name           Year School Seed Time",
+        'individual_short':  "\n     Lane  Name           Year School Seed Time",
         'diving_long':       "\nbLane  Name                 Year School      Seed Points",
         'diving_short':      "\nLane  Name                 Year School      Seed Points",
         'relay_long':        "\nLane    Team                  Relay Seed Time" ,        
@@ -1326,18 +1329,14 @@ def process_main():
     logging.warning( logargs )
 
 
-
-
-    #####################################################################################
-    ## Remove files from last run
-    #####################################################################################
-    if args.delete:
-        remove_files_from_dir( args.reporttype, output_dir )
-
     #####################################################################################
     ## Generate wirecast files from a MEET PROGRAM txt file
     #####################################################################################
     if process_to_run['program']:
+        if args.delete:
+             ## Remove files from last run as we may have old events/heats mixed in
+            remove_files_from_dir( 'program', output_dir )
+
         total_files_generated_program = process_program( args.inputdir, 
                                                          output_dir, 
                                                          license_name, 
@@ -1353,6 +1352,10 @@ def process_main():
     ## Generate wirecast files RESULTS and CRAWLER from a MEET RESULTS txt file
     #####################################################################################
     if process_to_run['results']:
+        if args.delete:
+             ## Remove files from last run as we may have old eventsmixed in
+            remove_files_from_dir( 'results', output_dir )
+
         total_files_generated_results =  process_result( args.inputdir, 
                                                          output_dir, 
                                                          license_name, 
@@ -1368,6 +1371,9 @@ def process_main():
     ## Generate wirecast CRAWLER iles from a MEET RESULTS txt file
     #####################################################################################
     if process_to_run['crawler']:
+         ## Remove files from last run as we may have old eventsmixed in
+        remove_files_from_dir( 'crawler', output_dir )
+
         total_files_generated_crawler =  process_crawler( args.inputdir, 
                                                           output_dir, 
                                                           license_name, 
