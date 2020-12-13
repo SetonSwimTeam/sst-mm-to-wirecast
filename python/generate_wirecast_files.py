@@ -6,7 +6,14 @@
 ###
 ### generate_heat_files
 ###  Will generate files for use in WireCast livestreaming software.  This script will 
-###  generate both meet program entry files and meet results files
+###  generate both meet program entry files and meet results files.
+###
+### reports need to be created with the following options set
+###     1 event/heat per page
+###     Top How Many needs to be set to ensure all results fit on a single page 
+###         Wirecast can only display approx 14 results on their screen
+###      Records is not selected
+###      Splits is set to None
 ###
 ###  meet program entries:
 ###  Given a Meet Manager generated Meet Program, exported as a TXT file (single column one heat per page)
@@ -152,7 +159,7 @@ def create_output_file_results( output_dir_root: str,
     ## Ignore the case where we get event0 heat0
     if event_num == 0:
         return 0
-        
+
     ## Create output dir if not exists
     if not os.path.exists( output_dir ):
         os.makedirs( output_dir )
@@ -1240,7 +1247,7 @@ def process_main():
     parser.add_argument('-r', '--shortschrelay',    dest='shortschoolrelay',     action='store_true',           help="Use Long School names for Relays")
     parser.add_argument('-s', '--shortschind',      dest='shortschoolindividual',action='store_false',          help="Use Short School names for Indiviual Entries")
     parser.add_argument('-d', '--delete',           dest='delete',              action='store_true',            help="Delete existing files in OUTPUT_DIR")
-    parser.add_argument('-n', '--numresults',       dest='numresults',          type=int, default='12',         help="Number of results listed per event")
+    parser.add_argument('-n', '--numresults',       dest='numresults',          type=int, default='14',         help="Number of results listed per event")
     parser.add_argument('-c', '--lastnumevents',    dest='lastnumevents',       type=int, default='3',          help="Crawler outputs a separate file with the last N events")
 
     ## Parms not used as often
