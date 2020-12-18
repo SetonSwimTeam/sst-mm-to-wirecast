@@ -6,7 +6,14 @@
 ###
 ### generate_heat_files
 ###  Will generate files for use in WireCast livestreaming software.  This script will 
-###  generate both meet program entry files and meet results files
+###  generate both meet program entry files and meet results files.
+###
+### reports need to be created with the following options set
+###     1 event/heat per page
+###     Top How Many needs to be set to ensure all results fit on a single page 
+###         Wirecast can only display approx 14 results on their screen
+###      Records is not selected
+###      Splits is set to None
 ###
 ###  meet program entries:
 ###  Given a Meet Manager generated Meet Program, exported as a TXT file (single column one heat per page)
@@ -148,6 +155,10 @@ def create_output_file_results( output_dir_root: str,
     file_name_prefix = "results"
 
     output_dir = f"{output_dir_root}{file_name_prefix}/"
+
+    ## Ignore the case where we get event0 heat0
+    if event_num == 0:
+        return 0
 
     ## Create output dir if not exists
     if not os.path.exists( output_dir ):
@@ -538,9 +549,9 @@ def process_program( meet_report_filename: str,
 
     program_header_dict = {
         'individual_long':   "\nLane  Name                    Year School      Seed Time",
-        'individual_short':  "\n     Lane  Name           Year School Seed Time",
+        'individual_short':  "\n  Lane  Name                   Yr Sch  Seed Time",
         'diving_long':       "\nbLane  Name                 Year School      Seed Points",
-        'diving_short':      "\nLane  Name                 Year School      Seed Points",
+        'diving_short':      "\n  Lane  Name                     Yr Sch  Seed Points",
         'relay_long':        "\nLane    Team                  Relay Seed Time" ,        
         'relay_short':       "\nLane  Team Relay Seed Time",    
     }
@@ -793,15 +804,22 @@ def process_result( meet_report_filename: str,
 
     ## NOTE: Do not align up these headers with the TXT output.  
     ##  Wirecast will center all lines and it will be in proper position then
-    result_header_dict = {
+    champsionship_result_header_dict = {
         'individual_long':   "Name                    Yr School                 Seed Time  Finals Time      Points",
         'individual_short':  "        Name                  School Yr   Seed   Finals   Pts",
         'diving_long':       "Name                    Yr School                           Finals Score      Points",
         'diving_short':      "        Name                 School Yr   Seed     Final Pts",
-        'relay_long':         "           Team                    Relay Seed   Finals  Pts",        
+        'relay_long':         "           Team                  Relay Seed     Finals  Pts",        
         'relay_short':       "   Team       Relay Seed Time  Finals Time Points",    
     }
-
+    result_header_dict = {
+        'individual_long':   "Name                    Yr School                 Seed Time  Finals Time            ",
+        'individual_short':  "        Name                  Sch  Yr    Seed    Finals      ",
+        'diving_long':       "Name                    Yr School                           Finals Score           ",
+        'diving_short':      "        Name                 School Yr   Seed     Final     ",
+        'relay_long':         "           Team                  Relay  Seed   Finals     ",        
+        'relay_short':       "   Team       Relay Seed Time  Finals Time       ",    
+    }
     ## Define local variables
     event_num = 0
     num_files_generated = 0
@@ -924,10 +942,13 @@ def process_result( meet_report_filename: str,
                     result_name = reverse_lastname_firstname( placeline_name_last_first ) if namesfirstlast else placeline_name_last_first
 
                     ## Format the output lines with either long (per meet program) or short school names
-                    output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_grade:>2}{q} {q}{placeline_school_long:<25}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
+                    # with points
+                    # output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_grade:>2}{q} {q}{placeline_school_long:<25}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
+                    output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_grade:>2}{q} {q}{placeline_school_long:<25}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q}"
                     
                     if shorten_school_names_individual:
-                        output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_school_short:<4}{q} {q}{placeline_grade:>2}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
+                        #output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_school_short:<4}{q} {q}{placeline_grade:>2}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
+                        output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_school_short:<4}{q} {q}{placeline_grade:>2}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q}"
                     
                     output_list.append(('PLACE', output_str))
             
@@ -956,9 +977,11 @@ def process_result( meet_report_filename: str,
                         ## Relay results are strange.  They give you 30 characters but truncate school to 22 characters
                         ## Remove remaing spaces
                         placeline_sch_short = placeline_sch_short.strip()
-                        output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_short:<4}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
+                        #output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_short:<4}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
+                        output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_short:<4}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q}"
                     else:
-                        output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_long:<25}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
+                        #output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_long:<25}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
+                        output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_long:<25}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q}"
                     output_list.append(( "PLACE", output_str ))
 
             #####################################################################################
@@ -1217,13 +1240,14 @@ def process_main():
 
     spacerelaynames = True
     parser = argparse.ArgumentParser(add_help=False)
-    parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="../data",              required=True,   
+    parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="c:\\Users\\SetonSwimTeam\\mmreports",   
                                                                                                                 help="input directory for MM extract report")
-    parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="../output/",           help="root output directory for wirecast heat files.")
+    parser.add_argument('-f', '--filename',         dest='filename',            default='results.txt',          help="Input file name")
+    parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="c:\\Users\\SetonSwimTeam\\Dropbox\\wirecast",           help="root output directory for wirecast heat files.")
     parser.add_argument('-r', '--shortschrelay',    dest='shortschoolrelay',     action='store_true',           help="Use Long School names for Relays")
     parser.add_argument('-s', '--shortschind',      dest='shortschoolindividual',action='store_false',          help="Use Short School names for Indiviual Entries")
     parser.add_argument('-d', '--delete',           dest='delete',              action='store_true',            help="Delete existing files in OUTPUT_DIR")
-    parser.add_argument('-n', '--numresults',       dest='numresults',          type=int, default='12',         help="Number of results listed per event")
+    parser.add_argument('-n', '--numresults',       dest='numresults',          type=int, default='14',         help="Number of results listed per event")
     parser.add_argument('-c', '--lastnumevents',    dest='lastnumevents',       type=int, default='3',          help="Crawler outputs a separate file with the last N events")
 
     ## Parms not used as often
@@ -1247,6 +1271,8 @@ def process_main():
     parser.set_defaults(quote=False)
 
     args = parser.parse_args()
+
+    inputfile =f"{args.inputdir}/{args.filename}"
 
     ## Determine logging logleve
     loglevel = logging.DEBUG
@@ -1278,7 +1304,7 @@ def process_main():
     ## We need to dynamically get the meet name and license_name for use in processing files
     ## The license_name is the first line on the start of every new page/event/heat
     #####################################################################################
-    meet_name, meet_date, license_name, report_type, report_type_meet_name = get_report_header_info( args.inputdir )
+    meet_name, meet_date, license_name, report_type, report_type_meet_name = get_report_header_info( inputfile )
 
     #####################################################################################
     ##
@@ -1292,7 +1318,6 @@ def process_main():
     elif (report_type_to_run == "crawler") or (report_type_to_run == "auto" and report_type == 'Results'):
         process_to_run['crawler'] = True
 
-
     output_dir = args.outputdir
     ## The outputdir string MUST have a trailing slash.  Check string and add it if necesssary
     if output_dir[-1] != '/':
@@ -1301,7 +1326,7 @@ def process_main():
     logargs = f"{Path(__file__).stem}  \n" + \
               f"\n   Params: \n" + \
               f"\tOutputReportType \t{args.reporttype} \n" + \
-              f"\tInputDir \t\t{args.inputdir} \n" + \
+              f"\tInputFile \t\t{inputfile} \n" + \
               f"\tRoot OutputDir \t\t{output_dir} \n" + \
               f"\tShort Sch Names Relays \t{args.shortschoolrelay} \n" + \
               f"\tShort Sch Names Indiv \t{args.shortschoolindividual} \n" + \
@@ -1337,7 +1362,7 @@ def process_main():
              ## Remove files from last run as we may have old events/heats mixed in
             remove_files_from_dir( 'program', output_dir )
 
-        total_files_generated_program = process_program( args.inputdir, 
+        total_files_generated_program = process_program( inputfile, 
                                                          output_dir, 
                                                          license_name, 
                                                          args.shortschoolrelay, 
@@ -1356,7 +1381,7 @@ def process_main():
              ## Remove files from last run as we may have old eventsmixed in
             remove_files_from_dir( 'results', output_dir )
 
-        total_files_generated_results =  process_result( args.inputdir, 
+        total_files_generated_results =  process_result( inputfile, 
                                                          output_dir, 
                                                          license_name, 
                                                          args.shortschoolrelay, 
@@ -1374,7 +1399,7 @@ def process_main():
          ## Remove files from last run as we may have old eventsmixed in
         remove_files_from_dir( 'crawler', output_dir )
 
-        total_files_generated_crawler =  process_crawler( args.inputdir, 
+        total_files_generated_crawler =  process_crawler( inputfile, 
                                                           output_dir, 
                                                           license_name, 
                                                           args.shortschoolrelay, 
