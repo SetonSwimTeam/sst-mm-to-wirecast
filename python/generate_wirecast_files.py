@@ -549,9 +549,9 @@ def process_program( meet_report_filename: str,
 
     program_header_dict = {
         'individual_long':   "\nLane  Name                    Year School      Seed Time",
-        'individual_short':  "\n     Lane  Name           Year School Seed Time",
+        'individual_short':  "\n  Lane  Name                   Yr Sch  Seed Time",
         'diving_long':       "\nbLane  Name                 Year School      Seed Points",
-        'diving_short':      "\nLane  Name                 Year School      Seed Points",
+        'diving_short':      "\n  Lane  Name                     Yr Sch  Seed Points",
         'relay_long':        "\nLane    Team                  Relay Seed Time" ,        
         'relay_short':       "\nLane  Team Relay Seed Time",    
     }
@@ -809,15 +809,15 @@ def process_result( meet_report_filename: str,
         'individual_short':  "        Name                  School Yr   Seed   Finals   Pts",
         'diving_long':       "Name                    Yr School                           Finals Score      Points",
         'diving_short':      "        Name                 School Yr   Seed     Final Pts",
-        'relay_long':         "           Team                    Relay Seed   Finals  Pts",        
+        'relay_long':         "           Team                  Relay Seed     Finals  Pts",        
         'relay_short':       "   Team       Relay Seed Time  Finals Time Points",    
     }
     result_header_dict = {
         'individual_long':   "Name                    Yr School                 Seed Time  Finals Time            ",
-        'individual_short':  "        Name                  School Yr   Seed   Finals      ",
+        'individual_short':  "        Name                  Sch  Yr    Seed    Finals      ",
         'diving_long':       "Name                    Yr School                           Finals Score           ",
         'diving_short':      "        Name                 School Yr   Seed     Final     ",
-        'relay_long':         "           Team                    Relay Seed   Finals     ",        
+        'relay_long':         "           Team                  Relay  Seed   Finals     ",        
         'relay_short':       "   Team       Relay Seed Time  Finals Time       ",    
     }
     ## Define local variables
