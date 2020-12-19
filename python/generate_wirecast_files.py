@@ -84,6 +84,7 @@ school_name_dict = {
         "Saint John Paul the Great": "JP",
         "St. Gertrude High School": "SGHS",
         "St. Paul VI Catholic HS": "PVI",
+        "Seton Swimming Alumni": "ALUM",
         "Seton Swimming": "SST", 
         "The Covenant School-VA": "TCS" ,
         "The Steward School-VA": "STEW",
