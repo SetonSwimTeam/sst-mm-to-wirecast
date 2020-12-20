@@ -183,7 +183,7 @@ def process_result( meet_report_filename: str,
                         placeline_school_short = sst_common.short_school_name_lookup( placeline_school_long, school_name_len )
 
                     ## We can display name as given (Last, First) or change it to First Last with cli parameter
-                    result_name = reverse_lastname_firstname( placeline_name_last_first ) if namesfirstlast else placeline_name_last_first
+                    result_name = sst_common.reverse_lastname_firstname( placeline_name_last_first ) if namesfirstlast else placeline_name_last_first
 
                     ## Format the output lines with either long (per meet program) or short school names
                     # with points

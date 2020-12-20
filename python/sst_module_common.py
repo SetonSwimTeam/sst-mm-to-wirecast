@@ -3,6 +3,14 @@ event_num_individual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22]
 event_num_relay  = [1,2,17,18,23,24]
 event_num_diving = [9,10]
 
+
+
+## Define the header types in the output list so we can include/exclude as necessary
+headerNum1 = -1   ## HyTek licensee and HytTek software
+headerNum2 = -2   ## Meet Name
+headerNum3 = -3   ## Report type
+
+
 #####################################################################################
 ## Text used for REGEX to convert long names to short names
 ## Some names are truncated. May be able to define full name and then define max
@@ -128,3 +136,16 @@ def short_school_name_lookup( long_school_name: str, long_school_name_len: int, 
             #logging.debug(f"Sch: match: {short_school_name}")
             break
     return short_school_name
+
+
+
+
+def reverse_lastname_firstname( name_last_first ):
+    """ Convert the string "lastnane, firstname" to "firstname lastname" """
+
+    name_last, name_first = name_last_first.split(',', 1)
+    name_first = name_first.strip()
+    name_last  = name_last.strip()
+    name_first_last = f"{name_first} {name_last}"
+
+    return name_first_last

@@ -203,7 +203,7 @@ def process_program( meet_report_filename: str,
                         entry_sch_short = sst_common.short_school_name_lookup( entry_sch_long, school_name_len )
 
                     ## We can display name as given (Last, First) or change it to First Last with cli parameter
-                    entry_name = reverse_lastname_firstname( entry_name_last_first ) if namesfirstlast else entry_name_last_first
+                    entry_name = sst_common.reverse_lastname_firstname( entry_name_last_first ) if namesfirstlast else entry_name_last_first
 
                     ## Still issues with School names ending in - or -VA
                     entry_sch_long = re_program_sch_cleanup1.sub(r'\1', entry_sch_long)
