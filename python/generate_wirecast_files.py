@@ -176,8 +176,9 @@ def create_output_file_results( output_dir_root: str,
         ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
         if row_type == 'H4':
             output_str += row_text + '\n'
-            output_str += '\n'
+            #output_str += '\n'
         elif row_type == 'H6':
+            output_str += unofficial_results + '\n'
             output_str += row_text + '\n'
         elif row_type == 'PLACE':
             output_str += row_text + '\n'
@@ -899,7 +900,8 @@ def process_result( meet_report_filename: str,
                 event_num, event_str = get_event_num_from_eventline( line )
 
                 ## H4 is the Event number/name line
-                output_list.append(('H4', f"{line} {unofficial_results}" ))
+                # output_list.append(('H4', f"{line} {unofficial_results}" ))
+                output_list.append(('H4', f"{line}" ))
 
                 #####################################################################################
                 ## RESULTS: Set name_list_header to be displayed above the list of swimmers
