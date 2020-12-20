@@ -1168,7 +1168,7 @@ def process_crawler( meet_report_filename: str,
                     #placeline_grade     = str(place_line_list[0][2])
                     placeline_sch_long  = str(place_line_list[0][3]).strip()
                     #placeline_seedtime  = str(place_line_list[0][4])
-                    #placeline_finaltime = str(place_line_list[0][5])
+                    placeline_finaltime = str(place_line_list[0][5])
                     #placeline_points    = str(place_line_list[0][6])
                 
                     logging.debug(f"CRAWLER: e: {event_num} line: {line}")
@@ -1179,9 +1179,9 @@ def process_crawler( meet_report_filename: str,
                     school_name_short = short_school_name_lookup( placeline_sch_long, crawler_relay_dict_full_name_len )
                         
                     if shorten_school_names_individual:
-                        output_str = f" {placeline_place}) {placeline_name} {school_name_short}"
+                        output_str = f" {placeline_place}) {placeline_name} {school_name_short} {placeline_finaltime}"
                     else:
-                        output_str = f" {placeline_place}) {placeline_name} {placeline_sch_long}"
+                        output_str = f" {placeline_place}) {placeline_name} {placeline_sch_long} {placeline_finaltime}"
 
                     ## Only output given number of results
                     if num_results_generated <= num_results_to_display:
@@ -1203,16 +1203,16 @@ def process_crawler( meet_report_filename: str,
                     placeline_sch_long  = str(place_line_list[0][1]).strip()
                     placeline_relay     = str(place_line_list[0][2]).strip()
                     #placeline_seedtime  = str(place_line_list[0][3]).strip()
-                    #placeline_finaltime = str(place_line_list[0][4]).strip()
+                    placeline_finaltime = str(place_line_list[0][4]).strip()
                     #placeline_points    = str(place_line_list[0][5]).strip()
 
                     if shorten_school_names_relays:
                         placeline_sch_short = placeline_sch_long
 
                         school_name_short = short_school_name_lookup( placeline_sch_long, crawler_relay_dict_full_name_len )
-                        output_str = f" {placeline_place}) {school_name_short} {placeline_relay}"
+                        output_str = f" {placeline_place}) {school_name_short} {placeline_relay} {placeline_finaltime}"
                     else:
-                        output_str = f" {placeline_place}) {placeline_sch_long} {placeline_relay}"
+                        output_str = f" {placeline_place}) {placeline_sch_long} {placeline_relay} {placeline_finaltime}"
 
                     ## Only output given number of results
                     if num_results_generated <= num_results_to_display:
