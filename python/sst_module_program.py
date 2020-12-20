@@ -1,7 +1,9 @@
 import os                
-import sst_module_common as sst_common
 import logging
 import re
+
+import sst_module_common as sst_common
+
 
 #####################################################################################
 #####################################################################################
