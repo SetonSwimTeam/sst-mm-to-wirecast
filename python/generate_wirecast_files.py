@@ -53,55 +53,6 @@ headerNum3 = -3   ## Report type
 unofficial_results = "    ** UNOFFICIAL RESULTS **"
 
 
-#####################################################################################
-## Text used for REGEX to convert long names to short names
-## Some names are truncated. May be able to define full name and then define max
-## lenght of school name depending on report
-#####################################################################################
-school_name_dict = { 
-        "Benedictine College Prep": "BCP",
-        "Bishop O'Connell-PV": "DJO",
-        "Bishop O'Connell": "DJO",
-        "Bishop Ireton Swim and Dive": "BI",
-        "Bishop Sullivan Catholic High": "BSCHS",
-        "BBVST": "BVST",
-        "Broadwater Academy-VA": "BVST",
-        "Cape Henry Collegiate": "CHC",
-        "Carmel School Wildcats": "WILD",
-        "CCS-VA": "CCS",
-        "Chatham Hall": "CH",
-        "Christchurch School Swim Team": "CCS",
-        "Collegiate School": "COOL",
-        "Fredericksburg Academy-VA": "FAST",
-        "Fredericksburg Christian-": "FCS",
-        "Fresta Valley Christian": "FVCS",
-        "Hampton Roads Academy": "HRA",
-        "Highland Hawks": "HL",
-        "Immanuel Christian High S": "ICHS",
-        "Middleburg Academy-VA": "MA",
-        "Nansemond Suffolk Academy": "NSA",
-        "Oakcrest School Chargers": "OAK",
-        "Randolph-Macon Academy-VA": "RMA",
-        "Saint John Paul the Great": "JP",
-        "St. Gertrude High School": "SGHS",
-        "St. Paul VI Catholic HS": "PVI",
-        "Seton Swimming Alumni": "ALUM",
-        "Seton Swimming": "SST", 
-        "The Covenant School-VA": "TCS" ,
-        "The Steward School-VA": "STEW",
-        "Trinity Christian School-": "TCS!",
-        "Trinity Christian School": "TCS!",
-        "Veritas Collegiate Academ": "VCA",
-        "Veritas School-VA": "VRTS",
-        "Walsingham Academy-VA": "WA",
-        "Wakefield H2owls-VA": "WAKE",
-        "H2owls-VA": "WAKE",
-        "Williamsburg Christian Ac": "WCA",
-        "Woodberry Forest-VA": "WFS",
-        "Valley Christian School": "VCS",
-        "Valley Christian S": "VCS",
-        "Seton Family Homeschool": "SFH",
-    } 
 
 
 #####################################################################################
@@ -121,22 +72,6 @@ def remove_files_from_dir( reporttype: str, directory_name: str ) -> int:
     return num_files_removed
 
 
-#####################################################################################
-## The header line is for the list of swimmers/winners.
-## Determine which header string to return
-#####################################################################################
-def get_header_line( event_num: int, shorten_school_names_relays: bool, shorten_school_names_individual: bool, header_dict: dict ) -> str:
-    """ Return the proper header list for the report type """
-
-    name_list_header = ""
-    if event_num in sst_common.event_num_individual:
-        name_list_header = header_dict['individual_short'] if shorten_school_names_individual else header_dict['individual_long']   
-    elif event_num in sst_common.event_num_diving:
-        name_list_header = header_dict['diving_short'] if shorten_school_names_individual else header_dict['diving_long']
-    elif event_num in sst_common.event_num_relay:
-        name_list_header = header_dict['relay_short'] if shorten_school_names_relays else header_dict['relay_long']
-
-    return name_list_header
 
 
 
@@ -224,26 +159,7 @@ def create_output_file_crawler( output_dir_root: str, crawler_list: list, num_re
 
 
 
-def get_event_num_from_eventline( line: str ) -> int:
-    """ Extract the event number from the event line """
 
-    ## Remove all those extra spaces in the event line
-    clean_event_str = line.split()
-    clean_event_str = " ".join(clean_event_str)
-    event_str = clean_event_str.split(' ', 4)
-    event_num = int(event_str[1].strip())
-
-    return event_num, event_str
-
-
-def get_heat_num_from_heatline( line: str ) -> int:
-    """ Extract the heat number from heat/flight line """
-    split_heat_str = line.split()
-    split_heat_str = " ".join(split_heat_str)
-    split_heat_str = split_heat_str.split(' ', 4)
-    heat_num = int(split_heat_str[1])
-
-    return heat_num
 
 
 def reverse_lastname_firstname( name_last_first ):
@@ -257,28 +173,6 @@ def reverse_lastname_firstname( name_last_first ):
     return name_first_last
 
 
-def short_school_name_lookup( long_school_name: str, long_school_name_len: int, trunc_len :int = 0 ) -> str:
-    "Given a long school name, search for a shorter school name.  If not found, return the long school name"
-    
-    school_name_dict_short_name_len  = 4
-    short_school_name = long_school_name
-
-    ## Handle some strange error conditions
-    if long_school_name_len == 0:
-        return short_school_name
-
-    ## If not set, defaiult tuncate_len to full len
-    if trunc_len == 0:
-        trunc_len = long_school_name_len
-
-    for k,v in school_name_dict.items():
-        kstr = k[:long_school_name_len][:trunc_len]
-        #logging.debug(f"Sch: s: '{long_school_name}' '{kstr}' len: {long_school_name_len} trunc: {trunc_len}")
-        short_school_name = short_school_name.replace(k[:long_school_name_len][:trunc_len], v.ljust(school_name_dict_short_name_len, ' '))
-        if short_school_name != long_school_name:
-            #logging.debug(f"Sch: match: {short_school_name}")
-            break
-    return short_school_name
 
 #####################################################################################
 ## get_report_header_info
@@ -360,270 +254,6 @@ def get_report_header_info( meet_report_filename: str ):
         #logging.debug(f"Header: licensee '{license_name}' meet_name: '{meet_name}' meet_date: '{meet_date}' report_type: '{report_type}'")
 
         return meet_name, meet_date, license_name, report_type, report_type_meet_name
-
-#####################################################################################
-#####################################################################################
-#####################################################################################
-#####################################################################################
-##########
-##########    P R O G R A M
-##########    process_program
-##########
-#####################################################################################
-#####################################################################################
-#####################################################################################
-#####################################################################################
-def process_program( meet_report_filename: str, 
-                     output_dir: str, 
-                     mm_license_name: str, 
-                     shorten_school_names_relays: bool, 
-                     shorten_school_names_individual: bool, 
-                     split_relays_to_multiple_files: bool, 
-                     add_new_line_to_relay_entries:bool, 
-                     display_relay_swimmer_names: bool,
-                     namesfirstlast: bool, 
-                    quote_output: bool ) -> int:
-    """ Given the input file formatted in a specific manner,
-        generate indiviual Event/Heat files for use in Wirecast displays """
-    
-    #####################################################################################
-    ## The names are what appear in the report, and may be abbreviated, 
-    ##  and not the actual full school name
-    ## Multiple version of a school may be listed here for clean output
-    #####################################################################################
-
-    # program_relay_dict_full_name_len = 28
-    # program_ind_dict_full_name_len   = 25
-    # program_dive_dict_full_name_len  = 25    
-    # school_name_dict_short_name_len  = 4  
-
-    unofficial_results = ""  ## Not used for Programs
-
-    ## NOTE: Do not align up these headers with the TXT output.  
-    ##  Wirecast will center all lines and it will be in proper position then
-
-    program_header_len_dict = {
-        'individual_long': 25,
-        'diving_long': 25,
-        'relay_long': 28,
-    }
-
-    program_header_dict = {
-        'individual_long':   "\nLane  Name                    Year School      Seed Time",
-        'individual_short':  "\n  Lane  Name                   Yr Sch  Seed Time",
-        'diving_long':       "\nbLane  Name                 Year School      Seed Points",
-        'diving_short':      "\n  Lane  Name                     Yr Sch  Seed Points",
-        'relay_long':        "\nLane    Team                  Relay Seed Time" ,        
-        'relay_short':       "\nLane  Team Relay Seed Time",    
-    }
-
-    ## Define local variables
-    event_num = 0
-    heat_num = 0
-    num_files_generated = 0
-    num_header_lines = 3
-    found_header_line = 0
-    output_list = []
-
-    re_program_lane = re.compile('^[*]?\d{1,2} ')
-    re_program_lane_ind = re.compile('^(\d{1,2})\s+([A-z\' \.]+, [A-z ]+?) ([A-Z0-9]{1,2})\s+([A-Z \'.].*)\s+([X]?[0-9:.]+|NT|XNT|NP|XNP)*')
-    re_program_lane_relay = re.compile('^(\d{1,2})\s+([A-Z \'.].*)\s+([A-Z])\s+([X]?[0-9:.]+|NT|XNT)*')
-
-    ## Remove the trailing hyphen (-) and -VA from school name
-    re_program_sch_cleanup1 = re.compile(r'(.*?)-VA(\s*)$')
-    re_program_sch_cleanup2 = re.compile(r'(.*?)-$(\s*)$')
-
-    ## Search for headers to remove
-    # re_program_header_ind   = re.compile("^Lane(\s*)Name")
-    # re_program_header_relay = re.compile("^Lane(\s*)Team")
-
-    ## Search for case where team time butts up against seed time.  
-    ## Need to add a space here so main regex works
-    re_program_space_team_seed = re.compile(r'([A-z])(X\d)')
-
-    ## For relays add a space between the persons name and next swimmer number
-    re_program_space_relay_name = re.compile(r'(\S)([2-4]\))')
-    re_program_check_relay_name_line = re.compile('1\)')
-    
-    ## Quote output for debugging
-    q = "'" if quote_output else ""
-
-    #####################################################################################
-    ## PROGRAM: Loop through each line of the input file
-    #####################################################################################
-    with open(meet_report_filename, "r") as meet_report_file:
-        for line in meet_report_file:
-
-            #####################################################################################
-            ## PROGRAM: Remove the extra newline at end of line
-            #####################################################################################
-            line = line.strip()
-
-            #####################################################################################
-            ## PROGRAM: Ignore all the blank lines             
-            #####################################################################################
-            if line == '\n' or line == '':
-                continue
-
-            #####################################################################################
-            ## Meet Manager license name
-            ## We have one event/heat per page, so this starts the next event/heat
-            #####################################################################################
-            if re.search("^%s" % mm_license_name, line):
-                found_header_line = 1
-                
-                num_files = sst_program.create_output_file_program( output_dir, event_num, heat_num, output_list, display_relay_swimmer_names, split_relays_to_multiple_files )
-                num_files_generated += num_files
-
-                ## Reset and start processing the next event/heat
-                output_list = []
-                output_list.append( ('H1', line ))
-                continue
-
-            #####################################################################################
-            ## if the previous line was the first header (found_header_line=1)
-            ## then save  the next two lines which are also part of the header and got to next line
-            #####################################################################################
-            if 0 < found_header_line < num_header_lines:
-                found_header_line += 1
-                if found_header_line == 2:
-                    output_list.append( ('H2', line ))
-                elif found_header_line == 3:
-                    output_list.append( ('H3', line ))
-                continue
-
-            #####################################################################################
-            ## Ignore these lines as we will add our own back in depending on the output format
-            #####################################################################################
-            ## For Relay Individual Events
-            # if re_program_header_ind.search(line):
-            #     continue
-            # ## For Relay Events
-            # if re_program_header_relay.search(line):
-            #     continue
-
-            #####################################################################################
-            ## PROGRAM: Start with Event line.  
-            ##  Get the Event Number from the report
-            ##  Clean it up
-            #####################################################################################
-            if line.lower().startswith(("event")):
-                event_num, event_str = get_event_num_from_eventline( line )
-                ## H4 is the Event number/name line
-                output_list.append(('H4', f"{line} {unofficial_results}" ))
-
-
-            #####################################################################################
-            ## PROGRAM: Remove "Timed Finals" from Heat (and flight) line
-            #####################################################################################
-            if line.lower().startswith(("heat", "flight")):
-                line = line.replace("Timed Finals", "")
-                ## Remove all those extra spaces in the line
-                heat_num = get_heat_num_from_heatline(line)
-
-                ## H6 is the Heat info, save it in case we want to output it later
-                output_list.append(('H5', f"{line}" ))
-
-                #####################################################################################
-                ## PROGRAM: Set name_list_header to be displayed above the list of swimmers
-                ##          This is only set once per Event/Heat so moving this is probablimetic
-                #####################################################################################
-                # Determin heading based on short or full school name
-                name_list_header = get_header_line( event_num, shorten_school_names_relays, shorten_school_names_individual, program_header_dict ) 
-                if name_list_header != "":
-                    output_list.append(('H6', name_list_header))
-
-
-            #####################################################################################
-            ## PROGRAM: INDIVIDUAL Extract the individual Entry Line
-            ## i.e. 2   Robison, Ryan            JR  Bishop O'Connell-PV      X2:22.35                        
-            #####################################################################################
-            if (event_num in sst_common.event_num_individual or event_num in sst_common.event_num_diving) and re_program_lane.search(line):
-                ## Fix for case where School Name butts up to the X in seed time
-                line = re_program_space_team_seed.sub(r'\1 \2', line )
-
-                entry_line_list = re_program_lane_ind.findall(line)
-                #                                  LANE     LAST, FIRST        GR          SCHOOL             SEEDTIME 
-                if entry_line_list:
-                    entry_lane            = str(entry_line_list[0][0]).strip()
-                    entry_name_last_first = str(entry_line_list[0][1]).strip()
-                    entry_grade           = str(entry_line_list[0][2]).strip()
-                    entry_sch_long        = str(entry_line_list[0][3]).strip()
-                    entry_seedtime        = str(entry_line_list[0][4]).strip()
-                    
-                    ## If we want to use Shortened School Names, run the lookup
-                    if shorten_school_names_individual:
-                        ## The length of the school name in the MM report varies by event type
-                        school_name_len = program_header_len_dict['diving_long'] if event_num in sst_common.event_num_diving else program_header_len_dict['individual_long']
-
-                        entry_sch_short = short_school_name_lookup( entry_sch_long, school_name_len )
-
-                    ## We can display name as given (Last, First) or change it to First Last with cli parameter
-                    entry_name = reverse_lastname_firstname( entry_name_last_first ) if namesfirstlast else entry_name_last_first
-
-                    ## Still issues with School names ending in - or -VA
-                    entry_sch_long = re_program_sch_cleanup1.sub(r'\1', entry_sch_long)
-                    entry_sch_long = re_program_sch_cleanup2.sub(r'\1', entry_sch_long)
-
-                    ## Format the output lines with either long (per meet program) or short school names
-                    output_str = f" {q}{entry_lane:>2}{q} {q}{entry_name:<25}{q} {q}{entry_grade:>2}{q} {q}{entry_sch_long:<25}{q} {q}{entry_seedtime:>8}{q}"
-
-                    if shorten_school_names_individual:
-                        output_str = f" {q}{entry_lane:>2}{q} {q}{entry_name:<25}{q} {q}{entry_grade:>2}{q} {q}{entry_sch_short:<4}{q} {q}{entry_seedtime:>8}{q}"
-                    
-                    output_list.append(('LANE', output_str))
-            
-            #####################################################################################
-            ## PROGRAM: RELAY Find the replay line with LANE, SCHOOL, RELAY TEAM SEEDTIME
-            ## 1 Seton Swim            A                    1:46.82      1:40.65        32
-            #####################################################################################
-            if event_num in sst_common.event_num_relay and re_program_lane.search(line):
-                entry_line_list = re_program_lane_relay.findall(line)
-                #  REGEX Positions                 LANE   SCHOOL    RELAY     SEEDTIME
-                if entry_line_list:
-                    entryline_place     = str(entry_line_list[0][0]).strip()
-                    entryline_sch_long  = str(entry_line_list[0][1]).strip()
-                    entryline_relay     = str(entry_line_list[0][2]).strip()
-                    entryline_seedtime  = str(entry_line_list[0][3]).strip()
-
-                    #####################################################################################
-                    ## PROGRAM: Replace long school name with short name for RELAY events
-                    #####################################################################################
-                    if shorten_school_names_relays:
-                        entryline_sch_short = entryline_sch_long
-                        entryline_sch_short = short_school_name_lookup( entryline_sch_long, len(entryline_sch_long) )
-                        output_str = f"{q}{entryline_place:>2}{q} {q}{entryline_sch_short:<4}{q} {q}{entryline_relay:1}{q} {q}{entryline_seedtime:>8}{q}"
-                    else:
-                        ## Still issues with School names ending in - or -VA
-                        entryline_sch_long = re_program_sch_cleanup1.sub(r'\1', entryline_sch_long)
-                        entryline_sch_long = re_program_sch_cleanup2.sub(r'\1', entryline_sch_long)
-
-                        output_str = f"{q}{entryline_place:>2}{q} {q}{entryline_sch_long:<28}{q} {q}{entryline_relay:1}{q} {q}{entryline_seedtime:>8}{q}"
-
-                    output_list.append(( "LANE", output_str ))
-
-            #####################################################################################
-            ## PROGRAM: RELAY Add the swimmers name to the list. It may or may not be use for output
-            #####################################################################################
-            ## If this is a relay, add a space between the last swimmer name and the next swimmer number
-            ## This line  1) LastName1, All2) LastName2, Ashley3) LastName3, All4) LastName4, Eri
-            ## becomes    1) LastName1, All 2) LastName2, Ashley 3) LastName3, All 4) LastName4, Eri
-            if event_num in sst_common.event_num_relay and re_program_check_relay_name_line.search(line):
-                output_str = re_program_space_relay_name.sub( r'\1 \2',line )
-                output_list.append(( "NAME", output_str ))
-
-    #####################################################################################
-    ## Reached end of file
-    ## Write out last event
-    #####################################################################################
-
-    num_files = sst_program.create_output_file_program( output_dir, event_num, heat_num, output_list, display_relay_swimmer_names, split_relays_to_multiple_files )
-    num_files_generated += num_files
-
-    #####################################################################################
-    ## PROGRAM: All done. Return counts of files created
-    #####################################################################################
-    return num_files_generated
 
 
 #####################################################################################
@@ -1224,7 +854,7 @@ def process_main():
              ## Remove files from last run as we may have old events/heats mixed in
             remove_files_from_dir( 'program', output_dir )
 
-        total_files_generated_program = process_program( inputfile, 
+        total_files_generated_program = sst_program.process_program( inputfile, 
                                                          output_dir, 
                                                          license_name, 
                                                          args.shortschoolrelay, 
