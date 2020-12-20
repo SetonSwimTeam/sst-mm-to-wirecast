@@ -1,4 +1,3 @@
-import os                
 import logging
 import re
 
@@ -13,12 +12,17 @@ unofficial_results = "    ** UNOFFICIAL RESULTS **"
 #####################################################################################
 #####################################################################################
 ##########
-##########     R E S U L T S 
-##########    process_result
+##########    S S T _ M O D U L E _ R E S U L T S 
+##########
+##########    Code to generate Event entry files from the meet program
 ##########
 #####################################################################################
 #####################################################################################
 #####################################################################################
+#####################################################################################
+
+####################################################################################
+## Parse the report file and generate an output array
 #####################################################################################
 def process_result( meet_report_filename: str, 
                     output_dir: str, 
@@ -47,14 +51,14 @@ def process_result( meet_report_filename: str,
 
     ## NOTE: Do not align up these headers with the TXT output.  
     ##  Wirecast will center all lines and it will be in proper position then
-    champsionship_result_header_dict = {
-        'individual_long':   "Name                    Yr School                 Seed Time  Finals Time      Points",
-        'individual_short':  "        Name                  School Yr   Seed   Finals   Pts",
-        'diving_long':       "Name                    Yr School                           Finals Score      Points",
-        'diving_short':      "        Name                 School Yr   Seed     Final Pts",
-        'relay_long':         "           Team                  Relay Seed     Finals  Pts",        
-        'relay_short':       "   Team       Relay Seed Time  Finals Time Points",    
-    }
+    # champsionship_result_header_dict = {
+    #     'individual_long':   "Name                    Yr School                 Seed Time  Finals Time      Points",
+    #     'individual_short':  "        Name                  School Yr   Seed   Finals   Pts",
+    #     'diving_long':       "Name                    Yr School                           Finals Score      Points",
+    #     'diving_short':      "        Name                 School Yr   Seed     Final Pts",
+    #     'relay_long':         "           Team                  Relay Seed     Finals  Pts",        
+    #     'relay_short':       "   Team       Relay Seed Time  Finals Time Points",    
+    # }
     result_header_dict = {
         'individual_long':   "Name                    Yr School                 Seed Time  Finals Time            ",
         'individual_short':  "        Name                  Sch  Yr    Seed    Finals      ",
@@ -251,16 +255,6 @@ def process_result( meet_report_filename: str,
     return num_files_generated
 
 
-def cleanup_new_files( file_prefix: str, output_dir: str ):
-    """ Remove the one or many blank lines at end of the file """
-
-    txtfiles = []
-    file_glob = f"{output_dir}{file_prefix}*.txt"
-    for file in glob.glob(file_glob):
-        txtfiles.append(file)
-    
-    for file in txtfiles:
-        print(f"Filename: {file}")
 
 
 #####################################################################################
@@ -284,10 +278,6 @@ def create_output_file_results( output_dir_root: str,
     ## Ignore the case where we get event0 heat0
     if event_num == 0:
         return 0
-
-    ## Create output dir if not exists
-    if not os.path.exists( output_dir ):
-        os.makedirs( output_dir )
 
     ## Loop through list in reverse order
     #for num in range( num_events-1, -1, -1):
@@ -313,9 +303,8 @@ def create_output_file_results( output_dir_root: str,
         if num_results_generated >= num_results_to_display:
             break;
 
-    output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}.txt"
-    sst_common.write_output_file( output_file_name, output_str )
+    output_file_name =  f"{file_name_prefix}_Event{event_num:0>2}.txt"
+    sst_common.write_output_file( output_dir, output_file_name, output_str )
     num_files_generated += 1
 
     return num_files_generated
-

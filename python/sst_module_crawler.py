@@ -1,4 +1,3 @@
-import os                
 import logging
 import re
 
@@ -9,8 +8,9 @@ import sst_module_common as sst_common
 #####################################################################################
 #####################################################################################
 ########## 
-##########    C R A W L E R    R E S U L T S    
-##########    process_crawler
+##########    S S T _ M O D U L E _ C R A W L E R
+##########
+##########    Code to generate crawler files from the meet results
 ##########
 #####################################################################################
 #####################################################################################
@@ -30,13 +30,10 @@ def process_crawler( meet_report_filename: str,
 
     event_num = 0
     num_results_generated = 0
-    #official_results = "OFFICIAL RESULTS"
     official_results = "UNOFFICIAL RESULTS"
     crawler_string = official_results
     found_header_line = 0
     num_header_lines = 3
-    # school_name_dict_full_name_len = 25
-    # school_name_dict_short_name_len = 4
 
     ## Tracking searcing for/finding/processing the three header records on each input file
     ## For crawler, we only want the header once
@@ -170,7 +167,6 @@ def process_crawler( meet_report_filename: str,
                         crawler_string += output_str
 
 
-
             #####################################################################################
             ## CRAWLER: RELAY Find the Place Winner line, place, name, school, time, points, etc
             ## 1 SST            A                    1:46.82      1:40.65        32
@@ -227,9 +223,6 @@ def create_output_file_crawler( output_dir_root: str, crawler_list: list, num_re
     output_dir = f"{output_dir_root}{file_name_prefix}/"
     num_files_generated=0
 
-    ## Create output dir if not exists
-    if not os.path.exists( output_dir ):
-        os.makedirs( output_dir )
 
     ## Generate individual files per meet
     for crawler_event in crawler_list:
@@ -239,13 +232,13 @@ def create_output_file_crawler( output_dir_root: str, crawler_list: list, num_re
         logging.info(f"crawler: e: {event_num} t: {crawler_text}")
         ## Generate event specific file
         if event_num > 0:
-            output_file_name = output_dir + f"{file_name_prefix}_result_event{event_num:0>2}.txt"
-            sst_common.write_output_file( output_file_name, crawler_text )
+            output_file_name = f"{file_name_prefix}_result_event{event_num:0>2}.txt"
+            sst_common.write_output_file( output_dir, output_file_name, crawler_text )
             num_files_generated += 1
         ## Genreate special file for the meet name
         elif event_num == sst_common.headerNum2:
-            output_file_name = output_dir + f"{file_name_prefix}__MeetName.txt"
-            sst_common.write_output_file( output_file_name, crawler_text )
+            output_file_name = f"{file_name_prefix}__MeetName.txt"
+            sst_common.write_output_file( output_dir, output_file_name, crawler_text )
             num_files_generated += 1
 
     ## Generate single file for all scored events in reverse order
@@ -274,18 +267,15 @@ def create_output_file_crawler( output_dir_root: str, crawler_list: list, num_re
     crawler_text = f"{meet_name} {crawler_text}"
     ## Create the crawler file with ALL events completed so far
     all_events_file_name = f"{file_name_prefix}__AllEventsReverse.txt"
-    output_file_name = output_dir + all_events_file_name
-    sst_common.write_output_file( output_file_name, crawler_text )
+    output_file_name = all_events_file_name
+    sst_common.write_output_file( output_dir, output_file_name, crawler_text )
     num_files_generated += 1
 
     ## Create the crawler file with last_num events
     #last_xx_events_file_name = f"{file_name_prefix}__Last_{last_num_events:0>2}_events.txt"
     last_xx_events_file_name = f"{file_name_prefix}__Last_XX_events.txt"
-    output_file_name = output_dir + last_xx_events_file_name
-    sst_common.write_output_file( output_file_name, crawler_text_last_num_events )
+    output_file_name = last_xx_events_file_name
+    sst_common.write_output_file( output_dir, output_file_name, crawler_text_last_num_events )
     num_files_generated += 1
 
     return num_files_generated
-
-
-

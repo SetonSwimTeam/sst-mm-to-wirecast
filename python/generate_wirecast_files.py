@@ -5,8 +5,12 @@
 #############################################################################################
 ###
 ### generate_heat_files
-###  Will generate files for use in WireCast livestreaming software.  This script will 
+###  This program will generate files (heat program files, event results and crawler results)
+### for use in WireCast livestreaming software.  This script will 
 ###  generate both meet program entry files and meet results files.
+###
+### The code to generate each of the output files have been moved to their own modules file
+### to separate the code base.
 ###
 ### reports need to be created with the following options set
 ###     1 event/heat per page

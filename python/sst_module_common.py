@@ -1,3 +1,18 @@
+#####################################################################################
+#####################################################################################
+#####################################################################################
+#####################################################################################
+########## 
+##########    S S T _ M O D U L E _ C O M M O N
+##########
+##########    Common functions used by other SST modules
+##########
+#####################################################################################
+#####################################################################################
+#####################################################################################
+#####################################################################################
+
+import os
 ## Define the types of events in this meet (Individual, Relay and Diving)
 event_num_individual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22]
 event_num_relay  = [1,2,17,18,23,24]
@@ -43,8 +58,8 @@ school_name_dict = {
         "Saint John Paul the Great": "JP",
         "St. Gertrude High School": "SGHS",
         "St. Paul VI Catholic HS": "PVI",
-        "Seton Swimming Alumni": "ALUM",
         "Seton Swimming": "SST", 
+        "Seton Swimming Alumni": "ALUM",
         "The Covenant School-VA": "TCS" ,
         "The Steward School-VA": "STEW",
         "Trinity Christian School-": "TCS!",
@@ -66,9 +81,15 @@ school_name_dict = {
 #####################################################################################
 ## Write the actual output file from the generated string
 #####################################################################################
-def write_output_file( output_file_name: str, output_str: str ):
+def write_output_file( output_dir: str, output_file_name: str, output_str: str ):
     """ generate the actual crawler output file """
-    output_file_handler = open( output_file_name, "w+" )
+    
+    ## Create output dir if not exists
+    if not os.path.exists( output_dir ):
+        os.makedirs( output_dir )
+    
+    output_full_path = f"{output_dir}/{output_file_name}"
+    output_file_handler = open( output_full_path, "w+" )
     output_file_handler.write( output_str )
     output_file_handler.close()
 
@@ -149,3 +170,15 @@ def reverse_lastname_firstname( name_last_first ):
     name_first_last = f"{name_first} {name_last}"
 
     return name_first_last
+
+
+def cleanup_new_files( file_prefix: str, output_dir: str ):
+    """ Remove the one or many blank lines at end of the file """
+
+    txtfiles = []
+    file_glob = f"{output_dir}{file_prefix}*.txt"
+    for file in glob.glob(file_glob):
+        txtfiles.append(file)
+    
+    for file in txtfiles:
+        print(f"Filename: {file}")

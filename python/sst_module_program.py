@@ -1,4 +1,3 @@
-import os                
 import logging
 import re
 
@@ -9,14 +8,21 @@ import sst_module_common as sst_common
 #####################################################################################
 #####################################################################################
 #####################################################################################
-##########
-##########    P R O G R A M
-##########    process_program
-##########
+##########                                                                 ##########
+##########    S S T _ M O D U L E _ P R O G R A M                          ##########
+##########                                                                 ##########
+##########    Code to generate Event entry files from the meet program     ##########
+##########                                                                 ##########
+##########                                                                 ##########
 #####################################################################################
 #####################################################################################
 #####################################################################################
 #####################################################################################
+
+####################################################################################
+## Parse the report file and generate an output array
+#####################################################################################
+
 def process_program( meet_report_filename: str, 
                      output_dir: str, 
                      mm_license_name: str, 
@@ -35,13 +41,6 @@ def process_program( meet_report_filename: str,
     ##  and not the actual full school name
     ## Multiple version of a school may be listed here for clean output
     #####################################################################################
-
-    # program_relay_dict_full_name_len = 28
-    # program_ind_dict_full_name_len   = 25
-    # program_dive_dict_full_name_len  = 25    
-    # school_name_dict_short_name_len  = 4  
-
-    unofficial_results = ""  ## Not used for Programs
 
     ## NOTE: Do not align up these headers with the TXT output.  
     ##  Wirecast will center all lines and it will be in proper position then
@@ -68,7 +67,9 @@ def process_program( meet_report_filename: str,
     num_header_lines = 3
     found_header_line = 0
     output_list = []
+    crawler_str = ""
 
+    ## Define the regular expression to pase the meet program
     re_program_lane = re.compile('^[*]?\d{1,2} ')
     re_program_lane_ind = re.compile('^(\d{1,2})\s+([A-z\' \.]+, [A-z ]+?) ([A-Z0-9]{1,2})\s+([A-Z \'.].*)\s+([X]?[0-9:.]+|NT|XNT|NP|XNP)*')
     re_program_lane_relay = re.compile('^(\d{1,2})\s+([A-Z \'.].*)\s+([A-Z])\s+([X]?[0-9:.]+|NT|XNT)*')
@@ -76,10 +77,6 @@ def process_program( meet_report_filename: str,
     ## Remove the trailing hyphen (-) and -VA from school name
     re_program_sch_cleanup1 = re.compile(r'(.*?)-VA(\s*)$')
     re_program_sch_cleanup2 = re.compile(r'(.*?)-$(\s*)$')
-
-    ## Search for headers to remove
-    # re_program_header_ind   = re.compile("^Lane(\s*)Name")
-    # re_program_header_relay = re.compile("^Lane(\s*)Team")
 
     ## Search for case where team time butts up against seed time.  
     ## Need to add a space here so main regex works
@@ -117,6 +114,10 @@ def process_program( meet_report_filename: str,
                 found_header_line = 1
                 
                 num_files = create_output_file_program( output_dir, event_num, heat_num, output_list, display_relay_swimmer_names, split_relays_to_multiple_files )
+                if event_num > 0 and heat_num > 0:
+                    num_files_crawler = create_output_file_program_crawler( output_dir, event_num, heat_num, crawler_str )
+
+                
                 num_files_generated += num_files
 
                 ## Reset and start processing the next event/heat
@@ -137,16 +138,6 @@ def process_program( meet_report_filename: str,
                 continue
 
             #####################################################################################
-            ## Ignore these lines as we will add our own back in depending on the output format
-            #####################################################################################
-            ## For Relay Individual Events
-            # if re_program_header_ind.search(line):
-            #     continue
-            # ## For Relay Events
-            # if re_program_header_relay.search(line):
-            #     continue
-
-            #####################################################################################
             ## PROGRAM: Start with Event line.  
             ##  Get the Event Number from the report
             ##  Clean it up
@@ -154,8 +145,7 @@ def process_program( meet_report_filename: str,
             if line.lower().startswith(("event")):
                 event_num, event_str = sst_common.get_event_num_from_eventline( line )
                 ## H4 is the Event number/name line
-                output_list.append(('H4', f"{line} {unofficial_results}" ))
-
+                output_list.append(('H4', f"{line}" ))
 
             #####################################################################################
             ## PROGRAM: Remove "Timed Finals" from Heat (and flight) line
@@ -168,6 +158,9 @@ def process_program( meet_report_filename: str,
                 ## H6 is the Heat info, save it in case we want to output it later
                 output_list.append(('H5', f"{line}" ))
 
+                # Define the beginning of a new heat crawler string
+                crawler_str = f"Event {event_num} Heat {heat_num}: "
+
                 #####################################################################################
                 ## PROGRAM: Set name_list_header to be displayed above the list of swimmers
                 ##          This is only set once per Event/Heat so moving this is probablimetic
@@ -176,7 +169,6 @@ def process_program( meet_report_filename: str,
                 name_list_header = sst_common.get_header_line( event_num, shorten_school_names_relays, shorten_school_names_individual, program_header_dict ) 
                 if name_list_header != "":
                     output_list.append(('H6', name_list_header))
-
 
             #####################################################################################
             ## PROGRAM: INDIVIDUAL Extract the individual Entry Line
@@ -195,12 +187,10 @@ def process_program( meet_report_filename: str,
                     entry_sch_long        = str(entry_line_list[0][3]).strip()
                     entry_seedtime        = str(entry_line_list[0][4]).strip()
                     
-                    ## If we want to use Shortened School Names, run the lookup
-                    if shorten_school_names_individual:
-                        ## The length of the school name in the MM report varies by event type
-                        school_name_len = program_header_len_dict['diving_long'] if event_num in sst_common.event_num_diving else program_header_len_dict['individual_long']
-
-                        entry_sch_short = sst_common.short_school_name_lookup( entry_sch_long, school_name_len )
+                    ## In case we want to use Shortened School Names, run the lookup
+                    ## The length of the school name in the MM report varies by event type
+                    school_name_len = program_header_len_dict['diving_long'] if event_num in sst_common.event_num_diving else program_header_len_dict['individual_long']
+                    entry_sch_short = sst_common.short_school_name_lookup( entry_sch_long, school_name_len )
 
                     ## We can display name as given (Last, First) or change it to First Last with cli parameter
                     entry_name = sst_common.reverse_lastname_firstname( entry_name_last_first ) if namesfirstlast else entry_name_last_first
@@ -216,6 +206,7 @@ def process_program( meet_report_filename: str,
                         output_str = f" {q}{entry_lane:>2}{q} {q}{entry_name:<25}{q} {q}{entry_grade:>2}{q} {q}{entry_sch_short:<4}{q} {q}{entry_seedtime:>8}{q}"
                     
                     output_list.append(('LANE', output_str))
+                    crawler_str += gen_program_crawler_ind( entry_lane, entry_name, entry_grade,entry_sch_short, entry_sch_long, entry_seedtime )
             
             #####################################################################################
             ## PROGRAM: RELAY Find the replay line with LANE, SCHOOL, RELAY TEAM SEEDTIME
@@ -225,7 +216,7 @@ def process_program( meet_report_filename: str,
                 entry_line_list = re_program_lane_relay.findall(line)
                 #  REGEX Positions                 LANE   SCHOOL    RELAY     SEEDTIME
                 if entry_line_list:
-                    entryline_place     = str(entry_line_list[0][0]).strip()
+                    entryline_lane      = str(entry_line_list[0][0]).strip()
                     entryline_sch_long  = str(entry_line_list[0][1]).strip()
                     entryline_relay     = str(entry_line_list[0][2]).strip()
                     entryline_seedtime  = str(entry_line_list[0][3]).strip()
@@ -233,16 +224,14 @@ def process_program( meet_report_filename: str,
                     #####################################################################################
                     ## PROGRAM: Replace long school name with short name for RELAY events
                     #####################################################################################
-                    if shorten_school_names_relays:
-                        entryline_sch_short = entryline_sch_long
-                        entryline_sch_short = sst_common.short_school_name_lookup( entryline_sch_long, len(entryline_sch_long) )
-                        output_str = f"{q}{entryline_place:>2}{q} {q}{entryline_sch_short:<4}{q} {q}{entryline_relay:1}{q} {q}{entryline_seedtime:>8}{q}"
-                    else:
-                        ## Still issues with School names ending in - or -VA
-                        entryline_sch_long = re_program_sch_cleanup1.sub(r'\1', entryline_sch_long)
-                        entryline_sch_long = re_program_sch_cleanup2.sub(r'\1', entryline_sch_long)
+                    entryline_sch_short = sst_common.short_school_name_lookup( entryline_sch_long, len(entryline_sch_long) )
+                    ## Still issues with School names ending in - or -VA
+                    entryline_sch_long = re_program_sch_cleanup2.sub(r'\1', entryline_sch_long)
 
-                        output_str = f"{q}{entryline_place:>2}{q} {q}{entryline_sch_long:<28}{q} {q}{entryline_relay:1}{q} {q}{entryline_seedtime:>8}{q}"
+                    if shorten_school_names_relays:
+                        output_str = f"{q}{entryline_lane:>2}{q} {q}{entryline_sch_short:<4}{q} {q}{entryline_relay:1}{q} {q}{entryline_seedtime:>8}{q}"
+                    else:
+                        output_str = f"{q}{entryline_lane:>2}{q} {q}{entryline_sch_long:<28}{q} {q}{entryline_relay:1}{q} {q}{entryline_seedtime:>8}{q}"
 
                     output_list.append(( "LANE", output_str ))
 
@@ -255,6 +244,8 @@ def process_program( meet_report_filename: str,
             if event_num in sst_common.event_num_relay and re_program_check_relay_name_line.search(line):
                 output_str = re_program_space_relay_name.sub( r'\1 \2',line )
                 output_list.append(( "NAME", output_str ))
+                crawler_str += gen_program_crawler_relay(entryline_lane, entryline_relay, entryline_sch_short, entryline_sch_long, output_str, entryline_seedtime)
+
 
     #####################################################################################
     ## Reached end of file
@@ -263,6 +254,8 @@ def process_program( meet_report_filename: str,
 
     num_files = create_output_file_program( output_dir, event_num, heat_num, output_list, display_relay_swimmer_names, split_relays_to_multiple_files )
     num_files_generated += num_files
+
+    num_files_crawler = create_output_file_program_crawler( output_dir, event_num, heat_num, crawler_str )
 
     #####################################################################################
     ## PROGRAM: All done. Return counts of files created
@@ -295,13 +288,9 @@ def create_output_file_program( output_dir_root: str,
 
     file_name_prefix = "program"
     output_dir = f"{output_dir_root}{file_name_prefix}/"
-
-    ## Create output dir if not exists
-    if not os.path.exists( output_dir ):
-        os.makedirs( output_dir )
     
     ## For non relay events
-    output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}.txt"
+    output_file_name = f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}.txt"
 
     ## Count the number of lanes in the RELAY
     num_relay_lane = 0
@@ -338,19 +327,65 @@ def create_output_file_program( output_dir_root: str,
         ## If we have more then 6 relay entries create second output file, if requested to do so
         if split_relays_to_multiple_files and num_relay_lane > 7 and count == 5:
             count = -99
-            output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}_Split{split_num:0>2}.txt"
+            output_file_name = f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}_Split{split_num:0>2}.txt"
             
-            sst_common.write_output_file(output_file_name, output_str)
+            sst_common.write_output_file(output_dir, output_file_name, output_str)
             output_str = header_str
             ## Regenerate the header?  Need a better way to do this
             num_files_created += 1
             split_num += 1
-            output_file_name = output_dir + f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}_Split{split_num:0>2}.txt"
+            output_file_name = f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}_Split{split_num:0>2}.txt"
 
         if row_type == 'LANE':
             count += 1
     
-    sst_common.write_output_file(output_file_name, output_str)
+    sst_common.write_output_file(output_dir, output_file_name, output_str)
     num_files_created += 1
 
     return num_files_created
+
+
+
+####################################################################################
+## Given an array of PROGRAM lines PER HEAT, generate the crawler file for individuals
+#####################################################################################
+def gen_program_crawler_ind( entry_lane, entry_name, entry_grade,entry_sch_short, entry_sch_long, entry_seedtime ):
+
+    seperator_str = " | "
+    crawler_sep = "" if entry_lane == 1 else seperator_str
+
+    school_name = entry_sch_short.strip()
+    lane_str = f"LANE {entry_lane}: {entry_name} {entry_grade} {school_name}{crawler_sep}"
+
+    return lane_str
+
+
+####################################################################################
+## Given an array of PROGRAM lines PER HEAT, generate the crawler file for relays
+#####################################################################################
+def gen_program_crawler_relay( entry_lane, entry_name, entry_sch_short, entry_sch_long, swimmers_names ,entry_seedtime ):
+
+    seperator_str = " | "
+    crawler_sep = "" if entry_lane == 1 else seperator_str
+
+    school_name = entry_sch_short.strip()
+    # lane_str = f"LANE {entry_lane}: {school_name} {entry_name} {crawler_sep}"
+    lane_str = f"LANE {entry_lane}: {school_name} {entry_name} {swimmers_names}{crawler_sep}"
+
+    return lane_str
+
+
+def create_output_file_program_crawler( output_dir_root: str, 
+                                event_num: int, 
+                                heat_num: int,
+                                crawlwer_str: str ) -> int:
+    """ Generate the filename and open the next file """
+
+    output_dir_crawler = "program_crawler"
+    file_name_prefix = "program_crawler"
+    output_dir = f"{output_dir_root}/{output_dir_crawler}"
+
+    print( f"CRW OUT: e: {event_num} h: {heat_num} {crawlwer_str}")
+    output_file_name = f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}.txt"
+
+    sst_common.write_output_file( output_dir, output_file_name, crawlwer_str)
