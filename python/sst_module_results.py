@@ -35,11 +35,6 @@ def process_result( meet_report_filename: str,
                     num_results_to_display: int ) -> int:
     """ Given the MeetManager results file file formatted in a specific manner,
         generate indiviual result files for use in Wirecast displays """
-    
-    # result_relay_dict_full_name_len = 22
-    # results_ind_dict_full_name_len  = 25
-    # school_name_dict_short_name_len = 4  # Four character name plus spaces for padding between EntryTime
-    # results_dive_dict_full_nam_len = 25
 
 
     result_header_len_dict = {
@@ -69,6 +64,7 @@ def process_result( meet_report_filename: str,
     ## Define local variables
     event_num = 0
     num_files_generated = 0
+    num_crawler_files_generated = 0
     num_header_lines = 3
     found_header_line = 0
     output_list = []
@@ -120,8 +116,7 @@ def process_result( meet_report_filename: str,
                 if event_num > 0:
                     num_files_crawler = create_output_file_results_crawler( output_dir, event_num, crawler_str )
                                     # Define the beginning of a new heat crawler string
-                    crawler_str = f"Unofficial Results: Event {event_num} {event_str}: "
-
+                    num_crawler_files_generated += num_files_crawler
 
                 ## Reset and start processing the next event
                 output_list = []
@@ -161,6 +156,8 @@ def process_result( meet_report_filename: str,
 
                 if name_list_header != "":
                     output_list.append(('H6', name_list_header))
+
+                crawler_str = f"Unofficial Results: Event {event_num} {event_str}: "
 
             #####################################################################################
             ## RESULTS: For place winner results, add a space after top 1-9 swimmers 
@@ -225,12 +222,13 @@ def process_result( meet_report_filename: str,
                     #####################################################################################
                     ## RESULTS: Replace long school name with short name for RELAY events
                     #####################################################################################
-                    if shorten_school_names_relays:                        
-                        placeline_sch_short = short_school_name_lookup( placeline_sch_long, result_header_len_dict['relay_long'] )
+                    placeline_sch_short = sst_common.short_school_name_lookup( placeline_sch_long, result_header_len_dict['relay_long'] )
 
-                        ## Relay results are strange.  They give you 30 characters but truncate school to 22 characters
-                        ## Remove remaing spaces
-                        placeline_sch_short = placeline_sch_short.strip()
+                    ## Relay results are strange.  They give you 30 characters but truncate school to 22 characters
+                    ## Remove remaing spaces
+                    placeline_sch_short = placeline_sch_short.strip()
+
+                    if shorten_school_names_relays:                        
                         #output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_short:<4}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
                         output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_short:<4}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q}"
                     else:
@@ -245,6 +243,7 @@ def process_result( meet_report_filename: str,
             if event_num in sst_common.event_num_relay and re_results_check_relay_name_line.search(line):
                 line = re_results_space_relay_name.sub( r'\1 \2',line )
                 output_list.append(( "NAME", line ))  
+                crawler_str += gen_result_crawler_relay( placeline_place, placeline_sch_long, placeline_sch_short,placeline_relay, placeline_seedtime, placeline_finaltime, placeline_points )
 
 
     #####################################################################################
@@ -254,11 +253,14 @@ def process_result( meet_report_filename: str,
 
     create_output_file_results( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display )
     num_files_generated += 1
+    
+    num_files_crawler = create_output_file_results_crawler( output_dir, event_num, crawler_str )
+    num_crawler_files_generated += num_files_crawler
 
     #####################################################################################
     ## RESULTS: All done. Return counts of files created
     #####################################################################################
-    return num_files_generated
+    return num_files_generated, num_crawler_files_generated
 
 
 
@@ -343,17 +345,26 @@ def gen_result_crawler_ind( place: str,
 
 ####################################################################################
 ## Given an array of PROGRAM lines PER HEAT, generate the crawler file for relays
-#####################################################################################
-def gen_result_crawler_relay( entry_lane, entry_name, entry_sch_short, entry_sch_long, swimmers_names ,entry_seedtime ):
+####################################################################################
+def gen_result_crawler_relay( place: str, 
+                              sch_long: str, 
+                              sch_short: str,
+                              relay: str, 
+                              seedtime: str, 
+                              finaltime: str, 
+                              points: str ) -> str:
 
     seperator_str = " | "
-    crawler_sep = "" if entry_lane == 1 else seperator_str
+    crawler_sep = "" if place == "1" else seperator_str
 
-    school_name = entry_sch_short.strip()
-    # lane_str = f"LANE {entry_lane}: {school_name} {entry_name} {crawler_sep}"
-    lane_str = f"{crawler_sep} {entry_lane}: {school_name} {entry_name} {swimmers_names}"
+    ## There are cases where special characters are added to place (i.e. * for ties)
+    place = re.sub("[^\d\.]", "", place)
+    place_str = get_ordinal(int(place))
 
-    return lane_str
+    school_name = sch_short.strip()
+    results_str = f"{crawler_sep}{place_str}: {school_name} {relay} {finaltime}"
+
+    return results_str
 
 
 def create_output_file_results_crawler( output_dir_root: str, 
@@ -369,6 +380,8 @@ def create_output_file_results_crawler( output_dir_root: str,
     output_file_name = f"{file_name_prefix}_Event{event_num:0>2}.txt"
 
     sst_common.write_output_file( output_dir, output_file_name, crawlwer_str)
+
+    return 1
 
 
 def get_ordinal( num: int) -> str:

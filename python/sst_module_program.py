@@ -64,6 +64,7 @@ def process_program( meet_report_filename: str,
     event_num = 0
     heat_num = 0
     num_files_generated = 0
+    num_crawler_files_generated = 0
     num_header_lines = 3
     found_header_line = 0
     output_list = []
@@ -116,6 +117,7 @@ def process_program( meet_report_filename: str,
                 num_files = create_output_file_program( output_dir, event_num, heat_num, output_list, display_relay_swimmer_names, split_relays_to_multiple_files )
                 if event_num > 0 and heat_num > 0:
                     num_files_crawler = create_output_file_program_crawler( output_dir, event_num, heat_num, crawler_str )
+                    num_crawler_files_generated += num_files_crawler
 
                 
                 num_files_generated += num_files
@@ -256,11 +258,13 @@ def process_program( meet_report_filename: str,
     num_files_generated += num_files
 
     num_files_crawler = create_output_file_program_crawler( output_dir, event_num, heat_num, crawler_str )
+    num_crawler_files_generated += num_files_crawler
+
 
     #####################################################################################
     ## PROGRAM: All done. Return counts of files created
     #####################################################################################
-    return num_files_generated
+    return num_files_generated, num_crawler_files_generated
 
 
 
@@ -389,3 +393,5 @@ def create_output_file_program_crawler( output_dir_root: str,
     output_file_name = f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}.txt"
 
     sst_common.write_output_file( output_dir, output_file_name, crawlwer_str)
+
+    return 1

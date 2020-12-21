@@ -294,7 +294,7 @@ def process_main():
              ## Remove files from last run as we may have old events/heats mixed in
             remove_files_from_dir( 'program', output_dir )
 
-        total_files_generated_program = \
+        total_files_generated_program , total_crawler_files = \
             sst_program.process_program( inputfile, 
                                         output_dir, 
                                         license_name, 
@@ -314,7 +314,7 @@ def process_main():
              ## Remove files from last run as we may have old eventsmixed in
             remove_files_from_dir( 'results', output_dir )
 
-        total_files_generated_results = \
+        total_files_generated_results, total_crawler_files = \
                sst_results.process_result(  inputfile, 
                                             output_dir, 
                                             license_name, 
@@ -350,8 +350,8 @@ def process_main():
         logging.warning(f"\tNumber of 'Program' files generated: {total_files_generated_program}")
     if total_files_generated_results > 0:
         logging.warning(f"\tNumber of 'Results' files generated: {total_files_generated_results}")
-    # if total_files_generated_crawler > 0:
-    #     logging.warning(f"\tNumber of 'Crawler' files generated: {total_files_generated_crawler}")
+    if total_crawler_files > 0:
+        logging.warning(f"\tNumber of 'Crawler' files generated: {total_crawler_files}")
 
 #####################################################################################
 #####################################################################################
