@@ -324,25 +324,26 @@ def process_main():
                                             args.displayRelayNames, 
                                             args.namesfirstlast, 
                                             args.quote ,
-                                            args.numresults)
+                                            args.numresults,
+                                            args.lastnumevents)
 
     #####################################################################################
     ## Generate wirecast CRAWLER iles from a MEET RESULTS txt file
     #####################################################################################
-    if process_to_run['crawler']:
-         ## Remove files from last run as we may have old eventsmixed in
-        remove_files_from_dir( 'crawler', output_dir )
+    # if process_to_run['crawler']:
+    #      ## Remove files from last run as we may have old eventsmixed in
+    #     remove_files_from_dir( 'crawler', output_dir )
 
-        total_files_generated_crawler =  \
-            sst_crawler.process_crawler( inputfile, 
-                                        output_dir, 
-                                        license_name, 
-                                        args.shortschoolrelay, 
-                                        args.shortschoolindividual,
-                                        args.displayRelayNames, 
-                                        args.quote,
-                                        args.numresults,
-                                        args.lastnumevents )
+    #     total_files_generated_crawler =  \
+    #         sst_crawler.process_crawler( inputfile, 
+    #                                     output_dir, 
+    #                                     license_name, 
+    #                                     args.shortschoolrelay, 
+    #                                     args.shortschoolindividual,
+    #                                     args.displayRelayNames, 
+    #                                     args.quote,
+    #                                     args.numresults,
+    #                                     args.lastnumevents )
 
 
     logging.warning(f"Process Completed:")

@@ -32,7 +32,8 @@ def process_result( meet_report_filename: str,
                     display_relay_swimmer_names: bool, 
                     namesfirstlast: bool, 
                     quote_output: bool,
-                    num_results_to_display: int ) -> int:
+                    num_results_to_display: int,
+                    crawler_last_xx_results: int ) -> int:
     """ Given the MeetManager results file file formatted in a specific manner,
         generate indiviual result files for use in Wirecast displays """
 
@@ -68,6 +69,7 @@ def process_result( meet_report_filename: str,
     num_header_lines = 3
     found_header_line = 0
     output_list = []
+    crawler_list = []
     crawler_str = ""
 
     re_results_lane = re.compile('^[*]?\d{1,2} ')
@@ -113,11 +115,6 @@ def process_result( meet_report_filename: str,
                 num_files = create_output_file_results( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display )
                 num_files_generated += num_files
 
-                if event_num > 0:
-                    num_files_crawler = create_output_file_results_crawler( output_dir, event_num, crawler_str )
-                                    # Define the beginning of a new heat crawler string
-                    num_crawler_files_generated += num_files_crawler
-
                 ## Reset and start processing the next event
                 output_list = []
                 output_list.append( ('H1', line ))
@@ -143,7 +140,14 @@ def process_result( meet_report_filename: str,
             #####################################################################################
             if line.lower().startswith(("event")):
 
+                # # Starting a new event. Save crawler string for this past event in the list for later procesing
+                if event_num > 0:
+                    crawler_list.append( (event_num, crawler_str  ))
+
                 event_num, event_str = sst_common.get_event_num_from_eventline( line )
+
+                ## Start new crawler_str for next event
+                crawler_str = f"Unofficial Results: Event {event_num} {event_str}: "
 
                 ## H4 is the Event number/name line
                 # output_list.append(('H4', f"{line} {unofficial_results}" ))
@@ -157,7 +161,6 @@ def process_result( meet_report_filename: str,
                 if name_list_header != "":
                     output_list.append(('H6', name_list_header))
 
-                crawler_str = f"Unofficial Results: Event {event_num} {event_str}: "
 
             #####################################################################################
             ## RESULTS: For place winner results, add a space after top 1-9 swimmers 
@@ -254,8 +257,11 @@ def process_result( meet_report_filename: str,
     create_output_file_results( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display )
     num_files_generated += 1
     
-    num_files_crawler = create_output_file_results_crawler( output_dir, event_num, crawler_str )
-    num_crawler_files_generated += num_files_crawler
+    ## Save the last event in the crawler list 
+    crawler_list.append( (event_num, crawler_str  ))
+    
+    ## Write out all crawler files now that processing of the result file has completed
+    num_crawler_files_generated = create_output_file_results_crawler( output_dir, crawler_list, crawler_last_xx_results)
 
     #####################################################################################
     ## RESULTS: All done. Return counts of files created
@@ -367,21 +373,76 @@ def gen_result_crawler_relay( place: str,
     return results_str
 
 
-def create_output_file_results_crawler( output_dir_root: str, 
-                                            event_num: int, 
-                                            crawlwer_str: str ) -> int:
-    """ Generate the filename and open the next file """
 
-    output_dir_crawler = "results_crawler"
+#####################################################################################
+## create_output_file_results_crawler
+##
+## Given a list of tuples (evnt num, crawler_string), generate output files
+## Generate crawler files for actual events (event_num > 0) and for meet name (event_num = -2)
+#####################################################################################
+def create_output_file_results_crawler( output_dir_root: str, crawler_list: list, last_num_events: int ):
+    """ Given a list of tuples (evnt num, crawler_string), generate output files """
+    
     file_name_prefix = "results_crawler"
-    output_dir = f"{output_dir_root}/{output_dir_crawler}"
+    output_dir = f"{output_dir_root}{file_name_prefix}/"
+    num_files_generated=0
 
-    print( f"CRW OUT: e: {event_num} {crawlwer_str}")
-    output_file_name = f"{file_name_prefix}_Event{event_num:0>2}.txt"
 
-    sst_common.write_output_file( output_dir, output_file_name, crawlwer_str)
+    ## Generate individual files per meet
+    for crawler_event in crawler_list:
+        event_num = crawler_event[0]
+        crawler_text = crawler_event[1]
 
-    return 1
+        logging.info(f"crawler: e: {event_num} t: {crawler_text}")
+        ## Generate event specific file
+        if event_num > 0:
+            output_file_name = f"{file_name_prefix}_result_event{event_num:0>2}.txt"
+            sst_common.write_output_file( output_dir, output_file_name, crawler_text )
+            num_files_generated += 1
+        ## Genreate special file for the meet name
+        elif event_num == sst_common.headerNum2:
+            output_file_name = f"{file_name_prefix}__MeetName.txt"
+            sst_common.write_output_file( output_dir, output_file_name, crawler_text )
+            num_files_generated += 1
+
+    ## Generate single file for all scored events in reverse order
+    crawler_text = ""
+    crawler_text_last_num_events = ""
+    meet_name = ""
+    num_events = len(crawler_list)
+    last_num_events_generated = 0
+
+    ## Loop through list in reverse order to generate crawler string with multiple events
+    for num in range( num_events-1, -1, -1):
+        crawler_event = crawler_list[num]
+        event_num = crawler_event[0]
+        event_text = crawler_event[1]
+
+        ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
+        if event_num > 0:
+            crawler_text += f" | {event_text}"
+            if last_num_events_generated < last_num_events:
+                crawler_text_last_num_events += f" | {event_text}"
+                last_num_events_generated += 1
+        elif event_num == sst_common.headerNum2:
+            meet_name = event_text        
+
+    ## Add meet_name to front of string
+    crawler_text = f"{meet_name} {crawler_text}"
+    ## Create the crawler file with ALL events completed so far
+    all_events_file_name = f"{file_name_prefix}__AllEventsReverse.txt"
+    output_file_name = all_events_file_name
+    sst_common.write_output_file( output_dir, output_file_name, crawler_text )
+    num_files_generated += 1
+
+    ## Create the crawler file with last_num events
+    #last_xx_events_file_name = f"{file_name_prefix}__Last_{last_num_events:0>2}_events.txt"
+    last_xx_events_file_name = f"{file_name_prefix}__Last_XX_events.txt"
+    output_file_name = last_xx_events_file_name
+    sst_common.write_output_file( output_dir, output_file_name, crawler_text_last_num_events )
+    num_files_generated += 1
+
+    return num_files_generated
 
 
 def get_ordinal( num: int) -> str:
