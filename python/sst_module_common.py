@@ -102,8 +102,11 @@ def get_event_num_from_eventline( line: str ) -> int:
     clean_event_str = " ".join(clean_event_str)
     event_str = clean_event_str.split(' ', 4)
     event_num = int(event_str[1].strip())
+    event_name = ""
+    for i in range(2,5):
+        event_name += event_str[i].strip() + " "
 
-    return event_num, event_str
+    return event_num, event_name
 
 
 def get_heat_num_from_heatline( line: str ) -> int:

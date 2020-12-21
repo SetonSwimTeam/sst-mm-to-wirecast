@@ -350,8 +350,8 @@ def process_main():
         logging.warning(f"\tNumber of 'Program' files generated: {total_files_generated_program}")
     if total_files_generated_results > 0:
         logging.warning(f"\tNumber of 'Results' files generated: {total_files_generated_results}")
-    if total_files_generated_crawler > 0:
-        logging.warning(f"\tNumber of 'Crawler' files generated: {total_files_generated_crawler}")
+    # if total_files_generated_crawler > 0:
+    #     logging.warning(f"\tNumber of 'Crawler' files generated: {total_files_generated_crawler}")
 
 #####################################################################################
 #####################################################################################

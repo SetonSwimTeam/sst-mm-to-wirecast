@@ -120,7 +120,7 @@ def process_result( meet_report_filename: str,
                 if event_num > 0:
                     num_files_crawler = create_output_file_results_crawler( output_dir, event_num, crawler_str )
                                     # Define the beginning of a new heat crawler string
-                    crawler_str = f"Results: Event {event_num}: "
+                    crawler_str = f"Unofficial Results: Event {event_num} {event_str}: "
 
 
                 ## Reset and start processing the next event
