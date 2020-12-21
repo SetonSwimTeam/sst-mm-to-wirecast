@@ -1,6 +1,5 @@
 import logging
 import re
-
 import sst_module_common as sst_common
 
 
@@ -73,6 +72,7 @@ def process_result( meet_report_filename: str,
     num_header_lines = 3
     found_header_line = 0
     output_list = []
+    crawler_str = ""
 
     re_results_lane = re.compile('^[*]?\d{1,2} ')
 
@@ -116,6 +116,12 @@ def process_result( meet_report_filename: str,
                 ## The start of the next event finished off the last event. Go write out the last event
                 num_files = create_output_file_results( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display )
                 num_files_generated += num_files
+
+                if event_num > 0:
+                    num_files_crawler = create_output_file_results_crawler( output_dir, event_num, crawler_str )
+                                    # Define the beginning of a new heat crawler string
+                    crawler_str = f"Results: Event {event_num}: "
+
 
                 ## Reset and start processing the next event
                 output_list = []
@@ -181,10 +187,9 @@ def process_result( meet_report_filename: str,
 
                     logging.debug(f"RESULTS: place {placeline_place}: name {placeline_name_last_first}: grade {placeline_grade}: sch {placeline_school_long}: seed {placeline_seedtime}: final {placeline_finaltime}: points {placeline_points}:")
                     ## If we want to use Shortened School Names, run the lookup
-                    if shorten_school_names_individual:
-                        ## The length of the school name in the MM report varies by event type
-                        school_name_len = result_header_len_dict['individual_long']  if event_num in sst_common.event_num_individual else result_header_len_dict['diving_long']
-                        placeline_school_short = sst_common.short_school_name_lookup( placeline_school_long, school_name_len )
+                    ## The length of the school name in the MM report varies by event type
+                    school_name_len = result_header_len_dict['individual_long']  if event_num in sst_common.event_num_individual else result_header_len_dict['diving_long']
+                    placeline_school_short = sst_common.short_school_name_lookup( placeline_school_long, school_name_len )
 
                     ## We can display name as given (Last, First) or change it to First Last with cli parameter
                     result_name = sst_common.reverse_lastname_firstname( placeline_name_last_first ) if namesfirstlast else placeline_name_last_first
@@ -199,7 +204,8 @@ def process_result( meet_report_filename: str,
                         output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_school_short:<4}{q} {q}{placeline_grade:>2}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q}"
                     
                     output_list.append(('PLACE', output_str))
-            
+                    crawler_str += gen_result_crawler_ind( placeline_place, result_name, placeline_grade,placeline_school_short, placeline_school_long, placeline_seedtime, placeline_finaltime, placeline_points )
+
             #####################################################################################
             ## RESULTS: RELAY Find the Place Winner line, place, name, school, time, points, etc
             ## 1 SST            A                    1:46.82      1:40.65        32
@@ -308,3 +314,73 @@ def create_output_file_results( output_dir_root: str,
     num_files_generated += 1
 
     return num_files_generated
+
+
+####################################################################################
+## Given an array of PROGRAM lines PER HEAT, generate the crawler file for individuals
+#####################################################################################
+def gen_result_crawler_ind( place: str, 
+                            name: str, 
+                            grade: str,
+                            school_short: str, 
+                            school_long: str, 
+                            seedtime: str, 
+                            finaltime: str, 
+                            points: str ) -> int:
+
+    seperator_str = " | "
+    crawler_sep = "" if place == "1" else seperator_str
+
+    ## There are cases where special characters are added to place (i.e. * for ties)
+    place = re.sub("[^\d\.]", "", place)
+    place_str = get_ordinal(int(place))
+
+    school_name = school_short.strip()
+    results_str = f"{crawler_sep}{place_str}: {name} {grade} {school_name} {finaltime}"
+
+    return results_str
+
+
+####################################################################################
+## Given an array of PROGRAM lines PER HEAT, generate the crawler file for relays
+#####################################################################################
+def gen_result_crawler_relay( entry_lane, entry_name, entry_sch_short, entry_sch_long, swimmers_names ,entry_seedtime ):
+
+    seperator_str = " | "
+    crawler_sep = "" if entry_lane == 1 else seperator_str
+
+    school_name = entry_sch_short.strip()
+    # lane_str = f"LANE {entry_lane}: {school_name} {entry_name} {crawler_sep}"
+    lane_str = f"{crawler_sep} {entry_lane}: {school_name} {entry_name} {swimmers_names}"
+
+    return lane_str
+
+
+def create_output_file_results_crawler( output_dir_root: str, 
+                                            event_num: int, 
+                                            crawlwer_str: str ) -> int:
+    """ Generate the filename and open the next file """
+
+    output_dir_crawler = "results_crawler"
+    file_name_prefix = "results_crawler"
+    output_dir = f"{output_dir_root}/{output_dir_crawler}"
+
+    print( f"CRW OUT: e: {event_num} {crawlwer_str}")
+    output_file_name = f"{file_name_prefix}_Event{event_num:0>2}.txt"
+
+    sst_common.write_output_file( output_dir, output_file_name, crawlwer_str)
+
+
+def get_ordinal( num: int) -> str:
+    """ convert a number such as 3 to 3rd """
+
+    if num == 1:
+        num_str = f"{num}st"
+    elif num == 2:
+        num_str = f"{num}nd"
+    elif num == 3:
+        num_str = f"{num}rd"
+    else:
+        num_str = f"{num}th"
+    
+    return num_str
