@@ -45,7 +45,6 @@ import logging
 import sst_module_common as sst_common
 import sst_module_program as sst_program
 import sst_module_results as sst_results
-import sst_module_crawler as sst_crawler
 
 ## Globals
 report_type_results = "result"

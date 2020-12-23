@@ -291,10 +291,12 @@ def create_output_file_program( output_dir_root: str,
         return 0
 
     file_name_prefix = "program"
-    output_dir = f"{output_dir_root}{file_name_prefix}/"
+    #output_dir = f"{output_dir_root}{file_name_prefix}/"
+    output_dir = f"{output_dir_root}/"
     
     ## For non relay events
-    output_file_name = f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}.txt"
+    #output_file_name = f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}.txt"
+    output_file_name = f"event{event_num:0>2}_heat{heat_num:0>2}_{file_name_prefix}.txt"
 
     ## Count the number of lanes in the RELAY
     num_relay_lane = 0
@@ -331,14 +333,16 @@ def create_output_file_program( output_dir_root: str,
         ## If we have more then 6 relay entries create second output file, if requested to do so
         if split_relays_to_multiple_files and num_relay_lane > 7 and count == 5:
             count = -99
-            output_file_name = f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}_Split{split_num:0>2}.txt"
+            #output_file_name = f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}_Split{split_num:0>2}.txt"
+            output_file_name = f"event{event_num:0>2}_heat{heat_num:0>2}_split{split_num:0>2}_{file_name_prefix}.txt"
             
             sst_common.write_output_file(output_dir, output_file_name, output_str)
             output_str = header_str
             ## Regenerate the header?  Need a better way to do this
             num_files_created += 1
             split_num += 1
-            output_file_name = f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}_Split{split_num:0>2}.txt"
+            #output_file_name = f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}_Split{split_num:0>2}.txt"
+            output_file_name = f"event{event_num:0>2}_heat{heat_num:0>2}_split{split_num:0>2}_{file_name_prefix}.txt"
 
         if row_type == 'LANE':
             count += 1
@@ -385,12 +389,12 @@ def create_output_file_program_crawler( output_dir_root: str,
                                 crawlwer_str: str ) -> int:
     """ Generate the filename and open the next file """
 
-    output_dir_crawler = "program_crawler"
-    file_name_prefix = "program_crawler"
-    output_dir = f"{output_dir_root}/{output_dir_crawler}"
+    #output_dir_crawler = "program_crawler"
+    file_name_prefix = "crawler_program"
+    output_dir = f"{output_dir_root}"
 
     print( f"CRW OUT: e: {event_num} h: {heat_num} {crawlwer_str}")
-    output_file_name = f"{file_name_prefix}_Event{event_num:0>2}_Heat{heat_num:0>2}.txt"
+    output_file_name = f"{file_name_prefix}_event{event_num:0>2}_heat{heat_num:0>2}.txt"
 
     sst_common.write_output_file( output_dir, output_file_name, crawlwer_str)
 
