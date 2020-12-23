@@ -73,10 +73,13 @@ def process_result( meet_report_filename: str,
     crawler_str = ""
 
     re_results_lane = re.compile('^[*]?\d{1,2} ')
+    re_results_lane = re.compile('^--- ')
+    re_results_lane = re.compile('^([*]?\d{1,2} )|(--- )')
 
-    # #                                 TIE? PLACE       LAST          FIRST     GR           SCHOOL           SEEDTIME|NT    FINALTIME      POINTS
-    #re_results_lane_ind = re.compile('^([*]?\d{1,2})\s+(\w+, \w+)\s+(\w+) ([A-Z \'.].*?)\s*([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
-    re_results_lane_ind  = re.compile('^([*]?\d{1,2})\s+([A-z\' \.]+, [A-z ]+?) ([A-Z0-9]{1,2})\s+([A-Z \'.].*?)([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
+
+    # #                                 TIE? PLACE       LAST          FIRST     GR           SCHOOL           SEEDTIME|NT|NP    [xX]FINALTIME      POINTS
+    #re_results_lane_ind  = re.compile('^([*]?\d{1,2})\s+([A-z\' \.]+, [A-z ]+?) ([A-Z0-9]{1,2})\s+([A-Z \'.].*?)([0-9:.]+|NT)\s+([0-9:.]+)\s*([X]?[0-9]*)')
+    re_results_lane_ind  = re.compile('^([*]?\d{1,2}|---)\s+([A-z\' \.]+, [A-z ]+?) ([A-Z0-9]{1,2})\s+([A-Z \'.].*?)([0-9:.]+|NT|NP)\s+([xX0-9:.]+)\s*([0-9]*)')
 
     #                                     TIE? PLACE   SCHOOL           RELAY     SEEDTIME|NT    FINALTIME     POINTS
     re_results_lane_relay = re.compile('^([*]?\d{1,2})\s+([A-Z \'.].*)\s+([A-Z])\s+([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
@@ -287,7 +290,8 @@ def create_output_file_results( output_dir_root: str,
 
     file_name_prefix = "results"
 
-    output_dir = f"{output_dir_root}{file_name_prefix}/"
+    #output_dir = f"{output_dir_root}{file_name_prefix}/"
+    output_dir = f"{output_dir_root}/"
 
     ## Ignore the case where we get event0 heat0
     if event_num == 0:
@@ -317,7 +321,8 @@ def create_output_file_results( output_dir_root: str,
         if num_results_generated >= num_results_to_display:
             break;
 
-    output_file_name =  f"{file_name_prefix}_Event{event_num:0>2}.txt"
+    #output_file_name =  f"{file_name_prefix}_Event{event_num:0>2}.txt"
+    output_file_name =  f"event{event_num:0>2}_{file_name_prefix}.txt"
     sst_common.write_output_file( output_dir, output_file_name, output_str )
     num_files_generated += 1
 
@@ -341,7 +346,11 @@ def gen_result_crawler_ind( place: str,
 
     ## There are cases where special characters are added to place (i.e. * for ties)
     place = re.sub("[^\d\.]", "", place)
-    place_str = get_ordinal(int(place))
+    ## Place may be a string represenatation of a int, or it could be --- for exhibition swimmers
+    try:
+        place_str = get_ordinal(int(place))
+    except Exception as e:
+        place_str = place
 
     school_name = school_short.strip()
     results_str = f"{crawler_sep}{place_str}: {name} {grade} {school_name} {finaltime}"
@@ -383,8 +392,9 @@ def gen_result_crawler_relay( place: str,
 def create_output_file_results_crawler( output_dir_root: str, crawler_list: list, last_num_events: int ):
     """ Given a list of tuples (evnt num, crawler_string), generate output files """
     
-    file_name_prefix = "results_crawler"
-    output_dir = f"{output_dir_root}{file_name_prefix}/"
+    file_name_prefix = "crawler_results"
+    #output_dir = f"{output_dir_root}{file_name_prefix}/"
+    output_dir = f"{output_dir_root}/"
     num_files_generated=0
 
 
@@ -396,6 +406,7 @@ def create_output_file_results_crawler( output_dir_root: str, crawler_list: list
         logging.info(f"crawler: e: {event_num} t: {crawler_text}")
         ## Generate event specific file
         if event_num > 0:
+            #output_file_name = f"{file_name_prefix}_result_event{event_num:0>2}.txt"
             output_file_name = f"{file_name_prefix}_result_event{event_num:0>2}.txt"
             sst_common.write_output_file( output_dir, output_file_name, crawler_text )
             num_files_generated += 1
