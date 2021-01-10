@@ -32,7 +32,8 @@ def process_program( meet_report_filename: str,
                      add_new_line_to_relay_entries:bool, 
                      display_relay_swimmer_names: bool,
                      namesfirstlast: bool, 
-                    quote_output: bool ) -> int:
+                     quote_output: bool,
+                     generate_crawler:bool ) -> int:
     """ Given the input file formatted in a specific manner,
         generate indiviual Event/Heat files for use in Wirecast displays """
     
@@ -115,7 +116,7 @@ def process_program( meet_report_filename: str,
                 found_header_line = 1
                 
                 num_files = create_output_file_program( output_dir, event_num, heat_num, output_list, display_relay_swimmer_names, split_relays_to_multiple_files )
-                if event_num > 0 and heat_num > 0:
+                if generate_crawler and event_num > 0 and heat_num > 0:
                     num_files_crawler = create_output_file_program_crawler( output_dir, event_num, heat_num, crawler_str )
                     num_crawler_files_generated += num_files_crawler
 
@@ -257,8 +258,9 @@ def process_program( meet_report_filename: str,
     num_files = create_output_file_program( output_dir, event_num, heat_num, output_list, display_relay_swimmer_names, split_relays_to_multiple_files )
     num_files_generated += num_files
 
-    num_files_crawler = create_output_file_program_crawler( output_dir, event_num, heat_num, crawler_str )
-    num_crawler_files_generated += num_files_crawler
+    if generate_crawler:
+        num_files_crawler = create_output_file_program_crawler( output_dir, event_num, heat_num, crawler_str )
+        num_crawler_files_generated += num_files_crawler
 
 
     #####################################################################################

@@ -13,6 +13,8 @@
 #####################################################################################
 
 import os
+from os import path
+
 ## Define the types of events in this meet (Individual, Relay and Diving)
 event_num_individual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22]
 event_num_relay  = [1,2,17,18,23,24]
@@ -185,3 +187,26 @@ def cleanup_new_files( file_prefix: str, output_dir: str ):
     
     for file in txtfiles:
         print(f"Filename: {file}")
+
+
+#####################################################################################
+## Verify the input file exists before opening it to determine the file type
+#####################################################################################
+def verify_dirs_files(  input_dir: str, input_file:str, output_dir: str ):
+
+    ## Check input directory exists
+    error_msg = ""
+    if not os.path.isdir( input_dir ):
+        error_msg = f"\tInput directory not found: {input_dir}"
+    else:
+        fullFile = f"{input_dir}/{input_file}"
+        if not os.path.isfile( fullFile ):
+            error_msg = f"\tInput file not found: {fullFile}"
+
+    if not os.path.isdir( output_dir ):
+        if error_msg:
+            error_msg += "\n"
+        error_msg += f"\tOutput directory not found: {output_dir}"
+
+    return error_msg
+ 

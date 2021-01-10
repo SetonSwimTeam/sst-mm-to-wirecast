@@ -33,7 +33,8 @@ def process_result( meet_report_filename: str,
                     namesfirstlast: bool, 
                     quote_output: bool,
                     num_results_to_display: int,
-                    crawler_last_xx_results: int ) -> int:
+                    crawler_last_xx_results: int,
+                    generate_crawler: bool ) -> int:
     """ Given the MeetManager results file file formatted in a specific manner,
         generate indiviual result files for use in Wirecast displays """
 
@@ -272,7 +273,8 @@ def process_result( meet_report_filename: str,
     crawler_list.append( (event_num, crawler_str  ))
     
     ## Write out all crawler files now that processing of the result file has completed
-    num_crawler_files_generated = create_output_file_results_crawler( output_dir, crawler_list, crawler_last_xx_results)
+    if generate_crawler:
+        num_crawler_files_generated = create_output_file_results_crawler( output_dir, crawler_list, crawler_last_xx_results)
 
     #####################################################################################
     ## RESULTS: All done. Return counts of files created
@@ -334,6 +336,9 @@ def create_output_file_results( output_dir_root: str,
 
     #output_file_name =  f"{file_name_prefix}_Event{event_num:0>2}.txt"
     output_file_name =  f"event{event_num:0>2}_{file_name_prefix}.txt"
+
+    ## When we get past page one, its a mess.  These results won't fit on the wirecast page either.
+    ## We need a new filename otherwise we overwrite the main file
     if page_num > 1:
         output_file_name =  f"event{event_num:0>2}_{file_name_prefix}_page{page_num}.txt"
     sst_common.write_output_file( output_dir, output_file_name, output_str )
