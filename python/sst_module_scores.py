@@ -32,6 +32,9 @@ def process_score_champsionship( meet_report_filename: str,
     num_files_generated = 0
     ## Quote output for debuggin
     q = "'" if quote_output else ""
+    gender = ""
+
+    score_header = "Place   School              Points"
 
     #####################################################################################
     ## SCORES_CHAMP: Loop through each line of the input file
@@ -58,8 +61,9 @@ def process_score_champsionship( meet_report_filename: str,
                 found_header_line = 1
                 
                 ## The start of the next event finished off the last event. Go write out the last event
-                num_files = create_output_file_scores( output_dir, output_list )
-                num_files_generated += num_files
+                if gender != "":
+                    num_files = create_output_file_scores( output_dir, output_list, gender, numresults )
+                    num_files_generated += num_files
 
                 ## Reset and start processing the next event
                 output_list = []
@@ -79,6 +83,7 @@ def process_score_champsionship( meet_report_filename: str,
                     output_list.append( ('H2', meet_name ))
                 elif found_header_line == 3:
                     output_list.append( ('H3', line ))
+
                 continue
 
             #logging.debug(f"SCORE: line: {line}")
@@ -86,6 +91,10 @@ def process_score_champsionship( meet_report_filename: str,
             # Girls - Team Scores
             if " - Team Scores" in line:
                 gender, team_score = line.split(' - ')
+
+                ## Add the header above the indivial team scores
+                output_list.append( ('H4', line ))
+                output_list.append( ('H6', score_header ))
 
 
 
@@ -113,7 +122,7 @@ def process_score_champsionship( meet_report_filename: str,
 
                 logging.debug( f"SCORE: output: {output_str}" )
 
-    create_output_file_scores( output_dir, output_list )
+    create_output_file_scores( output_dir, output_list, gender, numresults )
     
 
 
@@ -121,8 +130,13 @@ def process_score_champsionship( meet_report_filename: str,
 ## Given an array of PROGRAM lines PER HEAT, generate the output file
 #####################################################################################
 def create_output_file_scores( output_dir_root: str, 
-                               output_list: list ) -> int:
-    num_files_created = 0
+                               output_list: list,
+                               gender_of_scores: str,
+                               num_results_to_display: int ) -> int:
+    num_files_generated = 0
+    num_results_generated = 0
+    output_str = ""
+    output_dir = f"{output_dir_root}/"
 
     logging.warning("\n create_output_file_scores")
     for output_tuple in output_list:
@@ -131,5 +145,28 @@ def create_output_file_scores( output_dir_root: str,
 
         logging.warning(f"SCORES: {row_type} t: {row_text}")
 
+        ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
+        if row_type == 'H2':
+            output_str += row_text + '\n'
+            output_str += '\n'
+        elif row_type == 'H3':
+            output_str += row_text + '\n'
+            output_str += '\n'
+        elif row_type == 'H4':
+            output_str += row_text + '\n'
+            output_str += '\n'
+        elif row_type == 'H6':
+            output_str += row_text + '\n'
+        elif row_type == 'SCORE':
+            output_str += row_text + '\n'
 
-    return num_files_created
+        num_results_generated += 1
+        if num_results_generated >= num_results_to_display:
+            break;
+
+    gender_lowercase = gender_of_scores.lower()
+    output_file_name =  f"score_champsionship_{gender_lowercase}.txt"
+    sst_common.write_output_file( output_dir, output_file_name, output_str )
+    num_files_generated += 1
+
+    return num_files_generated

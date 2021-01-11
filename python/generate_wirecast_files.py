@@ -637,7 +637,8 @@ def process_main():
     total_files_generated_program = 0
     total_files_generated_results = 0
     total_crawler_files = 0
-
+    total_empty_results = 0
+    
     #####################################################################################
     ## Verify the directories and input file exists
     #####################################################################################
