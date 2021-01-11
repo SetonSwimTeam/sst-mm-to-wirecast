@@ -33,8 +33,7 @@ def process_score_champsionship( meet_report_filename: str,
     ## Quote output for debuggin
     q = "'" if quote_output else ""
     gender = ""
-
-    score_header = "Place   School              Points"
+    score_header = "Place   School                   Points"
 
     #####################################################################################
     ## SCORES_CHAMP: Loop through each line of the input file
@@ -102,7 +101,7 @@ def process_score_champsionship( meet_report_filename: str,
             #12345678901234567890123456789012345678901234567890
             # 1   Bishop O'Connell                     Bishop O'Connell                    487
             #re_score_result  = re.compile('^([*]?\d{1,2}|---)\s+([A-z\' \.]+, [A-z ]+?) ([A-Z0-9]{1,2})\s+([A-Z \'.].*?)([0-9:.]+|NT|NP)\s+([xX0-9:.]+)\s*([0-9]*)')
-            re_score_result  = re.compile('^(\d{1,2})\s+([A-z\' \.]{25})\s+([A-z\' \.]{25})\s+(\d+)\s*(\d*)')
+            re_score_result  = re.compile('^(\d{1,2})\s+([A-z\' \.]{27})\s+([A-z\' \.]{27})\s+(\d+)\s*(\d*)')
 
             score_line = re_score_result.findall(line)
             if score_line:
@@ -117,7 +116,7 @@ def process_score_champsionship( meet_report_filename: str,
                     scoreline_points += "." + scoreline_points2
 
                 #logging.debug( f"*** SCORE: p: {scoreline_place} s1: {scoreline_school1} s2: {scoreline_school2} p: {scoreline_points}" )
-                output_str = f"{q}{scoreline_place:>2}{q} {q}{scoreline_school1:<25}{q} {q}{scoreline_points:>8}{q}"
+                output_str = f"{q}{scoreline_place:>2}{q} {q}{scoreline_school1:<27}{q} {q}{scoreline_points:>8}{q}"
                 output_list.append( ('SCORE', output_str ))
 
                 logging.debug( f"SCORE: output: {output_str}" )
@@ -148,7 +147,6 @@ def create_output_file_scores( output_dir_root: str,
         ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
         if row_type == 'H2':
             output_str += row_text + '\n'
-            output_str += '\n'
         elif row_type == 'H3':
             output_str += row_text + '\n'
             output_str += '\n'
