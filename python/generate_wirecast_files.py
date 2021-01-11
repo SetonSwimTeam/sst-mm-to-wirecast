@@ -40,7 +40,6 @@ from pathlib import Path
 import glob
 import logging
 import sys
-import sst_module_common as sst_common
 
 
 ###
@@ -48,6 +47,7 @@ import sst_module_common as sst_common
 import sst_module_common as sst_common
 import sst_module_program as sst_program
 import sst_module_results as sst_results
+import sst_module_scores as sst_scores
 
 ## Globals
 report_type_results = "result"
@@ -240,14 +240,14 @@ def process_main():
     # logging.basicConfig( format='%(levelname)s:%(message)s', level=logging.INFO)
     logging.basicConfig( format='%(message)s', level=loglevel)
 
-    process_to_run = {"program": False, "results": False, "crawler": False}
+    process_to_run = {"program": False, "results": False, "crawler": False, "scores_champsionship": False }
     
     report_type_to_run = args.reporttype
 
     ## Set global debug flag
     total_files_generated_program = 0
     total_files_generated_results = 0
-    total_files_generated_crawler = 0
+    total_crawler_files = 0
 
     #####################################################################################
     ## Verify the directories and input file exists
@@ -272,6 +272,9 @@ def process_main():
         process_to_run['program'] = True
     elif (report_type_to_run == "results") or (report_type_to_run == "auto" and report_type == 'Results'):
         process_to_run['results'] = True
+    elif (report_type_to_run == "Team Rankings") or (report_type_to_run == "auto" and report_type == 'Team Rankings'):
+        process_to_run['scores_champsionship'] = True
+
 
     # Set the crawler flag
     process_to_run['crawler'] = args.crawler
@@ -357,6 +360,13 @@ def process_main():
                                             args.lastnumevents,
                                             args.crawler )
 
+    if process_to_run['scores_champsionship']:
+               sst_scores.process_score_champsionship(  
+                                            inputfile, 
+                                            output_dir, 
+                                            license_name, 
+                                            args.quote,
+                                            args.numresults )
 
     logging.warning(f"Process Completed:")
     if total_files_generated_program > 0:
@@ -365,6 +375,8 @@ def process_main():
         logging.warning(f"\tNumber of 'Results' files generated: {total_files_generated_results}")
     if total_crawler_files > 0:
         logging.warning(f"\tNumber of 'Crawler' files generated: {total_crawler_files}")
+
+
 
 #####################################################################################
 #####################################################################################
