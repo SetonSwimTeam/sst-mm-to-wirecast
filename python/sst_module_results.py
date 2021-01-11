@@ -487,3 +487,31 @@ def get_ordinal( num: int) -> str:
         num_str = f"{num}th"
     
     return num_str
+
+
+#####################################################################################
+## generate_empty_results
+##
+## By creating empty files with the same name as the real files, allow wirecast
+## templates to be preloaded prior to the meet so the wirecast operator does not
+## have to search for a file just prior to display it
+#####################################################################################
+
+def generate_empty_results( output_dir:str ) -> int:
+
+    file_name_prefix = "results"
+    output_str = ""
+
+    num_empty_files_created = 0
+    ## Allow for commenting out any type of event quickly during a meet
+    empty_event_list = []
+    empty_event_list += sst_common.event_num_individual
+    empty_event_list += sst_common.event_num_relay   
+    empty_event_list += sst_common.event_num_diving 
+
+    for event_num in empty_event_list:
+        output_file_name =  f"event{event_num:0>2}_{file_name_prefix}.txt"
+        sst_common.write_output_file( output_dir, output_file_name, output_str )
+        num_empty_files_created += 1
+
+    return num_empty_files_created
