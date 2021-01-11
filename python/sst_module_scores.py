@@ -76,6 +76,13 @@ def process_score_champsionship( meet_report_filename: str,
                     output_list.append( ('H3', line ))
                 continue
 
+            logging.debug(f"SCORE: line: {line}")
+            # Look for Boys/Girls Team Scores heading
+            # Girls - Team Scores
+            if " - Team Scores" in line:
+                gender, team_score = line.split(' - ')
+
+
     create_output_file_scores( output_dir, output_list )
     
 
