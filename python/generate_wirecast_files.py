@@ -39,6 +39,9 @@ import argparse
 from pathlib import Path
 import glob
 import logging
+import sys
+import sst_module_common as sst_common
+
 
 ###
 ### Import local modules that were split out for cleaner functionality
@@ -57,6 +60,21 @@ report_type_crawler = "crawler"
 #####################################################################################
 ## CLI param to remove existing files from directory.  This is needed when
 ## old heats won't be overwritten so we need to make sure they are removed
+# #####################################################################################
+# def remove_files_from_dir_OLD( reporttype: str, directory_name: str ) -> int:
+
+#     if report_type == "program":
+#         remove_files_from_dir_startswith( "crawler_program" )
+#         remove_files_from_dir_endswith( "program.txt" )
+#     else if report_type == "results":
+#         remove_files_from_dir_startswith( "crawler_results )
+#         remove_files_from_dir_endswith( "program.txt" )
+
+#     return num_files_removed
+
+#####################################################################################
+## CLI param to remove existing files from directory.  This is needed when
+## old heats won't be overwritten so we need to make sure they are removed
 #####################################################################################
 def remove_files_from_dir( reporttype: str, directory_name: str ) -> int:
 
@@ -64,7 +82,7 @@ def remove_files_from_dir( reporttype: str, directory_name: str ) -> int:
     """ Remove files from previous run/meet so there are no extra heats/events left over"""
     for root, dirs, files in os.walk(directory_name):
         for file in files:
-            if file.startswith((reporttype)):
+            if  reporttype in file:
                 os.remove(os.path.join(root, file)) 
                 num_files_removed += 1
 
@@ -175,11 +193,12 @@ def process_main():
                                                                                                                 help="input directory for MM extract report")
     parser.add_argument('-f', '--filename',         dest='filename',            default='results.txt',          help="Input file name")
     parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="c:\\Users\\SetonSwimTeam\\Dropbox\\wirecast",           help="root output directory for wirecast heat files.")
+    parser.add_argument('-c', '--crawler',          dest='crawler',             action='store_true',            help="Generate crawler files")
     parser.add_argument('-r', '--shortschrelay',    dest='shortschoolrelay',     action='store_true',           help="Use Long School names for Relays")
     parser.add_argument('-s', '--shortschind',      dest='shortschoolindividual',action='store_false',          help="Use Short School names for Indiviual Entries")
     parser.add_argument('-d', '--delete',           dest='delete',              action='store_true',            help="Delete existing files in OUTPUT_DIR")
     parser.add_argument('-n', '--numresults',       dest='numresults',          type=int, default='14',         help="Number of results listed per event")
-    parser.add_argument('-c', '--lastnumevents',    dest='lastnumevents',       type=int, default='3',          help="Crawler outputs a separate file with the last N events")
+    parser.add_argument('-x', '--lastnumevents',    dest='lastnumevents',       type=int, default='3',          help="Crawler outputs a separate file with the last N events")
 
     ## Parms not used as often
     parser.add_argument('-S', '--splitrelays',      dest='splitrelays',         action='store_true',            help="Split Relays into multiple files")
@@ -188,7 +207,7 @@ def process_main():
     parser.add_argument('-T', '--reporttype',       dest='reporttype',          default="auto",                 choices=['auto','program','results', 'headers'], 
                                                                                                                 help="Program type, Meet Program or Meet Results")
     ## For debugging
-    parser.add_argument('-v', '--log',              dest='loglevel',          default='info', choices=['error', 'warning', 'info', 'debug'],            
+    parser.add_argument('-v', '--log',              dest='loglevel',            default='warning',              choices=['error', 'warning', 'info', 'debug'],            
                                                                                                                 help="Set debugging level2")
     parser.add_argument('-q', '--quote ',           dest='quote',               action='store_true',            help="Quote the output fields for DEBUGGING")
     parser.add_argument('-h', '--help',             dest='help',                action='help', default=argparse.SUPPRESS, help="Tested with MM 8")
@@ -200,6 +219,7 @@ def process_main():
     parser.set_defaults(namesfirstlast=False)
     parser.set_defaults(delete=False)
     parser.set_defaults(quote=False)
+    parser.set_defaults(crawler=False)
 
     args = parser.parse_args()
 
@@ -229,6 +249,13 @@ def process_main():
     total_files_generated_results = 0
     total_files_generated_crawler = 0
 
+    #####################################################################################
+    ## Verify the directories and input file exists
+    #####################################################################################
+    error_msg = sst_common.verify_dirs_files( args.inputdir, args.filename,  args.outputdir )
+    if not error_msg == "":
+        logging.error(f"Directory and/or input file error:\n{error_msg}")
+        sys.exit(3)
 
     #####################################################################################
     ## Get header info from the meet file
@@ -245,9 +272,9 @@ def process_main():
         process_to_run['program'] = True
     elif (report_type_to_run == "results") or (report_type_to_run == "auto" and report_type == 'Results'):
         process_to_run['results'] = True
-        process_to_run['crawler'] = True
-    elif (report_type_to_run == "crawler") or (report_type_to_run == "auto" and report_type == 'Results'):
-        process_to_run['crawler'] = True
+
+    # Set the crawler flag
+    process_to_run['crawler'] = args.crawler
 
     output_dir = args.outputdir
     ## The outputdir string MUST have a trailing slash.  Check string and add it if necesssary
@@ -289,6 +316,7 @@ def process_main():
     ## Generate wirecast files from a MEET PROGRAM txt file
     #####################################################################################
     if process_to_run['program']:
+
         if args.delete:
              ## Remove files from last run as we may have old events/heats mixed in
             remove_files_from_dir( 'program', output_dir )
@@ -303,12 +331,14 @@ def process_main():
                                         spacerelaynames, 
                                         args.displayRelayNames, 
                                         args.namesfirstlast, 
-                                        args.quote )
+                                        args.quote,
+                                        args.crawler)
 
     #####################################################################################
     ## Generate wirecast files RESULTS and CRAWLER from a MEET RESULTS txt file
     #####################################################################################
     if process_to_run['results']:
+
         if args.delete:
              ## Remove files from last run as we may have old eventsmixed in
             remove_files_from_dir( 'results', output_dir )
@@ -324,7 +354,8 @@ def process_main():
                                             args.namesfirstlast, 
                                             args.quote ,
                                             args.numresults,
-                                            args.lastnumevents)
+                                            args.lastnumevents,
+                                            args.crawler )
 
 
     logging.warning(f"Process Completed:")
