@@ -5,6 +5,11 @@ import sst_module_common as sst_common
 
 unofficial_results = "    ** UNOFFICIAL RESULTS **"
 
+## Define file names for output files
+file_name_prefix = "event"
+file_name_suffix = "RESULTS"
+crawler_name_prefix = "x_crawler_results"
+
 
 #####################################################################################
 #####################################################################################
@@ -299,8 +304,8 @@ def create_output_file_results( output_dir_root: str,
     num_results_generated = 0
     output_str = ""
 
-    file_name_prefix = "event"
-    file_name_suffix = "RESULTS"
+    # file_name_prefix = "event"
+    # file_name_suffix = "RESULTS"
 
     output_dir = f"{output_dir_root}/"
 
@@ -334,7 +339,6 @@ def create_output_file_results( output_dir_root: str,
         if num_results_generated >= num_results_to_display:
             break;
 
-    #output_file_name =  f"{file_name_prefix}_Event{event_num:0>2}.txt"
     output_file_name =  f"{file_name_prefix}{event_num:0>2}_{file_name_suffix}.txt"
 
     ## When we get past page one, its a mess.  These results won't fit on the wirecast page either.
@@ -410,8 +414,6 @@ def gen_result_crawler_relay( place: str,
 def create_output_file_results_crawler( output_dir_root: str, crawler_list: list, last_num_events: int ):
     """ Given a list of tuples (evnt num, crawler_string), generate output files """
     
-    file_name_prefix = "x_crawler_results"
-    #output_dir = f"{output_dir_root}{file_name_prefix}/"
     output_dir = f"{output_dir_root}/"
     num_files_generated=0
 
@@ -424,13 +426,13 @@ def create_output_file_results_crawler( output_dir_root: str, crawler_list: list
         logging.debug(f"crawler: e: {event_num} t: {crawler_text}")
         ## Generate event specific file
         if event_num > 0:
-            #output_file_name = f"{file_name_prefix}_result_event{event_num:0>2}.txt"
-            output_file_name = f"{file_name_prefix}_result_event{event_num:0>2}.txt"
+            #output_file_name = f"{crawler_name_prefix}_result_event{event_num:0>2}.txt"
+            output_file_name = f"{crawler_name_prefix}_result_event{event_num:0>2}.txt"
             sst_common.write_output_file( output_dir, output_file_name, crawler_text )
             num_files_generated += 1
         ## Genreate special file for the meet name
         elif event_num == sst_common.headerNum2:
-            output_file_name = f"{file_name_prefix}__MeetName.txt"
+            output_file_name = f"{crawler_name_prefix}__MeetName.txt"
             sst_common.write_output_file( output_dir, output_file_name, crawler_text )
             num_files_generated += 1
 
@@ -459,14 +461,14 @@ def create_output_file_results_crawler( output_dir_root: str, crawler_list: list
     ## Add meet_name to front of string
     crawler_text = f"{meet_name} {crawler_text}"
     ## Create the crawler file with ALL events completed so far
-    all_events_file_name = f"{file_name_prefix}__AllEventsReverse.txt"
+    all_events_file_name = f"{crawler_name_prefix}__AllEventsReverse.txt"
     output_file_name = all_events_file_name
     sst_common.write_output_file( output_dir, output_file_name, crawler_text )
     num_files_generated += 1
 
     ## Create the crawler file with last_num events
-    #last_xx_events_file_name = f"{file_name_prefix}__Last_{last_num_events:0>2}_events.txt"
-    last_xx_events_file_name = f"{file_name_prefix}__Last_XX_events.txt"
+    #last_xx_events_file_name = f"{crawler_name_prefix}__Last_{last_num_events:0>2}_events.txt"
+    last_xx_events_file_name = f"{crawler_name_prefix}__Last_XX_events.txt"
     output_file_name = last_xx_events_file_name
     sst_common.write_output_file( output_dir, output_file_name, crawler_text_last_num_events )
     num_files_generated += 1
@@ -499,7 +501,7 @@ def get_ordinal( num: int) -> str:
 
 def generate_empty_results( output_dir:str ) -> int:
 
-    file_name_prefix = "results"
+    logging.info(f"*** generate_empty_results")
     output_str = ""
 
     num_empty_files_created = 0
@@ -510,7 +512,7 @@ def generate_empty_results( output_dir:str ) -> int:
     empty_event_list += sst_common.event_num_diving 
 
     for event_num in empty_event_list:
-        output_file_name =  f"event{event_num:0>2}_{file_name_prefix}.txt"
+        output_file_name =  f"{file_name_prefix}{event_num:0>2}_{file_name_suffix}.txt"
         sst_common.write_output_file( output_dir, output_file_name, output_str )
         num_empty_files_created += 1
 

@@ -191,7 +191,7 @@ def process_main():
     parser.add_argument('-d', '--delete',           dest='delete',              action='store_true',            help="Delete existing files in OUTPUT_DIR")
     parser.add_argument('-n', '--numresults',       dest='numresults',          type=int, default='14',         help="Number of results listed per event")
     parser.add_argument('-x', '--lastnumevents',    dest='lastnumevents',       type=int, default='3',          help="Crawler outputs a separate file with the last N events")
-    parser.add_argument('-e', '--emptyresults',     dest='emptyresults',        action='store_false',           help="Generate empty results files for wirecast template setup")
+    parser.add_argument('-e', '--emptyresults',     dest='emptyresults',        action='store_true',            help="Generate empty results files for wirecast template setup")
 
     ## Parms not used as often
     parser.add_argument('-S', '--splitrelays',      dest='splitrelays',         action='store_true',            help="Split Relays into multiple files")
@@ -200,7 +200,7 @@ def process_main():
     parser.add_argument('-T', '--reporttype',       dest='reporttype',          default="auto",                 choices=['auto','program','results', 'headers'], 
                                                                                                                 help="Program type, Meet Program or Meet Results")
     ## For debugging
-    parser.add_argument('-v', '--log',              dest='loglevel',            default='info',                 choices=['error', 'warning', 'info', 'debug'],            
+    parser.add_argument('-v', '--log',              dest='loglevel',            default='warning',                 choices=['error', 'warning', 'info', 'debug'],            
                                                                                                                 help="Set debugging level2")
     parser.add_argument('-q', '--quote ',           dest='quote',               action='store_true',            help="Quote the output fields for DEBUGGING")
     parser.add_argument('-h', '--help',             dest='help',                action='help', default=argparse.SUPPRESS, help="Tested with MM 8")
@@ -213,7 +213,8 @@ def process_main():
     parser.set_defaults(delete=False)
     parser.set_defaults(quote=False)
     parser.set_defaults(crawler=False)
- 
+    parser.set_defaults(emptyresults=False)
+
     args = parser.parse_args()
 
     inputfile =f"{args.inputdir}/{args.filename}"
@@ -299,6 +300,7 @@ def process_main():
               f"\tHeader3 Meet Name: \t'{report_type_meet_name}' \n" + \
               f"\tLicensee: \t\t'{license_name}' \n" + \
               f"\tSourceReport: \t\t'{report_type}' \n" + \
+              f"\tEmptyResults: \t\t'{args.emptyresults}' \n" + \
               f"\n    Reports to generate: \n" + \
               f"\tprogram: \t\t'{ process_to_run['program']}' \n" + \
               f"\tresults: \t\t'{ process_to_run['results']}' \n" + \
@@ -340,6 +342,10 @@ def process_main():
              ## Remove files from last run as we may have old eventsmixed in
             remove_files_from_dir( 'results', output_dir )
             remove_files_from_dir( 'RESULTS', output_dir )
+
+        if args.emptyresults:
+            total_empty_results =  \
+                sst_results.generate_empty_results( output_dir )
 
         total_files_generated_results, total_crawler_files = \
                sst_results.process_result(  inputfile, 
