@@ -40,7 +40,7 @@ from pathlib import Path
 import glob
 import logging
 import sys
-import sst_module_common as sst_common
+import fnmatch
 
 
 ###
@@ -48,6 +48,7 @@ import sst_module_common as sst_common
 import sst_module_common as sst_common
 import sst_module_program as sst_program
 import sst_module_results as sst_results
+import sst_module_scores as sst_scores
 
 ## Globals
 report_type_results = "result"
@@ -55,22 +56,6 @@ report_type_program = "program"
 report_type_crawler = "crawler"
 
 
-
-
-#####################################################################################
-## CLI param to remove existing files from directory.  This is needed when
-## old heats won't be overwritten so we need to make sure they are removed
-# #####################################################################################
-# def remove_files_from_dir_OLD( reporttype: str, directory_name: str ) -> int:
-
-#     if report_type == "program":
-#         remove_files_from_dir_startswith( "crawler_program" )
-#         remove_files_from_dir_endswith( "program.txt" )
-#     else if report_type == "results":
-#         remove_files_from_dir_startswith( "crawler_results )
-#         remove_files_from_dir_endswith( "program.txt" )
-
-#     return num_files_removed
 
 #####################################################################################
 ## CLI param to remove existing files from directory.  This is needed when
@@ -88,7 +73,14 @@ def remove_files_from_dir( reporttype: str, directory_name: str ) -> int:
 
     return num_files_removed
 
-
+# def remove_files_from_dir( reporttype: str, directory_name: str ) -> int:
+#     rule = re.compile(fnmatch.translate('results'), re.IGNORECASE)
+#     return [name for name in os.listdir(directory_name) if rule.match(name)]
+#     for file in files_to_be_removed:
+#         logging.warning(f"Files to be deleted: {file}")
+#         # os.remove(os.path.join(root, file)) 
+#         # num_files_removed += 1
+    
 
 #####################################################################################
 ## get_report_header_info
@@ -199,6 +191,7 @@ def process_main():
     parser.add_argument('-d', '--delete',           dest='delete',              action='store_true',            help="Delete existing files in OUTPUT_DIR")
     parser.add_argument('-n', '--numresults',       dest='numresults',          type=int, default='14',         help="Number of results listed per event")
     parser.add_argument('-x', '--lastnumevents',    dest='lastnumevents',       type=int, default='3',          help="Crawler outputs a separate file with the last N events")
+    parser.add_argument('-e', '--emptyresults',     dest='emptyresults',        action='store_false',           help="Generate empty results files for wirecast template setup")
 
     ## Parms not used as often
     parser.add_argument('-S', '--splitrelays',      dest='splitrelays',         action='store_true',            help="Split Relays into multiple files")
@@ -207,7 +200,7 @@ def process_main():
     parser.add_argument('-T', '--reporttype',       dest='reporttype',          default="auto",                 choices=['auto','program','results', 'headers'], 
                                                                                                                 help="Program type, Meet Program or Meet Results")
     ## For debugging
-    parser.add_argument('-v', '--log',              dest='loglevel',            default='warning',              choices=['error', 'warning', 'info', 'debug'],            
+    parser.add_argument('-v', '--log',              dest='loglevel',            default='info',                 choices=['error', 'warning', 'info', 'debug'],            
                                                                                                                 help="Set debugging level2")
     parser.add_argument('-q', '--quote ',           dest='quote',               action='store_true',            help="Quote the output fields for DEBUGGING")
     parser.add_argument('-h', '--help',             dest='help',                action='help', default=argparse.SUPPRESS, help="Tested with MM 8")
@@ -220,7 +213,7 @@ def process_main():
     parser.set_defaults(delete=False)
     parser.set_defaults(quote=False)
     parser.set_defaults(crawler=False)
-
+ 
     args = parser.parse_args()
 
     inputfile =f"{args.inputdir}/{args.filename}"
@@ -240,14 +233,14 @@ def process_main():
     # logging.basicConfig( format='%(levelname)s:%(message)s', level=logging.INFO)
     logging.basicConfig( format='%(message)s', level=loglevel)
 
-    process_to_run = {"program": False, "results": False, "crawler": False}
+    process_to_run = {"program": False, "results": False, "crawler": False, "scores_champsionship": False }
     
     report_type_to_run = args.reporttype
 
     ## Set global debug flag
     total_files_generated_program = 0
     total_files_generated_results = 0
-    total_files_generated_crawler = 0
+    total_crawler_files = 0
 
     #####################################################################################
     ## Verify the directories and input file exists
@@ -272,6 +265,9 @@ def process_main():
         process_to_run['program'] = True
     elif (report_type_to_run == "results") or (report_type_to_run == "auto" and report_type == 'Results'):
         process_to_run['results'] = True
+    elif (report_type_to_run == "Team Rankings") or (report_type_to_run == "auto" and report_type == 'Team Rankings'):
+        process_to_run['scores_champsionship'] = True
+
 
     # Set the crawler flag
     process_to_run['crawler'] = args.crawler
@@ -320,6 +316,7 @@ def process_main():
         if args.delete:
              ## Remove files from last run as we may have old events/heats mixed in
             remove_files_from_dir( 'program', output_dir )
+            remove_files_from_dir( 'PROGRAM', output_dir )
 
         total_files_generated_program , total_crawler_files = \
             sst_program.process_program( inputfile, 
@@ -342,6 +339,7 @@ def process_main():
         if args.delete:
              ## Remove files from last run as we may have old eventsmixed in
             remove_files_from_dir( 'results', output_dir )
+            remove_files_from_dir( 'RESULTS', output_dir )
 
         total_files_generated_results, total_crawler_files = \
                sst_results.process_result(  inputfile, 
@@ -358,6 +356,17 @@ def process_main():
                                             args.crawler )
 
 
+    #####################################################################################
+    ## Generate wirecast files CHAMPSIONSHIP SCORES from a MEET SCORES txt file
+    #####################################################################################
+    if process_to_run['scores_champsionship']:
+               sst_scores.process_score_champsionship(  
+                                            inputfile, 
+                                            output_dir, 
+                                            license_name, 
+                                            args.quote,
+                                            args.numresults )
+
     logging.warning(f"Process Completed:")
     if total_files_generated_program > 0:
         logging.warning(f"\tNumber of 'Program' files generated: {total_files_generated_program}")
@@ -366,10 +375,13 @@ def process_main():
     if total_crawler_files > 0:
         logging.warning(f"\tNumber of 'Crawler' files generated: {total_crawler_files}")
 
+
+
 #####################################################################################
 #####################################################################################
 ##  M A I N
 #####################################################################################
 #####################################################################################
 if __name__ == "__main__":
-    process_main()
+    process_main()#!/c/Users/SetonSwimTeam/AppData/Local/Programs/Python/Python39/python
+# # ! d/usr/local/bin/python3

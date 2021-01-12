@@ -16,10 +16,12 @@ import os
 from os import path
 
 ## Define the types of events in this meet (Individual, Relay and Diving)
-event_num_individual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22]
+#event_num_individual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22]
+event_num_individual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22,101,102,103,104,105,106,107,108]
 event_num_relay  = [1,2,17,18,23,24]
 event_num_diving = [9,10]
 
+# event_sequence= [9,10,101,102,1,2,3,4,5,6,7,8,103,104,11,12,13,14,15,16,105,106,17,18,107,108,19,20,21,22,23,24]
 
 
 ## Define the header types in the output list so we can include/exclude as necessary
