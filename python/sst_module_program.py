@@ -318,7 +318,7 @@ def create_output_file_program( output_dir_root: str,
         row_type = output_tuple[0]
         row_text = output_tuple[1]
 
-        logging.info(f"PROGRAM: e: {event_num} h: {event_num} id: {row_type} t: {row_text}")
+        logging.debug(f"PROGRAM: e: {event_num} h: {event_num} id: {row_type} t: {row_text}")
 
         ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
         if row_type in header_list:
@@ -384,18 +384,20 @@ def gen_program_crawler_relay( entry_lane, entry_name, entry_sch_short, entry_sc
 
     return lane_str
 
-
+####################################################################################
+## Generate the crawler output
+#####################################################################################
 def create_output_file_program_crawler( output_dir_root: str, 
                                 event_num: int, 
                                 heat_num: int,
                                 crawlwer_str: str ) -> int:
     """ Generate the filename and open the next file """
 
-    #output_dir_crawler = "program_crawler"
-    file_name_prefix = "crawler_program"
+    #file_name_prefix = "crawler_program"
+    file_name_prefix = "x_crawler_program"
     output_dir = f"{output_dir_root}"
 
-    print( f"CRW OUT: e: {event_num} h: {heat_num} {crawlwer_str}")
+    logging.debug( f"CRW OUT: e: {event_num} h: {heat_num} {crawlwer_str}")
     output_file_name = f"{file_name_prefix}_event{event_num:0>2}_heat{heat_num:0>2}.txt"
 
     sst_common.write_output_file( output_dir, output_file_name, crawlwer_str)

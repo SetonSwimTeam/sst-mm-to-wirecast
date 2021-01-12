@@ -299,9 +299,9 @@ def create_output_file_results( output_dir_root: str,
     num_results_generated = 0
     output_str = ""
 
-    file_name_prefix = "results"
+    file_name_prefix = "event"
+    file_name_suffix = "RESULTS"
 
-    #output_dir = f"{output_dir_root}{file_name_prefix}/"
     output_dir = f"{output_dir_root}/"
 
     ## Ignore the case where we get event0 heat0
@@ -335,12 +335,12 @@ def create_output_file_results( output_dir_root: str,
             break;
 
     #output_file_name =  f"{file_name_prefix}_Event{event_num:0>2}.txt"
-    output_file_name =  f"event{event_num:0>2}_{file_name_prefix}.txt"
+    output_file_name =  f"{file_name_prefix}{event_num:0>2}_{file_name_suffix}.txt"
 
     ## When we get past page one, its a mess.  These results won't fit on the wirecast page either.
     ## We need a new filename otherwise we overwrite the main file
     if page_num > 1:
-        output_file_name =  f"event{event_num:0>2}_{file_name_prefix}_page{page_num}.txt"
+        output_file_name =  f"{file_name_prefix}{event_num:0>2}_{file_name_suffix}_page{page_num}.txt"
     sst_common.write_output_file( output_dir, output_file_name, output_str )
     num_files_generated += 1
 
@@ -410,7 +410,7 @@ def gen_result_crawler_relay( place: str,
 def create_output_file_results_crawler( output_dir_root: str, crawler_list: list, last_num_events: int ):
     """ Given a list of tuples (evnt num, crawler_string), generate output files """
     
-    file_name_prefix = "crawler_results"
+    file_name_prefix = "x_crawler_results"
     #output_dir = f"{output_dir_root}{file_name_prefix}/"
     output_dir = f"{output_dir_root}/"
     num_files_generated=0
@@ -421,7 +421,7 @@ def create_output_file_results_crawler( output_dir_root: str, crawler_list: list
         event_num = crawler_event[0]
         crawler_text = crawler_event[1]
 
-        logging.info(f"crawler: e: {event_num} t: {crawler_text}")
+        logging.debug(f"crawler: e: {event_num} t: {crawler_text}")
         ## Generate event specific file
         if event_num > 0:
             #output_file_name = f"{file_name_prefix}_result_event{event_num:0>2}.txt"
