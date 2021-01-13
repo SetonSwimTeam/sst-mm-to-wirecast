@@ -70,7 +70,6 @@ def process_result( meet_report_filename: str,
     }
     ## Define local variables
     event_num = 0
-    page_num = 0
     num_files_generated = 0
     num_crawler_files_generated = 0
     num_header_lines = 3
@@ -78,6 +77,7 @@ def process_result( meet_report_filename: str,
     output_list = []
     crawler_list = []
     crawler_str = ""
+    contimue_processing_current_event = True
 
     re_results_lane = re.compile('^[*]?\d{1,2} ')
     re_results_lane = re.compile('^--- ')
@@ -122,8 +122,10 @@ def process_result( meet_report_filename: str,
                 found_header_line = 1
                 
                 ## The start of the next event finished off the last event. Go write out the last event
-                num_files = create_output_file_results( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display, page_num )
-                num_files_generated += num_files
+                if contimue_processing_current_event:
+                    logging.debug("11111111111")
+                    num_files = create_output_file_results( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display )
+                    num_files_generated += num_files
 
                 ## Reset and start processing the next event
                 output_list = []
@@ -149,8 +151,8 @@ def process_result( meet_report_filename: str,
             ##  Clean it up
             #####################################################################################
             if line.lower().startswith(("event")):
-                page_num = 1
                 logging.info(f"RESULTS: EVENT LINE: {line}")
+                contimue_processing_current_event = True
 
                 # # Starting a new event. Save crawler string for this past event in the list for later procesing
                 if event_num > 0:
@@ -175,9 +177,15 @@ def process_result( meet_report_filename: str,
 
             #####################################################################################
             ## RESULTS: Looks for a second page of results 
+            ##  Stop processing when this occurs.  We can't display even a single full page
             #####################################################################################
             if line.lower().startswith(("(event")):
-                page_num += 1
+                contimue_processing_current_event = False
+                logging.debug("22222222222222")
+
+                num_files = create_output_file_results( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display )
+                num_files_generated += num_files
+
 
             #####################################################################################
             ## RESULTS: For place winner results, add a space after top 1-9 swimmers 
@@ -270,8 +278,9 @@ def process_result( meet_report_filename: str,
     ## Reached end of file
     ## Write out last event
     #####################################################################################
+    logging.debug("33333333333333")
 
-    create_output_file_results( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display, page_num )
+    create_output_file_results( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display )
     num_files_generated += 1
     
     ## Save the last event in the crawler list 
@@ -292,12 +301,11 @@ def process_result( meet_report_filename: str,
 #####################################################################################
 ## Given an array of RESULTS lines PER EVENT, generate the output file for this event
 #####################################################################################
-def create_output_file_results( output_dir_root: str, 
+def create_output_file_results( output_dir: str, 
                                 event_num: int, 
                                 output_list: list, 
                                 display_relay_swimmer_names: bool,
-                                num_results_to_display: int,
-                                page_num: int ) -> int:
+                                num_results_to_display: int  ) -> int:
     """ Generate the filename and open the next file """
     
     num_files_generated = 0
@@ -307,7 +315,7 @@ def create_output_file_results( output_dir_root: str,
     # file_name_prefix = "event"
     # file_name_suffix = "RESULTS"
 
-    output_dir = f"{output_dir_root}/"
+    # output_dir = f"{output_dir_root}/"
 
     ## Ignore the case where we get event0 heat0
     if event_num == 0:
@@ -321,7 +329,7 @@ def create_output_file_results( output_dir_root: str,
         row_type = output_tuple[0]
         row_text = output_tuple[1]
 
-        logging.info(f"RESULTS: e: {event_num} page: {page_num} id: {row_type} t: {row_text}")
+        logging.info(f"RESULTS: e: {event_num} id: {row_type} t: {row_text}")
 
         ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
         if row_type == 'H4':
@@ -340,11 +348,6 @@ def create_output_file_results( output_dir_root: str,
             break;
 
     output_file_name =  f"{file_name_prefix}{event_num:0>2}_{file_name_suffix}.txt"
-
-    ## When we get past page one, its a mess.  These results won't fit on the wirecast page either.
-    ## We need a new filename otherwise we overwrite the main file
-    if page_num > 1:
-        output_file_name =  f"{file_name_prefix}{event_num:0>2}_{file_name_suffix}_page{page_num}.txt"
     sst_common.write_output_file( output_dir, output_file_name, output_str )
     num_files_generated += 1
 
