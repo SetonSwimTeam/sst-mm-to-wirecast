@@ -183,7 +183,7 @@ def process_main():
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="c:\\Users\\SetonSwimTeam\\mmreports",   
                                                                                                                 help="input directory for MM extract report")
-    parser.add_argument('-f', '--filename',         dest='filename',            default='results.txt',          help="Input file name")
+    parser.add_argument('-f', '--filename',         dest='filename',            required=True        ,          help="Input file name")
     parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="c:\\Users\\SetonSwimTeam\\Dropbox\\wirecast",           help="root output directory for wirecast heat files.")
     parser.add_argument('-c', '--crawler',          dest='crawler',             action='store_true',            help="Generate crawler files")
     parser.add_argument('-r', '--shortschrelay',    dest='shortschoolrelay',     action='store_true',           help="Use Long School names for Relays")
