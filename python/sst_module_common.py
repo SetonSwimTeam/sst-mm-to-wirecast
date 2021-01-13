@@ -14,6 +14,8 @@
 
 import os
 from os import path
+from datetime import datetime, timedelta
+import logging
 
 ## Define the types of events in this meet (Individual, Relay and Diving)
 #event_num_individual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22]
@@ -80,6 +82,32 @@ school_name_dict = {
         "Seton Family Homeschool": "SFH",
     } 
 
+#####################################################################################
+## In some wierd cases, we overwrite a good file with some extra text that 
+## wrapped to next page.  If a file was just created, and we try to write over it
+## again too soon, create it as a second file too soon.
+## If file was there from previous run, then we want to overwrite
+#####################################################################################
+def has_file_been_modified_recently( file_name: str, secs: int) -> bool:
+    "Has file been modified in last xxx seconds"
+
+    modified_recently = False
+    try:
+        file_mod_time = datetime.fromtimestamp(os.stat(file_name).st_mtime)
+        
+        now = datetime.today()
+        file_modified_secs_ago = now - file_mod_time
+        max_age = timedelta(seconds=secs)
+
+        if file_modified_secs_ago <= max_age:
+            modified_recently = True
+        
+    except FileNotFoundError as fnfe:
+        # Ignore case where file doesn't yet exist
+        pass
+
+
+    return  modified_recently
 
 
 #####################################################################################
@@ -92,10 +120,14 @@ def write_output_file( output_dir: str, output_file_name: str, output_str: str )
     if not os.path.exists( output_dir ):
         os.makedirs( output_dir )
     
-    output_full_path = f"{output_dir}/{output_file_name}"
-    output_file_handler = open( output_full_path, "w+" )
-    output_file_handler.write( output_str )
-    output_file_handler.close()
+    ## If this file has been created in last xx secs, then this is really results data
+    ## from the next page. Don't overwrite existing file
+    output_full_path = f"{output_dir}{output_file_name}"
+    if not has_file_been_modified_recently( output_full_path, 5 ):
+        logging.info(f"generating file {output_full_path}")
+        output_file_handler = open( output_full_path, "w+" )
+        output_file_handler.write( output_str )
+        output_file_handler.close()
 
 
 def get_event_num_from_eventline( line: str ) -> int:
