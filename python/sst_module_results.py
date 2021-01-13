@@ -6,7 +6,7 @@ import sst_module_common as sst_common
 unofficial_results = "    ** UNOFFICIAL RESULTS **"
 
 ## Define file names for output files
-file_name_prefix = "event"
+file_name_prefix = "event_"
 file_name_suffix = "RESULTS"
 crawler_name_prefix = "x_crawler_results"
 
@@ -311,11 +311,6 @@ def create_output_file_results( output_dir: str,
     num_files_generated = 0
     num_results_generated = 0
     output_str = ""
-
-    # file_name_prefix = "event"
-    # file_name_suffix = "RESULTS"
-
-    # output_dir = f"{output_dir_root}/"
 
     ## Ignore the case where we get event0 heat0
     if event_num == 0:
