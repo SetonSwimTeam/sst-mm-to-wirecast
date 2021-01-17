@@ -234,7 +234,7 @@ def process_main():
     # logging.basicConfig( format='%(levelname)s:%(message)s', level=logging.INFO)
     logging.basicConfig( format='%(message)s', level=loglevel)
 
-    process_to_run = {"program": False, "results": False, "crawler": False, "scores_champsionship": False }
+    process_to_run = {"program": False, "results": False, "crawler": False, "scores_champsionship": False, "scores_dualmeet:": False }
     
     report_type_to_run = args.reporttype
 
@@ -268,7 +268,8 @@ def process_main():
         process_to_run['results'] = True
     elif (report_type_to_run == "Team Rankings") or (report_type_to_run == "auto" and report_type == 'Team Rankings'):
         process_to_run['scores_champsionship'] = True
-
+    elif (report_type_to_run == "Dual Meet Scores") or (report_type_to_run == "auto" and report_type == 'Dual Meet Scores'):
+        process_to_run['scores_dualmeet'] = True
 
     # Set the crawler flag
     process_to_run['crawler'] = args.crawler
@@ -373,6 +374,16 @@ def process_main():
                                             args.quote,
                                             args.numresults )
 
+    #####################################################################################
+    ## Generate wirecast files DUALMEET SCORES from a MEET SCORES txt file
+    #####################################################################################
+    if process_to_run['scores_dualmeet']:
+               sst_scores.process_score_dualmeet(  
+                                            inputfile, 
+                                            output_dir, 
+                                            license_name, 
+                                            args.quote,
+                                            args.numresults )
     logging.warning(f"Process Completed:")
     if total_files_generated_program > 0:
         logging.warning(f"\tNumber of 'Program' files generated: {total_files_generated_program}")
