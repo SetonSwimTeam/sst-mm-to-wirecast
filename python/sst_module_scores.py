@@ -235,7 +235,6 @@ def create_output_file_scores_dual( output_dir_root: str,
     for report_type in ["Men", "Women"]:
         output_str = ""
         num_results_generated = 0
-        logging.warning("\n create_output_file_scores_dual")
         for output_tuple in output_list:
             row_type = output_tuple[0]
             row_text = output_tuple[1]
@@ -280,7 +279,6 @@ def create_output_file_scores_champ( output_dir_root: str,
     output_str = ""
     output_dir = f"{output_dir_root}"
 
-    logging.warning("\n create_output_file_scores_champ")
     for output_tuple in output_list:
         row_type = output_tuple[0]
         row_text = output_tuple[1]
