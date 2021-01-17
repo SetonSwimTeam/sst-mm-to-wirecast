@@ -114,9 +114,7 @@ def process_score_dualmeet( meet_report_filename: str,
                 output_list.append( (scores_for_gender, output_str ))
 
     create_output_file_scores_dual( output_dir, output_list, numresults )
-
-
-
+    return num_files_generated
 
 
 def process_score_champsionship( meet_report_filename: str, 
@@ -218,7 +216,8 @@ def process_score_champsionship( meet_report_filename: str,
                 logging.debug( f"SCORE: output: {output_str}" )
 
     create_output_file_scores_champ( output_dir, output_list, gender, numresults )
-    
+    return num_files_generated
+
 
 
 ####################################################################################
@@ -241,7 +240,7 @@ def create_output_file_scores_dual( output_dir_root: str,
             row_type = output_tuple[0]
             row_text = output_tuple[1]
 
-            logging.warning(f"DUAL SCORES: g: {report_type} r: {row_type} t: {row_text}")
+            logging.debug(f"DUAL SCORES: g: {report_type} r: {row_type} t: {row_text}")
 
             ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
             if row_type == 'H2':
@@ -286,7 +285,7 @@ def create_output_file_scores_champ( output_dir_root: str,
         row_type = output_tuple[0]
         row_text = output_tuple[1]
 
-        logging.warning(f"SCORES: {row_type} t: {row_text}")
+        logging.debug(f"SCORES: {row_type} t: {row_text}")
 
         ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
         if row_type == 'H2':
@@ -310,5 +309,5 @@ def create_output_file_scores_champ( output_dir_root: str,
     output_file_name =  f"score_champsionship_{gender_lowercase}.txt"
     sst_common.write_output_file( output_dir, output_file_name, output_str )
     num_files_generated += 1
-
+    
     return num_files_generated

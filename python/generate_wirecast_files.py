@@ -234,7 +234,7 @@ def process_main():
     # logging.basicConfig( format='%(levelname)s:%(message)s', level=logging.INFO)
     logging.basicConfig( format='%(message)s', level=loglevel)
 
-    process_to_run = {"program": False, "results": False, "crawler": False, "scores_champsionship": False, "scores_dualmeet:": False }
+    process_to_run = {"program": False, "results": False, "crawler": False, "scores_champsionship": False, "scores_dualmeet": False }
     
     report_type_to_run = args.reporttype
 
@@ -242,6 +242,7 @@ def process_main():
     total_files_generated_program = 0
     total_files_generated_results = 0
     total_crawler_files = 0
+    total_scores_files = 0
 
     #####################################################################################
     ## Verify the directories and input file exists
@@ -301,15 +302,13 @@ def process_main():
               f"\tHeader3 Meet Name: \t'{report_type_meet_name}' \n" + \
               f"\tLicensee: \t\t'{license_name}' \n" + \
               f"\tSourceReport: \t\t'{report_type}' \n" + \
-              f"\tEmptyResults: \t\t'{args.emptyresults}' \n" + \
-              f"\n    Reports to generate: \n" + \
-              f"\tprogram: \t\t'{ process_to_run['program']}' \n" + \
-              f"\tresults: \t\t'{ process_to_run['results']}' \n" + \
-              f"\tcrawler: \t\t'{ process_to_run['crawler']}' \n" + \
-              ""
-
+              f"\tEmptyResults: \t\t'{args.emptyresults}' \n" 
     logging.warning( logargs )
 
+    logging.warning(f"\n    Reports to generate: ")
+    for i in process_to_run:
+        if process_to_run[i]:
+            logging.warning(f"\t{i} \n")
 
     #####################################################################################
     ## Generate wirecast files from a MEET PROGRAM txt file
@@ -367,7 +366,8 @@ def process_main():
     ## Generate wirecast files CHAMPSIONSHIP SCORES from a MEET SCORES txt file
     #####################################################################################
     if process_to_run['scores_champsionship']:
-               sst_scores.process_score_champsionship(  
+        total_scores_files = \
+            sst_scores.process_score_champsionship(  
                                             inputfile, 
                                             output_dir, 
                                             license_name, 
@@ -378,19 +378,25 @@ def process_main():
     ## Generate wirecast files DUALMEET SCORES from a MEET SCORES txt file
     #####################################################################################
     if process_to_run['scores_dualmeet']:
+        total_scores_files = \
                sst_scores.process_score_dualmeet(  
                                             inputfile, 
                                             output_dir, 
                                             license_name, 
                                             args.quote,
                                             args.numresults )
-    logging.warning(f"Process Completed:")
+
+
+    logging.warning(f"{report_type} Process Completed:")
+
     if total_files_generated_program > 0:
         logging.warning(f"\tNumber of 'Program' files generated: {total_files_generated_program}")
     if total_files_generated_results > 0:
         logging.warning(f"\tNumber of 'Results' files generated: {total_files_generated_results}")
     if total_crawler_files > 0:
         logging.warning(f"\tNumber of 'Crawler' files generated: {total_crawler_files}")
+    if total_scores_files > 0:
+        logging.warning(f"\tNumber of 'Score' files generated: {total_scores_files}")
 
 
 
