@@ -113,7 +113,7 @@ def process_score_dualmeet( meet_report_filename: str,
                 ## Add the score to the output list
                 output_list.append( (scores_for_gender, output_str ))
 
-    create_output_file_scores_dual( output_dir, output_list, numresults )
+    num_files_generated = create_output_file_scores_dual( output_dir, output_list, numresults )
     return num_files_generated
 
 
