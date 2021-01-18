@@ -298,8 +298,8 @@ def cleanup_new_files( file_prefix: str, output_dir: str ):
     for file in glob.glob(file_glob):
         txtfiles.append(file)
     
-    for file in txtfiles:
-        print(f"Filename: {file}")
+    # for file in txtfiles:
+    #     print(f"Filename: {file}")
 
 
 #####################################################################################
@@ -316,10 +316,12 @@ def verify_dirs_files(  input_dir: str, input_file:str, output_dir: str ):
         if not os.path.isfile( fullFile ):
             error_msg = f"\tInput file not found: {fullFile}"
 
-    if not os.path.isdir( output_dir ):
-        if error_msg:
-            error_msg += "\n"
-        error_msg += f"\tOutput directory not found: {output_dir}"
+    try: 
+        if not os.path.isdir( output_dir ):
+            os.makedirs(output_dir, exist_ok = True) 
+            logging.warning(f"Output Directory '{output_dir}' created successfully") 
+    except OSError as error: 
+        logging.error(f"Output Directory '{output_dir}' can not be created: {error}" ) 
 
     return error_msg
  

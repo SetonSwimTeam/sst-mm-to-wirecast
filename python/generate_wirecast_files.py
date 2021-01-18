@@ -186,8 +186,8 @@ def process_main():
     parser.add_argument('-f', '--filename',         dest='filename',            required=True        ,          help="Input file name")
     parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="c:\\Users\\SetonSwimTeam\\Dropbox\\wirecast",           help="root output directory for wirecast heat files.")
     parser.add_argument('-c', '--crawler',          dest='crawler',             action='store_true',            help="Generate crawler files")
-    parser.add_argument('-r', '--shortschrelay',    dest='shortschoolrelay',     action='store_true',           help="Use Long School names for Relays")
-    parser.add_argument('-s', '--shortschind',      dest='shortschoolindividual',action='store_false',          help="Use Short School names for Indiviual Entries")
+    parser.add_argument('-r', '--shortschrelay',    dest='shortschoolrelay',     action='store_true',           help="Use Short School names for Relays")
+    parser.add_argument('-l', '--longschind',       dest='longschoolindividual',action='store_true',            help="Use Long School names for Indiviual Entries")
     parser.add_argument('-d', '--delete',           dest='delete',              action='store_true',            help="Delete existing files in OUTPUT_DIR")
     parser.add_argument('-n', '--numresults',       dest='numresults',          type=int, default='14',         help="Number of results listed per event")
     parser.add_argument('-x', '--lastnumevents',    dest='lastnumevents',       type=int, default='3',          help="Crawler outputs a separate file with the last N events")
@@ -206,7 +206,7 @@ def process_main():
     parser.add_argument('-h', '--help',             dest='help',                action='help', default=argparse.SUPPRESS, help="Tested with MM 8")
 
     parser.set_defaults(shortschoolrelay=False)
-    parser.set_defaults(shortschoolindividual=True)
+    parser.set_defaults(shortschoolindividual=False)
     parser.set_defaults(splitrelays=False)
     parser.set_defaults(displayRelayNames=False)
     parser.set_defaults(namesfirstlast=False)
@@ -286,7 +286,7 @@ def process_main():
               f"\tInputFile \t\t{inputfile} \n" + \
               f"\tRoot OutputDir \t\t{output_dir} \n" + \
               f"\tShort Sch Names Relays \t{args.shortschoolrelay} \n" + \
-              f"\tShort Sch Names Indiv \t{args.shortschoolindividual} \n" + \
+              f"\Long Sch Names Indiv \t{args.longschoolindividual} \n" + \
               f"\tNamesFirstlast \t\t{args.namesfirstlast} \n" + \
               f"\tSplit Relays \t\t{args.splitrelays} \n"+ \
               f"\tDisplay Relays Names \t{args.displayRelayNames} \n"+ \
@@ -325,7 +325,7 @@ def process_main():
                                         output_dir, 
                                         license_name, 
                                         args.shortschoolrelay, 
-                                        args.shortschoolindividual, 
+                                        args.longschoolindividual, 
                                         args.splitrelays, 
                                         spacerelaynames, 
                                         args.displayRelayNames, 
@@ -352,7 +352,7 @@ def process_main():
                                             output_dir, 
                                             license_name, 
                                             args.shortschoolrelay, 
-                                            args.shortschoolindividual, 
+                                            args.longschoolindividual, 
                                             args.displayRelayNames, 
                                             args.displayRelayNames, 
                                             args.namesfirstlast, 
