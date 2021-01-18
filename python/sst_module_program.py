@@ -293,6 +293,17 @@ def create_output_file_program( output_dir_root: str,
     split_num = 1
     output_str = ""
     
+
+    logging.error(f"***************************************************")
+    if event_num in sst_common.event_num_relay:
+        create_output_file_program_relay( output_dir_root, 
+                                event_num, 
+                                heat_num,
+                                output_list, 
+                                display_relay_swimmer_names,
+                                split_relays_to_multiple_files )
+        logging.error(f"***************************************************")
+        return 0
     ## Ignore the case where we get event0 heat0
     if event_num == 0:
         return 0
@@ -401,3 +412,113 @@ def create_output_file_program_crawler( output_dir_root: str,
     sst_common.write_output_file( output_dir, output_file_name, crawlwer_str)
 
     return 1
+
+
+
+####################################################################################
+## Given an array of PROGRAM lines PER HEAT, generate the output file
+## For relays, put names on same line
+##  1. SST  1) swimmer,one 2) swimmer, two 3) swimmer, three 4) swimmer, four
+#####################################################################################
+def create_output_file_program_relay( output_dir_root: str, 
+                                event_num: int, 
+                                heat_num: int,
+                                output_list: list, 
+                                display_relay_swimmer_names: bool,
+                                split_relays_to_multiple_files: bool ) -> int:
+    """ Generate the filename and open the next file """
+   
+    global event_num_relay
+    num_files_created = 0
+    split_num = 1
+    output_str = ""
+    lane_str = ""
+    ## Ignore the case where we get event0 heat0
+    if event_num == 0:
+        return 0
+
+    output_dir = f"{output_dir_root}/"
+    
+    ## For non relay events
+    output_file_name = f"{file_name_prefix}{event_num:0>2}_{file_name_suffix}_heat_{heat_num:0>2}.txt"
+    
+    re_relay_lane_line = re.compile('^\s*(\d{1,2})\s+(\S+)\s+(\S)')
+
+    #header_list = ['H4', 'H5', 'H6']
+    header_list = ['H4', 'H5']
+    for output_tuple in output_list:
+        row_type = output_tuple[0]
+        row_text = output_tuple[1]
+
+        logging.debug(f"PROGRAM: e: {event_num} h: {event_num} id: {row_type} t: {row_text}")
+
+        ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
+        if row_type in header_list:
+            output_str += row_text + '\n'
+        elif row_type == 'H6':
+            output_str += "Lane Team     Swimmers" + '\n'
+        elif row_type == 'LANE':
+            lane_str = row_text
+            #  1 SST  D X2:37.00
+            relay_lane_line = re_relay_lane_line.findall(row_text)
+            if relay_lane_line:
+                relay_lane = str(relay_lane_line[0][0]).strip()
+                relay_sch  = str(relay_lane_line[0][1]).strip()
+                relay_name = str(relay_lane_line[0][2]).strip()
+                lane_str = f"{relay_lane:>2} {relay_sch:<4} {relay_name}"
+            #output_str += row_text + '\n'
+        elif row_type == 'NAME':
+            name_str = reformat_relay_swimmers_names( row_text )
+            #output_str += row_text + '\n'
+            output_str += f"{lane_str} {name_str}\n"
+            ## If split, space it out for readability
+            if split_relays_to_multiple_files:
+                output_str += '\n'
+
+    
+    logging.error(f"RELAY: {output_str}")
+    sst_common.write_output_file(output_dir, output_file_name, output_str)
+    num_files_created += 1
+
+    return num_files_created
+
+####################################################################################
+## Given names in this format
+#1) Herrick, Julia 2) Rutherford, Lil 3) Sypal, Clare 8 4) Vogler, Kate SO
+# format them to look like
+#1) Herrick, J 2) Rutherford, L 3) Sypal, C 4) Vogler, K
+
+####################################################################################
+
+def reformat_relay_swimmers_names( name_line_in:str ) -> str:
+
+
+   #logging.error(f"NAME: s1: i: {name_line}")
+    #re_name_line = re.compile('^1\) ([A-z\' ]+?)[ , ]([A-z0-9\' -]+?) 2\) ([A-z\' -]+?)[ , ]([A-z0-9\' -]+?) 3\) ([A-z\' -]+?)[ , ]([A-z0-9\' -]+?) 4\) ([A-z\' -]+?)[ , ]([A-z0-9\' -]+?)$')
+    re_name_line = re.compile('^1\) ([A-z\' ]+?)[ , ]([A-z0-9\' -]+?) 2\) ([A-z\' -]+?)[ , ]([A-z0-9\' -]+?) 3\) ([A-z\' -]+?)[ , ]([A-z0-9\' -]+?) 4\) ([A-z\' -]+?)[ , ]([A-z0-9\' -]+?)$')
+    re_program_space_relay_name = re.compile(r'(\S)([2-4]\))')
+
+    ## Fix the swimmers named to put a space prior to the position number (i.e.  "NameFirst2)"" to "NameFirst 2)")
+    name_line = re_program_space_relay_name.sub( r'\1 \2',name_line_in )
+    logging.error(f"NameLine: i: '{name_line_in}' o: '{name_line}'")
+    re_name_list = re_name_line.findall(name_line)
+    if re_name_list:
+        s1_lname = str(re_name_list[0][0]).strip()
+        s1_fname = str(re_name_list[0][1]).strip()
+        s2_lname = str(re_name_list[0][2]).strip()
+        s2_fname = str(re_name_list[0][3]).strip()
+        s3_lname = str(re_name_list[0][4]).strip()
+        s3_fname = str(re_name_list[0][5]).strip()
+        s4_lname = str(re_name_list[0][6]).strip()
+        s4_fname = str(re_name_list[0][7]).strip()
+
+        #logging.error(f"NAME: s1: o: '{re_name_list}'")
+        #logging.error(f"NAME: s1: o: '{s1_lname}' '{s1_fname[0]}' '{s2_lname}' '{s2_fname[0]}' '{s3_lname}' '{s3_fname[0]}' '{s4_lname}' '{s4_fname[0]}'")
+
+        s1_name = f"{s1_lname}, {s1_fname[0]}"
+        s2_name = f"{s2_lname}, {s2_fname[0]}"
+        s3_name = f"{s3_lname}, {s3_fname[0]}"
+        s4_name = f"{s4_lname}, {s4_fname[0]}"
+        new_name_str = f"1) {s1_name:<15} 2) {s2_name:<15} 3) {s3_name:<15} 4) {s4_name:<15}"
+
+        return new_name_str
