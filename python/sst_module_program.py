@@ -492,10 +492,10 @@ def create_output_file_program_relay( output_dir_root: str,
 
 def reformat_relay_swimmers_names( name_line_in:str ) -> str:
 
-
+    new_name_str = name_line_in
    #logging.error(f"NAME: s1: i: {name_line}")
     #re_name_line = re.compile('^1\) ([A-z\' ]+?)[ , ]([A-z0-9\' -]+?) 2\) ([A-z\' -]+?)[ , ]([A-z0-9\' -]+?) 3\) ([A-z\' -]+?)[ , ]([A-z0-9\' -]+?) 4\) ([A-z\' -]+?)[ , ]([A-z0-9\' -]+?)$')
-    re_name_line = re.compile('^1\) ([A-z\' ]+?)[ , ]([A-z0-9\' -]+?) 2\) ([A-z\' -]+?)[ , ]([A-z0-9\' -]+?) 3\) ([A-z\' -]+?)[ , ]([A-z0-9\' -]+?) 4\) ([A-z\' -]+?)[ , ]([A-z0-9\' -]+?)$')
+    re_name_line = re.compile('^1\)[A-z\',- ]+?)2\)[A-z\',- ]+?)3\)[A-z\',- ]+?)4\)[A-z\',- ]+?) $')
     re_program_space_relay_name = re.compile(r'(\S)([2-4]\))')
 
     ## Fix the swimmers named to put a space prior to the position number (i.e.  "NameFirst2)"" to "NameFirst 2)")
@@ -503,22 +503,19 @@ def reformat_relay_swimmers_names( name_line_in:str ) -> str:
     logging.error(f"NameLine: i: '{name_line_in}' o: '{name_line}'")
     re_name_list = re_name_line.findall(name_line)
     if re_name_list:
-        s1_lname = str(re_name_list[0][0]).strip()
-        s1_fname = str(re_name_list[0][1]).strip()
-        s2_lname = str(re_name_list[0][2]).strip()
-        s2_fname = str(re_name_list[0][3]).strip()
-        s3_lname = str(re_name_list[0][4]).strip()
-        s3_fname = str(re_name_list[0][5]).strip()
-        s4_lname = str(re_name_list[0][6]).strip()
-        s4_fname = str(re_name_list[0][7]).strip()
-
+        s1_fullname = str(re_name_list[0][0]).strip()
+        s2_fullname = str(re_name_list[0][1]).strip()
+        s3_fullname = str(re_name_list[0][2]).strip()
+        s4_fullname = str(re_name_list[0][3]).strip()
+ 
+        logging.error(f"NAME: '{s1_fullname}' '{s2_fullname}'' '{s3_fullname}'' '{s4_fullname}'")
         #logging.error(f"NAME: s1: o: '{re_name_list}'")
         #logging.error(f"NAME: s1: o: '{s1_lname}' '{s1_fname[0]}' '{s2_lname}' '{s2_fname[0]}' '{s3_lname}' '{s3_fname[0]}' '{s4_lname}' '{s4_fname[0]}'")
 
-        s1_name = f"{s1_lname}, {s1_fname[0]}"
-        s2_name = f"{s2_lname}, {s2_fname[0]}"
-        s3_name = f"{s3_lname}, {s3_fname[0]}"
-        s4_name = f"{s4_lname}, {s4_fname[0]}"
-        new_name_str = f"1) {s1_name:<15} 2) {s2_name:<15} 3) {s3_name:<15} 4) {s4_name:<15}"
+        # s1_name = f"{s1_lname}, {s1_fname[0]}"
+        # s2_name = f"{s2_lname}, {s2_fname[0]}"
+        # s3_name = f"{s3_lname}, {s3_fname[0]}"
+        # s4_name = f"{s4_lname}, {s4_fname[0]}"
+        # new_name_str = f"1) {s1_name:<15} 2) {s2_name:<15} 3) {s3_name:<15} 4) {s4_name:<15}"
 
-        return new_name_str
+    return new_name_str
