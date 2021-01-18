@@ -36,7 +36,8 @@ def process_program( meet_report_filename: str,
                      display_relay_swimmer_names: bool,
                      namesfirstlast: bool, 
                      quote_output: bool,
-                     generate_crawler:bool ) -> int:
+                     generate_crawler:bool,
+                     relayformat:int ) -> int:
     """ Given the input file formatted in a specific manner,
         generate indiviual Event/Heat files for use in Wirecast displays """
     
@@ -118,7 +119,7 @@ def process_program( meet_report_filename: str,
             if re.search("^%s" % mm_license_name, line):
                 found_header_line = 1
                 
-                num_files = create_output_file_program( output_dir, event_num, heat_num, output_list, display_relay_swimmer_names, split_relays_to_multiple_files )
+                num_files = create_output_file_program( output_dir, event_num, heat_num, output_list, display_relay_swimmer_names, split_relays_to_multiple_files, relayformat )
                 if generate_crawler and event_num > 0 and heat_num > 0:
                     num_files_crawler = create_output_file_program_crawler( output_dir, event_num, heat_num, crawler_str )
                     num_crawler_files_generated += num_files_crawler
@@ -260,7 +261,7 @@ def process_program( meet_report_filename: str,
     ## Write out last event
     #####################################################################################
 
-    num_files = create_output_file_program( output_dir, event_num, heat_num, output_list, display_relay_swimmer_names, split_relays_to_multiple_files )
+    num_files = create_output_file_program( output_dir, event_num, heat_num, output_list, display_relay_swimmer_names, split_relays_to_multiple_files, relayformat )
     num_files_generated += num_files
 
     if generate_crawler:
@@ -282,14 +283,14 @@ def create_output_file_program( output_dir_root: str,
                                 heat_num: int,
                                 output_list: list, 
                                 display_relay_swimmer_names: bool,
-                                split_relays_to_multiple_files: bool ) -> int:
+                                split_relays_to_multiple_files: bool,
+                                relayformat: int ) -> int:
 
-    relays_combine_team_swimmers = True
     num_files_created = 0
 
     ## Puts Short Team, Relay and swimmers on same line
     ##  6 SST  A 1) Garvey, L       2) Flynn, E        3) Condon, C       4) Pennefather, M 
-    if event_num in sst_common.event_num_relay and relays_combine_team_swimmers:
+    if event_num in sst_common.event_num_relay and relayformat == 2:
         num_files_created = create_output_file_program_format2( output_dir_root, 
                                 event_num, 
                                 heat_num,

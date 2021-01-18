@@ -194,6 +194,7 @@ def process_main():
     parser.add_argument('-e', '--emptyresults',     dest='emptyresults',        action='store_true',            help="Generate empty results files for wirecast template setup")
 
     ## Parms not used as often
+    parser.add_argument('-F', '--relayformat',      dest='relayformat',         type=int,default=1,choices=[1,2], help="1 -- Default relay heat program.  2 -- team/name on same line")
     parser.add_argument('-S', '--splitrelays',      dest='splitrelays',         action='store_true',            help="Split Relays into multiple files")
     parser.add_argument('-R', '--displayRelayNames',dest='displayRelayNames',   action='store_true',            help="Display relay swimmer names, not just the team name in results")
     parser.add_argument('-N', '--namesfirstlast',   dest='namesfirstlast',      action='store_true',            help="Swap Non Relay names to First Last from Last, First")
@@ -286,7 +287,7 @@ def process_main():
               f"\tInputFile \t\t{inputfile} \n" + \
               f"\tRoot OutputDir \t\t{output_dir} \n" + \
               f"\tShort Sch Names Relays \t{args.shortschoolrelay} \n" + \
-              f"\Long Sch Names Indiv \t{args.longschoolindividual} \n" + \
+              f"\tLong Sch Names Indiv \t{args.longschoolindividual} \n" + \
               f"\tNamesFirstlast \t\t{args.namesfirstlast} \n" + \
               f"\tSplit Relays \t\t{args.splitrelays} \n"+ \
               f"\tDisplay Relays Names \t{args.displayRelayNames} \n"+ \
@@ -296,13 +297,14 @@ def process_main():
               f"\tNum Reslts Generate \t{args.numresults}\n" + \
               f"\tQuote output fields \t{args.quote}\n" + \
               f"\tLog Level \t\t{args.loglevel}\n" + \
+              f"\tEmptyResults: \t\t'{args.emptyresults}' \n" + \
+              f"\tRelayFormat: \t\t'{args.relayformat}' \n" + \
               f"\n   Headers: \n" + \
               f"\tMeet Name: \t\t'{meet_name}' \n" + \
               f"\tMeet Date: \t\t'{meet_date}' \n" + \
               f"\tHeader3 Meet Name: \t'{report_type_meet_name}' \n" + \
               f"\tLicensee: \t\t'{license_name}' \n" + \
-              f"\tSourceReport: \t\t'{report_type}' \n" + \
-              f"\tEmptyResults: \t\t'{args.emptyresults}' \n" 
+              f"\tSourceReport: \t\t'{report_type}' \n" 
     logging.warning( logargs )
 
     logging.warning(f"\n    Reports to generate: ")
@@ -331,7 +333,8 @@ def process_main():
                                         args.displayRelayNames, 
                                         args.namesfirstlast, 
                                         args.quote,
-                                        args.crawler)
+                                        args.crawler,
+                                        args.relayformat )
 
     #####################################################################################
     ## Generate wirecast files RESULTS and CRAWLER from a MEET RESULTS txt file
