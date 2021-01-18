@@ -274,13 +274,48 @@ def process_program( meet_report_filename: str,
     return num_files_generated, num_crawler_files_generated
 
 
+####################################################################################
+## Determine type of output file to generate
+#####################################################################################
+def create_output_file_program( output_dir_root: str, 
+                                event_num: int, 
+                                heat_num: int,
+                                output_list: list, 
+                                display_relay_swimmer_names: bool,
+                                split_relays_to_multiple_files: bool ) -> int:
+
+    relays_combine_team_swimmers = True
+    num_files_created = 0
+
+    ## Puts Short Team, Relay and swimmers on same line
+    ##  6 SST  A 1) Garvey, L       2) Flynn, E        3) Condon, C       4) Pennefather, M 
+    if event_num in sst_common.event_num_relay and relays_combine_team_swimmers:
+        num_files_created = create_output_file_program_format2( output_dir_root, 
+                                event_num, 
+                                heat_num,
+                                output_list, 
+                                display_relay_swimmer_names,
+                                split_relays_to_multiple_files )
+
+
+    else:
+        ## Standard format for individual
+        ## For relays, lists team name/relay/seed time and optional swimmers on second line (but usually requires splitting into two files)
+        num_files_created = create_output_file_program_format1( output_dir_root, 
+                                event_num, 
+                                heat_num,
+                                output_list, 
+                                display_relay_swimmer_names,
+                                split_relays_to_multiple_files )
+    
+    return num_files_created
 
 
 
 ####################################################################################
 ## Given an array of PROGRAM lines PER HEAT, generate the output file
 #####################################################################################
-def create_output_file_program( output_dir_root: str, 
+def create_output_file_program_format1( output_dir_root: str, 
                                 event_num: int, 
                                 heat_num: int,
                                 output_list: list, 
@@ -293,17 +328,6 @@ def create_output_file_program( output_dir_root: str,
     split_num = 1
     output_str = ""
     
-
-    logging.error(f"***************************************************")
-    if event_num in sst_common.event_num_relay:
-        create_output_file_program_relay( output_dir_root, 
-                                event_num, 
-                                heat_num,
-                                output_list, 
-                                display_relay_swimmer_names,
-                                split_relays_to_multiple_files )
-        logging.error(f"***************************************************")
-        return 0
     ## Ignore the case where we get event0 heat0
     if event_num == 0:
         return 0
@@ -420,7 +444,7 @@ def create_output_file_program_crawler( output_dir_root: str,
 ## For relays, put names on same line
 ##  1. SST  1) swimmer,one 2) swimmer, two 3) swimmer, three 4) swimmer, four
 #####################################################################################
-def create_output_file_program_relay( output_dir_root: str, 
+def create_output_file_program_format2( output_dir_root: str, 
                                 event_num: int, 
                                 heat_num: int,
                                 output_list: list, 
@@ -476,7 +500,7 @@ def create_output_file_program_relay( output_dir_root: str,
                 output_str += '\n'
 
     
-    logging.error(f"RELAY: {output_str}")
+    logging.debug(f"RELAY: {output_str}")
     sst_common.write_output_file(output_dir, output_file_name, output_str)
     num_files_created += 1
 
@@ -489,33 +513,45 @@ def create_output_file_program_relay( output_dir_root: str,
 #1) Herrick, J 2) Rutherford, L 3) Sypal, C 4) Vogler, K
 
 ####################################################################################
-
 def reformat_relay_swimmers_names( name_line_in:str ) -> str:
 
     new_name_str = name_line_in
-   #logging.error(f"NAME: s1: i: {name_line}")
-    #re_name_line = re.compile('^1\) ([A-z\' ]+?)[ , ]([A-z0-9\' -]+?) 2\) ([A-z\' -]+?)[ , ]([A-z0-9\' -]+?) 3\) ([A-z\' -]+?)[ , ]([A-z0-9\' -]+?) 4\) ([A-z\' -]+?)[ , ]([A-z0-9\' -]+?)$')
-    re_name_line = re.compile('^1\)[A-z\',- ]+?)2\)[A-z\',- ]+?)3\)[A-z\',- ]+?)4\)[A-z\',- ]+?) $')
+    #re_name_line = re.compile('^1\)([A-z0-9\'\-, ]+?)2\)([A-z0-9\'\-, ]+?)3\)([A-z0-9\'\-, ]+?)4\)([A-z0-9\'\-, ]+?)$')
+    re_name_line = re.compile('^1\)(.*?)2\)(.*?)3\)(.*?)4\)(.*?)$')
     re_program_space_relay_name = re.compile(r'(\S)([2-4]\))')
 
     ## Fix the swimmers named to put a space prior to the position number (i.e.  "NameFirst2)"" to "NameFirst 2)")
     name_line = re_program_space_relay_name.sub( r'\1 \2',name_line_in )
-    logging.error(f"NameLine: i: '{name_line_in}' o: '{name_line}'")
     re_name_list = re_name_line.findall(name_line)
+
     if re_name_list:
         s1_fullname = str(re_name_list[0][0]).strip()
         s2_fullname = str(re_name_list[0][1]).strip()
         s3_fullname = str(re_name_list[0][2]).strip()
         s4_fullname = str(re_name_list[0][3]).strip()
  
-        logging.error(f"NAME: '{s1_fullname}' '{s2_fullname}'' '{s3_fullname}'' '{s4_fullname}'")
-        #logging.error(f"NAME: s1: o: '{re_name_list}'")
-        #logging.error(f"NAME: s1: o: '{s1_lname}' '{s1_fname[0]}' '{s2_lname}' '{s2_fname[0]}' '{s3_lname}' '{s3_fname[0]}' '{s4_lname}' '{s4_fname[0]}'")
+        # Parse out swimmers last name and first name (sometimes including grade)
+        s1_lname, s1_fname = s1_fullname.split(',')
+        s2_lname, s2_fname = s2_fullname.split(',')
+        s3_lname, s3_fname = s3_fullname.split(',')
+        s4_lname, s4_fname = s4_fullname.split(',')
 
-        # s1_name = f"{s1_lname}, {s1_fname[0]}"
-        # s2_name = f"{s2_lname}, {s2_fname[0]}"
-        # s3_name = f"{s3_lname}, {s3_fname[0]}"
-        # s4_name = f"{s4_lname}, {s4_fname[0]}"
-        # new_name_str = f"1) {s1_name:<15} 2) {s2_name:<15} 3) {s3_name:<15} 4) {s4_name:<15}"
+        ## Remove extra whitespace
+        s1_lname = s1_lname.strip()
+        s1_fname = s1_fname.strip()
+        s2_lname = s2_lname.strip()
+        s2_fname = s2_fname.strip()
+        s3_lname = s3_lname.strip()
+        s3_fname = s3_fname.strip()
+        s4_lname = s4_lname.strip()
+        s4_fname = s4_fname.strip()
 
+
+        ## Its possible last name is too long there is no first name
+        s1_name = f"{s1_lname}, {s1_fname[0]}" if len(s1_fname) > 0 else f"{s1_lname}"
+        s2_name = f"{s2_lname}, {s2_fname[0]}" if len(s2_fname) > 0 else f"{s2_lname}"
+        s3_name = f"{s3_lname}, {s3_fname[0]}" if len(s3_fname) > 0 else f"{s3_lname}"
+        s4_name = f"{s4_lname}, {s4_fname[0]}" if len(s4_fname) > 0 else f"{s4_lname}"
+
+        new_name_str = f"1) {s1_name:<15} 2) {s2_name:<15} 3) {s3_name:<15} 4) {s4_name:<15}"
     return new_name_str
