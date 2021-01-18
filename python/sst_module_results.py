@@ -123,7 +123,6 @@ def process_result( meet_report_filename: str,
                 
                 ## The start of the next event finished off the last event. Go write out the last event
                 if contimue_processing_current_event:
-                    logging.debug("11111111111")
                     num_files = create_output_file_results( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display )
                     num_files_generated += num_files
 
@@ -181,7 +180,6 @@ def process_result( meet_report_filename: str,
             #####################################################################################
             if line.lower().startswith(("(event")):
                 contimue_processing_current_event = False
-                logging.debug("22222222222222")
 
                 num_files = create_output_file_results( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display )
                 num_files_generated += num_files
@@ -247,6 +245,7 @@ def process_result( meet_report_filename: str,
                     placeline_finaltime = str(place_line_list[0][4])
                     placeline_points    = str(place_line_list[0][5])
 
+
                     #####################################################################################
                     ## RESULTS: Replace long school name with short name for RELAY events
                     #####################################################################################
@@ -260,8 +259,11 @@ def process_result( meet_report_filename: str,
                         #output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_short:<4}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
                         output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_short:<4}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q}"
                     else:
+                        #full_team_name = placeline_sch_long
+                        full_team_name = sst_common.find_proper_team_name( placeline_sch_long )
+
                         #output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_long:<25}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
-                        output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_long:<25}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q}"
+                        output_str = f" {q}{placeline_place:>3}{q} {q}{full_team_name:<25}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q}"
                     output_list.append(( "PLACE", output_str ))
 
             #####################################################################################
@@ -278,8 +280,6 @@ def process_result( meet_report_filename: str,
     ## Reached end of file
     ## Write out last event
     #####################################################################################
-    logging.debug("33333333333333")
-
     create_output_file_results( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display )
     num_files_generated += 1
     
