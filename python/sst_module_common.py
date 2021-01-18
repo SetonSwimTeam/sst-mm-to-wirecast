@@ -64,7 +64,7 @@ school_name_dict = {
         "Saint John Paul the Great": "JP",
         "St. Gertrude High School": "SGHS",
         "St. Paul VI Catholic HS": "PVI",
-        "Seton Swimming Alumni": "ALUM",
+        "Seton Alumni": "ALUM",
         "Seton Swimming": "SST", 
         "The Covenant School-VA": "TCS" ,
         "The Steward School-VA": "STEW",
@@ -81,6 +81,85 @@ school_name_dict = {
         "Valley Christian S": "VCS",
         "Seton Family Homeschool": "SFH",
     } 
+
+
+#####################################################################################
+## Proper Schhol Names
+## Replace the team name from Meet Manager, which is often truncated, with this name
+#####################################################################################
+proper_school_name_dict = { 
+        "Benedictine College Prep": "Benedictine College Prep",
+        "Bishop O'Connell-PV": "Bishop O'Connell",
+        "Bishop O'Connell": "Bishop O'Connell",
+        "Bishop Ireton Swim and Dive": "Bishop Ireton Swim and Dive",
+        "Bishop Sullivan Catholic High": "Bishop Sullivan Catholic High",
+        "BBVST": "BVST",
+        "Broadwater Academy-VA": "Broadwater Academy",
+        "Cape Henry Collegiate": "Cape Henry Collegiate",
+        "Carmel School Wildcats": "Carmel School Wildcats",
+        "CCS-VA": "CCS",
+        "Chatham Hall": "Chatham Hall",
+        "Christchurch School Swim Team": "Christchurch School",
+        "Collegiate School": "Collegiate School",
+        "Fredericksburg Academy-VA": "Fredericksburg Academy",
+        "Fredericksburg Christian-": "Fredericksburg Christian",
+        "Fresta Valley Christian": "Fresta Valley Christian",
+        "Hampton Roads Academy": "Hampton Roads Academy",
+        "Highland Hawks": "Highland Hawks",
+        "Immanuel Christian High S": "Immanuel Christian HS",
+        "Middleburg Academy-VA": "Middleburg Academy",
+        "Nansemond Suffolk Academy": "Nansemond Suffolk Academy",
+        "Oakcrest School Chargers": "Oakcrest School Chargers",
+        "Randolph-Macon Academy-VA": "Randolph-Macon Academy",
+        "Saint John Paul the Great": "Saint John Paul the Great",
+        "St. Gertrude High School": "St. Gertrude High School",
+        "St. Paul VI Catholic HS": "St. Paul VI Catholic HS",
+        "Seton Alumni Swimming": "Seton Alumni",
+        "Seton Swimming": "Seton Swimming", 
+        "The Covenant School-VA": "The Covenant School" ,
+        "The Steward School-VA": "The Steward School",
+        "Trinity Christian School-": "Trinity Christian School",
+        "Trinity Christian School": "Trinity Christian School",
+        "Veritas Collegiate Academ": "VCA",
+        "Veritas School-VA": "VRTS",
+        "Walsingham Academy-VA": "WA",
+        "Wakefield H2owls-VA": "WAKE",
+        "H2owls-VA": "WAKE",
+        "Williamsburg Christian Ac": "WCA",
+        "Woodberry Forest-VA": "WFS",
+        "Valley Christian School": "VCS",
+        "Valley Christian S": "VCS",
+        "Seton Family Homeschool": "SFH",
+    } 
+
+
+#####################################################################################
+## Some school names have -VA added to end.  Since MM often truncated the name
+## around between 24 and 27 chars (difference reports), we sometimes truncate
+## the school name.  Remove the training -VA, -V or -
+#####################################################################################
+def clean_up_team_name( team_name_in: str) -> str:
+
+    team_name_split = team_name_in.split('-')
+    team_name_out = team_name_split[0]
+    return team_name_out
+
+#####################################################################################
+## MM generatee a truncated team name.  See if we can find the full long name
+#####################################################################################
+def find_proper_team_name( team_name_in: str ):
+    team_name_out = team_name_in
+
+    ## Input may be a truncated version of the school name
+    ## Search for a substring
+    for team_name in proper_school_name_dict:
+        team_name_in_strip = team_name_in.strip()
+        if team_name_in_strip.strip() in team_name:
+            proper_name = f"{proper_school_name_dict[team_name]:<25}"
+            break;
+
+    logging.debug(f"Proper Name i:' {team_name_in}' o: '{proper_name}'")
+    return proper_name 
 
 #####################################################################################
 ## In some wierd cases, we overwrite a good file with some extra text that 
@@ -219,8 +298,8 @@ def cleanup_new_files( file_prefix: str, output_dir: str ):
     for file in glob.glob(file_glob):
         txtfiles.append(file)
     
-    for file in txtfiles:
-        print(f"Filename: {file}")
+    # for file in txtfiles:
+    #     print(f"Filename: {file}")
 
 
 #####################################################################################
@@ -237,10 +316,12 @@ def verify_dirs_files(  input_dir: str, input_file:str, output_dir: str ):
         if not os.path.isfile( fullFile ):
             error_msg = f"\tInput file not found: {fullFile}"
 
-    if not os.path.isdir( output_dir ):
-        if error_msg:
-            error_msg += "\n"
-        error_msg += f"\tOutput directory not found: {output_dir}"
+    try: 
+        if not os.path.isdir( output_dir ):
+            os.makedirs(output_dir, exist_ok = True) 
+            logging.warning(f"Output Directory '{output_dir}' created successfully") 
+    except OSError as error: 
+        logging.error(f"Output Directory '{output_dir}' can not be created: {error}" ) 
 
     return error_msg
  
