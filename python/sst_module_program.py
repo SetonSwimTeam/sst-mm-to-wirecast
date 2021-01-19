@@ -208,12 +208,17 @@ def process_program( meet_report_filename: str,
 
                     ## Format the output lines with either long (per meet program) or short school names
                     output_str = f" {q}{entry_lane:>2}{q} {q}{entry_name:<25}{q} {q}{entry_grade:>2}{q} {q}{entry_sch_long:<25}{q} {q}{entry_seedtime:>8}{q}"
-
+                    
                     if shorten_school_names_individual:
                         output_str = f" {q}{entry_lane:>2}{q} {q}{entry_name:<25}{q} {q}{entry_grade:>2}{q} {q}{entry_sch_short:<4}{q} {q}{entry_seedtime:>8}{q}"
                     
                     output_list.append(('LANE', output_str))
                     crawler_str += gen_program_crawler_ind( entry_lane, entry_name, entry_grade,entry_sch_short, entry_sch_long, entry_seedtime )
+                    
+                    ## Prepare to generate a NAME ONLY (may contain lane#) for use on overlaying the lanes while swimmer in water
+                    nameonly_str = f"{q}{entry_lane:>2}{q} {q}{entry_name:<25}{q}"
+                    output_list.append(('NAMEONLY', nameonly_str))
+
             
             #####################################################################################
             ## PROGRAM: RELAY Find the replay line with LANE, SCHOOL, RELAY TEAM SEEDTIME
@@ -234,15 +239,18 @@ def process_program( meet_report_filename: str,
                     entryline_sch_short = sst_common.short_school_name_lookup( entryline_sch_long, len(entryline_sch_long) )
                     ## Still issues with School names ending in - or -VA
                     entryline_sch_long = re_program_sch_cleanup2.sub(r'\1', entryline_sch_long)
-
+                    
+                    full_team_name = entryline_sch_long
                     if shorten_school_names_relays:
+                        full_team_name = entryline_sch_short
                         output_str = f"{q}{entryline_lane:>2}{q} {q}{entryline_sch_short:<4}{q} {q}{entryline_relay:1}{q} {q}{entryline_seedtime:>8}{q}"
                     else:
-                        #full_team_name = entryline_sch_long
                         full_team_name = sst_common.find_proper_team_name( entryline_sch_long )
                         output_str = f"{q}{entryline_lane:>2}{q} {q}{full_team_name:<28}{q} {q}{entryline_relay:1}{q} {q}{entryline_seedtime:>8}{q}"
 
                     output_list.append(( "LANE", output_str ))
+                    nameonly_str = f"{q}{entryline_lane:>2}{q} {q}{full_team_name:<25}{q}"
+                    output_list.append(('NAMEONLY', nameonly_str))
 
             #####################################################################################
             ## PROGRAM: RELAY Add the swimmers name to the list. It may or may not be use for output
@@ -287,6 +295,13 @@ def create_output_file_program( output_dir_root: str,
                                 relayformat: int ) -> int:
 
     num_files_created = 0
+    overlay_files_created = 0
+
+    overlay_files_created = create_output_file_program_nameonly(output_dir_root, 
+                                                                event_num, 
+                                                                heat_num,
+                                                                output_list, 
+                                                                display_relay_swimmer_names)
 
     ## Puts Short Team, Relay and swimmers on same line
     ##  6 SST  A 1) Garvey, L       2) Flynn, E        3) Condon, C       4) Pennefather, M 
@@ -309,7 +324,7 @@ def create_output_file_program( output_dir_root: str,
                                 display_relay_swimmer_names,
                                 split_relays_to_multiple_files )
     
-    return num_files_created
+    return num_files_created + overlay_files_created
 
 
 
@@ -391,6 +406,55 @@ def create_output_file_program_format1( output_dir_root: str,
     return num_files_created
 
 
+
+####################################################################################
+## Given an array of PROGRAM lines PER HEAT, generate the output file
+## This version only contains NAME, not Headers, or swimminer info besides NAME
+## Its used to test an overlay of names on the pool
+#####################################################################################
+def create_output_file_program_nameonly( output_dir_root: str, 
+                                event_num: int, 
+                                heat_num: int,
+                                output_list: list, 
+                                display_relay_swimmer_names: bool ) -> int:
+    """ Generate the filename and open the next file """
+   
+    global event_num_relay
+    num_files_created = 0
+    split_num = 1
+    output_str = ""
+    
+    ## Ignore the case where we get event0 heat0
+    if event_num == 0:
+        return 0
+
+    output_dir = f"{output_dir_root}/"
+    
+    ## For non relay events
+    output_file_name = f"{file_name_prefix}{event_num:0>2}_LANE_OVERLAY_heat_{heat_num:0>2}.txt"
+
+    #header_list = ['H4', 'H5', 'H6']
+    header_list = ['H4', 'H5']
+
+    count =0 
+    for output_tuple in output_list:
+        row_type = output_tuple[0]
+        row_text = output_tuple[1]
+
+        logging.debug(f"NAMEONLY: e: {event_num} h: {event_num} id: {row_type} t: {row_text}")
+
+        ## May want header info, if it fits on screen
+        if row_type == 'H4':
+            output_str += row_text + '\n'
+        elif row_type == 'H5':
+              output_str += row_text + '\n'+ '\n'
+        elif row_type == 'NAMEONLY':
+            output_str += row_text + '\n'
+
+    sst_common.write_output_file(output_dir, output_file_name, output_str)
+    num_files_created += 1
+
+    return num_files_created
 
 ####################################################################################
 ## Given an array of PROGRAM lines PER HEAT, generate the crawler file for individuals
