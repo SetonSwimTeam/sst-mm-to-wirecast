@@ -8,6 +8,39 @@ python/generate_wirecast_files.py -f dec-results.txt
 python/generate_wirecast_files.py -h
 ```
 
+Command Line Parameters
+
+```
+optional arguments:
+  -i INPUTDIR, --inputdir INPUTDIR
+                        input directory for MM extract report
+  -f FILENAME, --filename FILENAME
+                        Input file name
+  -o OUTPUTDIR, --outputdir OUTPUTDIR
+                        root output directory for wirecast heat files.
+  -c, --crawler         Generate crawler files
+  -r, --shortschrelay   Use Short School names for Relays
+  -l, --longschind      Use Long School names for Indiviual Entries
+  -d, --delete          Delete existing files in OUTPUT_DIR
+  -n NUMRESULTS, --numresults NUMRESULTS
+                        Number of results listed per event
+  -x LASTNUMEVENTS, --lastnumevents LASTNUMEVENTS
+                        Crawler outputs a separate file with the last N events
+  -e, --emptyresults    Generate empty results files for wirecast template setup
+  -F {1,2}, --relayformat {1,2}
+                        1 -- Default relay heat program. 2 -- team/name on same line
+  -S, --splitrelays     Split Relays into multiple files
+  -R, --displayRelayNames
+                        Display relay swimmer names, not just the team name in results
+  -N, --namesfirstlast  Swap Non Relay names to First Last from Last, First
+  -T {auto,program,results,headers}, --reporttype {auto,program,results,headers}
+                        Program type, Meet Program or Meet Results
+  -v {error,warning,info,debug}, --log {error,warning,info,debug}
+                        Set debugging level2
+  -q, --quote           Quote the output fields for DEBUGGING
+  -h, --help            Tested with MM 8
+```
+
 ## Format Reports
 The report needs very specific formatting options for this program to work.
 
