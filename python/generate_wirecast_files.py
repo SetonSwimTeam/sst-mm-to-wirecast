@@ -192,9 +192,10 @@ def process_main():
     parser.add_argument('-n', '--numresults',       dest='numresults',          type=int, default='14',         help="Number of results listed per event")
     parser.add_argument('-x', '--lastnumevents',    dest='lastnumevents',       type=int, default='3',          help="Crawler outputs a separate file with the last N events")
     parser.add_argument('-e', '--emptyresults',     dest='emptyresults',        action='store_true',            help="Generate empty results files for wirecast template setup")
+    parser.add_argument('-F', '--relayformat',      dest='relayformat',         type=int,default=1,choices=[1,2], help="1 -- Default relay heat program.  2 -- team/name on same line")
+    parser.add_argument('-O', '--overlay',          dest='overlay',             action='store_true',            help="Generate lane overlay files with just swimmers name for use during heat")
 
     ## Parms not used as often
-    parser.add_argument('-F', '--relayformat',      dest='relayformat',         type=int,default=1,choices=[1,2], help="1 -- Default relay heat program.  2 -- team/name on same line")
     parser.add_argument('-S', '--splitrelays',      dest='splitrelays',         action='store_true',            help="Split Relays into multiple files")
     parser.add_argument('-R', '--displayRelayNames',dest='displayRelayNames',   action='store_true',            help="Display relay swimmer names, not just the team name in results")
     parser.add_argument('-N', '--namesfirstlast',   dest='namesfirstlast',      action='store_true',            help="Swap Non Relay names to First Last from Last, First")
@@ -215,8 +216,16 @@ def process_main():
     parser.set_defaults(quote=False)
     parser.set_defaults(crawler=False)
     parser.set_defaults(emptyresults=False)
+    parser.set_defaults(overlay=False)
 
     args = parser.parse_args()
+
+
+
+    ## If the program relay is in Format2 (team abbr and swimmers on same line) then we need to force short relay names
+    #shortschoolrelay = args.shortschoolrelay
+    if args.relayformat == 2:
+        args.shortschoolrelay = True
 
     inputfile =f"{args.inputdir}/{args.filename}"
 
@@ -299,6 +308,7 @@ def process_main():
               f"\tLog Level \t\t{args.loglevel}\n" + \
               f"\tEmptyResults: \t\t'{args.emptyresults}' \n" + \
               f"\tRelayFormat: \t\t'{args.relayformat}' \n" + \
+              f"\tLane Overlay Files: \t'{args.overlay}' \n" + \
               f"\n   Headers: \n" + \
               f"\tMeet Name: \t\t'{meet_name}' \n" + \
               f"\tMeet Date: \t\t'{meet_date}' \n" + \
@@ -334,7 +344,8 @@ def process_main():
                                         args.namesfirstlast, 
                                         args.quote,
                                         args.crawler,
-                                        args.relayformat )
+                                        args.relayformat,
+                                        args.overlay )
 
     #####################################################################################
     ## Generate wirecast files RESULTS and CRAWLER from a MEET RESULTS txt file
