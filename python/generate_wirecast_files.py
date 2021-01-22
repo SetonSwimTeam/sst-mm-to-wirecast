@@ -331,6 +331,7 @@ def process_main():
              ## Remove files from last run as we may have old events/heats mixed in
             remove_files_from_dir( 'program', output_dir )
             remove_files_from_dir( 'PROGRAM', output_dir )
+            remove_files_from_dir( 'LANE_OVERLAY', output_dir )
 
         total_files_generated_program , total_crawler_files = \
             sst_program.process_program( inputfile, 
