@@ -113,7 +113,8 @@ def process_score_dualmeet( meet_report_filename: str,
                 ## Add the score to the output list
                 output_list.append( (scores_for_gender, output_str ))
 
-    num_files_generated = create_output_file_scores_dual( output_dir, output_list, numresults )
+    num_files_generated = create_output_file_scores_dual_combined( output_dir, output_list, numresults )
+    num_files_generated = create_output_file_scores_dual_by_gender( output_dir, output_list, numresults )
     return num_files_generated
 
 
@@ -221,9 +222,9 @@ def process_score_champsionship( meet_report_filename: str,
 
 
 ####################################################################################
-## Given an array of PROGRAM lines PER HEAT, generate the output file
-#####################################################################################
-def create_output_file_scores_dual( output_dir_root: str, 
+## Given an array of DUAL meet scores, generate both boys and girls as two different files
+# #####################################################################################
+def create_output_file_scores_dual_by_gender( output_dir_root: str, 
                                     output_list: list,
                                     num_results_to_display: int ) -> int:
     num_files_generated = 0
@@ -267,6 +268,50 @@ def create_output_file_scores_dual( output_dir_root: str,
     return num_files_generated
 
 
+####################################################################################
+## Given an array of DUAL meet scores, generate both boys and girls on same file
+#####################################################################################
+def create_output_file_scores_dual_combined( output_dir_root: str, 
+                                    output_list: list,
+                                    num_results_to_display: int ) -> int:
+    num_files_generated = 0
+    num_results_generated = 0
+    output_str = ""
+    output_dir = f"{output_dir_root}"
+    print_header = True
+
+
+    for report_type in ["Men", "Women"]:
+        num_results_generated = 0
+        for output_tuple in output_list:
+            row_type = output_tuple[0]
+            row_text = output_tuple[1]
+
+            logging.debug(f"DUAL SCORES: g: {report_type} r: {row_type} t: {row_text}")
+
+            ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
+            if row_type == 'H2' and print_header:
+                output_str += f"{row_text:>50}" + '\n'
+            elif row_type == 'H3' and print_header:
+                output_str += f"{row_text:>55}" + '\n'
+                output_str += '\n'
+            elif row_type == 'H4' and print_header:
+                output_str += row_text + '\n'
+            elif row_type == 'H6'+ report_type:
+                output_str += '\n' + f"{row_text:>40}" + '\n'
+                print_header = False
+            elif row_type == report_type:
+                output_str += row_text + '\n'
+
+                num_results_generated += 1
+                if num_results_generated >= num_results_to_display:
+                    break;
+
+    output_file_name =  f"score_dual_combined.txt"
+    sst_common.write_output_file( output_dir, output_file_name, output_str )
+    num_files_generated += 1
+
+    return num_files_generated
 ####################################################################################
 ## Given an array of PROGRAM lines PER HEAT, generate the output file
 #####################################################################################
