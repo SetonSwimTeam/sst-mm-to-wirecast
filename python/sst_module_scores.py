@@ -107,7 +107,7 @@ def process_score_dualmeet( meet_report_filename: str,
 
                 #logging.debug(f"SCORE: t1 {score_team1}: s1 {score_score1}: s2 {score_score2}: t2: {score_team2}")
 
-                output_str = f"{q}{score_team1}{q} {q}{score_score1}{q} {q}{score_score2}{q} {q}{score_team2}{q}"
+                output_str = f"{q}{score_team1:>30}{q} {q}{score_score1:>5}{q} {q}{score_score2:>5}{q} {q}{score_team2:<30}{q}"
                 logging.debug(f"SCORE: {output_str}")
 
                 ## Add the score to the output list
