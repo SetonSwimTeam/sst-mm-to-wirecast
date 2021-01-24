@@ -79,8 +79,8 @@ def process_result( meet_report_filename: str,
     crawler_str = ""
     contimue_processing_current_event = True
 
-    re_results_lane = re.compile('^[*]?\d{1,2} ')
-    re_results_lane = re.compile('^--- ')
+    # re_results_lane = re.compile('^[*]?\d{1,2} ')
+    # re_results_lane = re.compile('^--- ')
     re_results_lane = re.compile('^([*]?\d{1,2} )|(--- )')
 
 
@@ -89,7 +89,8 @@ def process_result( meet_report_filename: str,
     re_results_lane_ind  = re.compile('^([*]?\d{1,2}|---)\s+([A-z\' \.]+, [A-z ]+?) ([A-Z0-9]{1,2})\s+([A-Z \'.].*?)([0-9:.]+|NT|NP)\s+([xX0-9:.]+)\s*([0-9]*)')
 
     #                                     TIE? PLACE   SCHOOL           RELAY     SEEDTIME|NT    FINALTIME     POINTS
-    re_results_lane_relay = re.compile('^([*]?\d{1,2})\s+([A-Z \'.].*)\s+([A-Z])\s+([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
+    #re_results_lane_relay = re.compile('^([*]?\d{1,2})\s+([A-Z \'.].*)\s+([A-Z])\s+([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
+    re_results_lane_relay = re.compile('^([*]?\d{1,2}|---)\s+([A-Z \'.].*)\s+([A-Z])\s+([0-9:.]+|NT)\s+((XDQ)|[xX0-9:.]+)\s*([0-9]*)')
 
     re_results_space_relay_name = re.compile(r'(\S)([2-4]\))')
     re_results_check_relay_name_line = re.compile('1\)')
@@ -238,10 +239,12 @@ def process_result( meet_report_filename: str,
             ## 1 SST            A                    1:46.82      1:40.65        32
             ## Note: For ties an asterick is placed before the place number and the points could have a decimal
             #####################################################################################
-            if event_num in sst_common.event_num_relay and re_results_lane.search(line):
+            # if event_num in sst_common.event_num_relay and re_results_lane.search(line):
+            if event_num in sst_common.event_num_relay:
                 place_line_list = re_results_lane_relay.findall(line)
 
                 if place_line_list:
+
                     placeline_place     = str(place_line_list[0][0])
                     placeline_sch_long  = str(place_line_list[0][1])
                     placeline_relay     = str(place_line_list[0][2])
@@ -277,7 +280,7 @@ def process_result( meet_report_filename: str,
             if event_num in sst_common.event_num_relay and re_results_check_relay_name_line.search(line):
                 line = re_results_space_relay_name.sub( r'\1 \2',line )
                 output_list.append(( "NAME", line ))  
-                crawler_str += gen_result_crawler_relay( placeline_place, placeline_sch_long, placeline_sch_short,placeline_relay, placeline_seedtime, placeline_finaltime, placeline_points )
+                # crawler_str += gen_result_crawler_relay( placeline_place, placeline_sch_long, placeline_sch_short,placeline_relay, placeline_seedtime, placeline_finaltime, placeline_points )
 
 
     #####################################################################################
