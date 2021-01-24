@@ -280,6 +280,7 @@ def process_main():
     elif (report_type_to_run == "results") or (report_type_to_run == "auto" and report_type == 'Results'):
         process_to_run['results'] = True
     elif (report_type_to_run == "Team Rankings") or (report_type_to_run == "auto" and report_type == 'Team Rankings'):
+        ## Another way call this would be the args.championshipmeet
         process_to_run['scores_champsionship'] = True
     elif (report_type_to_run == "Dual Meet Scores") or (report_type_to_run == "auto" and report_type == 'Dual Meet Scores'):
         process_to_run['scores_dualmeet'] = True
