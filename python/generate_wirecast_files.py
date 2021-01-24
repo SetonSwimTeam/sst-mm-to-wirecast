@@ -194,6 +194,7 @@ def process_main():
     parser.add_argument('-e', '--emptyresults',     dest='emptyresults',        action='store_true',            help="Generate empty results files for wirecast template setup")
     parser.add_argument('-F', '--relayformat',      dest='relayformat',         type=int,default=1,choices=[1,2], help="1 -- Default relay heat program.  2 -- team/name on same line")
     parser.add_argument('-O', '--overlay',          dest='overlay',             action='store_true',            help="Generate lane overlay files with just swimmers name for use during heat")
+    parser.add_argument('-C', '--champ',            dest='championshipmeet',    action='store_true',            help="Sets meet to Championsip meet. Otherwise a double dual meet")
 
     ## Parms not used as often
     parser.add_argument('-S', '--splitrelays',      dest='splitrelays',         action='store_true',            help="Split Relays into multiple files")
@@ -217,6 +218,7 @@ def process_main():
     parser.set_defaults(crawler=False)
     parser.set_defaults(emptyresults=False)
     parser.set_defaults(overlay=False)
+    parser.set_defaults(championshipmeet=False)
 
     args = parser.parse_args()
 
@@ -278,6 +280,7 @@ def process_main():
     elif (report_type_to_run == "results") or (report_type_to_run == "auto" and report_type == 'Results'):
         process_to_run['results'] = True
     elif (report_type_to_run == "Team Rankings") or (report_type_to_run == "auto" and report_type == 'Team Rankings'):
+        ## Another way call this would be the args.championshipmeet
         process_to_run['scores_champsionship'] = True
     elif (report_type_to_run == "Dual Meet Scores") or (report_type_to_run == "auto" and report_type == 'Dual Meet Scores'):
         process_to_run['scores_dualmeet'] = True
@@ -295,6 +298,7 @@ def process_main():
               f"\tOutputReportType \t{args.reporttype} \n" + \
               f"\tInputFile \t\t{inputfile} \n" + \
               f"\tRoot OutputDir \t\t{output_dir} \n" + \
+              f"\tChampionship Meet \t{args.championshipmeet} \n" + \
               f"\tShort Sch Names Relays \t{args.shortschoolrelay} \n" + \
               f"\tLong Sch Names Indiv \t{args.longschoolindividual} \n" + \
               f"\tNamesFirstlast \t\t{args.namesfirstlast} \n" + \
@@ -374,7 +378,8 @@ def process_main():
                                             args.quote ,
                                             args.numresults,
                                             args.lastnumevents,
-                                            args.crawler )
+                                            args.crawler,
+                                            args.championshipmeet )
 
 
     #####################################################################################
