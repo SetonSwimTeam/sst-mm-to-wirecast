@@ -107,7 +107,7 @@ def process_score_dualmeet( meet_report_filename: str,
 
                 #logging.debug(f"SCORE: t1 {score_team1}: s1 {score_score1}: s2 {score_score2}: t2: {score_team2}")
 
-                output_str = f"{q}{score_team1:>30}{q} {q}{score_score1:>5}{q} {q}{score_score2:>5}{q} {q}{score_team2:<30}{q}"
+                output_str = f"{q}{score_team1:>22}{q} {q}{score_score1:>5}{q} {q}{score_score2:>5}{q} {q}{score_team2:<30}{q}"
                 logging.debug(f"SCORE: {output_str}")
 
                 ## Add the score to the output list
@@ -298,7 +298,7 @@ def create_output_file_scores_dual_combined( output_dir_root: str,
             elif row_type == 'H4' and print_header:
                 output_str += row_text + '\n'
             elif row_type == 'H6'+ report_type:
-                output_str += '\n' + f"{row_text:>40}" + '\n'
+                output_str += '\n' + f"{row_text:>38}" + '\n'
                 print_header = False
             elif row_type == report_type:
                 output_str += row_text + '\n'
