@@ -86,11 +86,11 @@ def process_result( meet_report_filename: str,
 
     # #                                 TIE? PLACE       LAST          FIRST     GR           SCHOOL           SEEDTIME|NT|NP    [xX]FINALTIME      POINTS
     #re_results_lane_ind  = re.compile('^([*]?\d{1,2})\s+([A-z\' \.]+, [A-z ]+?) ([A-Z0-9]{1,2})\s+([A-Z \'.].*?)([0-9:.]+|NT)\s+([0-9:.]+)\s*([X]?[0-9]*)')
-    re_results_lane_ind  = re.compile('^([*]?\d{1,2}|---)\s+([A-z\' \.]+, [A-z ]+?) ([A-Z0-9]{1,2})\s+([A-Z \'.].*?)([0-9:.]+|NT|NP)\s+(([X]DQ)|[xX0-9:.]+)\s*([0-9]*)')
+    re_results_lane_ind  = re.compile('^([*]?\d{1,2}|---)\s+([A-z\' \.]+, [A-z ]+?) ([A-Z0-9]{1,2})\s+([A-Z \'.].*?)([0-9:.]+|NT|NP)\s+([X]DQ|[xX0-9:.]+)\s*([0-9]*)')
 
     #                                     TIE? PLACE   SCHOOL           RELAY     SEEDTIME|NT    FINALTIME     POINTS
     #re_results_lane_relay = re.compile('^([*]?\d{1,2})\s+([A-Z \'.].*)\s+([A-Z])\s+([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
-    re_results_lane_relay = re.compile('^([*]?\d{1,2}|---)\s+([A-Z \'.].*)\s+([A-Z])\s+([0-9:.]+|NT)\s+(([X]DQ)|[xX0-9:.]+)\s*([0-9]*)')
+    re_results_lane_relay = re.compile('^([*]?\d{1,2}|---)\s+([A-Z \'.].*)\s+([A-Z])\s+([0-9:.]+|NT)\s+([X]DQ|[xX0-9:.]+)\s*([0-9]*)')
 
     re_results_space_relay_name = re.compile(r'(\S)([2-4]\))')
     re_results_check_relay_name_line = re.compile('1\)')
@@ -225,11 +225,11 @@ def process_result( meet_report_filename: str,
                     full_team_name = sst_common.find_proper_team_name( placeline_school_long )
 
                     # output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_grade:>2}{q} {q}{placeline_school_long:<25}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
-                    output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_grade:>2}{q} {q}{full_team_name:<25}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q}"
+                    output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_grade:>2}{q} {q}{full_team_name:<25}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
                     
                     if shorten_school_names_individual:
                         #output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_school_short:<4}{q} {q}{placeline_grade:>2}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
-                        output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_school_short:<4}{q} {q}{placeline_grade:>2}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q}"
+                        output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_school_short:<4}{q} {q}{placeline_grade:>2}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q}{q}{placeline_points:>2}{q}"
                     
                     output_list.append(('PLACE', output_str))
                     crawler_str += gen_result_crawler_ind( placeline_place, result_name, placeline_grade,placeline_school_short, placeline_school_long, placeline_seedtime, placeline_finaltime, placeline_points )
@@ -265,13 +265,13 @@ def process_result( meet_report_filename: str,
 
                     if shorten_school_names_relays:                        
                         #output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_short:<4}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
-                        output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_short:<4}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q}"
+                        output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_short:<4}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
                     else:
                         #full_team_name = placeline_sch_long
                         full_team_name = sst_common.find_proper_team_name( placeline_sch_long )
 
                         #output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_long:<25}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
-                        output_str = f" {q}{placeline_place:>3}{q} {q}{full_team_name:<25}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q}"
+                        output_str = f" {q}{placeline_place:>3}{q} {q}{full_team_name:<25}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
                     output_list.append(( "PLACE", output_str ))
 
             #####################################################################################
