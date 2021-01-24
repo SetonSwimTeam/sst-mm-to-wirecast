@@ -39,7 +39,8 @@ def process_result( meet_report_filename: str,
                     quote_output: bool,
                     num_results_to_display: int,
                     crawler_last_xx_results: int,
-                    generate_crawler: bool ) -> int:
+                    generate_crawler: bool,
+                    championshipmeet: bool ) -> int:
     """ Given the MeetManager results file file formatted in a specific manner,
         generate indiviual result files for use in Wirecast displays """
 
@@ -52,14 +53,14 @@ def process_result( meet_report_filename: str,
 
     ## NOTE: Do not align up these headers with the TXT output.  
     ##  Wirecast will center all lines and it will be in proper position then
-    # champsionship_result_header_dict = {
-    #     'individual_long':   "Name                    Yr School                 Seed Time  Finals Time      Points",
-    #     'individual_short':  "        Name                  School Yr   Seed   Finals   Pts",
-    #     'diving_long':       "Name                    Yr School                           Finals Score      Points",
-    #     'diving_short':      "        Name                 School Yr   Seed     Final Pts",
-    #     'relay_long':         "           Team                  Relay Seed     Finals  Pts",        
-    #     'relay_short':       "   Team       Relay Seed Time  Finals Time Points",    
-    # }
+    champsionship_result_header_dict = {
+        'individual_long':   "Name                    Yr School                 Seed Time  Finals Time      Points",
+        'individual_short':  "        Name                  School Yr   Seed   Finals   Pts",
+        'diving_long':       "Name                    Yr School                           Finals Score      Points",
+        'diving_short':      "        Name                 School Yr   Seed     Final Pts",
+        'relay_long':         "           Team                  Relay Seed     Finals  Pts",        
+        'relay_short':       "   Team       Relay Seed Time  Finals Time Points",    
+    }
     result_header_dict = {
         'individual_long':   "Name                    Yr School                 Seed Time  Finals Time            ",
         'individual_short':  "        Name                  Sch  Yr    Seed    Finals      ",
@@ -170,7 +171,8 @@ def process_result( meet_report_filename: str,
                 #####################################################################################
                 ## RESULTS: Set name_list_header to be displayed above the list of swimmers
                 #####################################################################################
-                name_list_header = sst_common.get_header_line( event_num, shorten_school_names_relays, shorten_school_names_individual, result_header_dict ) 
+                header_dict = champsionship_result_header_dict if championshipmeet else result_header_dict
+                name_list_header = sst_common.get_header_line( event_num, shorten_school_names_relays, shorten_school_names_individual, header_dict ) 
 
                 if name_list_header != "":
                     output_list.append(('H6', name_list_header))
@@ -225,11 +227,13 @@ def process_result( meet_report_filename: str,
                     full_team_name = sst_common.find_proper_team_name( placeline_school_long )
 
                     # output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_grade:>2}{q} {q}{placeline_school_long:<25}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
-                    output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_grade:>2}{q} {q}{full_team_name:<25}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
+
+                    points_str = f"{q}{placeline_points:>4}{q}" if champsionship_result_header_dict else ""
+                    output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_grade:>2}{q} {q}{full_team_name:<25}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {points_str}"
                     
                     if shorten_school_names_individual:
                         #output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_school_short:<4}{q} {q}{placeline_grade:>2}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
-                        output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_school_short:<4}{q} {q}{placeline_grade:>2}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q}{q}{placeline_points:>2}{q}"
+                        output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_school_short:<4}{q} {q}{placeline_grade:>2}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q}{points_str}"
                     
                     output_list.append(('PLACE', output_str))
                     crawler_str += gen_result_crawler_ind( placeline_place, result_name, placeline_grade,placeline_school_short, placeline_school_long, placeline_seedtime, placeline_finaltime, placeline_points )
@@ -244,8 +248,6 @@ def process_result( meet_report_filename: str,
                 place_line_list = re_results_lane_relay.findall(line)
 
                 if place_line_list:
-                    logging.debug("*** Found a Relay PLACE")
-
                     placeline_place     = str(place_line_list[0][0])
                     placeline_sch_long  = str(place_line_list[0][1])
                     placeline_relay     = str(place_line_list[0][2])
@@ -263,15 +265,17 @@ def process_result( meet_report_filename: str,
                     ## Remove remaing spaces
                     placeline_sch_short = placeline_sch_short.strip()
 
+                    points_str = f"{q}{placeline_points:>4}{q}" if champsionship_result_header_dict else ""
+
                     if shorten_school_names_relays:                        
                         #output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_short:<4}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
-                        output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_short:<4}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
+                        output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_short:<4}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {points_str}"
                     else:
                         #full_team_name = placeline_sch_long
                         full_team_name = sst_common.find_proper_team_name( placeline_sch_long )
 
                         #output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_long:<25}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
-                        output_str = f" {q}{placeline_place:>3}{q} {q}{full_team_name:<25}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
+                        output_str = f" {q}{placeline_place:>3}{q} {q}{full_team_name:<25}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {points_str}"
                     output_list.append(( "PLACE", output_str ))
 
             #####################################################################################
