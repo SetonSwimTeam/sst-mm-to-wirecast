@@ -233,6 +233,12 @@ def process_main():
 
     inputfile =f"{args.inputdir}/{args.filename}"
 
+    output_dir = args.outputdir
+    ## The outputdir string MUST have a trailing slash.  Check string and add it if necesssary
+    if output_dir[-1] != '/':
+        output_dir = f"{output_dir}/"
+
+        
     ## Determine logging logleve
     loglevel = logging.DEBUG
     if args.loglevel == "debug":
@@ -257,6 +263,16 @@ def process_main():
     total_files_generated_results = 0
     total_crawler_files = 0
     total_scores_files = 0
+
+    #####################################################################################
+    ## We don't need an actual result report to generate empty files
+    #####################################################################################
+    if args.emptyresults:
+        total_empty_results =  \
+            sst_results.generate_empty_results( output_dir, False )
+        if args.awards:
+            sst_results.generate_empty_results( output_dir, True )
+
 
     #####################################################################################
     ## Verify the directories and input file exists
@@ -289,11 +305,6 @@ def process_main():
 
     # Set the crawler flag
     process_to_run['crawler'] = args.crawler
-
-    output_dir = args.outputdir
-    ## The outputdir string MUST have a trailing slash.  Check string and add it if necesssary
-    if output_dir[-1] != '/':
-        output_dir = f"{output_dir}/"
     
     logargs = f"{Path(__file__).stem}  \n" + \
               f"\n   Params: \n" + \
@@ -328,6 +339,7 @@ def process_main():
     for i in process_to_run:
         if process_to_run[i]:
             logging.warning(f"\t{i} \n")
+
 
     #####################################################################################
     ## Generate wirecast files from a MEET PROGRAM txt file
@@ -366,11 +378,6 @@ def process_main():
             remove_files_from_dir( 'RESULTS', output_dir )
             remove_files_from_dir( 'AWARDS', output_dir )
 
-        if args.emptyresults:
-            total_empty_results =  \
-                sst_results.generate_empty_results( output_dir, False )
-                if args.awards:
-                    sst_results.generate_empty_results( output_dir, True )
 
         total_files_generated_results, total_crawler_files = \
                sst_results.process_result(  inputfile, 

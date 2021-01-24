@@ -602,7 +602,7 @@ def generate_empty_results( output_dir:str, awards: bool ) -> int:
     empty_event_list += sst_common.event_num_relay   
     empty_event_list += sst_common.event_num_diving 
 
-    suffix = g_file_name_suffix if awards g_file_name_awards
+    suffix = g_file_name_awards if awards else g_file_name_suffix
 
     for event_num in empty_event_list:
         output_file_name =  f"{g_file_name_prefix}{event_num:0>2}_{suffix}.txt"
