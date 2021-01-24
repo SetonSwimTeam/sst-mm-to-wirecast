@@ -544,10 +544,13 @@ def create_output_file_program_format2( output_dir_root: str,
         logging.debug(f"PROGRAM: e: {event_num} h: {event_num} id: {row_type} t: {row_text}")
 
         ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
-        if row_type in header_list:
-            output_str += row_text + '\n'
+        #if row_type in header_list:
+        if row_type == 'H4':
+            output_str += f"{row_text.rjust(50)}" + '\n'
+        elif row_type == 'H5':
+            output_str += f"{row_text.rjust(40)}" + '\n'
         elif row_type == 'H6':
-            output_str += "Lane Team     Swimmers" + '\n'
+            output_str += '\n' + "Lane Team     Swimmers" + '\n'
         elif row_type == 'LANE':
             lane_str = row_text
             #  1 SST  D X2:37.00
@@ -556,12 +559,12 @@ def create_output_file_program_format2( output_dir_root: str,
                 relay_lane = str(relay_lane_line[0][0]).strip()
                 relay_sch  = str(relay_lane_line[0][1]).strip()
                 relay_name = str(relay_lane_line[0][2]).strip()
-                lane_str = f"{relay_lane:>2} {relay_sch:<4} {relay_name}"
+                lane_str = f"{relay_lane:>4} {relay_sch:<4} {relay_name}"
             #output_str += row_text + '\n'
         elif row_type == 'NAME':
             name_str = reformat_relay_swimmers_names( row_text )
             #output_str += row_text + '\n'
-            output_str += f"{lane_str} {name_str}\n"
+            output_str += f"{lane_str:<2} {name_str:<68}\n"
             ## If split, space it out for readability
             if split_relays_to_multiple_files:
                 output_str += '\n'
@@ -604,13 +607,13 @@ def reformat_relay_swimmers_names( name_line_in:str ) -> str:
         s4_lname, s4_fname = s4_fullname.split(',')
 
         ## Remove extra whitespace
-        s1_lname = s1_lname.strip()
+        s1_lname = s1_lname.strip()[:8]
         s1_fname = s1_fname.strip()
-        s2_lname = s2_lname.strip()
+        s2_lname = s2_lname.strip()[:8]
         s2_fname = s2_fname.strip()
-        s3_lname = s3_lname.strip()
+        s3_lname = s3_lname.strip()[:8]
         s3_fname = s3_fname.strip()
-        s4_lname = s4_lname.strip()
+        s4_lname = s4_lname.strip()[:8]
         s4_fname = s4_fname.strip()
 
 
@@ -620,5 +623,5 @@ def reformat_relay_swimmers_names( name_line_in:str ) -> str:
         s3_name = f"{s3_lname}, {s3_fname[0]}" if len(s3_fname) > 0 else f"{s3_lname}"
         s4_name = f"{s4_lname}, {s4_fname[0]}" if len(s4_fname) > 0 else f"{s4_lname}"
 
-        new_name_str = f"1) {s1_name:<15} 2) {s2_name:<15} 3) {s3_name:<15} 4) {s4_name:<15}"
+        new_name_str = f"1) {s1_name:<11} 2) {s2_name:<11} 3) {s3_name:<11} 4) {s4_name:<11}"
     return new_name_str
