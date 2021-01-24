@@ -1,1151 +1,1931 @@
-Seton School                          HY-TEK's MEET MANAGER 8.0 - 10:33 PM  1/23/2021  Pag
-                     2021 NoVa Catholic Invitational Championship - 1/16/2021
-                             Results - NoVa Catholic Champs Swimming
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 1  Boys 200 Yard Medley Relay
-  NoVA Cath:1:38.75 +  1/5/2013 Bishop O'Connell              O'Connell
-                                C Chamness, D Tucker, C Tiernan, C Outlaw
-    Team                        Relay                Seed Time  Finals Time         Point
-  1  St. Paul VI Catholic H         A                 1:39.78        1:46.25         32
-      1) Manley, Adam SO   2) Johnson, Matthew S3) Krueger, Carlton J4) Ruyle, Ryan JR
-      27.53                23.92
-  2  Saint John Paul the Gr         A                 1:51.93        1:50.15         26
-      1) Williams, Charlie 2) Hopkins, Liam JR  3) Ong, Marcus JR    4) Doty, Jack SR
-      29.64  29.41  27.13  23.97
-  3  Seton Swimming                 A                 1:51.94        1:55.87         24
-      1) Wilson, Evan SR   2) Kellogg, Liam SR  3) Wilson, Joe SO    4) Santschi, Jack SR
-      34.44  28.29  27.78  25.36
-  4  Seton Swimming                 B                 2:06.92        1:59.98         22
-      1) Luevano, Nathan SO2) Brox, JJ SO       3) Hudson, David FR  4) Dealey, Joey SO
-      30.68  34.18  37.21  17.91
-  5  St. Paul VI Catholic H         B                 2:05.00        2:01.97         20
-      1) Murphy, Matthew FR2) Herrera, Nick SR  3) Shervanick, Sam JR4) Mahoney, Sean SO
-      31.10  34.63  28.60  27.64
-  6  Saint John Paul the Gr         B                 2:03.72        2:04.09         18
-      1) Elliot, Matthew FR2) Loesel, Thomas SO 3) Kintz, John Paul J4) Sjurset, Andrew JR
-      34.81  35.06  27.77  26.45
----  St. Paul VI Catholic H         C                 2:15.00       X2:08.88           
-      1) Trinidad, Noah JR 2) Philippart, Ben JR3) Nguyen, Lex JR    4) O'Byrne, Conor JR
-      33.88  36.41  30.09  28.50
----  Seton Swimming                 G                 2:43.00       X2:30.08           
-      1) Morales, Anthony 72) Fioramonti, Josh 73) Konstanty, Peter F4) Brox, Michael 8
-      45.88  40.54  34.73  28.93
----  Seton Swimming                 D                 2:37.00       X2:42.63           
-      1) Ghering, Christian2) Fioramonti, Mick F3) Miller, Dominic FR4) Hartung, Peter 8
-      57.44  39.10  33.64  32.45
----  Seton Swimming                 E                 2:39.00       X2:49.38           
-      1) Gonzalez, Max 8   2) Lynch, Chris FR   3) Halisky, Liam 8   4) Orellana, Kevin JR
-      47.98  15.11  22.55 1:23.7
----  Seton Swimming                 C                 2:35.00       X2:52.58           
-      1) Hurley, Daniel 7  2) Kellogg, Seth 8   3) Nagurny, Nicolas F4) Bauer, Greg 7
-    1:03.61               1:09.8
----  Seton Swimming                 H                 2:45.00            XDQ           
-      1) Da Re, Kyle SR    2) Hartung, Patrick S3) Wilson, Max 8     4) Kelly, Kieran 8
-      50.93  42.82 1:05.4
----  Seton Swimming                 F                 2:41.00            XDQ           
-      1) McCardell, Aidan 72) Albin, Jed FR     3) Koehr, Connor 8   4) Norton, Kevin 7
-    1:16.95 1:13.1  34.65
+     Team                       Relay                  Seed Time  Finals Time      Points
+   1 St. Paul VI Catholic H         A                    1:39.78      1:46.25        32
+      1) Manley, Adam SO    2) Johnson, Matthew SO3) Krueger, Carlton JR4) Ruyle, Ryan JR
+   2 Saint John Paul the Gr         A                    1:51.93      1:50.15        26
+      1) Williams, Charlie S2) Hopkins, Liam JR   3) Ong, Marcus JR     4) Doty, Jack SR
+   3 Seton Swimming                 A                    1:51.94      1:55.87        24
+      1) Wilson, Evan SR    2) Kellogg, Liam SR   3) Wilson, Joe SO     4) Santschi, Jack SR
+   4 Seton Swimming                 B                    2:06.92      1:59.98        22
+      1) Luevano, Nathan SO 2) Brox, JJ SO        3) Hudson, David FR   4) Dealey, Joey SO
+   5 St. Paul VI Catholic H         B                    2:05.00      2:01.97        20
+      1) Murphy, Matthew FR 2) Herrera, Nick SR   3) Shervanick, Sam JR 4) Mahoney, Sean SO
+   6 Saint John Paul the Gr         B                    2:03.72      2:04.09        18
+      1) Elliot, Matthew FR 2) Loesel, Thomas SO  3) Kintz, John Paul JR4) Sjurset, Andrew JR
+ --- St. Paul VI Catholic H         C                    2:15.00     X2:08.88          
+      1) Trinidad, Noah JR  2) Philippart, Ben JR 3) Nguyen, Lex JR     4) O'Byrne, Conor JR
+ --- Seton Swimming                 G                    2:43.00     X2:30.08          
+      1) Morales, Anthony 7 2) Fioramonti, Josh 7 3) Konstanty, Peter FR4) Brox, Michael 8
+ --- Seton Swimming                 D                    2:37.00     X2:42.63          
+      1) Ghering, Christian 2) Fioramonti, Mick FR3) Miller, Dominic FR 4) Hartung, Peter 8
+ --- Seton Swimming                 E                    2:39.00     X2:49.38          
+      1) Gonzalez, Max 8    2) Lynch, Chris FR    3) Halisky, Liam 8    4) Orellana, Kevin JR
+ --- Seton Swimming                 C                    2:35.00     X2:52.58          
+      1) Hurley, Daniel 7   2) Kellogg, Seth 8    3) Nagurny, Nicolas FR4) Bauer, Greg 7
+ --- Seton Swimming                 H                    2:45.00          XDQ          
+      1) Da Re, Kyle SR     2) Hartung, Patrick SO3) Wilson, Max 8      4) Kelly, Kieran 8
+ --- Seton Swimming                 F                    2:41.00          XDQ          
+      1) McCardell, Aidan 7 2) Albin, Jed FR      3) Koehr, Connor 8    4) Norton, Kevin 7
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 2  Girls 200 Yard Medley Relay
-  NoVA Cath:1:53.08 +  1/14/2017Bishop Ireton Swim and Dive   Ireton
-                                L Abbed, A Shumate, E Klein, C McGuckin
-    Team                        Relay                Seed Time  Finals Time         Point
-  1  St. Paul VI Catholic H         A                 1:55.16        1:57.44         32
-      1) Murphy, Caroline S2) Kirby, Ashley SO  3) Brown, Laney SR   4) Mont, Keara JR
-      30.29  38.13  22.61  26.41
-  2  Seton Swimming                 A                 1:58.39        1:57.77         26
-      1) Garvey, Lucy JR   2) Testani, Angie 8  3) Condon, Clara 8   4) Pennefather, Mary 
-      30.54  31.53  29.51  26.19
-(Event 2  Girls 200 Yard Medley Relay)
-    Team                        Relay                Seed Time  Finals Time         Point
-Seton School                          HY-TEK's MEET MANAGER 8.0 - 10:33 PM  1/23/2021  Pag
-                     2021 NoVa Catholic Invitational Championship - 1/16/2021
-                             Results - NoVa Catholic Champs Swimming
-  3  Saint John Paul the Gr         A                 2:07.50        2:04.98         24
-      1) Roder, Mia SO     2) Koler, Jillian JR 3) Geiran, Mairead SR4) Daniel, Isabella S
-      34.01  34.82  28.13  28.02
-  4  Oakcrest School Charge         A                 2:07.10        2:08.06         22
-      1) Meunier, Cecelia S2) Decatur, Selah FR 3) James, Helen 8    4) Adams, Abby JR
-      33.73  34.29  31.86  28.18
-  5  St. Paul VI Catholic H         B                 2:06.00        2:09.19         20
-      1) Florit, Alexis SO 2) Gegg, Avery JR    3) Vannell, Emma SR  4) Florit, Adrianna J
-      33.33  38.83  29.63  27.40
-  6  Seton Swimming                 B                 2:10.41        2:13.14         18
-      1) O'Malley, Mary JR 2) Waldron, Clare JR 3) Luevano, Isabelle 4) Gibbons, Maggie FR
-      38.66  34.67  37.22  22.59
-  7  Saint John Paul the Gr         B                 2:10.54        2:13.42         14
-      1) Wiliams, Fiona SR 2) Iaci, Eliana FR   3) Guiterrez, Ana Sop4) Zoebel, Alexandra 
-      37.12  35.50  33.00  27.80
-  8  Oakcrest School Charge         B                      NT        2:18.33         10
-      1) Talavera, Maite SR2) Schroder, Ashley J3) Sypal, Elizabeth S4) Sypal, Clare 8
-      38.25  37.13  31.66  31.29
----  St. Paul VI Catholic H         C                 2:17.00       X2:26.08           
-      1) Garcia, Madison JR2) Irons, Maria JR   3) McLaury, Eve FR   4) Wheatley, Caroline
-      37.49  47.13  28.57  32.89
----  Saint John Paul the Gr         C                 2:26.32       X2:30.49           
-      1) Weina, Virginia SO2) Guiterrez, Ana SO 3) White, Cecilia FR 4) Vitkovsky, Maggie 
-      36.29  47.39  38.31  28.50
----  St. Paul VI Catholic H         D                 2:20.00       X2:31.28           
-      1) Myers, Mackenzie J2) Caputo, Faith FR  3) Birch, Faith FR   4) Kiernan, Maddie FR
-      42.23  44.85 1:04.2
----  Oakcrest School Charge         D                      NT       X2:35.20           
-      1) McDonnell, Grace J2) McGovern, Therese 3) Rutherford, Lilly 4) Guenther, Louise F
-      39.20  41.25  38.49  36.26
----  Seton Swimming                 F                 2:46.00       X2:44.39           
-      1) Witter, Christina 2) Fifield, Haley 8  3) Hudson, Ava FR    4) Osilka, Mary Clair
-      49.56  43.66  36.85  34.32
----  Seton Swimming                 D                 2:42.00       X2:46.80           
-      1) Oswald, Jacqueline2) Halisky, Amelie SO3) Mantooth, Kateri S4) Kramer, Colette 7
-      34.44  51.43  27.76  53.17
----  Seton Swimming                 H                 2:50.00       X2:49.01           
-      1) DeWolf, Rebekah JR2) Munsell, Mary Cath3) Garvey, Anastasia 4) Gonzalez, Jacinta 
-      47.35  43.26  42.27  36.13
----  Seton Swimming                 C                 2:40.00       X2:51.78           
-      1) Blanchette, Nora 72) Haggerty, Moira SO3) Zadnik, Sophia JR 4) Koehr, Ceili JR
-    1:02.87  42.63  34.55  31.73
----  Seton Swimming                 I                 2:51.00       X2:52.56           
-      1) Catabui, Emma JR  2) Geary, Amelia FR  3) Bingham, Lucia 8  4) Bauer, Molly 8
-      46.09  45.09  37.62  43.76
----  Seton Swimming                 E                 2:44.00       X2:54.05           
-      1) Waldron, Rose 8   2) Brox, Emma JR     3) Zadnik, Madelyn FR4) McCardell, Moira F
-      43.09  46.65  36.75  47.56
----  Seton Swimming                 J                 2:52.00       X2:54.70           
-      1) Waldron, Cate FR  2) Francis, Elizabeth3) Hurley, Mary Cathe4) Sayani, Olivia SO
-      50.04  46.27  45.10  33.29
----  Seton Swimming                 L                 2:54.00       X2:55.58           
-                                                3) O'Malley, Shannon 4) Blanchette, Meg 8
-      51.05  49.37  39.61  35.55
-(Event 2  Girls 200 Yard Medley Relay)
-    Team                        Relay                Seed Time  Finals Time         Point
----  Seton Swimming                 K                 2:53.00       X2:57.76           
-Seton School                          HY-TEK's MEET MANAGER 8.0 - 10:33 PM  1/23/2021  Pag
-                     2021 NoVa Catholic Invitational Championship - 1/16/2021
-                             Results - NoVa Catholic Champs Swimming
-(Event 2  Girls 200 Yard Medley Relay)
-    Team                        Relay                Seed Time  Finals Time         Point
-      1) Vander Woude, Jojo2) Haggerty, Orla 8  3) Brox, Elodie 8    4) Novecosky, Jenna S
-      43.32  54.13  40.34  39.97
----  Oakcrest School Charge         C                      NT            XDQ           
-      1) Vogler, Kate SO   2) Mochen, Catherine 3) Wyckoff, Brynn 8  4) Harkness, Amelia 8
-                    40.08  27.40
----  Seton Swimming                 G                 2:48.00            XDQ           
-      1) Byers, Theresa JR 2) Atkinson, Julia FR3) Pennefather, Lucy 4) Hartung, Virginia 
-      40.77  37.81  43.41
----  Saint John Paul the Gr         D                 2:35.00            XDQ           
-      1) Moore, Mary Lou FR2) Periera, Sophia FR3) Runyon, Emily FR  4) Pai, Esha FR
-      40.72  43.47  30.47  39.04
+     Team                       Relay                  Seed Time  Finals Time      Points
+   1 St. Paul VI Catholic H         A                    1:55.16      1:57.44        32
+      1) Murphy, Caroline SO2) Kirby, Ashley SO   3) Brown, Laney SR    4) Mont, Keara JR
+   2 Seton Swimming                 A                    1:58.39      1:57.77        26
+      1) Garvey, Lucy JR    2) Testani, Angie 8   3) Condon, Clara 8    4) Pennefather, Mary S
+   3 Saint John Paul the Gr         A                    2:07.50      2:04.98        24
+      1) Roder, Mia SO      2) Koler, Jillian JR  3) Geiran, Mairead SR 4) Daniel, Isabella SR
+   4 Oakcrest School Charge         A                    2:07.10      2:08.06        22
+      1) Meunier, Cecelia SO2) Decatur, Selah FR  3) James, Helen 8     4) Adams, Abby JR
+   5 St. Paul VI Catholic H         B                    2:06.00      2:09.19        20
+      1) Florit, Alexis SO  2) Gegg, Avery JR     3) Vannell, Emma SR   4) Florit, Adrianna JR
+   6 Seton Swimming                 B                    2:10.41      2:13.14        18
+      1) O'Malley, Mary JR  2) Waldron, Clare JR  3) Luevano, Isabelle J4) Gibbons, Maggie FR
+   7 Saint John Paul the Gr         B                    2:10.54      2:13.42        14
+      1) Wiliams, Fiona SR  2) Iaci, Eliana FR    3) Guiterrez, Ana Soph4) Zoebel, Alexandra S
+   8 Oakcrest School Charge         B                         NT      2:18.33        10
+      1) Talavera, Maite SR 2) Schroder, Ashley JR3) Sypal, Elizabeth SR4) Sypal, Clare 8
+ --- St. Paul VI Catholic H         C                    2:17.00     X2:26.08          
+      1) Garcia, Madison JR 2) Irons, Maria JR    3) McLaury, Eve FR    4) Wheatley, Caroline 
+ --- Saint John Paul the Gr         C                    2:26.32     X2:30.49          
+      1) Weina, Virginia SO 2) Guiterrez, Ana SO  3) White, Cecilia FR  4) Vitkovsky, Maggie F
+ --- St. Paul VI Catholic H         D                    2:20.00     X2:31.28          
+      1) Myers, Mackenzie JR2) Caputo, Faith FR   3) Birch, Faith FR    4) Kiernan, Maddie FR
+ --- Oakcrest School Charge         D                         NT     X2:35.20          
+      1) McDonnell, Grace JR2) McGovern, Therese J3) Rutherford, Lilly S4) Guenther, Louise FR
+ --- Seton Swimming                 F                    2:46.00     X2:44.39          
+      1) Witter, Christina 72) Fifield, Haley 8   3) Hudson, Ava FR     4) Osilka, Mary Claire
+ --- Seton Swimming                 D                    2:42.00     X2:46.80          
+      1) Oswald, Jacqueline 2) Halisky, Amelie SO 3) Mantooth, Kateri SO4) Kramer, Colette 7
+ --- Seton Swimming                 H                    2:50.00     X2:49.01          
+      1) DeWolf, Rebekah JR 2) Munsell, Mary Cathe3) Garvey, Anastasia 74) Gonzalez, Jacinta J
+ --- Seton Swimming                 C                    2:40.00     X2:51.78          
+      1) Blanchette, Nora 7 2) Haggerty, Moira SO 3) Zadnik, Sophia JR  4) Koehr, Ceili JR
+ --- Seton Swimming                 I                    2:51.00     X2:52.56          
+      1) Catabui, Emma JR   2) Geary, Amelia FR   3) Bingham, Lucia 8   4) Bauer, Molly 8
+ --- Seton Swimming                 E                    2:44.00     X2:54.05          
+      1) Waldron, Rose 8    2) Brox, Emma JR      3) Zadnik, Madelyn FR 4) McCardell, Moira FR
+ --- Seton Swimming                 J                    2:52.00     X2:54.70          
+      1) Waldron, Cate FR   2) Francis, Elizabeth 3) Hurley, Mary Cather4) Sayani, Olivia SO
+ --- Seton Swimming                 L                    2:54.00     X2:55.58          
+                                                  3) O'Malley, Shannon 84) Blanchette, Meg 8
+ --- Seton Swimming                 K                    2:53.00     X2:57.76          
+      1) Vander Woude, Jojo 2) Haggerty, Orla 8   3) Brox, Elodie 8     4) Novecosky, Jenna SO
+ --- Oakcrest School Charge         C                         NT          XDQ          
+      1) Vogler, Kate SO    2) Mochen, Catherine 83) Wyckoff, Brynn 8   4) Harkness, Amelia 8
+ --- Seton Swimming                 G                    2:48.00          XDQ          
+      1) Byers, Theresa JR  2) Atkinson, Julia FR 3) Pennefather, Lucy 84) Hartung, Virginia S
+ --- Saint John Paul the Gr         D                    2:35.00          XDQ          
+      1) Moore, Mary Lou FR 2) Periera, Sophia FR 3) Runyon, Emily FR   4) Pai, Esha FR
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 3  Boys 200 Yard Freestyle
-  NoVA Cath:1:44.19 +  1/11/2020William Mullen                O'Connell
-    Name                     Yr School               Seed Time  Finals Time         Point
-  1  Johnson, Matthew        SO St. Paul VI Catholic H1:57.68        1:50.66         16
-      25.02  27.41  28.97  29.26
-  2  Murphy, Matthew         FR St. Paul VI Catholic H2:06.27        2:04.53         13
-      28.40  31.82  32.35  31.96
-  3  Luevano, Nathan         SO Seton Swimming        2:14.38        2:11.22         12
-      28.92  32.38  34.49  35.43
-  4  Loesel, Thomas          SO Saint John Paul the Gr2:13.35        2:13.87         11
-                    35.93  34.86
-  5  Duren, Jack             SO St. Paul VI Catholic H2:15.42        2:14.41         10
-      28.63  32.74  36.43  36.61
-  6  Hudson, David           FR Seton Swimming        2:17.83        2:23.30          9
-      30.02  35.24  38.53  39.51
-  7  Elliot, Matthew         FR Saint John Paul the Gr2:15.00        2:27.58          7
-      32.24  36.48  38.82  40.04
-  8  Wilson, Max              8 Seton Swimming        2:33.70        2:33.44          5
-      32.25  38.44  41.90  40.85
-  9  Brox, Michael            8 Seton Swimming        3:04.51        2:33.46          4
-      33.14  37.66  41.95  40.71
----  Kellogg, Seth            8 Seton Swimming        3:22.57       X2:59.40           
-      36.41  44.74  49.40  48.85
+     Name                    Yr School                 Seed Time  Finals Time      Points
+   1 Johnson, Matthew        SO St. Paul VI Catholic HS  1:57.68      1:50.66        16
+   2 Murphy, Matthew         FR St. Paul VI Catholic HS  2:06.27      2:04.53        13
+   3 Luevano, Nathan         SO Seton Swimming           2:14.38      2:11.22        12
+   4 Loesel, Thomas          SO Saint John Paul the Great2:13.35      2:13.87        11
+   5 Duren, Jack             SO St. Paul VI Catholic HS  2:15.42      2:14.41        10
+   6 Hudson, David           FR Seton Swimming           2:17.83      2:23.30         9
+   7 Elliot, Matthew         FR Saint John Paul the Great2:15.00      2:27.58         7
+   8 Wilson, Max              8 Seton Swimming           2:33.70      2:33.44         5
+   9 Brox, Michael            8 Seton Swimming           3:04.51      2:33.46         4
+ --- Kellogg, Seth            8 Seton Swimming           3:22.57     X2:59.40          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 4  Girls 200 Yard Freestyle
-  NoVA Cath:1:53.16 +  1/16/2016Madelyn Donohoe               O'Connell
-    Name                     Yr School               Seed Time  Finals Time         Point
-  1  Murphy, Caroline        SO St. Paul VI Catholic H2:00.51        2:03.81         16
-      29.02  31.30  31.95  31.54
-  2  McKinley, Tess          FR St. Paul VI Catholic H2:09.12        2:11.48         13
-      30.07  33.06  35.10  33.25
-  3  McKinley, Lilia         FR St. Paul VI Catholic H2:09.30        2:13.61         12
-      30.59  33.27  34.91  34.84
-  4  Testani, Angie           8 Seton Swimming        2:18.58        2:15.66         11
-      30.40  33.70  35.68  35.88
-  5  Daniel, Isabella        SR Saint John Paul the Gr2:25.00        2:16.63         10
-      30.28  33.11  36.12  37.12
-  6  Zoebel, Alexandra       SO Saint John Paul the Gr2:30.00        2:22.36          9
-      31.64  35.48  37.05  38.19
-(Event 4  Girls 200 Yard Freestyle)
-    Name                     Yr School               Seed Time  Finals Time         Point
-  7  Flynn, Emily            JR Seton Swimming        2:24.60        2:29.54          7
-      32.45  37.13  39.45  40.51
-Seton School                          HY-TEK's MEET MANAGER 8.0 - 10:33 PM  1/23/2021  Pag
-                     2021 NoVa Catholic Invitational Championship - 1/16/2021
-                             Results - NoVa Catholic Champs Swimming
-(Event 4  Girls 200 Yard Freestyle)
-    Name                     Yr School               Seed Time  Finals Time         Point
-  8  Byers, Lily             JR Seton Swimming        2:33.64        2:35.37          5
-      32.14 2:03.2
-  9  McDonnell, Grace        JR Oakcrest School Charge2:41.94        2:35.64          4
-      35.07  39.78  42.09  38.70
- 10  White, Cecilia          FR Saint John Paul the Gr2:35.00        2:37.56          3
-      33.13  38.31 1:26.1
- 11  Vogler, Kate            SO Oakcrest School Charge2:47.40        2:42.78          2
-      34.66  41.07  44.09  42.96
- 12  Koehr, Ceili            JR Seton Swimming        2:40.37        2:43.01          1
-      33.85  40.63  44.07  44.46
- 13  White, Mary              8 Oakcrest School Charge2:53.33        2:43.76           
-      36.61  40.18  45.00  41.97
- 14  Kelly, Vivian            8 Oakcrest School Charge2:50.22        3:09.99           
-      37.21  47.87  53.65  51.26
----  Mantooth, Kateri        SO Seton Swimming        2:45.00       X2:36.67           
-      33.93  38.91  42.82  41.01
----  Bingham, Lucia           8 Seton Swimming        3:02.57       X2:42.11           
-      35.17  40.74  45.19  41.01
----  Haggerty, Moira         SO Seton Swimming        3:00.47       X2:43.69           
-      35.76  41.35  43.60  42.98
----  Brox, Elodie             8 Seton Swimming        3:08.31       X2:45.48           
-      35.86  43.12  43.42  43.08
----  Haggerty, Orla           8 Seton Swimming        3:36.53       X3:07.36           
-      39.82  47.44  51.49  48.61
----  Francis, Elizabeth       8 Seton Swimming             NT       X3:11.59           
-      39.76  48.19  52.30  51.34
+     Name                    Yr School                 Seed Time  Finals Time      Points
+   1 Murphy, Caroline        SO St. Paul VI Catholic HS  2:00.51      2:03.81        16
+   2 McKinley, Tess          FR St. Paul VI Catholic HS  2:09.12      2:11.48        13
+   3 McKinley, Lilia         FR St. Paul VI Catholic HS  2:09.30      2:13.61        12
+   4 Testani, Angie           8 Seton Swimming           2:18.58      2:15.66        11
+   5 Daniel, Isabella        SR Saint John Paul the Great2:25.00      2:16.63        10
+   6 Zoebel, Alexandra       SO Saint John Paul the Great2:30.00      2:22.36         9
+   7 Flynn, Emily            JR Seton Swimming           2:24.60      2:29.54         7
+   8 Byers, Lily             JR Seton Swimming           2:33.64      2:35.37         5
+   9 McDonnell, Grace        JR Oakcrest School Chargers 2:41.94      2:35.64         4
+  10 White, Cecilia          FR Saint John Paul the Great2:35.00      2:37.56         3
+  11 Vogler, Kate            SO Oakcrest School Chargers 2:47.40      2:42.78         2
+  12 Koehr, Ceili            JR Seton Swimming           2:40.37      2:43.01         1
+  13 White, Mary              8 Oakcrest School Chargers 2:53.33      2:43.76          
+  14 Kelly, Vivian            8 Oakcrest School Chargers 2:50.22      3:09.99          
+ --- Mantooth, Kateri        SO Seton Swimming           2:45.00     X2:36.67          
+ --- Bingham, Lucia           8 Seton Swimming           3:02.57     X2:42.11          
+ --- Haggerty, Moira         SO Seton Swimming           3:00.47     X2:43.69          
+ --- Brox, Elodie             8 Seton Swimming           3:08.31     X2:45.48          
+ --- Haggerty, Orla           8 Seton Swimming           3:36.53     X3:07.36          
+ --- Francis, Elizabeth       8 Seton Swimming                NT     X3:11.59          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 5  Boys 200 Yard IM
-  NoVA Cath:1:57.14 +  1/11/2020Michael Salvatori             John Paul
-    Name                     Yr School               Seed Time  Finals Time         Point
-  1  Wilson, Joe             SO Seton Swimming        2:22.92        2:20.88         16
-      27.85  37.00  42.27  33.76
-  2  Vannell, Morgan         SO St. Paul VI Catholic H2:16.05        2:23.46         13
-      29.17  36.47  43.69  34.13
-  3  Krueger, Carlton        JR St. Paul VI Catholic H2:24.85        2:27.26         12
-      29.75  37.92  45.36  34.23
-  4  Brox, JJ                SO Seton Swimming        2:35.06        2:40.49         11
-      33.20  42.73  48.13  36.43
-  5  Konstanty, Peter        FR Seton Swimming        2:55.90        2:46.91         10
-      37.52  44.79  49.31  35.29
-  6  Lynch, Chris            FR Seton Swimming        3:14.57        3:09.47          9
-      42.42  56.29  48.96  41.80
+     Name                    Yr School                 Seed Time  Finals Time      Points
+   1 Wilson, Joe             SO Seton Swimming           2:22.92      2:20.88        16
+   2 Vannell, Morgan         SO St. Paul VI Catholic HS  2:16.05      2:23.46        13
+   3 Krueger, Carlton        JR St. Paul VI Catholic HS  2:24.85      2:27.26        12
+   4 Brox, JJ                SO Seton Swimming           2:35.06      2:40.49        11
+   5 Konstanty, Peter        FR Seton Swimming           2:55.90      2:46.91        10
+   6 Lynch, Chris            FR Seton Swimming           3:14.57      3:09.47         9
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 6  Girls 200 Yard IM
-  NoVA Cath:2:11.74 +  1/8/2011 Emma Merrill                  PVI
-    Name                     Yr School               Seed Time  Finals Time         Point
-  1  Vannell, Emma           SR St. Paul VI Catholic H2:24.42        2:28.39         16
-      30.87  36.66  45.20  35.66
-  2  James, Helen             8 Oakcrest School Charge2:35.17        2:29.75         13
-      33.13  38.92  42.52  35.18
-(Event 6  Girls 200 Yard IM)
-    Name                     Yr School               Seed Time  Finals Time         Point
-  3  Garvey, Lucy            JR Seton Swimming        2:31.97        2:30.25         12
-      32.86  38.54  43.95  34.90
-  4  Hudson, Ava             FR Seton Swimming        2:46.39        2:44.98         11
-Seton School                          HY-TEK's MEET MANAGER 8.0 - 10:33 PM  1/23/2021  Pag
-                     2021 NoVa Catholic Invitational Championship - 1/16/2021
-                             Results - NoVa Catholic Champs Swimming
-      37.05  41.07  48.62  38.24
-  5  O'Malley, Mary          JR Seton Swimming        3:08.55        2:47.48         10
-      33.34  42.93  51.61  39.60
-  6  Meunier, Cecelia        SO Oakcrest School Charge2:48.22        2:54.00          9
-      38.64  41.19  56.64  37.53
-  7  Moore, Mary Lou         FR Saint John Paul the Gr2:55.00        3:16.17          7
-      44.87  50.47  57.28  43.55
-  8  Periera, Sophia         FR Saint John Paul the Gr2:58.00        3:18.21          5
-      38.80  51.16 1:48.2
----  Atkinson, Julia         FR Seton Swimming        3:22.16       X3:22.68           
-      46.08  50.38 1:46.2
----  O'Malley, Shannon        8 Seton Swimming        2:58.85             DQ           
-      41.56  47.64  55.51  38.19
+     Name                    Yr School                 Seed Time  Finals Time      Points
+   1 Vannell, Emma           SR St. Paul VI Catholic HS  2:24.42      2:28.39        16
+   2 James, Helen             8 Oakcrest School Chargers 2:35.17      2:29.75        13
+   3 Garvey, Lucy            JR Seton Swimming           2:31.97      2:30.25        12
+   4 Hudson, Ava             FR Seton Swimming           2:46.39      2:44.98        11
+   5 O'Malley, Mary          JR Seton Swimming           3:08.55      2:47.48        10
+   6 Meunier, Cecelia        SO Oakcrest School Chargers 2:48.22      2:54.00         9
+   7 Moore, Mary Lou         FR Saint John Paul the Great2:55.00      3:16.17         7
+   8 Periera, Sophia         FR Saint John Paul the Great2:58.00      3:18.21         5
+ --- Atkinson, Julia         FR Seton Swimming           3:22.16     X3:22.68          
+ --- O'Malley, Shannon        8 Seton Swimming           2:58.85           DQ          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 7  Boys 50 Yard Freestyle
-  NoVA Cath:  21.41 +  1/10/2015Townley Haas                  Benedictine
-    Name                     Yr School               Seed Time  Finals Time         Point
-  1  Ruyle, Ryan             JR St. Paul VI Catholic HS 23.47          24.36         16
-  2  Santschi, Jack          SR Seton Swimming          23.89          24.47         13
-  3  Kintz, John Paul        JR Saint John Paul the Gre 25.15          24.67         12
-  4  Dalrymple, Jerry        SR Seton Swimming          24.31          24.95         11
-  5  McGrath, John           JR Seton Family Homeschool 25.88          25.80         10
-  6  Nguyen, Lex             JR St. Paul VI Catholic HS 27.29          26.38          9
-  7  Shervanick, Sam         JR St. Paul VI Catholic HS 26.12          26.40          7
-  8  Dealey, Joey            SO Seton Swimming          28.17          26.71          5
-  9  Wilson, Gabe            SO St. Paul VI Catholic HS 27.26          27.40          4
- 10  Collins, Jacob          JR Saint John Paul the Gre 30.16          29.10          3
- 11  Albin, Jed              FR Seton Swimming          31.21          31.40          2
----  Mahoney, Sean           SO St. Paul VI Catholic HS 27.73         X27.60           
----  O'Byrne, Conor          JR St. Paul VI Catholic HS 29.17         X28.49           
----  Fioramonti, Josh         7 Seton Swimming          31.40         X29.39           
----  Koehr, Connor            8 Seton Swimming          30.22         X29.42           
----  Miller, Dominic         FR Seton Swimming          29.86         X29.46           
----  Fioramonti, Mick        FR Seton Swimming          31.04         X29.57           
----  Newbold, Lane           JR Saint John Paul the Gre 31.01         X29.63           
----  Philippart, Ben         JR St. Paul VI Catholic HS 29.34         X30.00           
----  Ketron, Jak             SR St. Paul VI Catholic HS 32.30         X30.27           
----  Donovan, Patrick        FR Saint John Paul the Gre 31.08         X30.41           
----  Hartung, Peter           8 Seton Swimming          33.43         X32.72           
----  Bauer, Greg              7 Seton Swimming          33.27         X33.71           
----  Norton, Kevin            7 Seton Swimming          34.52         X34.17           
----  Gonzalez, Max            8 Seton Swimming          34.40         X34.95           
----  Kelly, Kieran            8 Seton Swimming          40.41         X35.07           
----  Buckreis, Charlie       FR St. Paul VI Catholic HS    NT         X35.65           
----  Da Re, Kyle             SR Seton Swimming          39.48         X38.08           
----  Orellana, Kevin         JR Seton Swimming          46.02         X40.64           
----  Morales, Anthony         7 Seton Swimming          41.03         X42.40           
----  Hurley, Daniel           7 Seton Swimming          52.31         X50.77           
----  McCardell, Aidan         7 Seton Swimming        1:01.84       X1:06.80           
-(Event 7  Boys 50 Yard Freestyle)
-    Name                     Yr School               Seed Time  Finals Time         Point
----  Ghering, Christian       8 Seton Swimming          48.48            XDQ           
+     Name                    Yr School                 Seed Time  Finals Time      Points
+   1 Ruyle, Ryan             JR St. Paul VI Catholic HS    23.47        24.36        16
+   2 Santschi, Jack          SR Seton Swimming             23.89        24.47        13
+   3 Kintz, John Paul        JR Saint John Paul the Great  25.15        24.67        12
+   4 Dalrymple, Jerry        SR Seton Swimming             24.31        24.95        11
+   5 McGrath, John           JR Seton Family Homeschool    25.88        25.80        10
+   6 Nguyen, Lex             JR St. Paul VI Catholic HS    27.29        26.38         9
+   7 Shervanick, Sam         JR St. Paul VI Catholic HS    26.12        26.40         7
+   8 Dealey, Joey            SO Seton Swimming             28.17        26.71         5
+   9 Wilson, Gabe            SO St. Paul VI Catholic HS    27.26        27.40         4
+  10 Collins, Jacob          JR Saint John Paul the Great  30.16        29.10         3
+  11 Albin, Jed              FR Seton Swimming             31.21        31.40         2
+ --- Mahoney, Sean           SO St. Paul VI Catholic HS    27.73       X27.60          
+ --- O'Byrne, Conor          JR St. Paul VI Catholic HS    29.17       X28.49          
+ --- Fioramonti, Josh         7 Seton Swimming             31.40       X29.39          
+ --- Koehr, Connor            8 Seton Swimming             30.22       X29.42          
+ --- Miller, Dominic         FR Seton Swimming             29.86       X29.46          
+ --- Fioramonti, Mick        FR Seton Swimming             31.04       X29.57          
+ --- Newbold, Lane           JR Saint John Paul the Great  31.01       X29.63          
+ --- Philippart, Ben         JR St. Paul VI Catholic HS    29.34       X30.00          
+ --- Ketron, Jak             SR St. Paul VI Catholic HS    32.30       X30.27          
+ --- Donovan, Patrick        FR Saint John Paul the Great  31.08       X30.41          
+ --- Hartung, Peter           8 Seton Swimming             33.43       X32.72          
+ --- Bauer, Greg              7 Seton Swimming             33.27       X33.71          
+ --- Norton, Kevin            7 Seton Swimming             34.52       X34.17          
+ --- Gonzalez, Max            8 Seton Swimming             34.40       X34.95          
+ --- Kelly, Kieran            8 Seton Swimming             40.41       X35.07          
+ --- Buckreis, Charlie       FR St. Paul VI Catholic HS       NT       X35.65          
+ --- Da Re, Kyle             SR Seton Swimming             39.48       X38.08          
+ --- Orellana, Kevin         JR Seton Swimming             46.02       X40.64          
+ --- Morales, Anthony         7 Seton Swimming             41.03       X42.40          
+ --- Hurley, Daniel           7 Seton Swimming             52.31       X50.77          
+ --- McCardell, Aidan         7 Seton Swimming           1:01.84     X1:06.80          
+ --- Ghering, Christian       8 Seton Swimming             48.48          XDQ          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 8  Girls 50 Yard Freestyle
-  NoVA Cath:  24.40 +  1/13/2018Paige Hall                    O'Connell
-    Name                     Yr School               Seed Time  Finals Time         Point
-  1  Foley, Abigail          SO St. Paul VI Catholic HS 26.00          25.83         16
-Seton School                          HY-TEK's MEET MANAGER 8.0 - 10:33 PM  1/23/2021  Pag
-                     2021 NoVa Catholic Invitational Championship - 1/16/2021
-                             Results - NoVa Catholic Champs Swimming
- 
-Event 8  Girls 50 Yard Freestyle
-  NoVA Cath:  24.40 +  1/13/2018Paige Hall                    O'Connell
-    Name                     Yr School               Seed Time  Finals Time         Point
-  2  Kirby, Ashley           SO St. Paul VI Catholic HS 26.30          26.28         13
-  3  Mont, Keara             JR St. Paul VI Catholic HS 26.33          27.13         12
-  4  Mont, Emma              FR St. Paul VI Catholic HS 26.78          27.27         11
-  5  Flores, Angelea         SO Saint John Paul the Gre 27.83          27.69         10
-  6  Pennefather, Mary       SO Seton Swimming          26.20          27.77          9
-  7  Luevano, Isabelle       JR Seton Swimming          27.04          28.78          7
-  8  Bingham, Teresa         JR Seton Swimming          29.12          29.17          5
-  9  Adams, Abby             JR Oakcrest School Charger 29.10          29.21          4
- 10  Mosimann, Teresa        SR Seton Swimming          29.11          29.25          3
- 11  Iaci, Eliana            FR Saint John Paul the Gre 29.50          29.28          2
- 12  Sproull, Molly          JR St. Gertrude High Schoo 28.53          30.05          1
- 13  Guiterrez, Ana Sophia   JR Saint John Paul the Gre 29.09          30.71           
- 14  Upchurch, Vivian        JR St. Gertrude High Schoo 30.12          31.01           
- 15  Talavera, Maite         SR Oakcrest School Charger 32.52          32.71           
- 16  Mudd, Mary-Finan        JR St. Gertrude High Schoo 33.19          34.12           
- 17  Guenther, Louise        FR Oakcrest School Charger 36.03          36.34           
- 18  Herrick, Julia           8 Oakcrest School Charger 35.63          36.84           
----  McLaury, Eve            FR St. Paul VI Catholic HS    NT         X27.26           
----  Florit, Adrianna        JR St. Paul VI Catholic HS 27.81         X27.93           
----  Florit, Alexis          SO St. Paul VI Catholic HS 27.68         X28.51           
----  Foley, Hannah           SR St. Paul VI Catholic HS 28.98         X30.28           
----  Birch, Faith            FR St. Paul VI Catholic HS 39.54         X30.87           
----  Brox, Elodie             8 Seton Swimming          32.33         X31.40           
----  Garcia, Madison         JR St. Paul VI Catholic HS 31.24         X31.53           
----  White, Cecilia          FR Saint John Paul the Gre 33.00         X31.74           
----  Mitchell, Caroline      JR St. Paul VI Catholic HS    NT         X31.79           
----  Brox, Emma              JR Seton Swimming          33.17         X32.30           
----  Bingham, Lucia           8 Seton Swimming          31.67         X32.33           
----  Wheatley, Caroline      JR St. Paul VI Catholic HS 32.05         X32.42           
----  Hurley, Mary Catherine   8 Seton Swimming          31.65         X32.46           
----  Haggerty, Moira         SO Seton Swimming          32.88         X32.54           
----  Waldron, Rose            8 Seton Swimming          34.54         X33.01           
----  Runyon, Emily           FR Saint John Paul the Gre 32.58         X33.06           
----  Wiliams, Fiona          SR Saint John Paul the Gre 32.57         X33.25           
----  Geary, Amelia           FR Seton Swimming          34.65         X33.93           
----  Munsell, Mary Catherin   7 Seton Swimming          34.24         X33.96           
----  Brown, Lauren           FR St. Paul VI Catholic HS 33.99         X34.01           
----  Caputo, Faith           FR St. Paul VI Catholic HS    NT         X34.22           
----  Haggerty, Orla           8 Seton Swimming          35.32         X34.32           
----  Hartung, Virginia       SR Seton Swimming          35.26         X35.29           
----  Irons, Maria            JR St. Paul VI Catholic HS 32.86         X35.46           
----  DeWolf, Rebekah         JR Seton Swimming          35.68         X35.54           
----  Vander Woude, Jojo       8 Seton Swimming          38.10         X36.20           
----  Diller, Bethany          8 Oakcrest School Charger 39.79         X36.44           
----  Osilka, Mary Claire      7 Seton Swimming          35.00         X36.48           
----  Irons, Clare            FR St. Paul VI Catholic HS    NT         X36.54           
+     Name                    Yr School                 Seed Time  Finals Time      Points
+   1 Foley, Abigail          SO St. Paul VI Catholic HS    26.00        25.83        16
+   2 Kirby, Ashley           SO St. Paul VI Catholic HS    26.30        26.28        13
+   3 Mont, Keara             JR St. Paul VI Catholic HS    26.33        27.13        12
+   4 Mont, Emma              FR St. Paul VI Catholic HS    26.78        27.27        11
+   5 Flores, Angelea         SO Saint John Paul the Great  27.83        27.69        10
+   6 Pennefather, Mary       SO Seton Swimming             26.20        27.77         9
+   7 Luevano, Isabelle       JR Seton Swimming             27.04        28.78         7
+   8 Bingham, Teresa         JR Seton Swimming             29.12        29.17         5
+   9 Adams, Abby             JR Oakcrest School Chargers   29.10        29.21         4
+  10 Mosimann, Teresa        SR Seton Swimming             29.11        29.25         3
+  11 Iaci, Eliana            FR Saint John Paul the Great  29.50        29.28         2
+  12 Sproull, Molly          JR St. Gertrude High School   28.53        30.05         1
+  13 Guiterrez, Ana Sophia   JR Saint John Paul the Great  29.09        30.71          
+  14 Upchurch, Vivian        JR St. Gertrude High School   30.12        31.01          
+  15 Talavera, Maite         SR Oakcrest School Chargers   32.52        32.71          
+  16 Mudd, Mary-Finan        JR St. Gertrude High School   33.19        34.12          
+  17 Guenther, Louise        FR Oakcrest School Chargers   36.03        36.34          
+  18 Herrick, Julia           8 Oakcrest School Chargers   35.63        36.84          
+ --- McLaury, Eve            FR St. Paul VI Catholic HS       NT       X27.26          
+ --- Florit, Adrianna        JR St. Paul VI Catholic HS    27.81       X27.93          
+ --- Florit, Alexis          SO St. Paul VI Catholic HS    27.68       X28.51          
+ --- Foley, Hannah           SR St. Paul VI Catholic HS    28.98       X30.28          
+ --- Birch, Faith            FR St. Paul VI Catholic HS    39.54       X30.87          
+ --- Brox, Elodie             8 Seton Swimming             32.33       X31.40          
+ --- Garcia, Madison         JR St. Paul VI Catholic HS    31.24       X31.53          
+ --- White, Cecilia          FR Saint John Paul the Great  33.00       X31.74          
+ --- Mitchell, Caroline      JR St. Paul VI Catholic HS       NT       X31.79          
+ --- Brox, Emma              JR Seton Swimming             33.17       X32.30          
+ --- Bingham, Lucia           8 Seton Swimming             31.67       X32.33          
+ --- Wheatley, Caroline      JR St. Paul VI Catholic HS    32.05       X32.42          
+ --- Hurley, Mary Catherine   8 Seton Swimming             31.65       X32.46          
+ --- Haggerty, Moira         SO Seton Swimming             32.88       X32.54          
+ --- Waldron, Rose            8 Seton Swimming             34.54       X33.01          
+ --- Runyon, Emily           FR Saint John Paul the Great  32.58       X33.06          
+ --- Wiliams, Fiona          SR Saint John Paul the Great  32.57       X33.25          
+ --- Geary, Amelia           FR Seton Swimming             34.65       X33.93          
+ --- Munsell, Mary Catherin   7 Seton Swimming             34.24       X33.96          
+ --- Brown, Lauren           FR St. Paul VI Catholic HS    33.99       X34.01          
+ --- Caputo, Faith           FR St. Paul VI Catholic HS       NT       X34.22          
+ --- Haggerty, Orla           8 Seton Swimming             35.32       X34.32          
+ --- Hartung, Virginia       SR Seton Swimming             35.26       X35.29          
+ --- Irons, Maria            JR St. Paul VI Catholic HS    32.86       X35.46          
+ --- DeWolf, Rebekah         JR Seton Swimming             35.68       X35.54          
+ --- Vander Woude, Jojo       8 Seton Swimming             38.10       X36.20          
+ --- Diller, Bethany          8 Oakcrest School Chargers   39.79       X36.44          
+ --- Osilka, Mary Claire      7 Seton Swimming             35.00       X36.48          
+ --- Irons, Clare            FR St. Paul VI Catholic HS       NT       X36.54          
+ --- Bingham, Mariana         6 Seton Family Homeschool    35.66       X36.62          
+ --- McGovern, Therese       JR Oakcrest School Chargers   40.91       X37.52          
+ --- Pai, Esha               FR Saint John Paul the Great  35.49       X38.33          
+ --- Waldron, Cate           FR Seton Swimming             37.88       X38.40          
 (Event 8  Girls 50 Yard Freestyle)
-    Name                     Yr School               Seed Time  Finals Time         Point
----  Bingham, Mariana         6 Seton Family Homeschool 35.66         X36.62           
----  McGovern, Therese       JR Oakcrest School Charger 40.91         X37.52           
----  Pai, Esha               FR Saint John Paul the Gre 35.49         X38.33           
----  Waldron, Cate           FR Seton Swimming          37.88         X38.40           
----  Halisky, Sophia          6 Seton Family Homeschool 38.39         X38.45           
-Seton School                          HY-TEK's MEET MANAGER 8.0 - 10:33 PM  1/23/2021  Pag
-                     2021 NoVa Catholic Invitational Championship - 1/16/2021
-                             Results - NoVa Catholic Champs Swimming
----  Sayani, Olivia          SO Seton Swimming          40.34         X38.60           
----  Blanchette, Meg          8 Seton Swimming          38.95         X39.13           
----  Novecosky, Jenna        SO Seton Swimming          39.31         X39.48           
----  Bauer, Molly             8 Seton Swimming          41.64         X41.20           
----  Veccia, Lily            SR Oakcrest School Charger 41.08         X42.23           
----  Gonzalez, Jacinta       JR Seton Swimming          43.64         X42.68           
----  Witter, Christina        7 Seton Swimming          46.43         X43.96           
----  McCardell, Moira        FR Seton Swimming          54.45         X47.82           
----  Blanchette, Nora         7 Seton Swimming          52.51         X55.02           
----  Kramer, Colette          7 Seton Swimming          57.31         X59.51           
+     Name                    Yr School                 Seed Time  Finals Time      Points
+ --- Halisky, Sophia          6 Seton Family Homeschool    38.39       X38.45          
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
+(Event 8  Girls 50 Yard Freestyle)
+     Name                    Yr School                 Seed Time  Finals Time      Points
+ --- Sayani, Olivia          SO Seton Swimming             40.34       X38.60          
+ --- Blanchette, Meg          8 Seton Swimming             38.95       X39.13          
+ --- Novecosky, Jenna        SO Seton Swimming             39.31       X39.48          
+ --- Bauer, Molly             8 Seton Swimming             41.64       X41.20          
+ --- Veccia, Lily            SR Oakcrest School Chargers   41.08       X42.23          
+ --- Gonzalez, Jacinta       JR Seton Swimming             43.64       X42.68          
+ --- Witter, Christina        7 Seton Swimming             46.43       X43.96          
+ --- McCardell, Moira        FR Seton Swimming             54.45       X47.82          
+ --- Blanchette, Nora         7 Seton Swimming             52.51       X55.02          
+ --- Kramer, Colette          7 Seton Swimming             57.31       X59.51          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
+ 
+Event 9  Boys 1 mtr Diving
+     Name                    Yr School                           Finals Score      Points
+   1 Brandow, James          JR St. Paul VI Catholic HS   152.30       151.55        16
+   2 Koehr, Connor            8 Seton Swimming            125.92       126.80        13
+   3 Fioramonti, Mick        FR Seton Swimming            112.05       115.95        12
+   4 Fioramonti, Josh         7 Seton Swimming            108.90       112.90        11
+   5 Miller, Dominic         FR Seton Swimming             93.00        92.87        10
+ --- Wilson, Max              8 Seton Swimming            105.90      X116.75          
+ --- Wilson, Evan            SR Seton Swimming            130.35      X107.35          
+ --- Albin, Jed              FR Seton Swimming             64.20       X62.75          
+ --- Wilson, Joe             SO Seton Swimming             76.50       X56.55          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
+ 
+Event 10  Girls 1 mtr Diving
+     Name                    Yr School                           Finals Score      Points
+   1 Myers, Mackenzie        JR St. Paul VI Catholic HS   127.45       123.80        16
+   2 Waldron, Clare          JR Seton Swimming            120.75       119.85        13
+   3 Catabui, Emma           JR Seton Swimming             72.45        87.65        12
+   4 Halisky, Amelie         SO Seton Swimming             53.55        33.70        11
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 11  Boys 100 Yard Butterfly
-  NoVA Cath:  53.32 +  1/11/2014Andrew Dunne                  Benedictine
-    Name                     Yr School               Seed Time  Finals Time         Point
-  1  Hopkins, Liam           JR Saint John Paul the Gre 59.65          57.65         16
-      27.19  30.46
-  2  Ong, Marcus             JR Saint John Paul the Gr1:01.48        1:01.04         13
-      28.61  32.43
-  3  Krueger, Carlton        JR St. Paul VI Catholic H1:00.17        1:02.23         12
-      28.70  33.53
-  4  Murphy, Matthew         FR St. Paul VI Catholic H1:04.84        1:02.31         11
-      29.20  33.11
-  5  Shervanick, Sam         JR St. Paul VI Catholic H1:05.48        1:09.88         10
-      31.50  38.38
-  6  Wilson, Joe             SO Seton Swimming        1:02.45        1:09.95          9
-      30.24  39.71
-  7  Trinidad, Noah          JR St. Paul VI Catholic H1:15.31        1:09.99          7
-      31.15  38.84
-  8  Yeo, Dominic            JR Saint John Paul the Gr1:20.00        1:17.01          5
-      32.47  44.54
-  9  Wilson, Evan            SR Seton Swimming        1:08.73        1:18.91          4
-      33.17  45.74
- 10  Brox, Michael            8 Seton Swimming        1:48.00        1:26.40          3
-      40.41  45.99
- 11  Koehr, Connor            8 Seton Swimming        1:47.51        1:29.42          2
-      40.77  48.65
----  Nagurny, Nicolas        FR Seton Swimming        1:48.00       X1:35.00           
-      39.57  55.43
+     Name                    Yr School                 Seed Time  Finals Time      Points
+   1 Hopkins, Liam           JR Saint John Paul the Great  59.65        57.65        16
+   2 Ong, Marcus             JR Saint John Paul the Great1:01.48      1:01.04        13
+   3 Krueger, Carlton        JR St. Paul VI Catholic HS  1:00.17      1:02.23        12
+   4 Murphy, Matthew         FR St. Paul VI Catholic HS  1:04.84      1:02.31        11
+   5 Shervanick, Sam         JR St. Paul VI Catholic HS  1:05.48      1:09.88        10
+   6 Wilson, Joe             SO Seton Swimming           1:02.45      1:09.95         9
+   7 Trinidad, Noah          JR St. Paul VI Catholic HS  1:15.31      1:09.99         7
+   8 Yeo, Dominic            JR Saint John Paul the Great1:20.00      1:17.01         5
+   9 Wilson, Evan            SR Seton Swimming           1:08.73      1:18.91         4
+  10 Brox, Michael            8 Seton Swimming           1:48.00      1:26.40         3
+  11 Koehr, Connor            8 Seton Swimming           1:47.51      1:29.42         2
+ --- Nagurny, Nicolas        FR Seton Swimming           1:48.00     X1:35.00          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 12  Girls 100 Yard Butterfly
-  NoVA Cath:  58.45 +  1/11/2020Kate Bailey                   O'Connell
-    Name                     Yr School               Seed Time  Finals Time         Point
-  1  Murphy, Caroline        SO St. Paul VI Catholic H1:02.88        1:05.48         16
-      30.57  34.91
-  2  Vannell, Emma           SR St. Paul VI Catholic H1:05.03        1:07.02         13
-      31.11  35.91
-  3  Brown, Laney            SR St. Paul VI Catholic H1:04.72        1:08.67         12
-      31.18  37.49
-(Event 12  Girls 100 Yard Butterfly)
-    Name                     Yr School               Seed Time  Finals Time         Point
-  4  Testani, Angie           8 Seton Swimming        1:09.54        1:13.23         11
-      33.17  40.06
-  5  Byers, Lily             JR Seton Swimming        1:18.77        1:15.89         10
-      33.28  42.61
-  6  Luevano, Isabelle       JR Seton Swimming        1:09.76        1:18.43          9
-      36.65  41.78
-  7  Decatur, Selah          FR Oakcrest School Charge1:16.45        1:19.47          7
-Seton School                          HY-TEK's MEET MANAGER 8.0 - 10:33 PM  1/23/2021  Pag
-                     2021 NoVa Catholic Invitational Championship - 1/16/2021
-                             Results - NoVa Catholic Champs Swimming
-      35.15  44.32
-  8  Kiernan, Maddie         FR St. Paul VI Catholic H1:17.88        1:21.73          5
-      37.16  44.57
-  9  Gibbons, Maggie         FR Seton Swimming        1:18.40        1:22.54          4
-      37.23  45.31
- 10  Rutherford, Lilly       SO Oakcrest School Charge1:40.25        1:36.61          3
-      42.12  54.49
----  Garvey, Anastasia        7 Seton Swimming        1:30.00       X1:27.05           
----  O'Malley, Shannon        8 Seton Swimming        1:39.84            XDQ           
-      41.60  50.88
+     Name                    Yr School                 Seed Time  Finals Time      Points
+   1 Murphy, Caroline        SO St. Paul VI Catholic HS  1:02.88      1:05.48        16
+   2 Vannell, Emma           SR St. Paul VI Catholic HS  1:05.03      1:07.02        13
+   3 Brown, Laney            SR St. Paul VI Catholic HS  1:04.72      1:08.67        12
+   4 Testani, Angie           8 Seton Swimming           1:09.54      1:13.23        11
+   5 Byers, Lily             JR Seton Swimming           1:18.77      1:15.89        10
+   6 Luevano, Isabelle       JR Seton Swimming           1:09.76      1:18.43         9
+   7 Decatur, Selah          FR Oakcrest School Chargers 1:16.45      1:19.47         7
+   8 Kiernan, Maddie         FR St. Paul VI Catholic HS  1:17.88      1:21.73         5
+   9 Gibbons, Maggie         FR Seton Swimming           1:18.40      1:22.54         4
+  10 Rutherford, Lilly       SO Oakcrest School Chargers 1:40.25      1:36.61         3
+ --- Garvey, Anastasia        7 Seton Swimming           1:30.00     X1:27.05          
+ --- O'Malley, Shannon        8 Seton Swimming           1:39.84          XDQ          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 13  Boys 100 Yard Freestyle
-  NoVA Cath:  47.73 +  1/12/2019Paul Kinsella                 O'Connell
-    Name                     Yr School               Seed Time  Finals Time         Point
-  1  Manley, Adam            SO St. Paul VI Catholic HS 53.92          52.19         16
-      24.84  27.35
-  2  Doty, Jack              SR Saint John Paul the Gre 55.35          53.25         13
-      25.95  27.30
-  3  Santschi, Jack          SR Seton Swimming          53.59          54.30         12
-      25.66  28.64
-  4  Ruyle, Ryan             JR St. Paul VI Catholic HS 53.26          54.80         11
-      26.09  28.71
-  5  Dalrymple, Jerry        SR Seton Swimming          53.87          56.48         10
-      26.11  30.37
-  6  Kellogg, Liam           SR Seton Swimming          57.01          56.91          9
-      26.79  30.12
-  7  McGrath, John           JR Seton Family Homeschool 57.88          58.45          7
-      27.53  30.92
-  8  Loesel, Thomas          SO Saint John Paul the Gre 59.29          58.78          5
-      27.83  30.95
-  9  Herrera, Nick           SR St. Paul VI Catholic HS 59.38          58.90          4
-      26.89  32.01
- 10  Nguyen, Lex             JR St. Paul VI Catholic H1:03.80        1:01.77          3
-      31.07  30.70
- 11  Sjurset, Andrew         JR Saint John Paul the Gr1:01.00        1:03.68          2
-      29.35  34.33
- 12  Elliot, Matthew         FR Saint John Paul the Gr1:04.00        1:05.60          1
-      30.96  34.64
- 13  Halisky, Liam            8 Seton Swimming        1:11.90        1:11.73           
-      32.82  38.91
----  Bruzzini, Matthew       SR Saint John Paul the Gr1:07.40       X1:04.77           
-      30.24  34.53
----  O'Byrne, Conor          JR St. Paul VI Catholic H1:11.39       X1:05.99           
-      31.46  34.53
----  Wilson, Gabe            SO St. Paul VI Catholic H1:06.20       X1:07.34           
-      32.38  34.96
-(Event 13  Boys 100 Yard Freestyle)
-    Name                     Yr School               Seed Time  Finals Time         Point
----  Trinidad, Noah          JR St. Paul VI Catholic H1:06.37       X1:09.27           
-      32.23  37.04
----  Fioramonti, Josh         7 Seton Swimming        1:20.16       X1:12.37           
-      32.60  39.77
----  Norton, Kevin            7 Seton Swimming        1:20.23       X1:21.17           
-      36.87  44.30
----  Gonzalez, Max            8 Seton Swimming        1:26.18       X1:23.54           
-      37.71  45.83
----  Da Re, Kyle             SR Seton Swimming        1:34.83       X1:34.78           
-Seton School                          HY-TEK's MEET MANAGER 8.0 - 10:33 PM  1/23/2021  Pag
-                     2021 NoVa Catholic Invitational Championship - 1/16/2021
-                             Results - NoVa Catholic Champs Swimming
+     Name                    Yr School                 Seed Time  Finals Time      Points
+   1 Manley, Adam            SO St. Paul VI Catholic HS    53.92        52.19        16
+   2 Doty, Jack              SR Saint John Paul the Great  55.35        53.25        13
+   3 Santschi, Jack          SR Seton Swimming             53.59        54.30        12
+   4 Ruyle, Ryan             JR St. Paul VI Catholic HS    53.26        54.80        11
+   5 Dalrymple, Jerry        SR Seton Swimming             53.87        56.48        10
+   6 Kellogg, Liam           SR Seton Swimming             57.01        56.91         9
+   7 McGrath, John           JR Seton Family Homeschool    57.88        58.45         7
+   8 Loesel, Thomas          SO Saint John Paul the Great  59.29        58.78         5
+   9 Herrera, Nick           SR St. Paul VI Catholic HS    59.38        58.90         4
+  10 Nguyen, Lex             JR St. Paul VI Catholic HS  1:03.80      1:01.77         3
+  11 Sjurset, Andrew         JR Saint John Paul the Great1:01.00      1:03.68         2
+  12 Elliot, Matthew         FR Saint John Paul the Great1:04.00      1:05.60         1
+  13 Halisky, Liam            8 Seton Swimming           1:11.90      1:11.73          
+ --- Bruzzini, Matthew       SR Saint John Paul the Great1:07.40     X1:04.77          
+ --- O'Byrne, Conor          JR St. Paul VI Catholic HS  1:11.39     X1:05.99          
+ --- Wilson, Gabe            SO St. Paul VI Catholic HS  1:06.20     X1:07.34          
+ --- Trinidad, Noah          JR St. Paul VI Catholic HS  1:06.37     X1:09.27          
+ --- Fioramonti, Josh         7 Seton Swimming           1:20.16     X1:12.37          
+ --- Norton, Kevin            7 Seton Swimming           1:20.23     X1:21.17          
+ --- Gonzalez, Max            8 Seton Swimming           1:26.18     X1:23.54          
+ --- Da Re, Kyle             SR Seton Swimming           1:34.83     X1:34.78          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 14  Girls 100 Yard Freestyle
-  NoVA Cath:  53.17 +  1/13/2018Paige Hall                    O'Connell
-    Name                     Yr School               Seed Time  Finals Time         Point
-  1  Foley, Abigail          SO St. Paul VI Catholic HS 55.25          55.95         16
-      27.09  28.86
-  2  Geiran, Mairead         SR Saint John Paul the Gre 55.15          56.41         13
-      26.99  29.42
-  3  Flores, Angelea         SO Saint John Paul the Gre 57.36          58.87         12
-      28.15  30.72
-  4  Mont, Keara             JR St. Paul VI Catholic HS 57.54          58.95         11
-      28.03  30.92
-  5  Mont, Emma              FR St. Paul VI Catholic HS 59.38        1:00.59         10
-      29.07  31.52
-  6  Roder, Mia              SO Saint John Paul the Gre 59.96        1:01.26          9
-      15.53  45.73
-  7  Condon, Clara            8 Seton Swimming        1:02.45        1:01.69          7
-      29.86  31.83
-  8  Koler, Jillian          JR Saint John Paul the Gr1:02.74        1:02.22          5
-      29.69  32.53
-  9  Brown, Laney            SR St. Paul VI Catholic HS 58.60        1:02.66          4
-      29.78  32.88
- 10  Pennefather, Mary       SO Seton Swimming          57.52        1:03.71          3
-      29.57  34.14
- 11  Schroder, Ashley        JR Oakcrest School Charge1:11.11        1:03.77          2
-      30.12  33.65
- 12  Bingham, Teresa         JR Seton Swimming        1:03.46        1:03.95          1
-      30.70  33.25
- 13  Pennefather, Lucy        8 Seton Swimming        1:07.29        1:07.86           
-      32.66  35.20
- 14  Meunier, Cecelia        SO Oakcrest School Charge1:08.64        1:09.55           
-      33.32  36.23
- 15  Vogler, Kate            SO Oakcrest School Charge1:23.10        1:13.48           
-      34.87  38.61
- 16  Wyckoff, Brynn           8 Oakcrest School Charge1:21.85        1:14.75           
-      33.86  40.89
----  McKinley, Tess          FR St. Paul VI Catholic H1:00.20       X1:02.10           
-      30.00  32.10
----  Zoebel, Alexandra       SO Saint John Paul the Gr1:04.94       X1:02.26           
-      30.02  32.24
----  Oswald, Jacqueline      SO Seton Swimming        1:11.60       X1:07.38           
-      32.08  35.30
----  Foley, Hannah           SR St. Paul VI Catholic H1:03.50       X1:07.54           
-      31.47  36.07
-(Event 14  Girls 100 Yard Freestyle)
-    Name                     Yr School               Seed Time  Finals Time         Point
----  Mosimann, Teresa        SR Seton Swimming        1:09.02       X1:07.77           
-      32.01  35.76
----  Weina, Virginia         SO Saint John Paul the Gr1:09.21       X1:07.97           
-      33.21  34.76
----  Vitkovsky, Maggie       FR Saint John Paul the Gr1:07.00       X1:08.25           
-      31.82  36.43
----  White, Mary              8 Oakcrest School Charge1:23.10       X1:11.26           
-      34.03  37.23
----  Fifield, Haley           8 Seton Swimming        1:14.24       X1:12.07           
-      33.47  38.60
----  Gegg, Avery             JR St. Paul VI Catholic H1:07.95       X1:12.42           
-Seton School                          HY-TEK's MEET MANAGER 8.0 - 10:33 PM  1/23/2021  Pag
-                     2021 NoVa Catholic Invitational Championship - 1/16/2021
-                             Results - NoVa Catholic Champs Swimming
-      33.17  39.25
----  Birch, Faith            FR St. Paul VI Catholic H1:37.24       X1:12.89           
-      34.09  38.80
----  Hurley, Mary Catherine   8 Seton Swimming        1:14.49       X1:14.23           
----  Garcia, Madison         JR St. Paul VI Catholic H1:11.95       X1:14.37           
-      35.58  38.79
----  Wheatley, Caroline      JR St. Paul VI Catholic H1:19.00       X1:14.83           
-      34.84  39.99
----  Geary, Amelia           FR Seton Swimming        1:21.35       X1:17.82           
-      36.18  41.64
----  Periera, Sophia         FR Saint John Paul the Gr1:14.89       X1:19.46           
-      35.08  44.38
----  Myers, Mackenzie        JR St. Paul VI Catholic H1:18.00       X1:19.52           
-      35.14  44.38
----  Harkness, Amelia         8 Oakcrest School Charge1:29.87       X1:19.62           
-      37.37  42.25
----  Guiterrez, Ana          SO Saint John Paul the Gr1:05.00       X1:20.05           
-      35.41  44.64
----  Irons, Maria            JR St. Paul VI Catholic H1:16.83       X1:20.31           
----  Francis, Elizabeth       8 Seton Swimming        1:24.71       X1:23.04           
-      37.82  45.22
----  Catabui, Emma           JR Seton Swimming        1:30.48       X1:25.71           
-      40.29  45.42
----  Irons, Clare            FR St. Paul VI Catholic HS    NT       X1:26.44           
-      39.93  46.51
----  Mochen, Catherine        8 Oakcrest School Charge1:29.21       X1:26.51           
-      40.66  45.85
----  Blanchette, Meg          8 Seton Swimming        1:30.51       X1:26.65           
-      39.83  46.82
----  Kelly, Vivian            8 Oakcrest School Charge1:23.74       X1:29.63           
-      39.96  49.67
----  Diller, Bethany          8 Oakcrest School Charge1:36.92       X1:30.52           
-      41.91  48.61
----  Veccia, Lily            SR Oakcrest School Charge1:32.00       X1:30.64           
-      43.72  46.92
----  Sayani, Olivia          SO Seton Swimming        1:31.18       X1:31.26           
-      41.68  49.58
----  Waldron, Cate           FR Seton Swimming        1:32.95       X1:33.66           
-      42.52  51.14
----  Kramer, Colette          7 Seton Swimming        2:33.59       X2:21.86           
-    1:06.36 1:15.5
+     Name                    Yr School                 Seed Time  Finals Time      Points
+   1 Foley, Abigail          SO St. Paul VI Catholic HS    55.25        55.95        16
+   2 Geiran, Mairead         SR Saint John Paul the Great  55.15        56.41        13
+   3 Flores, Angelea         SO Saint John Paul the Great  57.36        58.87        12
+   4 Mont, Keara             JR St. Paul VI Catholic HS    57.54        58.95        11
+   5 Mont, Emma              FR St. Paul VI Catholic HS    59.38      1:00.59        10
+   6 Roder, Mia              SO Saint John Paul the Great  59.96      1:01.26         9
+   7 Condon, Clara            8 Seton Swimming           1:02.45      1:01.69         7
+   8 Koler, Jillian          JR Saint John Paul the Great1:02.74      1:02.22         5
+   9 Brown, Laney            SR St. Paul VI Catholic HS    58.60      1:02.66         4
+  10 Pennefather, Mary       SO Seton Swimming             57.52      1:03.71         3
+  11 Schroder, Ashley        JR Oakcrest School Chargers 1:11.11      1:03.77         2
+  12 Bingham, Teresa         JR Seton Swimming           1:03.46      1:03.95         1
+  13 Pennefather, Lucy        8 Seton Swimming           1:07.29      1:07.86          
+  14 Meunier, Cecelia        SO Oakcrest School Chargers 1:08.64      1:09.55          
+  15 Vogler, Kate            SO Oakcrest School Chargers 1:23.10      1:13.48          
+  16 Wyckoff, Brynn           8 Oakcrest School Chargers 1:21.85      1:14.75          
+ --- McKinley, Tess          FR St. Paul VI Catholic HS  1:00.20     X1:02.10          
+ --- Zoebel, Alexandra       SO Saint John Paul the Great1:04.94     X1:02.26          
+ --- Oswald, Jacqueline      SO Seton Swimming           1:11.60     X1:07.38          
+ --- Foley, Hannah           SR St. Paul VI Catholic HS  1:03.50     X1:07.54          
+ --- Mosimann, Teresa        SR Seton Swimming           1:09.02     X1:07.77          
+ --- Weina, Virginia         SO Saint John Paul the Great1:09.21     X1:07.97          
+ --- Vitkovsky, Maggie       FR Saint John Paul the Great1:07.00     X1:08.25          
+ --- White, Mary              8 Oakcrest School Chargers 1:23.10     X1:11.26          
+ --- Fifield, Haley           8 Seton Swimming           1:14.24     X1:12.07          
+ --- Gegg, Avery             JR St. Paul VI Catholic HS  1:07.95     X1:12.42          
+ --- Birch, Faith            FR St. Paul VI Catholic HS  1:37.24     X1:12.89          
+ --- Hurley, Mary Catherine   8 Seton Swimming           1:14.49     X1:14.23          
+ --- Garcia, Madison         JR St. Paul VI Catholic HS  1:11.95     X1:14.37          
+ --- Wheatley, Caroline      JR St. Paul VI Catholic HS  1:19.00     X1:14.83          
+ --- Geary, Amelia           FR Seton Swimming           1:21.35     X1:17.82          
+ --- Periera, Sophia         FR Saint John Paul the Great1:14.89     X1:19.46          
+ --- Myers, Mackenzie        JR St. Paul VI Catholic HS  1:18.00     X1:19.52          
+ --- Harkness, Amelia         8 Oakcrest School Chargers 1:29.87     X1:19.62          
+ --- Guiterrez, Ana          SO Saint John Paul the Great1:05.00     X1:20.05          
+ --- Irons, Maria            JR St. Paul VI Catholic HS  1:16.83     X1:20.31          
+ --- Francis, Elizabeth       8 Seton Swimming           1:24.71     X1:23.04          
+ --- Catabui, Emma           JR Seton Swimming           1:30.48     X1:25.71          
+ --- Irons, Clare            FR St. Paul VI Catholic HS       NT     X1:26.44          
+ --- Mochen, Catherine        8 Oakcrest School Chargers 1:29.21     X1:26.51          
+ --- Blanchette, Meg          8 Seton Swimming           1:30.51     X1:26.65          
+ --- Kelly, Vivian            8 Oakcrest School Chargers 1:23.74     X1:29.63          
+ --- Diller, Bethany          8 Oakcrest School Chargers 1:36.92     X1:30.52          
+ --- Veccia, Lily            SR Oakcrest School Chargers 1:32.00     X1:30.64          
+ --- Sayani, Olivia          SO Seton Swimming           1:31.18     X1:31.26          
+ --- Waldron, Cate           FR Seton Swimming           1:32.95     X1:33.66          
+ --- Kramer, Colette          7 Seton Swimming           2:33.59     X2:21.86          
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 15  Boys 500 Yard Freestyle
-  NoVA Cath:4:37.84 +  1/11/2020William Mullen                O'Connell
-    Name                     Yr School               Seed Time  Finals Time         Point
-  1  Fioramonti, Mick        FR Seton Swimming        6:46.98        6:23.19         16
-      31.90  36.52  38.44  39.01  39.46  39.36  40.49  39.91
-      39.75  38.35
-  2  Hudson, David           FR Seton Swimming        6:40.66        6:32.57         13
-      30.43  36.93  38.82  39.27  40.58  40.92  43.68  42.23
-      40.38  39.33
-  3  Konstanty, Peter        FR Seton Swimming        6:57.21        6:50.52         12
-      32.77  36.65  39.40  42.20  43.25  44.58  44.77  44.14
-      42.95  39.81
-  4  Wilson, Max              8 Seton Swimming        6:56.06        7:01.07         11
-      32.42  39.29  43.33  42.88  44.99  44.07  44.04  45.13
-      44.14  40.78
-Seton School                          HY-TEK's MEET MANAGER 8.0 - 10:33 PM  1/23/2021  Pag
-                     2021 NoVa Catholic Invitational Championship - 1/16/2021
-                             Results - NoVa Catholic Champs Swimming
----  Hartung, Patrick        SO Seton Swimming        7:56.11       X7:30.47           
-      36.46  39.95  44.24  46.19  47.87  46.74  48.57  48.26
-      48.10  44.09
+     Name                    Yr School                 Seed Time  Finals Time      Points
+   1 Fioramonti, Mick        FR Seton Swimming           6:46.98      6:23.19        16
+   2 Hudson, David           FR Seton Swimming           6:40.66      6:32.57        13
+   3 Konstanty, Peter        FR Seton Swimming           6:57.21      6:50.52        12
+   4 Wilson, Max              8 Seton Swimming           6:56.06      7:01.07        11
+ --- Hartung, Patrick        SO Seton Swimming           7:56.11     X7:30.47          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 16  Girls 500 Yard Freestyle
-  NoVA Cath:5:06.26 +  1/14/2017Madelyn Donohoe               O'Connell
-    Name                     Yr School               Seed Time  Finals Time         Point
-  1  Guiterrez, Ana Sophia   JR Saint John Paul the Gr5:55.00        6:27.59         16
-      33.48  39.70  40.31  39.01  39.80  40.02  39.21  39.89
-      40.20  35.97
-  2  Flynn, Emily            JR Seton Swimming        6:52.77        6:38.15         13
-      34.05                              40.89  41.09  41.39
-      41.60  39.52
-  3  Kiernan, Maddie         FR St. Paul VI Catholic H6:43.50        6:48.23         12
-      34.53  39.27  40.61  41.68  41.77  41.70  42.46  42.63
-      42.59  40.99
-  4  McDonnell, Grace        JR Oakcrest School Charge7:15.95        7:08.34         11
-      36.60  40.07  41.78  43.28                45.06  46.10
-      43.40  41.82
-  5  Gibbons, Maggie         FR Seton Swimming        7:38.65        7:11.18         10
-      36.66  41.67  44.66  43.90  45.29  45.66  45.45  46.11
-      46.44  35.34
-  6  Koehr, Ceili            JR Seton Swimming        7:32.89        7:12.93          9
-      35.72  41.27  43.87  43.81  44.51  45.14  45.70  44.99
-      46.22  41.70
-  7  Zadnik, Madelyn         FR Seton Swimming        8:03.30        7:13.62          7
-      35.09  40.92  43.30  44.45  44.68  45.36  44.40  45.88
-      46.17  43.37
-  8  Talavera, Maite         SR Oakcrest School Charge7:33.37        7:40.37          5
-      37.83  43.54  44.95  46.50  48.23  48.44  48.44  49.28
-      48.76  44.40
----  Mantooth, Kateri        SO Seton Swimming        8:05.00       X7:33.88           
-      35.90  42.15  44.18  45.86  46.70  48.95  48.62  49.39
-      47.58  44.55
----  Zadnik, Sophia          JR Seton Swimming        8:05.48       X7:56.93           
-      37.01  44.72  47.87  48.03  49.68  50.23  50.62  50.46
-      50.07  48.24
+     Name                    Yr School                 Seed Time  Finals Time      Points
+   1 Guiterrez, Ana Sophia   JR Saint John Paul the Great5:55.00      6:27.59        16
+   2 Flynn, Emily            JR Seton Swimming           6:52.77      6:38.15        13
+   3 Kiernan, Maddie         FR St. Paul VI Catholic HS  6:43.50      6:48.23        12
+   4 McDonnell, Grace        JR Oakcrest School Chargers 7:15.95      7:08.34        11
+   5 Gibbons, Maggie         FR Seton Swimming           7:38.65      7:11.18        10
+   6 Koehr, Ceili            JR Seton Swimming           7:32.89      7:12.93         9
+   7 Zadnik, Madelyn         FR Seton Swimming           8:03.30      7:13.62         7
+   8 Talavera, Maite         SR Oakcrest School Chargers 7:33.37      7:40.37         5
+ --- Mantooth, Kateri        SO Seton Swimming           8:05.00     X7:33.88          
+ --- Zadnik, Sophia          JR Seton Swimming           8:05.48     X7:56.93          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 17  Boys 200 Yard Freestyle Relay
-  NoVA Cath:1:30.04 +  1/5/2013 Bishop O'Connell              O'Connell
-                                C Tiernan, M Luciani, C Chamness, C Outlaw
-    Team                        Relay                Seed Time  Finals Time         Point
-  1  Seton Swimming                 A                 1:40.23        1:39.12         32
-      1) Santschi, Jack SR 2) Dalrymple, Jerry S3) Kellogg, Liam SR  4) Luevano, Nathan SO
-      24.35  25.41  24.28  25.08
-  2  St. Paul VI Catholic H         A                 1:33.25        1:40.56         26
-      1) Herrera, Nick SR  2) Krueger, Carlton J3) Murphy, Matthew FR4) Vannell, Morgan SO
-      25.66  25.47  24.61  24.82
-  3  Saint John Paul the Gr         A                 1:42.74        1:41.04         24
-      1) Williams, Charlie 2) Ong, Marcus JR    3) Hopkins, Liam JR  4) Doty, Jack SR
-                    32.89  15.37
-  4  Saint John Paul the Gr         B                 1:48.21        1:45.23         22
-      1) Yeo, Dominic JR   2) Loesel, Thomas SO 3) Sjurset, Andrew JR4) Kintz, John Paul J
-      27.36  25.76  27.30  24.81
-  5  St. Paul VI Catholic H         B                 1:48.00        1:45.73         20
-      1) Duren, Jack SO    2) Nguyen, Lex JR    3) Wilson, Gabe SO   4) Shervanick, Sam JR
-      26.36  25.80  27.41  26.16
-Seton School                          HY-TEK's MEET MANAGER 8.0 - 10:33 PM  1/23/2021  Pag
-                     2021 NoVa Catholic Invitational Championship - 1/16/2021
-                             Results - NoVa Catholic Champs Swimming
-  6  Seton Swimming                 B                 1:56.27        1:56.59         18
-      1) Brox, JJ SO       2) Halisky, Liam 8   3) Miller, Dominic FR4) Nagurny, Nicolas F
-      28.25  29.80  29.58  28.96
----  Saint John Paul the Gr         C                 2:02.00       X1:58.21           
-      1) Bruzzini, Matthew 2) Collins, Jacob JR 3) Donovan, Patrick F4) Newbold, Lane JR
-      29.14  29.24  31.51  28.32
----  St. Paul VI Catholic H         C                      NT       X2:05.49           
-      1) Philippart, Ben JR2) Buckreis, Charlie 3) Ketron, Jak SR    4) O'Byrne, Conor JR
-      35.63  30.83  30.82  28.21
----  Seton Swimming                 C                 2:30.00       X2:07.12           
-      1) Koehr, Connor 8   2) Bauer, Greg 7     3) Hartung, Peter 8  4) Albin, Jed FR
-                    32.55  30.74
----  Seton Swimming                 E                 2:32.00       X2:11.61           
-      1) Wilson, Max 8     2) Fioramonti, Josh 73) Norton, Kevin 7   4) Kelly, Kieran 8
-      29.99  31.01  36.28  34.33
----  Seton Swimming                 D                 2:31.00       X2:18.96           
-      1) Lynch, Chris FR   2) Hartung, Patrick S3) Gonzalez, Max 8   4) Morales, Anthony 7
-      31.18  32.11  37.28  38.39
----  Seton Swimming                 F                 2:40.00       X2:53.12           
-      1) Kellogg, Seth 8   2) Da Re, Kyle SR    3) Ghering, Christian4) Hurley, Daniel 7
-      30.97  39.32 1:42.8
+     Team                       Relay                  Seed Time  Finals Time      Points
+   1 Seton Swimming                 A                    1:40.23      1:39.12        32
+      1) Santschi, Jack SR  2) Dalrymple, Jerry SR3) Kellogg, Liam SR   4) Luevano, Nathan SO
+   2 St. Paul VI Catholic H         A                    1:33.25      1:40.56        26
+      1) Herrera, Nick SR   2) Krueger, Carlton JR3) Murphy, Matthew FR 4) Vannell, Morgan SO
+   3 Saint John Paul the Gr         A                    1:42.74      1:41.04        24
+      1) Williams, Charlie S2) Ong, Marcus JR     3) Hopkins, Liam JR   4) Doty, Jack SR
+   4 Saint John Paul the Gr         B                    1:48.21      1:45.23        22
+      1) Yeo, Dominic JR    2) Loesel, Thomas SO  3) Sjurset, Andrew JR 4) Kintz, John Paul JR
+   5 St. Paul VI Catholic H         B                    1:48.00      1:45.73        20
+      1) Duren, Jack SO     2) Nguyen, Lex JR     3) Wilson, Gabe SO    4) Shervanick, Sam JR
+   6 Seton Swimming                 B                    1:56.27      1:56.59        18
+      1) Brox, JJ SO        2) Halisky, Liam 8    3) Miller, Dominic FR 4) Nagurny, Nicolas FR
+ --- Saint John Paul the Gr         C                    2:02.00     X1:58.21          
+      1) Bruzzini, Matthew S2) Collins, Jacob JR  3) Donovan, Patrick FR4) Newbold, Lane JR
+ --- St. Paul VI Catholic H         C                         NT     X2:05.49          
+      1) Philippart, Ben JR 2) Buckreis, Charlie F3) Ketron, Jak SR     4) O'Byrne, Conor JR
+ --- Seton Swimming                 C                    2:30.00     X2:07.12          
+      1) Koehr, Connor 8    2) Bauer, Greg 7      3) Hartung, Peter 8   4) Albin, Jed FR
+ --- Seton Swimming                 E                    2:32.00     X2:11.61          
+      1) Wilson, Max 8      2) Fioramonti, Josh 7 3) Norton, Kevin 7    4) Kelly, Kieran 8
+ --- Seton Swimming                 D                    2:31.00     X2:18.96          
+      1) Lynch, Chris FR    2) Hartung, Patrick SO3) Gonzalez, Max 8    4) Morales, Anthony 7
+ --- Seton Swimming                 F                    2:40.00     X2:53.12          
+      1) Kellogg, Seth 8    2) Da Re, Kyle SR     3) Ghering, Christian 4) Hurley, Daniel 7
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 18  Girls 200 Yard Freestyle Relay
-  NoVA Cath:1:41.75 +  1/11/2020Bishop O'Connell              O'Connell
-                                K Bailey, E Leonard, P Leonard, P Hall
-    Team                        Relay                Seed Time  Finals Time         Point
-  1  St. Paul VI Catholic H         A                 1:43.30        1:48.06         32
-      1) Mont, Keara JR    2) McKinley, Lilia FR3) Kirby, Ashley SO  4) Foley, Abigail SO
-      27.26  27.66  25.44  27.70
-  2  Saint John Paul the Gr         A                 1:50.65        1:51.64         26
-      1) Roder, Mia SO     2) Daniel, Isabella S3) Koler, Jillian JR 4) Geiran, Mairead SR
-      28.50  28.30  28.88  25.96
-  3  Seton Swimming                 A                 1:48.95        1:51.87         24
-      1) Pennefather, Mary 2) Flynn, Emily JR   3) Condon, Clara 8   4) Garvey, Lucy JR
-      28.02  28.62  27.99  27.24
-(Event 18  Girls 200 Yard Freestyle Relay)
-    Team                        Relay                Seed Time  Finals Time         Point
-  4  St. Paul VI Catholic H         B                 1:53.00        1:54.52         22
-      1) Mont, Emma FR     2) Florit, Adrianna J3) Foley, Hannah SR  4) McKinley, Tess FR
-      28.03  28.41  30.16  27.92
-  5  Seton Swimming                 B                 1:56.59        1:57.90         20
-      1) Gibbons, Maggie FR2) O'Malley, Mary JR 3) Mosimann, Teresa S4) Bingham, Teresa JR
-      29.62  29.43  29.36  29.49
-  6  Oakcrest School Charge         A                 2:00.07        2:04.56         18
-      1) Sypal, Clare 8    2) White, Mary 8     3) Wyckoff, Brynn 8  4) Sypal, Elizabeth S
-                    32.48  28.35
-  7  Oakcrest School Charge         B                      NT        2:24.83         14
-      1) Mochen, Catherine 2) Harkness, Amelia 83) Herrick, Julia 8  4) Kelly, Vivian 8
-      36.55  39.98  32.34  35.96
----  St. Paul VI Catholic H         D                 2:15.00       X2:07.80           
-      1) Birch, Faith FR   2) Brown, Lauren FR  3) Mitchell, Caroline4) Garcia, Madison JR
-      30.03  34.49  32.32  30.96
----  Seton Swimming                 F                 2:29.00       X2:09.16           
-      1) Oswald, Jacqueline2) Waldron, Rose 8   3) DeWolf, Rebekah JR4) Waldron, Clare JR
-      31.20  32.95  34.18  30.83
----  Seton Swimming                 I                 2:34.00       X2:11.08           
-      1) Bingham, Lucia 8  2) Fifield, Haley 8  3) Vander Woude, Jojo4) Byers, Theresa JR
-Seton School                          HY-TEK's MEET MANAGER 8.0 - 10:33 PM  1/23/2021  Pag
-                     2021 NoVa Catholic Invitational Championship - 1/16/2021
-                             Results - NoVa Catholic Champs Swimming
-      31.91  32.46  37.31  29.40
----  Seton Swimming                 G                 2:30.00       X2:12.28           
-      1) Koehr, Ceili JR   2) Munsell, Mary Cath3) Catabui, Emma JR  4) Byers, Lily JR
-      32.88  35.68  35.06  28.66
----  Seton Swimming                 E                 2:23.00       X2:16.55           
-      1) Mantooth, Kateri S2) Francis, Elizabeth3) Geary, Amelia FR
-      30.85  35.73  34.31  35.66
----  St. Paul VI Catholic H         C                 2:10.00       X2:20.65           
-      1) Wheatley, Caroline2) Irons, Clare FR   3) Myers, Mackenzie J4) Irons, Maria JR
-      32.82  39.12  34.96  33.75
----  Seton Swimming                 L                 2:30.00       X2:22.09           
-      1) O'Malley, Shannon 2) Haggerty, Moira SO3) Novecosky, Jenna S4) Sayani, Olivia SO
-      34.67  30.83  45.90  30.69
----  Seton Swimming                 J                 2:36.00       X2:22.15           
-      1) Brox, Elodie 8    2) Brox, Emma JR                          4) Gonzalez, Jacinta 
-      36.04  26.51  39.18  40.42
----  Seton Swimming                 D                 2:25.00       X2:26.59           
-      1) Hudson, Ava FR    2) Osilka, Mary Clair3) Haggerty, Orla 8  4) McCardell, Moira F
-      30.61  34.74  33.57  47.67
----  Seton Swimming                 K                 2:38.00       X2:27.55           
-      1) Zadnik, Sophia JR 2) Halisky, Amelie SO3) Blanchette, Meg 8 4) Bauer, Molly 8
-      34.15  32.25  39.00  42.15
----  Seton Swimming                 H                 2:32.00       X2:28.75           
-      1) Hurley, Mary Cathe2) Atkinson, Julia FR3) Waldron, Cate FR  4) Witter, Christina 
-      33.60  37.11  41.36  36.68
----  Oakcrest School Charge         C                      NT       X2:32.65           
-      1) Diller, Bethany 8 2) McGovern, Therese 3) Veccia, Lily SR   4) Guenther, Louise F
-      38.90  37.71  40.37  35.67
----  Seton Swimming                 C                 2:30.00       X2:57.20           
-      1) Garvey, Anastasia 2) Hartung, Virginia 3) Kramer, Colette 7 4) Blanchette, Nora 7
-      35.58  31.51  53.15  56.96
+     Team                       Relay                  Seed Time  Finals Time      Points
+   1 St. Paul VI Catholic H         A                    1:43.30      1:48.06        32
+      1) Mont, Keara JR     2) McKinley, Lilia FR 3) Kirby, Ashley SO   4) Foley, Abigail SO
+   2 Saint John Paul the Gr         A                    1:50.65      1:51.64        26
+      1) Roder, Mia SO      2) Daniel, Isabella SR3) Koler, Jillian JR  4) Geiran, Mairead SR
+   3 Seton Swimming                 A                    1:48.95      1:51.87        24
+      1) Pennefather, Mary S2) Flynn, Emily JR    3) Condon, Clara 8    4) Garvey, Lucy JR
+   4 St. Paul VI Catholic H         B                    1:53.00      1:54.52        22
+      1) Mont, Emma FR      2) Florit, Adrianna JR3) Foley, Hannah SR   4) McKinley, Tess FR
+   5 Seton Swimming                 B                    1:56.59      1:57.90        20
+      1) Gibbons, Maggie FR 2) O'Malley, Mary JR  3) Mosimann, Teresa SR4) Bingham, Teresa JR
+   6 Oakcrest School Charge         A                    2:00.07      2:04.56        18
+      1) Sypal, Clare 8     2) White, Mary 8      3) Wyckoff, Brynn 8   4) Sypal, Elizabeth SR
+   7 Oakcrest School Charge         B                         NT      2:24.83        14
+      1) Mochen, Catherine 82) Harkness, Amelia 8 3) Herrick, Julia 8   4) Kelly, Vivian 8
+ --- St. Paul VI Catholic H         D                    2:15.00     X2:07.80          
+      1) Birch, Faith FR    2) Brown, Lauren FR   3) Mitchell, Caroline 4) Garcia, Madison JR
+ --- Seton Swimming                 F                    2:29.00     X2:09.16          
+      1) Oswald, Jacqueline 2) Waldron, Rose 8    3) DeWolf, Rebekah JR 4) Waldron, Clare JR
+ --- Seton Swimming                 I                    2:34.00     X2:11.08          
+      1) Bingham, Lucia 8   2) Fifield, Haley 8   3) Vander Woude, Jojo 4) Byers, Theresa JR
+ --- Seton Swimming                 G                    2:30.00     X2:12.28          
+      1) Koehr, Ceili JR    2) Munsell, Mary Cathe3) Catabui, Emma JR   4) Byers, Lily JR
+ --- Seton Swimming                 E                    2:23.00     X2:16.55          
+      1) Mantooth, Kateri SO2) Francis, Elizabeth 3) Geary, Amelia FR
+ --- St. Paul VI Catholic H         C                    2:10.00     X2:20.65          
+      1) Wheatley, Caroline 2) Irons, Clare FR    3) Myers, Mackenzie JR4) Irons, Maria JR
+ --- Seton Swimming                 L                    2:30.00     X2:22.09          
+      1) O'Malley, Shannon 82) Haggerty, Moira SO 3) Novecosky, Jenna SO4) Sayani, Olivia SO
+ --- Seton Swimming                 J                    2:36.00     X2:22.15          
+      1) Brox, Elodie 8     2) Brox, Emma JR                            4) Gonzalez, Jacinta J
+ --- Seton Swimming                 D                    2:25.00     X2:26.59          
+      1) Hudson, Ava FR     2) Osilka, Mary Claire3) Haggerty, Orla 8   4) McCardell, Moira FR
+ --- Seton Swimming                 K                    2:38.00     X2:27.55          
+      1) Zadnik, Sophia JR  2) Halisky, Amelie SO 3) Blanchette, Meg 8  4) Bauer, Molly 8
+ --- Seton Swimming                 H                    2:32.00     X2:28.75          
+      1) Hurley, Mary Cather2) Atkinson, Julia FR 3) Waldron, Cate FR   4) Witter, Christina 7
+ --- Oakcrest School Charge         C                         NT     X2:32.65          
+      1) Diller, Bethany 8  2) McGovern, Therese J3) Veccia, Lily SR    4) Guenther, Louise FR
+ --- Seton Swimming                 C                    2:30.00     X2:57.20          
+      1) Garvey, Anastasia 72) Hartung, Virginia S3) Kramer, Colette 7  4) Blanchette, Nora 7
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 19  Boys 100 Yard Backstroke
-  NoVA Cath:  53.25 +  1/11/2020Michael Salvatori             John Paul
-    Name                     Yr School               Seed Time  Finals Time         Point
-  1  Manley, Adam            SO St. Paul VI Catholic HS 58.09          59.16         16
-      28.70  30.46
-  2  Ong, Marcus             JR Saint John Paul the Gr1:03.25        1:02.93         13
-      30.52  32.41
-  3  Wilson, Evan            SR Seton Swimming        1:03.14        1:03.28         12
-      30.05  33.23
-  4  Williams, Charlie       SO Saint John Paul the Gr1:03.56        1:04.06         11
-      31.70  32.36
-  5  Vannell, Morgan         SO St. Paul VI Catholic H1:05.04        1:05.62         10
-      31.66  33.96
-  6  Kellogg, Liam           SR Seton Swimming        1:10.74        1:10.45          9
-      33.70  36.75
-  7  Mahoney, Sean           SO St. Paul VI Catholic HS    NT        1:12.85          7
-      35.23  37.62
-  8  Collins, Jacob          JR Saint John Paul the Gr1:27.47        1:23.37          5
-  9  Halisky, Liam            8 Seton Swimming        1:22.09        1:24.60          4
-      40.92  43.68
----  Dealey, Joey            SO Seton Swimming        1:23.00       X1:19.30           
-      37.41  41.89
----  Newbold, Lane           JR Saint John Paul the Gr1:30.00       X1:22.40           
----  Bauer, Greg              7 Seton Swimming        1:49.03       X1:29.71           
-      43.91  45.80
-Seton School                          HY-TEK's MEET MANAGER 8.0 - 10:33 PM  1/23/2021  Pag
-                     2021 NoVa Catholic Invitational Championship - 1/16/2021
-                             Results - NoVa Catholic Champs Swimming
----  Donovan, Patrick        FR Saint John Paul the Gr1:35.00       X1:36.48           
----  Morales, Anthony         7 Seton Swimming        1:47.12       X1:39.42           
-      49.78  49.64
----  Hartung, Peter           8 Seton Swimming        2:06.49       X2:01.93           
-      55.95 1:05.9
----  Hurley, Daniel           7 Seton Swimming        2:27.52       X2:07.82           
-      59.97 1:07.8
----  Ghering, Christian       8 Seton Swimming        1:55.00       X2:19.09           
----  McCardell, Aidan         7 Seton Swimming        2:54.06       X2:39.87           
-    1:18.55 1:21.3
----  Miller, Dominic         FR Seton Swimming        1:20.46             DQ           
-      36.55  42.54
----  Albin, Jed              FR Seton Swimming        1:29.28            XDQ           
-      41.93  43.45
----  Kelly, Kieran            8 Seton Swimming        1:51.07            XDQ           
+     Name                    Yr School                 Seed Time  Finals Time      Points
+   1 Manley, Adam            SO St. Paul VI Catholic HS    58.09        59.16        16
+   2 Ong, Marcus             JR Saint John Paul the Great1:03.25      1:02.93        13
+   3 Wilson, Evan            SR Seton Swimming           1:03.14      1:03.28        12
+   4 Williams, Charlie       SO Saint John Paul the Great1:03.56      1:04.06        11
+   5 Vannell, Morgan         SO St. Paul VI Catholic HS  1:05.04      1:05.62        10
+   6 Kellogg, Liam           SR Seton Swimming           1:10.74      1:10.45         9
+   7 Mahoney, Sean           SO St. Paul VI Catholic HS       NT      1:12.85         7
+   8 Collins, Jacob          JR Saint John Paul the Great1:27.47      1:23.37         5
+   9 Halisky, Liam            8 Seton Swimming           1:22.09      1:24.60         4
+ --- Dealey, Joey            SO Seton Swimming           1:23.00     X1:19.30          
+ --- Newbold, Lane           JR Saint John Paul the Great1:30.00     X1:22.40          
+ --- Bauer, Greg              7 Seton Swimming           1:49.03     X1:29.71          
+ --- Donovan, Patrick        FR Saint John Paul the Great1:35.00     X1:36.48          
+ --- Morales, Anthony         7 Seton Swimming           1:47.12     X1:39.42          
+ --- Hartung, Peter           8 Seton Swimming           2:06.49     X2:01.93          
+ --- Hurley, Daniel           7 Seton Swimming           2:27.52     X2:07.82          
+ --- Ghering, Christian       8 Seton Swimming           1:55.00     X2:19.09          
+ --- McCardell, Aidan         7 Seton Swimming           2:54.06     X2:39.87          
+ --- Miller, Dominic         FR Seton Swimming           1:20.46           DQ          
+ --- Albin, Jed              FR Seton Swimming           1:29.28          XDQ          
+ --- Kelly, Kieran            8 Seton Swimming           1:51.07          XDQ          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 20  Girls 100 Yard Backstroke
-  NoVA Cath:  57.66 +  1/11/2020Paige Hall                    O'Connell
-    Name                     Yr School               Seed Time  Finals Time         Point
-  1  Garvey, Lucy            JR Seton Swimming        1:06.08        1:05.75         16
-      32.11  33.64
-  2  McKinley, Lilia         FR St. Paul VI Catholic H1:05.87        1:07.55         13
-      32.92  34.63
-  3  Florit, Alexis          SO St. Paul VI Catholic H1:10.26        1:11.21         12
-      34.10  37.11
-  4  Daniel, Isabella        SR Saint John Paul the Gr1:11.83        1:11.71         11
-      34.40  37.31
-  5  McLaury, Eve            FR St. Paul VI Catholic HS    NT        1:12.82         10
-      34.53  38.29
-(Event 20  Girls 100 Yard Backstroke)
-    Name                     Yr School               Seed Time  Finals Time         Point
-  6  James, Helen             8 Oakcrest School Charge1:15.89        1:14.62          9
-      36.26  38.36
-  7  Hudson, Ava             FR Seton Swimming        1:16.21        1:16.12          7
-      36.78  39.34
-  8  Oswald, Jacqueline      SO Seton Swimming        1:21.55        1:17.43          5
-  9  Weina, Virginia         SO Saint John Paul the Gr1:19.69        1:17.53          4
-      38.24  39.29
- 10  O'Malley, Mary          JR Seton Swimming        1:19.41        1:18.19          3
- 11  Sypal, Elizabeth        SR Oakcrest School Charge1:22.15        1:19.15          2
- 12  Brown, Lauren           FR St. Paul VI Catholic H1:19.40        1:21.88          1
-      39.04  42.84
- 13  Mudd, Mary-Finan        JR St. Gertrude High Scho1:23.40        1:25.90           
-      41.58  44.32
- 14  Vitkovsky, Maggie       FR Saint John Paul the Gr1:20.00        1:28.01           
-      43.17  44.84
- 15  Moore, Mary Lou         FR Saint John Paul the Gr1:22.00        1:28.20           
-      43.71  44.49
- 16  Rutherford, Lilly       SO Oakcrest School Charge1:26.71        1:29.19           
-      43.26  45.93
- 17  Sypal, Clare             8 Oakcrest School Charge1:25.45        1:34.29           
-      45.37  48.92
----  Fifield, Haley           8 Seton Swimming        1:22.31       X1:20.71           
----  Halisky, Amelie         SO Seton Swimming        1:22.70       X1:21.94           
-      38.62  43.32
----  Garvey, Anastasia        7 Seton Swimming        1:22.91       X1:22.46           
-      40.32  42.14
-Seton School                          HY-TEK's MEET MANAGER 8.0 - 10:33 PM  1/23/2021  Pag
-                     2021 NoVa Catholic Invitational Championship - 1/16/2021
-                             Results - NoVa Catholic Champs Swimming
----  Caputo, Faith           FR St. Paul VI Catholic HS    NT       X1:25.90           
-      41.08  44.82
----  Mitchell, Caroline      JR St. Paul VI Catholic HS    NT       X1:32.42           
-      44.34  48.08
----  Brox, Emma              JR Seton Swimming        1:39.37       X1:34.56           
-      44.09  50.47
----  Waldron, Rose            8 Seton Swimming        1:38.34       X1:38.37           
-      45.71  52.66
----  Runyon, Emily           FR Saint John Paul the Gr1:25.00       X1:39.06           
-      48.62  50.44
----  Bingham, Mariana         6 Seton Family Homeschoo1:56.15       X1:39.21           
-      48.83  50.38
----  Harkness, Amelia         8 Oakcrest School Charge1:34.55       X1:40.43           
----  Hartung, Virginia       SR Seton Swimming        1:46.28       X1:43.50           
-      48.80  54.70
----  Halisky, Sophia          6 Seton Family Homeschoo1:53.10       X1:46.01           
-      50.75  55.26
----  Guiterrez, Ana          SO Saint John Paul the Gr1:25.00       X1:46.88           
----  DeWolf, Rebekah         JR Seton Swimming        1:58.83       X1:55.10           
-      52.03 1:03.0
----  Pai, Esha               FR Saint John Paul the Gr1:40.00       X1:55.35           
----  Witter, Christina        7 Seton Swimming        2:04.11       X1:59.75           
-      55.71 1:04.0
----  McCardell, Moira        FR Seton Swimming        1:58.07       X2:10.12           
-    1:04.46 1:05.6
----  Blanchette, Nora         7 Seton Swimming        2:13.18       X2:12.12           
-(Event 20  Girls 100 Yard Backstroke)
-    Name                     Yr School               Seed Time  Finals Time         Point
----  Herrick, Julia           8 Oakcrest School Charge1:30.22            XDQ           
-      49.56  56.88
----  Gonzalez, Jacinta       JR Seton Swimming        2:20.44            XDQ           
-    1:02.41 1:05.6
----  Guenther, Louise        FR Oakcrest School Charge1:34.00           XDNF           
+     Name                    Yr School                 Seed Time  Finals Time      Points
+   1 Garvey, Lucy            JR Seton Swimming           1:06.08      1:05.75        16
+   2 McKinley, Lilia         FR St. Paul VI Catholic HS  1:05.87      1:07.55        13
+   3 Florit, Alexis          SO St. Paul VI Catholic HS  1:10.26      1:11.21        12
+   4 Daniel, Isabella        SR Saint John Paul the Great1:11.83      1:11.71        11
+   5 McLaury, Eve            FR St. Paul VI Catholic HS       NT      1:12.82        10
+   6 James, Helen             8 Oakcrest School Chargers 1:15.89      1:14.62         9
+   7 Hudson, Ava             FR Seton Swimming           1:16.21      1:16.12         7
+   8 Oswald, Jacqueline      SO Seton Swimming           1:21.55      1:17.43         5
+   9 Weina, Virginia         SO Saint John Paul the Great1:19.69      1:17.53         4
+  10 O'Malley, Mary          JR Seton Swimming           1:19.41      1:18.19         3
+  11 Sypal, Elizabeth        SR Oakcrest School Chargers 1:22.15      1:19.15         2
+  12 Brown, Lauren           FR St. Paul VI Catholic HS  1:19.40      1:21.88         1
+  13 Mudd, Mary-Finan        JR St. Gertrude High School 1:23.40      1:25.90          
+  14 Vitkovsky, Maggie       FR Saint John Paul the Great1:20.00      1:28.01          
+  15 Moore, Mary Lou         FR Saint John Paul the Great1:22.00      1:28.20          
+  16 Rutherford, Lilly       SO Oakcrest School Chargers 1:26.71      1:29.19          
+  17 Sypal, Clare             8 Oakcrest School Chargers 1:25.45      1:34.29          
+ --- Fifield, Haley           8 Seton Swimming           1:22.31     X1:20.71          
+ --- Halisky, Amelie         SO Seton Swimming           1:22.70     X1:21.94          
+ --- Garvey, Anastasia        7 Seton Swimming           1:22.91     X1:22.46          
+ --- Caputo, Faith           FR St. Paul VI Catholic HS       NT     X1:25.90          
+ --- Mitchell, Caroline      JR St. Paul VI Catholic HS       NT     X1:32.42          
+ --- Brox, Emma              JR Seton Swimming           1:39.37     X1:34.56          
+ --- Waldron, Rose            8 Seton Swimming           1:38.34     X1:38.37          
+ --- Runyon, Emily           FR Saint John Paul the Great1:25.00     X1:39.06          
+ --- Bingham, Mariana         6 Seton Family Homeschool  1:56.15     X1:39.21          
+ --- Harkness, Amelia         8 Oakcrest School Chargers 1:34.55     X1:40.43          
+ --- Hartung, Virginia       SR Seton Swimming           1:46.28     X1:43.50          
+ --- Halisky, Sophia          6 Seton Family Homeschool  1:53.10     X1:46.01          
+ --- Guiterrez, Ana          SO Saint John Paul the Great1:25.00     X1:46.88          
+ --- DeWolf, Rebekah         JR Seton Swimming           1:58.83     X1:55.10          
+ --- Pai, Esha               FR Saint John Paul the Great1:40.00     X1:55.35          
+ --- Witter, Christina        7 Seton Swimming           2:04.11     X1:59.75          
+ --- McCardell, Moira        FR Seton Swimming           1:58.07     X2:10.12          
+ --- Blanchette, Nora         7 Seton Swimming           2:13.18     X2:12.12          
+ --- Herrick, Julia           8 Oakcrest School Chargers 1:30.22          XDQ          
+ --- Gonzalez, Jacinta       JR Seton Swimming           2:20.44          XDQ          
+ --- Guenther, Louise        FR Oakcrest School Chargers 1:34.00         XDNF          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 21  Boys 100 Yard Breaststroke
-  NoVA Cath:  57.93 +  1/11/2020Tyler Lentine                 O'Connell
-    Name                     Yr School               Seed Time  Finals Time         Point
-  1  Johnson, Matthew        SO St. Paul VI Catholic H1:00.21        1:00.73         16
-      29.11  31.62
-  2  Hopkins, Liam           JR Saint John Paul the Gr1:10.89        1:05.95         13
-      30.93  35.02
-  3  Doty, Jack              SR Saint John Paul the Gr1:07.72        1:06.12         12
-      31.24  34.88
-  4  Luevano, Nathan         SO Seton Swimming        1:12.61        1:11.94         11
-      33.70  38.24
-  5  Brox, JJ                SO Seton Swimming        1:14.19        1:16.49         10
-      35.71  40.78
-  6  Kintz, John Paul        JR Saint John Paul the Gr1:22.50        1:16.76          9
-      35.77  40.99
-  7  Duren, Jack             SO St. Paul VI Catholic HS    NT        1:20.08          7
-      37.39  42.69
-  8  Herrera, Nick           SR St. Paul VI Catholic H1:20.31        1:22.43          5
-      38.37  44.06
-  9  Bruzzini, Matthew       SR Saint John Paul the Gr1:22.83        1:23.28          4
-      37.71  45.57
- 10  Lynch, Chris            FR Seton Swimming        1:26.16        1:25.50          3
-      39.22  46.28
-Seton School                          HY-TEK's MEET MANAGER 8.0 - 10:33 PM  1/23/2021  Pag
-                     2021 NoVa Catholic Invitational Championship - 1/16/2021
-                             Results - NoVa Catholic Champs Swimming
- 11  Philippart, Ben         JR St. Paul VI Catholic H1:20.87        1:26.58          2
-      40.01  46.57
- 12  Kellogg, Seth            8 Seton Swimming        1:31.85        1:28.10          1
-      41.64  46.46
----  Sjurset, Andrew         JR Saint John Paul the Gr1:25.00       X1:23.96           
-      38.60  45.36
----  Hartung, Patrick        SO Seton Swimming        1:34.39       X1:27.83           
-      41.03  46.80
----  Nagurny, Nicolas        FR Seton Swimming        1:41.21       X1:29.73           
-      41.11  48.62
----  Ketron, Jak             SR St. Paul VI Catholic HS    NT       X1:39.48           
-      45.15  54.33
----  Buckreis, Charlie       FR St. Paul VI Catholic HS    NT       X1:43.79           
----  Yeo, Dominic            JR Saint John Paul the Gr1:25.00            XDQ           
-      38.51  44.52
+     Name                    Yr School                 Seed Time  Finals Time      Points
+   1 Johnson, Matthew        SO St. Paul VI Catholic HS  1:00.21      1:00.73        16
+   2 Hopkins, Liam           JR Saint John Paul the Great1:10.89      1:05.95        13
+   3 Doty, Jack              SR Saint John Paul the Great1:07.72      1:06.12        12
+   4 Luevano, Nathan         SO Seton Swimming           1:12.61      1:11.94        11
+   5 Brox, JJ                SO Seton Swimming           1:14.19      1:16.49        10
+   6 Kintz, John Paul        JR Saint John Paul the Great1:22.50      1:16.76         9
+   7 Duren, Jack             SO St. Paul VI Catholic HS       NT      1:20.08         7
+   8 Herrera, Nick           SR St. Paul VI Catholic HS  1:20.31      1:22.43         5
+   9 Bruzzini, Matthew       SR Saint John Paul the Great1:22.83      1:23.28         4
+  10 Lynch, Chris            FR Seton Swimming           1:26.16      1:25.50         3
+  11 Philippart, Ben         JR St. Paul VI Catholic HS  1:20.87      1:26.58         2
+  12 Kellogg, Seth            8 Seton Swimming           1:31.85      1:28.10         1
+ --- Sjurset, Andrew         JR Saint John Paul the Great1:25.00     X1:23.96          
+ --- Hartung, Patrick        SO Seton Swimming           1:34.39     X1:27.83          
+ --- Nagurny, Nicolas        FR Seton Swimming           1:41.21     X1:29.73          
+ --- Ketron, Jak             SR St. Paul VI Catholic HS       NT     X1:39.48          
+ --- Buckreis, Charlie       FR St. Paul VI Catholic HS       NT     X1:43.79          
+ --- Yeo, Dominic            JR Saint John Paul the Great1:25.00          XDQ          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 22  Girls 100 Yard Breaststroke
-  NoVA Cath:1:05.72 +  1/14/2017Anna Shumate                  Ireton
-    Name                     Yr School               Seed Time  Finals Time         Point
-  1  Kirby, Ashley           SO St. Paul VI Catholic H1:08.97        1:08.73         16
-      31.95  36.78
-  2  Geiran, Mairead         SR Saint John Paul the Gr1:09.38        1:12.38         13
-      33.86  38.52
- *3  Decatur, Selah          FR Oakcrest School Charge1:14.53        1:15.10         11 50
-      35.20  39.90
-(Event 22  Girls 100 Yard Breaststroke)
-    Name                     Yr School               Seed Time  Finals Time         Point
- *3  Condon, Clara            8 Seton Swimming        1:09.69        1:15.10         11 50
-      35.45  39.65
-  5  Koler, Jillian          JR Saint John Paul the Gr1:15.69        1:16.82         10
-      36.49  40.33
-  6  Roder, Mia              SO Saint John Paul the Gr1:14.84        1:17.77          9
-      36.97  40.80
-  7  Iaci, Eliana            FR Saint John Paul the Gr1:18.00        1:20.17          7
-      38.29  41.88
-  8  Florit, Adrianna        JR St. Paul VI Catholic H1:20.16        1:20.90          5
-      38.02  42.88
-  9  Waldron, Clare          JR Seton Swimming        1:22.76        1:21.05          4
-      37.73  43.32
- 10  Schroder, Ashley        JR Oakcrest School Charge1:23.86        1:21.64          3
-      37.73  43.91
- 11  Adams, Abby             JR Oakcrest School Charge1:21.33        1:22.99          2
-      38.34  44.65
- 12  Pennefather, Lucy        8 Seton Swimming        1:24.21        1:23.55          1
-      38.94  44.61
- 13  Zadnik, Sophia          JR Seton Swimming        1:25.24        1:28.81           
-      42.51  46.30
- 14  Gegg, Avery             JR St. Paul VI Catholic H1:22.06        1:29.54           
-      40.66  48.88
- 15  Mochen, Catherine        8 Oakcrest School Charge1:29.68        1:32.01           
-      42.35  49.66
- 16  Upchurch, Vivian        JR St. Gertrude High Scho1:30.56        1:36.88           
-      44.47  52.41
----  Zadnik, Madelyn         FR Seton Swimming        1:34.67       X1:29.84           
-      41.55  48.29
----  Wiliams, Fiona          SR Saint John Paul the Gr1:30.00       X1:34.59           
-      45.03  49.56
-Seton School                          HY-TEK's MEET MANAGER 8.0 - 10:33 PM  1/23/2021  Pag
-                     2021 NoVa Catholic Invitational Championship - 1/16/2021
-                             Results - NoVa Catholic Champs Swimming
----  Wyckoff, Brynn           8 Oakcrest School Charge1:30.22       X1:34.69           
-      43.01  51.68
----  McGovern, Therese       JR Oakcrest School Charge1:34.30       X1:36.50           
-      45.60  50.90
----  Atkinson, Julia         FR Seton Swimming        1:37.76       X1:39.79           
-      46.21  53.58
----  Novecosky, Jenna        SO Seton Swimming        2:07.81       X1:42.49           
-      48.75  53.74
----  Bauer, Molly             8 Seton Swimming        2:18.57       X1:44.41           
-      49.56  54.85
----  Osilka, Mary Claire      7 Seton Swimming        1:54.90       X1:44.87           
-      49.64  55.23
----  Vander Woude, Jojo       8 Seton Swimming        2:04.35            XDQ           
-      59.47 1:07.9
----  Munsell, Mary Catherin   7 Seton Swimming        1:33.08            XDQ           
-      44.38  49.99
+     Name                    Yr School                 Seed Time  Finals Time      Points
+   1 Kirby, Ashley           SO St. Paul VI Catholic HS  1:08.97      1:08.73        16
+   2 Geiran, Mairead         SR Saint John Paul the Great1:09.38      1:12.38        13
+  *3 Decatur, Selah          FR Oakcrest School Chargers 1:14.53      1:15.10        11 50
+  *3 Condon, Clara            8 Seton Swimming           1:09.69      1:15.10        11 50
+   5 Koler, Jillian          JR Saint John Paul the Great1:15.69      1:16.82        10
+   6 Roder, Mia              SO Saint John Paul the Great1:14.84      1:17.77         9
+   7 Iaci, Eliana            FR Saint John Paul the Great1:18.00      1:20.17         7
+   8 Florit, Adrianna        JR St. Paul VI Catholic HS  1:20.16      1:20.90         5
+   9 Waldron, Clare          JR Seton Swimming           1:22.76      1:21.05         4
+  10 Schroder, Ashley        JR Oakcrest School Chargers 1:23.86      1:21.64         3
+  11 Adams, Abby             JR Oakcrest School Chargers 1:21.33      1:22.99         2
+  12 Pennefather, Lucy        8 Seton Swimming           1:24.21      1:23.55         1
+  13 Zadnik, Sophia          JR Seton Swimming           1:25.24      1:28.81          
+  14 Gegg, Avery             JR St. Paul VI Catholic HS  1:22.06      1:29.54          
+  15 Mochen, Catherine        8 Oakcrest School Chargers 1:29.68      1:32.01          
+  16 Upchurch, Vivian        JR St. Gertrude High School 1:30.56      1:36.88          
+ --- Zadnik, Madelyn         FR Seton Swimming           1:34.67     X1:29.84          
+ --- Wiliams, Fiona          SR Saint John Paul the Great1:30.00     X1:34.59          
+ --- Wyckoff, Brynn           8 Oakcrest School Chargers 1:30.22     X1:34.69          
+ --- McGovern, Therese       JR Oakcrest School Chargers 1:34.30     X1:36.50          
+ --- Atkinson, Julia         FR Seton Swimming           1:37.76     X1:39.79          
+ --- Novecosky, Jenna        SO Seton Swimming           2:07.81     X1:42.49          
+ --- Bauer, Molly             8 Seton Swimming           2:18.57     X1:44.41          
+ --- Osilka, Mary Claire      7 Seton Swimming           1:54.90     X1:44.87          
+ --- Vander Woude, Jojo       8 Seton Swimming           2:04.35          XDQ          
+ --- Munsell, Mary Catherin   7 Seton Swimming           1:33.08          XDQ          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 23  Boys 400 Yard Freestyle Relay
-  NoVA Cath:3:22.40 +  1/12/2019Paul VI Catholic High School  Paul VI
-                                H Ryu, J Philippart, J Houser, A Lamb
-    Team                        Relay                Seed Time  Finals Time         Point
-  1  St. Paul VI Catholic H         A                 3:19.57        3:37.35         32
-      1) Ruyle, Ryan JR    2) Vannell, Morgan SO3) Manley, Adam SO   4) Johnson, Matthew S
-      25.89  54.40  26.88  57.88  25.12  53.26  25.13  51.81
-(Event 23  Boys 400 Yard Freestyle Relay)
-    Team                        Relay                Seed Time  Finals Time         Point
-  2  Seton Swimming                 A                 3:53.75        3:57.77         26
-      1) Wilson, Joe SO    2) Hudson, David FR  3) Wilson, Evan SR   4) Dalrymple, Jerry S
-      27.60  59.00  26.70 1:07.5  19.28  51.97  27.44  59.21
-  3  St. Paul VI Catholic H         B                 4:20.00        4:14.98         24
-      1) Mahoney, Sean SO  2) Trinidad, Noah JR 3) Wilson, Gabe SO   4) Duren, Jack SO
-      29.89 1:03.6  31.46 1:06.9  30.18 1:05.0  27.21  59.39
-  4  Seton Swimming                 B                 4:21.65        4:19.65         22
-      1) Brox, Michael 8   2) Konstanty, Peter F3) Fioramonti, Mick F4) Dealey, Joey SO
-      31.56 1:07.2  30.45 1:04.5  30.90 1:05.7  15.44 1:02.0
-  5  Saint John Paul the Gr         A                 4:35.00        4:39.72         20
-      1) Bruzzini, Matthew 2) Collins, Jacob JR 3) Donovan, Patrick F4) Newbold, Lane JR
-      32.05 1:10.1  31.33 1:08.0  35.46 1:16.3  30.75 1:05.0
+     Team                       Relay                  Seed Time  Finals Time      Points
+   1 St. Paul VI Catholic H         A                    3:19.57      3:37.35        32
+      1) Ruyle, Ryan JR     2) Vannell, Morgan SO 3) Manley, Adam SO    4) Johnson, Matthew SO
+   2 Seton Swimming                 A                    3:53.75      3:57.77        26
+      1) Wilson, Joe SO     2) Hudson, David FR   3) Wilson, Evan SR    4) Dalrymple, Jerry SR
+   3 St. Paul VI Catholic H         B                    4:20.00      4:14.98        24
+      1) Mahoney, Sean SO   2) Trinidad, Noah JR  3) Wilson, Gabe SO    4) Duren, Jack SO
+   4 Seton Swimming                 B                    4:21.65      4:19.65        22
+      1) Brox, Michael 8    2) Konstanty, Peter FR3) Fioramonti, Mick FR4) Dealey, Joey SO
+   5 Saint John Paul the Gr         A                    4:35.00      4:39.72        20
+      1) Bruzzini, Matthew S2) Collins, Jacob JR  3) Donovan, Patrick FR4) Newbold, Lane JR
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 24  Girls 400 Yard Freestyle Relay
-  NoVA Cath:3:43.78 +  1/11/2020St. Paul VI Catholic HS       Paul VI
-                                R Foley, A Foley, C Murphy, K Derasmo
-    Team                        Relay                Seed Time  Finals Time         Point
-  1  St. Paul VI Catholic H         A                 3:42.53        3:59.53         32
-      1) Murphy, Caroline S2) Brown, Laney SR   3) Vannell, Emma SR  4) Foley, Abigail SO
-      28.11  57.80  27.97 1:00.4  28.76 1:00.7  28.01 1:00.5
-  2  Seton Swimming                 A                 4:07.79        4:13.68         26
-      1) Testani, Angie 8  2) Bingham, Teresa JR3) Luevano, Isabelle 4) Flynn, Emily JR
-      28.80 1:01.7  30.97 1:05.3  29.57 1:02.6  29.51 1:03.9
-  3  Oakcrest School Charge         A                 4:21.90        4:18.52         24
-      1) Decatur, Selah FR 2) Schroder, Ashley J3) Adams, Abby JR    4) James, Helen 8
-      30.20 1:03.2  30.64 1:05.3  29.93 1:05.7  30.38 1:04.3
-  4  Seton Swimming                 B                 4:32.31        4:29.91         22
-      1) Pennefather, Lucy 2) Zadnik, Madelyn FR3) Mosimann, Teresa S4) Byers, Lily JR
-      33.42 1:09.5  31.08 1:08.5  30.57 1:06.0  30.46 1:05.7
-  5  Oakcrest School Charge         B                      NT        4:46.79         20
-      1) Meunier, Cecelia S2) McDonnell, Grace J3) Talavera, Maite SR4) Sypal, Elizabeth S
-Seton School                          HY-TEK's MEET MANAGER 8.0 - 10:33 PM  1/23/2021  Pag
-                     2021 NoVa Catholic Invitational Championship - 1/16/2021
-                             Results - NoVa Catholic Champs Swimming
-      32.90 1:10.0  35.37 1:14.6  35.74 1:16.6 1:05.4
-  6  Saint John Paul the Gr         B                 4:30.00        4:56.96         18
-      1) White, Cecilia FR 2) Weina, Virginia SO3) Wiliams, Fiona SR 4) Guiterrez, Ana SO
-      32.37 1:08.6  33.71 1:10.0  35.21 1:15.0  37.48 1:23.1
----  Oakcrest School Charge         C                      NT       X5:10.11           
-      1) Herrick, Julia 8  2) Rutherford, Lilly 3) Sypal, Clare 8    4) Vogler, Kate SO
-      38.66 1:26.6  29.83 1:10.1  16.46
----  Saint John Paul the Gr         A                 4:13.54             DQ           
-      1) Zoebel, Alexandra 2) Guiterrez, Ana Sop3) Iaci, Eliana FR   4) Flores, Angelea SO
-      31.35 1:07.9  29.36 1:06.2  31.08 1:04.6  27.94  59.32
----  St. Paul VI Catholic H         B                 4:02.00             DQ           
-      1) McKinley, Lilia FR2) Mont, Emma FR     3) Florit, Alexis SO 4) McKinley, Tess FR
-      29.67 1:02.8  28.83 1:01.7  30.87 1:03.7  28.89 1:01.9
----  Saint John Paul the Gr         C                 5:06.00            XDQ           
-      1) Periera, Sophia FR2) Pai, Esha FR      3) Moore, Mary Lou FR4) Runyon, Emily FR
-      34.13 1:18.0  42.15 1:36.5  27.83 1:07.7  34.16 1:13.9
+     Team                       Relay                  Seed Time  Finals Time      Points
+   1 St. Paul VI Catholic H         A                    3:42.53      3:59.53        32
+      1) Murphy, Caroline SO2) Brown, Laney SR    3) Vannell, Emma SR   4) Foley, Abigail SO
+   2 Seton Swimming                 A                    4:07.79      4:13.68        26
+      1) Testani, Angie 8   2) Bingham, Teresa JR 3) Luevano, Isabelle J4) Flynn, Emily JR
+   3 Oakcrest School Charge         A                    4:21.90      4:18.52        24
+      1) Decatur, Selah FR  2) Schroder, Ashley JR3) Adams, Abby JR     4) James, Helen 8
+   4 Seton Swimming                 B                    4:32.31      4:29.91        22
+      1) Pennefather, Lucy 82) Zadnik, Madelyn FR 3) Mosimann, Teresa SR4) Byers, Lily JR
+   5 Oakcrest School Charge         B                         NT      4:46.79        20
+      1) Meunier, Cecelia SO2) McDonnell, Grace JR3) Talavera, Maite SR 4) Sypal, Elizabeth SR
+   6 Saint John Paul the Gr         B                    4:30.00      4:56.96        18
+      1) White, Cecilia FR  2) Weina, Virginia SO 3) Wiliams, Fiona SR  4) Guiterrez, Ana SO
+ --- Oakcrest School Charge         C                         NT     X5:10.11          
+      1) Herrick, Julia 8   2) Rutherford, Lilly S3) Sypal, Clare 8     4) Vogler, Kate SO
+ --- Saint John Paul the Gr         A                    4:13.54           DQ          
+      1) Zoebel, Alexandra S2) Guiterrez, Ana Soph3) Iaci, Eliana FR    4) Flores, Angelea SO
+ --- St. Paul VI Catholic H         B                    4:02.00           DQ          
+      1) McKinley, Lilia FR 2) Mont, Emma FR      3) Florit, Alexis SO  4) McKinley, Tess FR
+ --- Saint John Paul the Gr         C                    5:06.00          XDQ          
+      1) Periera, Sophia FR 2) Pai, Esha FR       3) Moore, Mary Lou FR 4) Runyon, Emily FR
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 101  Boys 100 Yard Freestyle Time Trial
-  NoVA Cath:  48.06 +  1/10/2015Chris Outlaw                  O'Connell
-    Name                     Yr School               Seed Time  Finals Time
----  Santschi, Jack          SR Seton Swimming          53.59         X52.92           
-      24.73  28.19
-(Event 101  Boys 100 Yard Freestyle Time Trial)
-    Name                     Yr School               Seed Time  Finals Time
----  Dalrymple, Jerry        SR Seton Swimming          53.87         X55.27           
-      25.71  29.56
----  Wilson, Joe             SO Seton Swimming          55.33         X55.90           
-      26.28  29.62
----  Luevano, Nathan         SO Seton Swimming          56.80         X56.09           
-      27.04  29.05
----  Wilson, Evan            SR Seton Swimming          57.61         X56.47           
-      26.67  29.80
----  Kellogg, Liam           SR Seton Swimming          57.01         X57.31           
-      26.63  30.68
----  Hudson, David           FR Seton Swimming          59.40       X1:00.08           
-      28.26  31.82
----  Brox, JJ                SO Seton Swimming        1:01.26       X1:01.76           
-      29.05  32.71
+     Name                    Yr School                 Seed Time  Finals Time
+ --- Santschi, Jack          SR Seton Swimming             53.59       X52.92          
+ --- Dalrymple, Jerry        SR Seton Swimming             53.87       X55.27          
+ --- Wilson, Joe             SO Seton Swimming             55.33       X55.90          
+ --- Luevano, Nathan         SO Seton Swimming             56.80       X56.09          
+ --- Wilson, Evan            SR Seton Swimming             57.61       X56.47          
+ --- Kellogg, Liam           SR Seton Swimming             57.01       X57.31          
+ --- Hudson, David           FR Seton Swimming             59.40     X1:00.08          
+ --- Brox, JJ                SO Seton Swimming           1:01.26     X1:01.76          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 102  Girls 100 Yard Freestyle Time Trial
-  NoVA Cath:  55.49 +  1/10/2015Siena Shannon                 Paul VI
-    Name                     Yr School               Seed Time  Finals Time
----  Testani, Angie           8 Seton Swimming        1:02.52         X59.93           
-      28.41  31.52
----  Garvey, Lucy            JR Seton Swimming        1:01.29         X59.98           
-      28.30  31.68
----  Iaci, Eliana            FR Saint John Paul the Gre    NT       X1:01.38           
-      29.53  31.85
----  Condon, Clara            8 Seton Swimming        1:02.45       X1:01.63           
-      29.59  32.04
----  Luevano, Isabelle       JR Seton Swimming        1:00.29       X1:02.29           
-      29.62  32.67
----  O'Malley, Mary          JR Seton Swimming        1:07.17       X1:02.76           
-      29.60  33.16
----  Bingham, Teresa         JR Seton Swimming        1:03.46       X1:03.54           
-      30.24  33.30
----  Flynn, Emily            JR Seton Swimming        1:01.52       X1:04.01           
-Seton School                          HY-TEK's MEET MANAGER 8.0 - 10:33 PM  1/23/2021  Pag
-                     2021 NoVa Catholic Invitational Championship - 1/16/2021
-                             Results - NoVa Catholic Champs Swimming
-      29.80  34.21
----  Gibbons, Maggie         FR Seton Swimming        1:05.95       X1:04.27           
-      31.02  33.25
----  Byers, Lily             JR Seton Swimming        1:05.68       X1:06.85           
-      31.27  35.58
----  Sproull, Molly          JR St. Gertrude High Scho1:02.32       X1:06.95           
-      32.78  34.17
----  Upchurch, Vivian        JR St. Gertrude High Scho1:02.57       X1:10.00           
-      32.17  37.83
----  Mudd, Mary-Finan        JR St. Gertrude High Scho1:12.07       X1:14.63           
-      35.06  39.57
+     Name                    Yr School                 Seed Time  Finals Time
+ --- Testani, Angie           8 Seton Swimming           1:02.52       X59.93          
+ --- Garvey, Lucy            JR Seton Swimming           1:01.29       X59.98          
+ --- Iaci, Eliana            FR Saint John Paul the Great     NT     X1:01.38          
+ --- Condon, Clara            8 Seton Swimming           1:02.45     X1:01.63          
+ --- Luevano, Isabelle       JR Seton Swimming           1:00.29     X1:02.29          
+ --- O'Malley, Mary          JR Seton Swimming           1:07.17     X1:02.76          
+ --- Bingham, Teresa         JR Seton Swimming           1:03.46     X1:03.54          
+ --- Flynn, Emily            JR Seton Swimming           1:01.52     X1:04.01          
+ --- Gibbons, Maggie         FR Seton Swimming           1:05.95     X1:04.27          
+ --- Byers, Lily             JR Seton Swimming           1:05.68     X1:06.85          
+ --- Sproull, Molly          JR St. Gertrude High School 1:02.32     X1:06.95          
+ --- Upchurch, Vivian        JR St. Gertrude High School 1:02.57     X1:10.00          
+ --- Mudd, Mary-Finan        JR St. Gertrude High School 1:12.07     X1:14.63          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 103  Boys 50 Yard Freestyle Time Trial
-  NoVA Cath:  21.41 +  1/10/2015Townley Haas                  BCP
-    Name                     Yr School               Seed Time  Finals Time
-  1  Ketron, Jak             SR St. Paul VI Catholic HS    NT          30.27           
----  Wilson, Joe             SO Seton Swimming          25.60         X24.62           
----  Wilson, Evan            SR Seton Swimming          25.45         X24.95           
----  Kellogg, Liam           SR Seton Swimming          24.64         X24.99           
----  Luevano, Nathan         SO Seton Swimming          25.59         X25.47           
+     Name                    Yr School                 Seed Time  Finals Time
+   1 Ketron, Jak             SR St. Paul VI Catholic HS       NT        30.27          
+ --- Wilson, Joe             SO Seton Swimming             25.60       X24.62          
+ --- Wilson, Evan            SR Seton Swimming             25.45       X24.95          
+ --- Kellogg, Liam           SR Seton Swimming             24.64       X24.99          
+ --- Luevano, Nathan         SO Seton Swimming             25.59       X25.47          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 104  Girls 50 Yard Freestyle Time Trial
-  NoVA Cath:  24.99 +  1/10/2015Anna Shumate                  Ireton
-    Name                     Yr School               Seed Time  Finals Time
----  Testani, Angie           8 Seton Swimming          27.93         X27.63           
----  Garvey, Lucy            JR Seton Swimming          28.20         X28.25           
----  Condon, Clara            8 Seton Swimming          28.70         X28.58           
----  Gibbons, Maggie         FR Seton Swimming          28.55         X28.96           
----  Flynn, Emily            JR Seton Swimming          27.62         X29.15           
----  O'Malley, Mary          JR Seton Swimming          29.81         X29.28           
----  Bingham, Teresa         JR Seton Swimming          29.12         X29.36           
----  Mosimann, Teresa        SR Seton Swimming          29.11         X30.59           
+     Name                    Yr School                 Seed Time  Finals Time
+ --- Testani, Angie           8 Seton Swimming             27.93       X27.63          
+ --- Garvey, Lucy            JR Seton Swimming             28.20       X28.25          
+ --- Condon, Clara            8 Seton Swimming             28.70       X28.58          
+ --- Gibbons, Maggie         FR Seton Swimming             28.55       X28.96          
+ --- Flynn, Emily            JR Seton Swimming             27.62       X29.15          
+ --- O'Malley, Mary          JR Seton Swimming             29.81       X29.28          
+ --- Bingham, Teresa         JR Seton Swimming             29.12       X29.36          
+ --- Mosimann, Teresa        SR Seton Swimming             29.11       X30.59          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 105  Boys 50 Yard Butterfly Time Trial
-    Name                     Yr School               Seed Time  Finals Time
----  Dalrymple, Jerry        SR Seton Swimming          27.82         X26.55           
----  Wilson, Joe             SO Seton Swimming          27.72         X26.64           
+     Name                    Yr School                 Seed Time  Finals Time
+ --- Dalrymple, Jerry        SR Seton Swimming             27.82       X26.55          
+ --- Wilson, Joe             SO Seton Swimming             27.72       X26.64          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 106  Girls 50 Yard Butterfly Time Trial
-    Name                     Yr School               Seed Time  Finals Time
----  Testani, Angie           8 Seton Swimming          30.00         X30.54           
----  Condon, Clara            8 Seton Swimming          30.00         X30.70           
----  Byers, Lily             JR Seton Swimming          32.00         X31.73           
----  O'Malley, Mary          JR Seton Swimming          32.00         X31.79           
----  Luevano, Isabelle       JR Seton Swimming          31.00         X32.11           
----  Bingham, Teresa         JR Seton Swimming          31.00         X32.18           
----  Sypal, Elizabeth        SR Oakcrest School Charger    NT         X32.63           
----  Gibbons, Maggie         FR Seton Swimming          32.00         X32.76           
+     Name                    Yr School                 Seed Time  Finals Time
+ --- Testani, Angie           8 Seton Swimming             30.00       X30.54          
+ --- Condon, Clara            8 Seton Swimming             30.00       X30.70          
+ --- Byers, Lily             JR Seton Swimming             32.00       X31.73          
+ --- O'Malley, Mary          JR Seton Swimming             32.00       X31.79          
+ --- Luevano, Isabelle       JR Seton Swimming             31.00       X32.11          
+ --- Bingham, Teresa         JR Seton Swimming             31.00       X32.18          
+ --- Sypal, Elizabeth        SR Oakcrest School Chargers      NT       X32.63          
+ --- Gibbons, Maggie         FR Seton Swimming             32.00       X32.76          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 107  Boys 50 Yard Breaststroke Time Trial
-    Name                     Yr School               Seed Time  Finals Time
----  Luevano, Nathan         SO Seton Swimming          31.50         X32.39           
----  Kellogg, Liam           SR Seton Swimming          31.14         X33.59           
----  Brox, JJ                SO Seton Swimming          32.00         X33.99           
+     Name                    Yr School                 Seed Time  Finals Time
+ --- Luevano, Nathan         SO Seton Swimming             31.50       X32.39          
+ --- Kellogg, Liam           SR Seton Swimming             31.14       X33.59          
+ --- Brox, JJ                SO Seton Swimming             32.00       X33.99          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Seton School                         HY-TEK's MEET MANAGER 8.0 - 10:39 PM  1/23/2021  Page
+                    2021 NoVa Catholic Invitational Championship - 1/16/2021
+                                            Results
  
 Event 108  Girls 50 Yard Breaststroke Time Trial
-    Name                     Yr School               Seed Time  Finals Time
-Seton School                          HY-TEK's MEET MANAGER 8.0 - 10:33 PM  1/23/2021  Pag
-                     2021 NoVa Catholic Invitational Championship - 1/16/2021
-                             Results - NoVa Catholic Champs Swimming
----  Testani, Angie           8 Seton Swimming          32.44         X32.38           
----  Condon, Clara            8 Seton Swimming          32.26         X33.42           
-
-
-
+     Name                    Yr School                 Seed Time  Finals Time
+ --- Testani, Angie           8 Seton Swimming             32.44       X32.38          
+ --- Condon, Clara            8 Seton Swimming             32.26       X33.42          
 
 
 
