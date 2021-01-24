@@ -368,7 +368,9 @@ def process_main():
 
         if args.emptyresults:
             total_empty_results =  \
-                sst_results.generate_empty_results( output_dir )
+                sst_results.generate_empty_results( output_dir, False )
+                if args.awards:
+                    sst_results.generate_empty_results( output_dir, True )
 
         total_files_generated_results, total_crawler_files = \
                sst_results.process_result(  inputfile, 
