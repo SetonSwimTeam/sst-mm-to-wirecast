@@ -86,11 +86,11 @@ def process_result( meet_report_filename: str,
 
     # #                                 TIE? PLACE       LAST          FIRST     GR           SCHOOL           SEEDTIME|NT|NP    [xX]FINALTIME      POINTS
     #re_results_lane_ind  = re.compile('^([*]?\d{1,2})\s+([A-z\' \.]+, [A-z ]+?) ([A-Z0-9]{1,2})\s+([A-Z \'.].*?)([0-9:.]+|NT)\s+([0-9:.]+)\s*([X]?[0-9]*)')
-    re_results_lane_ind  = re.compile('^([*]?\d{1,2}|---)\s+([A-z\' \.]+, [A-z ]+?) ([A-Z0-9]{1,2})\s+([A-Z \'.].*?)([0-9:.]+|NT|NP)\s+([xX0-9:.]+)\s*([0-9]*)')
+    re_results_lane_ind  = re.compile('^([*]?\d{1,2}|---)\s+([A-z\' \.]+, [A-z ]+?) ([A-Z0-9]{1,2})\s+([A-Z \'.].*?)([0-9:.]+|NT|NP)\s+(([X]DQ)|[xX0-9:.]+)\s*([0-9]*)')
 
     #                                     TIE? PLACE   SCHOOL           RELAY     SEEDTIME|NT    FINALTIME     POINTS
     #re_results_lane_relay = re.compile('^([*]?\d{1,2})\s+([A-Z \'.].*)\s+([A-Z])\s+([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
-    re_results_lane_relay = re.compile('^([*]?\d{1,2}|---)\s+([A-Z \'.].*)\s+([A-Z])\s+([0-9:.]+|NT)\s+((XDQ)|[xX0-9:.]+)\s*([0-9]*)')
+    re_results_lane_relay = re.compile('^([*]?\d{1,2}|---)\s+([A-Z \'.].*)\s+([A-Z])\s+([0-9:.]+|NT)\s+(([X]DQ)|[xX0-9:.]+)\s*([0-9]*)')
 
     re_results_space_relay_name = re.compile(r'(\S)([2-4]\))')
     re_results_check_relay_name_line = re.compile('1\)')
@@ -244,6 +244,7 @@ def process_result( meet_report_filename: str,
                 place_line_list = re_results_lane_relay.findall(line)
 
                 if place_line_list:
+                    logging.debug("*** Found a Relay PLACE")
 
                     placeline_place     = str(place_line_list[0][0])
                     placeline_sch_long  = str(place_line_list[0][1])
