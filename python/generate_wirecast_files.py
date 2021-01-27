@@ -394,7 +394,12 @@ def process_main():
                                             args.crawler,
                                             args.championshipmeet,
                                             args.awards )
-
+        total_result_scores_generated = \
+         sst_scores.process_champsionship_results_score( inputfile, 
+                                                        output_dir, 
+                                                        license_name, 
+                                                        args.quote,
+                                                        args.numresults )
 
     #####################################################################################
     ## Generate wirecast files CHAMPSIONSHIP SCORES from a MEET SCORES txt file

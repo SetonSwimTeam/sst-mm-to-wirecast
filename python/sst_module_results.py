@@ -80,7 +80,7 @@ def process_result( meet_report_filename: str,
     output_list = []
     crawler_list = []
     crawler_str = ""
-    contimue_processing_current_event = True
+    continue_processing_current_event = True
 
     # re_results_lane = re.compile('^[*]?\d{1,2} ')
     # re_results_lane = re.compile('^--- ')
@@ -126,7 +126,7 @@ def process_result( meet_report_filename: str,
                 found_header_line = 1
                 
                 ## The start of the next event finished off the last event. Go write out the last event
-                if contimue_processing_current_event:
+                if continue_processing_current_event:
                     num_files = create_output_file( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display, awards )
                     num_files_generated += num_files
 
@@ -155,7 +155,7 @@ def process_result( meet_report_filename: str,
             #####################################################################################
             if line.lower().startswith(("event")):
                 logging.info(f"RESULTS: EVENT LINE: {line}")
-                contimue_processing_current_event = True
+                continue_processing_current_event = True
 
                 # # Starting a new event. Save crawler string for this past event in the list for later procesing
                 if event_num > 0:
@@ -184,7 +184,7 @@ def process_result( meet_report_filename: str,
             ##  Stop processing when this occurs.  We can't display even a single full page
             #####################################################################################
             if line.lower().startswith(("(event")):
-                contimue_processing_current_event = False
+                continue_processing_current_event = False
 
                 num_files = create_output_file( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display, awards )
                 num_files_generated += num_files
