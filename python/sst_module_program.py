@@ -87,7 +87,7 @@ def process_program( meet_report_filename: str,
 
     ## Search for case where team time butts up against seed time.  
     ## Need to add a space here so main regex works
-    re_program_space_team_seed = re.compile(r'([A-z])(X\d)')
+    re_program_space_team_seed = re.compile(r'([A-z\-])(X\d)')
 
     ## For relays add a space between the persons name and next swimmer number
     re_program_space_relay_name = re.compile(r'(\S)([2-4]\))')
