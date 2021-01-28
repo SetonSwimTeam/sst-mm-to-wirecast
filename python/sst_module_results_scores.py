@@ -218,7 +218,7 @@ def create_output_result_scores_champ_combined( output_dir_root: str,
 
         ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
         if row_type == 'H2':
-            output_str += row_text + '\n'
+            output_str += f"{row_text:<40}" + '\n'
         elif row_type == 'H3':
             pass
             #output_str += row_text + '\n'
