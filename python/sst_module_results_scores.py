@@ -142,10 +142,19 @@ def process_champsionship_results_score( meet_report_filename: str,
     return num_files_generated
 
 
+
+def create_output_result_scores_champ(output_dir_root: str, 
+                                       output_list: list,
+                                       num_results_to_display: int ) -> int:
+
+    num_by_gender = create_output_result_scores_champ_by_gender( output_dir_root, output_list, num_results_to_display )
+
+
+
 ####################################################################################
 ## Given an array of PROGRAM lines PER HEAT, generate the output file
 #####################################################################################
-def create_output_result_scores_champ( output_dir_root: str, 
+def create_output_result_scores_champ_by_gender( output_dir_root: str, 
                                        output_list: list,
                                        num_results_to_display: int ) -> int:
     num_files_generated = 0
