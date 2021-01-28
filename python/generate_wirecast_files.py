@@ -49,6 +49,7 @@ import sst_module_common as sst_common
 import sst_module_program as sst_program
 import sst_module_results as sst_results
 import sst_module_scores as sst_scores
+import sst_module_results_scores as sst_result_scores
 
 ## Globals
 report_type_results = "result"
@@ -395,7 +396,7 @@ def process_main():
                                             args.championshipmeet,
                                             args.awards )
         total_result_scores_generated = \
-         sst_scores.process_champsionship_results_score( inputfile, 
+         sst_result_scores.process_champsionship_results_score( inputfile, 
                                                         output_dir, 
                                                         license_name, 
                                                         args.quote,
