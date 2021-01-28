@@ -434,8 +434,8 @@ def create_output_file_awards(  output_dir: str,
                 break;
             output_str += row_text + '\n'
             num_results_generated += 1
-        elif row_type == 'NAME':
-            output_str += row_text + '\n'
+       # elif row_type == 'NAME':
+       #     output_str += row_text + '\n'
 
 
     output_file_name =  f"{g_file_name_prefix}{event_num:0>2}_{g_file_name_awards}.txt"
