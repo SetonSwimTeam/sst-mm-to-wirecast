@@ -129,11 +129,11 @@ def process_champsionship_results_score( meet_report_filename: str,
                     if score_line:
                         #logging.error(f"RE MATCH: {score_line}")
                         logging.error(f"RE MATCH: {place1} {team1} {pnts1}")
-                        output_str = f"{place1} {team1} {pnts1}"
+                        output_str = f"{place1:>2}. {team1:<30} {pnts1:>6}"
                         output_list.append( (f"SCORE_{gender}", output_str ))
 
                         if len(place2) > 0:
-                            output_str = f"{place2} {team2} {pnts2}"
+                            output_str = f"{place2:>2}. {team2:<30} {pnts2:>6}"
                             output_list.append( (f"SCORE_{gender}", output_str ))
 
                             logging.error(f"RE MATCH: {place2} {team2} {pnts2}")
@@ -149,7 +149,8 @@ def create_output_result_scores_champ(output_dir_root: str,
 
     num_by_gender = create_output_result_scores_champ_by_gender( output_dir_root, output_list, num_results_to_display )
 
-
+    num_combined = create_output_result_scores_champ_combined( output_dir_root, output_list, num_results_to_display )
+    return num_by_gender + num_combined
 
 ####################################################################################
 ## Given an array of PROGRAM lines PER HEAT, generate the output file
@@ -174,7 +175,8 @@ def create_output_result_scores_champ_by_gender( output_dir_root: str,
             if row_type == 'H2':
                 output_str += row_text + '\n'
             elif row_type == 'H3':
-                output_str += row_text + '\n'
+                #pass
+                #output_str += row_text + '\n'
                 output_str += '\n'
             elif row_type == 'H4' and row_text == f"Scores - {gender}":
                 output_str += row_text + '\n'
@@ -192,5 +194,49 @@ def create_output_result_scores_champ_by_gender( output_dir_root: str,
         output_file_name =  f"score_champsionship_{gender_lowercase}.txt"
         sst_common.write_output_file( output_dir, output_file_name, output_str )
         num_files_generated += 1
+    
+    return num_files_generated
+
+
+####################################################################################
+## Given an array of PROGRAM lines PER HEAT, generate the output file
+#####################################################################################
+def create_output_result_scores_champ_combined( output_dir_root: str, 
+                                                output_list: list,
+                                                num_results_to_display: int ) -> int:
+    num_files_generated = 0
+    num_results_generated = 0
+    output_dir = f"{output_dir_root}"
+
+
+    output_str = ""
+    for output_tuple in output_list:
+        row_type = output_tuple[0]
+        row_text = output_tuple[1]
+
+        logging.debug(f"RSCORES: g: combined {row_type} t: {row_text}")
+
+        ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
+        if row_type == 'H2':
+            output_str += row_text + '\n'
+        elif row_type == 'H3':
+            pass
+            #output_str += row_text + '\n'
+            #output_str += '\n'
+        elif row_type == 'H4':
+            output_str += '\n' +  row_text + '\n'
+            #output_str += '\n'
+        elif row_type == 'H6':
+            output_str += row_text + '\n'
+        elif row_type.startswith("SCORE"):
+            output_str += row_text + '\n'
+
+        # num_results_generated += 1
+        # if num_results_generated >= num_results_to_display:
+        #     break;
+
+    output_file_name =  f"score_champsionship_combined.txt"
+    sst_common.write_output_file( output_dir, output_file_name, output_str )
+    num_files_generated += 1
     
     return num_files_generated
