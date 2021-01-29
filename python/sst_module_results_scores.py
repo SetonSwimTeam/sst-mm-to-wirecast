@@ -44,9 +44,9 @@ def process_champsionship_results_score( meet_report_filename: str,
     score_header = "Place   School                   Points"
     high_event_num = 0
     start_scoring = False
-
-    # 1   Bishop O'Connell                     Bishop O'Connell                    487
-    #re_score_result  = re.compile('^(\d{1,2})\s+([A-z\' \.]{27})\s+([A-z\' \.]{27})\s+(\d+)\s*(\d*)')
+    
+    #1. St. Paul VI Catholic HS          419       2. Seton Swimming                  384.5
+    re_score_result  = re.compile('^(\d{1,2})\.\s+([A-z\' \.\-]{32})\s+(\d+)\s*(\d{1,2})?\.?\s*([A-z\' \.\-]{32})?\s*(\d+)?')
 
     #####################################################################################
     ## RESULTS_SCORES_CHAMP: Loop through each line of the input file
@@ -104,17 +104,8 @@ def process_champsionship_results_score( meet_report_filename: str,
                 score_line_list = line.split('-')
                 gender = score_line_list[1].strip()
 
-                logging.error(f"RESULTS: {gender} Scores: Through event {high_event_num}")
-                #if gender == "Men":
-                    ## Started Processing mens scores. 
-
                 ## Add the header above the indivial team scores
                 output_list.append( ('H4', line ))
-                #output_list.append( ('H6', score_header ))
-
-            #1. St. Paul VI Catholic HS          419       2. Seton Swimming                  384.5
-            #re_score_result  = re.compile('^(\d{1,2})\.\s+([A-z\' \.\-]{32})\s+(\d+)')
-            re_score_result  = re.compile('^(\d{1,2})\.\s+([A-z\' \.\-]{32})\s+(\d+)\s*(\d{1,2})?\.?\s*([A-z\' \.\-]{32})?\s*(\d+)?')
 
             if start_scoring:
                 score_line = re_score_result.findall(line)
@@ -127,8 +118,6 @@ def process_champsionship_results_score( meet_report_filename: str,
                     pnts2  = score_line[0][5].strip()
 
                     if score_line:
-                        #logging.error(f"RE MATCH: {score_line}")
-                        logging.error(f"RE MATCH: {place1} {team1} {pnts1}")
                         output_str = f"{place1:>2}. {team1:<30} {pnts1:>6}"
                         output_list.append( (f"SCORE_{gender}", output_str ))
 
@@ -142,15 +131,23 @@ def process_champsionship_results_score( meet_report_filename: str,
     return num_files_generated
 
 
-
+#####################################################################################
+## SCORES_CHAMP Report
+## Wrapper to generate mens and womens scores both on same page and on separate pages.
+## Too many teams won't find combined on single page so generate both for the 
+## webcast crew too choose
+#####################################################################################
 def create_output_result_scores_champ(output_dir_root: str, 
                                        output_list: list,
                                        num_results_to_display: int ) -> int:
 
+    ## Sepearate files for mens/womens scores
     num_by_gender = create_output_result_scores_champ_by_gender( output_dir_root, output_list, num_results_to_display )
 
+    ## Mens/womens scores on same page
     num_combined = create_output_result_scores_champ_combined( output_dir_root, output_list, num_results_to_display )
     return num_by_gender + num_combined
+
 
 ####################################################################################
 ## Given an array of PROGRAM lines PER HEAT, generate the output file
@@ -175,8 +172,6 @@ def create_output_result_scores_champ_by_gender( output_dir_root: str,
             if row_type == 'H2':
                 output_str += row_text + '\n'
             elif row_type == 'H3':
-                #pass
-                #output_str += row_text + '\n'
                 output_str += '\n'
             elif row_type == 'H4' and row_text == f"Scores - {gender}":
                 output_str += row_text + '\n'
@@ -221,11 +216,8 @@ def create_output_result_scores_champ_combined( output_dir_root: str,
             output_str += f"{row_text:<40}" + '\n'
         elif row_type == 'H3':
             pass
-            #output_str += row_text + '\n'
-            #output_str += '\n'
         elif row_type == 'H4':
             output_str += '\n' +  row_text + '\n'
-            #output_str += '\n'
         elif row_type == 'H6':
             output_str += row_text + '\n'
         elif row_type.startswith("SCORE"):
