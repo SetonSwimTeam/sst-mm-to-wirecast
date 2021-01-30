@@ -49,6 +49,7 @@ import sst_module_common as sst_common
 import sst_module_program as sst_program
 import sst_module_results as sst_results
 import sst_module_scores as sst_scores
+import sst_module_results_scores as sst_result_scores
 
 ## Globals
 report_type_results = "result"
@@ -181,7 +182,8 @@ def process_main():
 
     spacerelaynames = True
     parser = argparse.ArgumentParser(add_help=False)
-    parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="c:\\Users\\SetonSwimTeam\\mmreports",   
+   # parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="c:\\Users\\SetonSwimTeam\\mmreports",   
+    parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="C:\\Users\\SetonSwimTeam\\Dropbox\\wc_meetreports",   
                                                                                                                 help="input directory for MM extract report")
     parser.add_argument('-f', '--filename',         dest='filename',            required=True        ,          help="Input file name")
     parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="c:\\Users\\SetonSwimTeam\\Dropbox\\wirecast",           help="root output directory for wirecast heat files.")
@@ -394,7 +396,12 @@ def process_main():
                                             args.crawler,
                                             args.championshipmeet,
                                             args.awards )
-
+        total_result_scores_generated = \
+         sst_result_scores.process_champsionship_results_score( inputfile, 
+                                                        output_dir, 
+                                                        license_name, 
+                                                        args.quote,
+                                                        args.numresults )
 
     #####################################################################################
     ## Generate wirecast files CHAMPSIONSHIP SCORES from a MEET SCORES txt file

@@ -116,7 +116,10 @@ def process_score_dualmeet( meet_report_filename: str,
     num_files_generated = create_output_file_scores_dual_by_gender( output_dir, output_list, numresults )
     return num_files_generated
 
-
+#####################################################################################
+## SCORES_CHAMP Report
+## This function processes a separate scores report for a championship meeet
+#####################################################################################
 def process_score_champsionship( meet_report_filename: str, 
                                  output_dir: str, 
                                  mm_license_name: str, 
@@ -217,7 +220,6 @@ def process_score_champsionship( meet_report_filename: str,
 
     create_output_file_scores_champ( output_dir, output_list, gender, numresults )
     return num_files_generated
-
 
 
 ####################################################################################
