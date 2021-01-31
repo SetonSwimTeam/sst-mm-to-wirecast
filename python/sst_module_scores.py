@@ -25,7 +25,6 @@ def process_score_dualmeet( meet_report_filename: str,
                                  quote_output: bool,
                                  numresults: int ):
 
-    logging.debug(f" ***** DUAL MEET ******** license {mm_license_name}")
 
     num_header_lines = 3
     found_header_line = 0
@@ -41,18 +40,18 @@ def process_score_dualmeet( meet_report_filename: str,
     re_score_result  = re.compile('^(\d{1,2})\s+([A-z\' \.]{27})\s+([A-z\' \.]{27})\s+(\d+)\s*(\d*)')
 
     #####################################################################################
-    ## SCORES_CHAMP: Loop through each line of the input file
+    ## SCORES_DUAL: Loop through each line of the input file
     #####################################################################################
     with open(meet_report_filename, "r") as meet_report_file:
         for line in meet_report_file:
 
             #####################################################################################
-            ## SCORES_CHAMP: Remove the extra newline at end of line
+            ## SCORES_DUAL: Remove the extra newline at end of line
             #####################################################################################
             line = line.strip()
 
             #####################################################################################
-            ## SCORES_CHAMP: Ignore all the blank lines             
+            ## SCORES_DUAL: Ignore all the blank lines             
             #####################################################################################
             if line == '\n' or line == '':
                 continue
@@ -117,7 +116,10 @@ def process_score_dualmeet( meet_report_filename: str,
     num_files_generated = create_output_file_scores_dual_by_gender( output_dir, output_list, numresults )
     return num_files_generated
 
-
+#####################################################################################
+## SCORES_CHAMP Report
+## This function processes a separate scores report for a championship meeet
+#####################################################################################
 def process_score_champsionship( meet_report_filename: str, 
                                  output_dir: str, 
                                  mm_license_name: str, 
@@ -218,7 +220,6 @@ def process_score_champsionship( meet_report_filename: str,
 
     create_output_file_scores_champ( output_dir, output_list, gender, numresults )
     return num_files_generated
-
 
 
 ####################################################################################

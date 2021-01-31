@@ -49,6 +49,7 @@ import sst_module_common as sst_common
 import sst_module_program as sst_program
 import sst_module_results as sst_results
 import sst_module_scores as sst_scores
+import sst_module_results_scores as sst_result_scores
 
 ## Globals
 report_type_results = "result"
@@ -181,7 +182,8 @@ def process_main():
 
     spacerelaynames = True
     parser = argparse.ArgumentParser(add_help=False)
-    parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="c:\\Users\\SetonSwimTeam\\mmreports",   
+   # parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="c:\\Users\\SetonSwimTeam\\mmreports",   
+    parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="C:\\Users\\SetonSwimTeam\\Dropbox\\wc_meetreports",   
                                                                                                                 help="input directory for MM extract report")
     parser.add_argument('-f', '--filename',         dest='filename',            required=True        ,          help="Input file name")
     parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="c:\\Users\\SetonSwimTeam\\Dropbox\\wirecast",           help="root output directory for wirecast heat files.")
@@ -195,6 +197,7 @@ def process_main():
     parser.add_argument('-F', '--relayformat',      dest='relayformat',         type=int,default=1,choices=[1,2], help="1 -- Default relay heat program.  2 -- team/name on same line")
     parser.add_argument('-O', '--overlay',          dest='overlay',             action='store_true',            help="Generate lane overlay files with just swimmers name for use during heat")
     parser.add_argument('-C', '--champ',            dest='championshipmeet',    action='store_true',            help="Sets meet to Championsip meet. Otherwise a double dual meet")
+    parser.add_argument('-A', '--awards',           dest='awards',              action='store_true',            help="Generate Awards Result files")
 
     ## Parms not used as often
     parser.add_argument('-S', '--splitrelays',      dest='splitrelays',         action='store_true',            help="Split Relays into multiple files")
@@ -219,6 +222,7 @@ def process_main():
     parser.set_defaults(emptyresults=False)
     parser.set_defaults(overlay=False)
     parser.set_defaults(championshipmeet=False)
+    parser.set_defaults(awards=False)
 
     args = parser.parse_args()
 
@@ -231,6 +235,12 @@ def process_main():
 
     inputfile =f"{args.inputdir}/{args.filename}"
 
+    output_dir = args.outputdir
+    ## The outputdir string MUST have a trailing slash.  Check string and add it if necesssary
+    if output_dir[-1] != '/':
+        output_dir = f"{output_dir}/"
+
+        
     ## Determine logging logleve
     loglevel = logging.DEBUG
     if args.loglevel == "debug":
@@ -255,6 +265,16 @@ def process_main():
     total_files_generated_results = 0
     total_crawler_files = 0
     total_scores_files = 0
+
+    #####################################################################################
+    ## We don't need an actual result report to generate empty files
+    #####################################################################################
+    if args.emptyresults:
+        total_empty_results =  \
+            sst_results.generate_empty_results( output_dir, False )
+        if args.awards:
+            sst_results.generate_empty_results( output_dir, True )
+
 
     #####################################################################################
     ## Verify the directories and input file exists
@@ -287,11 +307,6 @@ def process_main():
 
     # Set the crawler flag
     process_to_run['crawler'] = args.crawler
-
-    output_dir = args.outputdir
-    ## The outputdir string MUST have a trailing slash.  Check string and add it if necesssary
-    if output_dir[-1] != '/':
-        output_dir = f"{output_dir}/"
     
     logargs = f"{Path(__file__).stem}  \n" + \
               f"\n   Params: \n" + \
@@ -313,6 +328,7 @@ def process_main():
               f"\tEmptyResults: \t\t'{args.emptyresults}' \n" + \
               f"\tRelayFormat: \t\t'{args.relayformat}' \n" + \
               f"\tLane Overlay Files: \t'{args.overlay}' \n" + \
+              f"\tGen Award File: \t'{args.awards}' \n" + \
               f"\n   Headers: \n" + \
               f"\tMeet Name: \t\t'{meet_name}' \n" + \
               f"\tMeet Date: \t\t'{meet_date}' \n" + \
@@ -325,6 +341,7 @@ def process_main():
     for i in process_to_run:
         if process_to_run[i]:
             logging.warning(f"\t{i} \n")
+
 
     #####################################################################################
     ## Generate wirecast files from a MEET PROGRAM txt file
@@ -361,10 +378,8 @@ def process_main():
              ## Remove files from last run as we may have old eventsmixed in
             remove_files_from_dir( 'results', output_dir )
             remove_files_from_dir( 'RESULTS', output_dir )
+            remove_files_from_dir( 'AWARDS', output_dir )
 
-        if args.emptyresults:
-            total_empty_results =  \
-                sst_results.generate_empty_results( output_dir )
 
         total_files_generated_results, total_crawler_files = \
                sst_results.process_result(  inputfile, 
@@ -379,8 +394,14 @@ def process_main():
                                             args.numresults,
                                             args.lastnumevents,
                                             args.crawler,
-                                            args.championshipmeet )
-
+                                            args.championshipmeet,
+                                            args.awards )
+        total_result_scores_generated = \
+         sst_result_scores.process_champsionship_results_score( inputfile, 
+                                                        output_dir, 
+                                                        license_name, 
+                                                        args.quote,
+                                                        args.numresults )
 
     #####################################################################################
     ## Generate wirecast files CHAMPSIONSHIP SCORES from a MEET SCORES txt file

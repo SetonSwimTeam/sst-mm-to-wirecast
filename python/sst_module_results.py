@@ -3,12 +3,13 @@ import re
 import sst_module_common as sst_common
 
 
-unofficial_results = "    ** UNOFFICIAL RESULTS **"
+g_unofficial_results = "    ** UNOFFICIAL RESULTS **"
 
 ## Define file names for output files
-file_name_prefix = "event_"
-file_name_suffix = "RESULTS"
-crawler_name_prefix = "x_crawler_results"
+g_file_name_prefix = "event_"
+g_file_name_suffix = "RESULTS"
+g_file_name_awards = "AWARDS"
+g_crawler_name_prefix = "x_crawler_results"
 
 
 #####################################################################################
@@ -40,7 +41,8 @@ def process_result( meet_report_filename: str,
                     num_results_to_display: int,
                     crawler_last_xx_results: int,
                     generate_crawler: bool,
-                    championshipmeet: bool ) -> int:
+                    championshipmeet: bool,
+                    awards:bool ) -> int:
     """ Given the MeetManager results file file formatted in a specific manner,
         generate indiviual result files for use in Wirecast displays """
 
@@ -78,7 +80,7 @@ def process_result( meet_report_filename: str,
     output_list = []
     crawler_list = []
     crawler_str = ""
-    contimue_processing_current_event = True
+    continue_processing_current_event = True
 
     # re_results_lane = re.compile('^[*]?\d{1,2} ')
     # re_results_lane = re.compile('^--- ')
@@ -124,8 +126,8 @@ def process_result( meet_report_filename: str,
                 found_header_line = 1
                 
                 ## The start of the next event finished off the last event. Go write out the last event
-                if contimue_processing_current_event:
-                    num_files = create_output_file_results( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display )
+                if continue_processing_current_event:
+                    num_files = create_output_file( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display, awards )
                     num_files_generated += num_files
 
                 ## Reset and start processing the next event
@@ -153,7 +155,7 @@ def process_result( meet_report_filename: str,
             #####################################################################################
             if line.lower().startswith(("event")):
                 logging.info(f"RESULTS: EVENT LINE: {line}")
-                contimue_processing_current_event = True
+                continue_processing_current_event = True
 
                 # # Starting a new event. Save crawler string for this past event in the list for later procesing
                 if event_num > 0:
@@ -165,7 +167,7 @@ def process_result( meet_report_filename: str,
                 crawler_str = f"Unofficial Results: Event {event_num} {event_str}: "
 
                 ## H4 is the Event number/name line
-                # output_list.append(('H4', f"{line} {unofficial_results}" ))
+                # output_list.append(('H4', f"{line} {g_unofficial_results}" ))
                 output_list.append(('H4', f"{line}" ))
 
                 #####################################################################################
@@ -182,9 +184,9 @@ def process_result( meet_report_filename: str,
             ##  Stop processing when this occurs.  We can't display even a single full page
             #####################################################################################
             if line.lower().startswith(("(event")):
-                contimue_processing_current_event = False
+                continue_processing_current_event = False
 
-                num_files = create_output_file_results( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display )
+                num_files = create_output_file( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display, awards )
                 num_files_generated += num_files
 
 
@@ -292,7 +294,7 @@ def process_result( meet_report_filename: str,
     ## Reached end of file
     ## Write out last event
     #####################################################################################
-    create_output_file_results( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display )
+    create_output_file( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display, awards )
     num_files_generated += 1
     
     ## Save the last event in the crawler list 
@@ -309,6 +311,38 @@ def process_result( meet_report_filename: str,
 
 
 
+#####################################################################################
+## Given an array of RESULTS lines PER EVENT, generate the output file for this event
+## Wrapper function
+#####################################################################################
+def create_output_file( output_dir: str, 
+                                event_num: int, 
+                                output_list: list, 
+                                display_relay_swimmer_names: bool,
+                                num_results_to_display: int,
+                                awards: bool  ) -> int:
+
+    num_results_files_generated = 0
+    num_awards_files_generated = 0
+    ## Generate Standard results file
+    num_awards_files_generated = \
+        create_output_file_results( output_dir, 
+                                    event_num, 
+                                    output_list, 
+                                    display_relay_swimmer_names,
+                                    num_results_to_display ) 
+
+    ## Generate Awards file
+    if awards:
+        num_results_files_generated = \
+            create_output_file_awards(  output_dir, 
+                                        event_num, 
+                                        output_list, 
+                                        True,
+                                        3 ) 
+
+    return num_results_files_generated + num_awards_files_generated
+
 
 #####################################################################################
 ## Given an array of RESULTS lines PER EVENT, generate the output file for this event
@@ -317,7 +351,7 @@ def create_output_file_results( output_dir: str,
                                 event_num: int, 
                                 output_list: list, 
                                 display_relay_swimmer_names: bool,
-                                num_results_to_display: int  ) -> int:
+                                num_results_to_display: int ) -> int:
     """ Generate the filename and open the next file """
     
     num_files_generated = 0
@@ -343,7 +377,7 @@ def create_output_file_results( output_dir: str,
             output_str += row_text + '\n'
             #output_str += '\n'
         elif row_type == 'H6':
-            output_str += unofficial_results + '\n'
+            output_str += g_unofficial_results + '\n'
             output_str += row_text + '\n'
         elif row_type == 'PLACE':
             output_str += row_text + '\n'
@@ -354,13 +388,61 @@ def create_output_file_results( output_dir: str,
         if num_results_generated >= num_results_to_display:
             break;
 
-    output_file_name =  f"{file_name_prefix}{event_num:0>2}_{file_name_suffix}.txt"
+    output_file_name =  f"{g_file_name_prefix}{event_num:0>2}_{g_file_name_suffix}.txt"
     sst_common.write_output_file( output_dir, output_file_name, output_str )
     num_files_generated += 1
 
     return num_files_generated
 
+#####################################################################################
+## Given an array of RESULTS lines PER EVENT, generate the output file for this event
+## for AWARDS. Only top three and display relay names
+#####################################################################################
+def create_output_file_awards(  output_dir: str, 
+                                event_num: int, 
+                                output_list: list, 
+                                display_relay_swimmer_names: bool,
+                                num_results_to_display: int  ) -> int:
+    """ Generate the filename and open the next file """
+    
+    num_files_generated = 0
+    num_results_generated = 0
+    output_str = ""
 
+    ## Ignore the case where we get event0 heat0
+    if event_num == 0:
+        return 0
+    
+    logging.info(f"AWARDS: e: {event_num} create_output_file_awards")
+
+    ## Loop through list in reverse order
+    #for num in range( num_events-1, -1, -1):
+    for output_tuple in output_list:
+        row_type = output_tuple[0]
+        row_text = output_tuple[1]
+
+        logging.info(f"AWARDS: e: {event_num} id: {row_type} t: {row_text}")
+
+        ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
+        if row_type == 'H4':
+            output_str += row_text + '\n'
+        elif row_type == 'H6':
+            output_str += row_text + '\n'
+        elif row_type == 'PLACE':
+            ## Stop if we hit our top three winners, plus RELAY names
+            if num_results_generated >= num_results_to_display:
+                break;
+            output_str += row_text + '\n'
+            num_results_generated += 1
+       # elif row_type == 'NAME':
+       #     output_str += row_text + '\n'
+
+
+    output_file_name =  f"{g_file_name_prefix}{event_num:0>2}_{g_file_name_awards}.txt"
+    sst_common.write_output_file( output_dir, output_file_name, output_str )
+    num_files_generated += 1
+
+    return num_files_generated
 ####################################################################################
 ## Given an array of PROGRAM lines PER HEAT, generate the crawler file for individuals
 #####################################################################################
@@ -436,13 +518,13 @@ def create_output_file_results_crawler( output_dir_root: str, crawler_list: list
         logging.debug(f"crawler: e: {event_num} t: {crawler_text}")
         ## Generate event specific file
         if event_num > 0:
-            #output_file_name = f"{crawler_name_prefix}_result_event{event_num:0>2}.txt"
-            output_file_name = f"{crawler_name_prefix}_result_event{event_num:0>2}.txt"
+            #output_file_name = f"{g_crawler_name_prefix}_result_event{event_num:0>2}.txt"
+            output_file_name = f"{g_crawler_name_prefix}_result_event{event_num:0>2}.txt"
             sst_common.write_output_file( output_dir, output_file_name, crawler_text )
             num_files_generated += 1
         ## Genreate special file for the meet name
         elif event_num == sst_common.headerNum2:
-            output_file_name = f"{crawler_name_prefix}__MeetName.txt"
+            output_file_name = f"{g_crawler_name_prefix}__MeetName.txt"
             sst_common.write_output_file( output_dir, output_file_name, crawler_text )
             num_files_generated += 1
 
@@ -471,14 +553,14 @@ def create_output_file_results_crawler( output_dir_root: str, crawler_list: list
     ## Add meet_name to front of string
     crawler_text = f"{meet_name} {crawler_text}"
     ## Create the crawler file with ALL events completed so far
-    all_events_file_name = f"{crawler_name_prefix}__AllEventsReverse.txt"
+    all_events_file_name = f"{g_crawler_name_prefix}__AllEventsReverse.txt"
     output_file_name = all_events_file_name
     sst_common.write_output_file( output_dir, output_file_name, crawler_text )
     num_files_generated += 1
 
     ## Create the crawler file with last_num events
-    #last_xx_events_file_name = f"{crawler_name_prefix}__Last_{last_num_events:0>2}_events.txt"
-    last_xx_events_file_name = f"{crawler_name_prefix}__Last_XX_events.txt"
+    #last_xx_events_file_name = f"{g_crawler_name_prefix}__Last_{last_num_events:0>2}_events.txt"
+    last_xx_events_file_name = f"{g_crawler_name_prefix}__Last_XX_events.txt"
     output_file_name = last_xx_events_file_name
     sst_common.write_output_file( output_dir, output_file_name, crawler_text_last_num_events )
     num_files_generated += 1
@@ -509,9 +591,8 @@ def get_ordinal( num: int) -> str:
 ## have to search for a file just prior to display it
 #####################################################################################
 
-def generate_empty_results( output_dir:str ) -> int:
+def generate_empty_results( output_dir:str, awards: bool ) -> int:
 
-    logging.info(f"*** generate_empty_results")
     output_str = ""
 
     num_empty_files_created = 0
@@ -521,8 +602,10 @@ def generate_empty_results( output_dir:str ) -> int:
     empty_event_list += sst_common.event_num_relay   
     empty_event_list += sst_common.event_num_diving 
 
+    suffix = g_file_name_awards if awards else g_file_name_suffix
+
     for event_num in empty_event_list:
-        output_file_name =  f"{file_name_prefix}{event_num:0>2}_{file_name_suffix}.txt"
+        output_file_name =  f"{g_file_name_prefix}{event_num:0>2}_{suffix}.txt"
         sst_common.write_output_file( output_dir, output_file_name, output_str )
         num_empty_files_created += 1
 
