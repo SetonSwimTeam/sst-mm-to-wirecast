@@ -44,7 +44,8 @@ def process_champsionship_results_score( meet_report_filename: str,
     score_header = "Place   School                   Points"
     high_event_num = 0
     start_scoring = False
-    
+    need_header_h5 = True
+
     #1. St. Paul VI Catholic HS          419       2. Seton Swimming                  384.5
     re_score_result  = re.compile('^(\d{1,2})\.\s+([A-z\' \.\-]{32})\s+(\d+)\s*(\d{1,2})?\.?\s*([A-z\' \.\-]{32})?\s*(\d+)?')
 
@@ -100,12 +101,15 @@ def process_champsionship_results_score( meet_report_filename: str,
                     high_event_num = event_num
 
             if line.startswith("Scores - "):
+                if not start_scoring:
+                    output_list.append( ('H5', f"Scores Thru Event {high_event_num}" ))
+
                 start_scoring = True
                 score_line_list = line.split('-')
                 gender = score_line_list[1].strip()
 
                 ## Add the header above the indivial team scores
-                output_list.append( ('H4', line ))
+                output_list.append( ('H4', gender ))
 
             if start_scoring:
                 score_line = re_score_result.findall(line)
@@ -176,6 +180,11 @@ def create_output_result_scores_champ_by_gender( output_dir_root: str,
             elif row_type == 'H4' and row_text == f"Scores - {gender}":
                 output_str += row_text + '\n'
                 output_str += '\n'
+            elif row_type == 'H4' and row_text == f"{gender}":
+                output_str += row_text + '\n'
+                output_str += '\n'
+            elif row_type == 'H5':
+                output_str += row_text + '\n'
             elif row_type == 'H6':
                 output_str += row_text + '\n'
             elif row_type == f"SCORE_{gender}":
@@ -218,6 +227,8 @@ def create_output_result_scores_champ_combined( output_dir_root: str,
             pass
         elif row_type == 'H4':
             output_str += '\n' +  row_text + '\n'
+        elif row_type == 'H5':
+            output_str += row_text + '\n'
         elif row_type == 'H6':
             output_str += row_text + '\n'
         elif row_type.startswith("SCORE"):
