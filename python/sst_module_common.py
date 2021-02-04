@@ -18,16 +18,18 @@ from datetime import datetime, timedelta
 import logging
 
 ## Define the types of events in this meet (Individual, Relay and Diving)
-#event_num_individual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22]
-## Champsionship with time trial
+## 2021 Events with time trial
 # event_num_individual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22,101,102,103,104,105,106,107,108]
-# event_num_relay  = [1,2,17,18,23,24]
-# event_num_diving = [9,10]
+
+# Standard High School Meet order of events (Dual Meet and Championship)
+event_num_individual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22]
+event_num_relay      = [1,2,17,18,23,24]
+event_num_diving     = [9,10]
 
 ## JV Invite Order of EVENTS
-event_num_individual = [3,4,5,6,9,10,11,12,15,16,17,18,101,102,103,104,105,106,107,108]
-event_num_relay  = [1,2,7,8,13,14,19,20,109,110]
-event_num_diving = []
+# event_num_individual = [3,4,5,6,9,10,11,12,15,16,17,18]
+# event_num_relay      = [1,2,7,8,13,14,19,20]
+# event_num_diving     = []
 
 
 ## Define the header types in the output list so we can include/exclude as necessary
@@ -70,8 +72,9 @@ school_name_dict = {
         "St. Paul VI Catholic HS": "PVI",
         "Seton Alumni": "ALUM",
         "Seton Swimming": "SST", 
-        "The Covenant School-VA": "TCS" ,
-        "The Steward School-VA": "STEW",
+        "The Covenant School-VA": "TCS",
+        "The Steward School-VA": "TSS",
+        "The Steward School Sparta": "TSS",
         "Trinity Christian School-": "TCS!",
         "Trinity Christian School": "TCS!",
         "Veritas Collegiate Academ": "VCA",
@@ -122,6 +125,7 @@ proper_school_name_dict = {
         "Seton Swimming": "Seton Swimming", 
         "The Covenant School-VA": "The Covenant School" ,
         "The Steward School-VA": "The Steward School",
+        "The Steward School Sparta": "The Steward School",
         "Trinity Christian School-": "Trinity Christian School",
         "Trinity Christian School": "Trinity Christian School",
         "Veritas Collegiate Academ": "VCA",
@@ -156,6 +160,7 @@ def find_proper_team_name( team_name_in: str ):
 
     ## Input may be a truncated version of the school name
     ## Search for a substring
+    proper_name = ""
     for team_name in proper_school_name_dict:
         team_name_in_strip = team_name_in.strip()
         if team_name_in_strip.strip() in team_name:

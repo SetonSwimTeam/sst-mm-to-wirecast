@@ -60,7 +60,7 @@ def process_result( meet_report_filename: str,
         'individual_short':  "        Name                  School Yr   Seed   Finals   Pts",
         'diving_long':       "Name                    Yr School                           Finals Score      Points",
         'diving_short':      "        Name                 School Yr   Seed     Final Pts",
-        'relay_long':         "           Team                  Relay Seed     Finals  Pts",        
+        'relay_long':         "           Team               Relay  Seed   Finals  Pts",        
         'relay_short':       "   Team       Relay Seed Time  Finals Time Points",    
     }
     result_header_dict = {
@@ -211,7 +211,10 @@ def process_result( meet_report_filename: str,
                     placeline_school_long = str(place_line_list[0][3]).strip()
                     placeline_seedtime    = str(place_line_list[0][4]).strip()
                     placeline_finaltime   = str(place_line_list[0][5]).strip()
-                    placeline_points      = str(place_line_list[0][6]).strip()              
+                    placeline_points      = str(place_line_list[0][6]).strip()        
+
+                    if placeline_points == "":
+                        placeline_points = "-"
 
                     logging.debug(f"RESULTS: place {placeline_place}: name {placeline_name_last_first}: grade {placeline_grade}: sch {placeline_school_long}: seed {placeline_seedtime}: final {placeline_finaltime}: points {placeline_points}:")
                     ## If we want to use Shortened School Names, run the lookup
@@ -257,6 +260,8 @@ def process_result( meet_report_filename: str,
                     placeline_finaltime = str(place_line_list[0][4])
                     placeline_points    = str(place_line_list[0][5])
 
+                    if placeline_points == "":
+                        placeline_points = "-"
 
                     #####################################################################################
                     ## RESULTS: Replace long school name with short name for RELAY events
