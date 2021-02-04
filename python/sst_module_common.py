@@ -72,8 +72,9 @@ school_name_dict = {
         "St. Paul VI Catholic HS": "PVI",
         "Seton Alumni": "ALUM",
         "Seton Swimming": "SST", 
-        "The Covenant School-VA": "TCS" ,
-        "The Steward School-VA": "STEW",
+        "The Covenant School-VA": "TCS",
+        "The Steward School-VA": "TSS",
+        "The Steward School Sparta": "TSS",
         "Trinity Christian School-": "TCS!",
         "Trinity Christian School": "TCS!",
         "Veritas Collegiate Academ": "VCA",
@@ -124,6 +125,7 @@ proper_school_name_dict = {
         "Seton Swimming": "Seton Swimming", 
         "The Covenant School-VA": "The Covenant School" ,
         "The Steward School-VA": "The Steward School",
+        "The Steward School Sparta": "The Steward School",
         "Trinity Christian School-": "Trinity Christian School",
         "Trinity Christian School": "Trinity Christian School",
         "Veritas Collegiate Academ": "VCA",
@@ -158,6 +160,7 @@ def find_proper_team_name( team_name_in: str ):
 
     ## Input may be a truncated version of the school name
     ## Search for a substring
+    proper_name = ""
     for team_name in proper_school_name_dict:
         team_name_in_strip = team_name_in.strip()
         if team_name_in_strip.strip() in team_name:
