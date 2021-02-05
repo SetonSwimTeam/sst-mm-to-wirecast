@@ -77,6 +77,7 @@ school_name_dict = {
         "The Steward School Sparta": "TSS",
         "Trinity Christian School-": "TCS!",
         "Trinity Christian School": "TCS!",
+        "Veritas Collegiate Academy-VA": "VCA",
         "Veritas Collegiate Academ": "VCA",
         "Veritas School-VA": "VRTS",
         "Walsingham Academy-VA": "WA",

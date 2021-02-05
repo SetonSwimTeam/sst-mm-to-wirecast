@@ -61,7 +61,7 @@ def process_result( meet_report_filename: str,
         'diving_long':       "Name                    Yr School                           Finals Score      Points",
         'diving_short':      "        Name                 School Yr   Seed     Final Pts",
         'relay_long':         "           Team               Relay  Seed   Finals  Pts",        
-        'relay_short':       "   Team       Relay Seed Time  Finals Time Points",    
+        'relay_short':       "   Team Relay Seed    Finals   Pts",    
     }
     result_header_dict = {
         'individual_long':   "Name                    Yr School                 Seed Time  Finals Time            ",
@@ -430,6 +430,8 @@ def create_output_file_awards(  output_dir: str,
 
         ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
         if row_type == 'H4':
+            ## Awards are top justified. Start text below logo
+            output_str += '\n' +  '\n'
             output_str += row_text + '\n'
         elif row_type == 'H6':
             output_str += row_text + '\n'

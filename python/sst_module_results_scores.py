@@ -102,7 +102,7 @@ def process_champsionship_results_score( meet_report_filename: str,
 
             if line.startswith("Scores - "):
                 if not start_scoring:
-                    output_list.append( ('H5', f"Scores Thru Event {high_event_num}" ))
+                    output_list.append( ('H5', f"Scores Through Event {high_event_num}" ))
 
                 start_scoring = True
                 score_line_list = line.split('-')
@@ -129,7 +129,7 @@ def process_champsionship_results_score( meet_report_filename: str,
                             output_str = f"{place2:>2}. {team2:<30} {pnts2:>6}"
                             output_list.append( (f"SCORE_{gender}", output_str ))
 
-                            logging.error(f"RE MATCH: {place2} {team2} {pnts2}")
+                            logging.debug(f"RE MATCH: {place2} {team2} {pnts2}")
 
     create_output_result_scores_champ( output_dir, output_list, numresults )
     return num_files_generated
@@ -195,6 +195,7 @@ def create_output_result_scores_champ_by_gender( output_dir_root: str,
             #     break;
 
         gender_lowercase = gender.lower()
+        logging.warning(f"SCORES: {output_str}")
         output_file_name =  f"score_champsionship_{gender_lowercase}.txt"
         sst_common.write_output_file( output_dir, output_file_name, output_str )
         num_files_generated += 1
