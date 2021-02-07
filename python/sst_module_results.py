@@ -436,12 +436,31 @@ def create_output_file_awards(  output_dir: str,
             output_str += '\n' +  '\n'
             output_str += row_text + '\n'
         elif row_type == 'H6':
-            output_str += row_text + '\n'
+            re_results_header = re.compile('^(.*) (Pts|Points)$')
+            place_header_list = re_results_header.findall(row_text)
+            if place_header_list:
+                placeline_header   = str(place_header_list[0][0]).strip()
+                output_str += placeline_header + '\n'
+            else:
+                output_str += row_text + '\n'
+
         elif row_type == 'PLACE':
+
             ## Stop if we hit our top three winners, plus RELAY names
             if num_results_generated >= num_results_to_display:
                 break;
-            output_str += row_text + '\n'
+
+            ## Lets try to remvoe the POINTS of the PLACE since its always the first XX place winners
+            re_results_place = re.compile('^(.*) (\d){1,2}$')
+            place_line_list = re_results_place.findall(row_text)
+
+            if place_line_list:
+                placeline_place   = str(place_line_list[0][0]).strip()
+                placeline_points  = str(place_line_list[0][1]).strip()
+                logging.error(f"PLACE: 1: {placeline_place} 2: {placeline_points}")
+                output_str += placeline_place + '\n'
+            else:
+                output_str += row_text + '\n'
             num_results_generated += 1
        # elif row_type == 'NAME':
        #     output_str += row_text + '\n'
