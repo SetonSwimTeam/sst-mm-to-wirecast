@@ -194,14 +194,15 @@ def process_main():
     parser.add_argument('-n', '--numresults',       dest='numresults',          type=int, default='14',         help="Number of results listed per event")
     parser.add_argument('-x', '--lastnumevents',    dest='lastnumevents',       type=int, default='3',          help="Crawler outputs a separate file with the last N events")
     parser.add_argument('-e', '--emptyresults',     dest='emptyresults',        action='store_true',            help="Generate empty results files for wirecast template setup")
-    parser.add_argument('-F', '--relayformat',      dest='relayformat',         type=int,default=1,choices=[1,2], help="1 -- Default relay heat program.  2 -- team/name on same line")
+    parser.add_argument('-F', '--relayformat',      dest='relayformat',         type=int,default=2,choices=[1,2], help="1 -- Default relay heat program.  2 -- team/name on same line")
     parser.add_argument('-O', '--overlay',          dest='overlay',             action='store_true',            help="Generate lane overlay files with just swimmers name for use during heat")
     parser.add_argument('-C', '--champ',            dest='championshipmeet',    action='store_true',            help="Sets meet to Championsip meet. Otherwise a double dual meet")
-    parser.add_argument('-A', '--awards',           dest='awards',              action='store_true',            help="Generate Awards Result files")
+    parser.add_argument('-a', '--awards',           dest='awards',              action='store_true',            help="Generate Awards Result files")
 
     ## Parms not used as often
     parser.add_argument('-S', '--splitrelays',      dest='splitrelays',         action='store_true',            help="Split Relays into multiple files")
     parser.add_argument('-R', '--displayRelayNames',dest='displayRelayNames',   action='store_true',            help="Display relay swimmer names, not just the team name in results")
+    parser.add_argument('-A', '--awardsrelaynames', dest='awardsRelayNames',    action='store_true',            help="Display relay swimmer names for the AWARDS file")
     parser.add_argument('-N', '--namesfirstlast',   dest='namesfirstlast',      action='store_true',            help="Swap Non Relay names to First Last from Last, First")
     parser.add_argument('-T', '--reporttype',       dest='reporttype',          default="auto",                 choices=['auto','program','results', 'headers'], 
                                                                                                                 help="Program type, Meet Program or Meet Results")
@@ -223,6 +224,7 @@ def process_main():
     parser.set_defaults(overlay=False)
     parser.set_defaults(championshipmeet=False)
     parser.set_defaults(awards=False)
+    parser.set_defaults(awardsRelayNames=False)
 
     args = parser.parse_args()
 
@@ -329,6 +331,7 @@ def process_main():
               f"\tRelayFormat: \t\t'{args.relayformat}' \n" + \
               f"\tLane Overlay Files: \t'{args.overlay}' \n" + \
               f"\tGen Award File: \t'{args.awards}' \n" + \
+              f"\tAwards Relay Names: \t'{args.awardsRelayNames}' \n" + \
               f"\n   Headers: \n" + \
               f"\tMeet Name: \t\t'{meet_name}' \n" + \
               f"\tMeet Date: \t\t'{meet_date}' \n" + \
@@ -395,7 +398,8 @@ def process_main():
                                             args.lastnumevents,
                                             args.crawler,
                                             args.championshipmeet,
-                                            args.awards )
+                                            args.awards,
+                                            args.awardsRelayNames )
         total_result_scores_generated = \
          sst_result_scores.process_champsionship_results_score( inputfile, 
                                                         output_dir, 
