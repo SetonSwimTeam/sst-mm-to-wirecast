@@ -25,11 +25,7 @@ from shutil import copyfile
 ### Import local modules that were split out for cleaner functionality
 import sst_module_common as sst_common
 
-#####################################################################################
-## Copy the input filename to the static output file name
-#####################################################################################
-def copyFile( inputfile,outputfilename ):
-    copyfile(inputfile, outputfilename)
+    
 
 #####################################################################################
 #####################################################################################
@@ -106,8 +102,14 @@ def process_main():
               f"\tLog Level \t\t{args.loglevel}\n"
     logging.warning( logargs )
 
-
-    copyFile( inputfile,outputfilename )
+#####################################################################################
+## Copy specific Event file to wirecast output file
+#####################################################################################
+    try:
+        copyfile(inputfile, outputfilename)
+        logging.warning( f"AWARDS: Event {event_num} successfully copied file {inputfilename} to {outputfilename}" )
+    except Exception as e:
+        logging.error( f"ERROR: file {inputfilename} not copied.  Error {e}")
 
 #####################################################################################
 #####################################################################################
