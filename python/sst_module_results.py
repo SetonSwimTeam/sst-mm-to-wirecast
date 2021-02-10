@@ -416,6 +416,8 @@ def create_output_file_awards(  output_dir: str,
     num_results_generated = 0
     output_str = ""
 
+    re_results_header = re.compile('^(.*) (Pts|Points)$')
+
     ## Ignore the case where we get event0 heat0
     if event_num == 0:
         return 0
@@ -433,10 +435,9 @@ def create_output_file_awards(  output_dir: str,
         ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
         if row_type == 'H4':
             ## Awards are top justified. Start text below logo
-            output_str += '\n' +  '\n'
+            # output_str += '\n' + '\n'
             output_str += row_text + '\n'
         elif row_type == 'H6':
-            re_results_header = re.compile('^(.*) (Pts|Points)$')
             place_header_list = re_results_header.findall(row_text)
             if place_header_list:
                 placeline_header   = str(place_header_list[0][0]).strip()
@@ -467,7 +468,8 @@ def create_output_file_awards(  output_dir: str,
         elif row_type == 'NAME' and display_relay_swimmer_names:
             output_str += row_text + '\n'
 
-
+    ## One more blank line to keep last line off bottom of screen
+    output_str += '\n'
     output_file_name =  f"{g_file_name_prefix}{event_num:0>2}_{g_file_name_awards}.txt"
     sst_common.write_output_file( output_dir, output_file_name, output_str )
     num_files_generated += 1
