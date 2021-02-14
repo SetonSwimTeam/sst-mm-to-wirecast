@@ -67,6 +67,7 @@ school_name_dict = {
         "Nansemond Suffolk Academy": "NSA",
         "Oakcrest School Chargers": "OAK",
         "Randolph-Macon Academy-VA": "RMA",
+        "Randolph-Macon Academy": "RMA",
         "Saint John Paul the Great": "JP",
         "St. Gertrude High School": "SGHS",
         "St. Paul VI Catholic HS": "PVI",
