@@ -524,12 +524,14 @@ def create_output_file_program_format2( output_dir_root: str,
     split_num = 1
     output_str = ""
     lane_str = ""
+    missing_name_for_this_lane = False
+
     ## Ignore the case where we get event0 heat0
     if event_num == 0:
         return 0
 
     output_dir = f"{output_dir_root}/"
-    
+    lane_str_without_names = ""
     ## For non relay events
     output_file_name = f"{file_name_prefix}{event_num:0>2}_{file_name_suffix}_heat_{heat_num:0>2}.txt"
     
@@ -546,12 +548,19 @@ def create_output_file_program_format2( output_dir_root: str,
         ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
         #if row_type in header_list:
         if row_type == 'H4':
-            output_str += f"{row_text.rjust(50)}" + '\n'
+            output_str += f"{row_text.rjust(55)}" + '\n'
         elif row_type == 'H5':
-            output_str += f"{row_text.rjust(40)}" + '\n'
+            output_str += f"{row_text.rjust(45)}" + '\n'
         elif row_type == 'H6':
-            output_str += '\n' + "Lane Team     Swimmers" + '\n'
+            output_str += '\n' + "  Ln Team     Swimmers" + '\n'
         elif row_type == 'LANE':
+            ##
+            ## If we have a second lane, but no name for the previous lane due 
+            ## to no names being entered, write out lane/team info only
+            if missing_name_for_this_lane:
+               output_str += lane_str_without_names 
+            
+            missing_name_for_this_lane = True
             lane_str = row_text
             #  1 SST  D X2:37.00
             relay_lane_line = re_relay_lane_line.findall(row_text)
@@ -560,8 +569,12 @@ def create_output_file_program_format2( output_dir_root: str,
                 relay_sch  = str(relay_lane_line[0][1]).strip()
                 relay_name = str(relay_lane_line[0][2]).strip()
                 lane_str = f"{relay_lane:>4} {relay_sch:<4} {relay_name}"
+                lane_str_without_names = f"{lane_str:<2}\n"
+
             #output_str += row_text + '\n'
         elif row_type == 'NAME':
+            missing_name_for_this_lane = False
+
             name_str = reformat_relay_swimmers_names( row_text )
             #output_str += row_text + '\n'
             output_str += f"{lane_str:<2} {name_str:<68}\n"

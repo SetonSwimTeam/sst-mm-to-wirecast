@@ -42,7 +42,8 @@ def process_result( meet_report_filename: str,
                     crawler_last_xx_results: int,
                     generate_crawler: bool,
                     championshipmeet: bool,
-                    awards:bool ) -> int:
+                    awards:bool,
+                    awardsRelayNames: bool ) -> int:
     """ Given the MeetManager results file file formatted in a specific manner,
         generate indiviual result files for use in Wirecast displays """
 
@@ -61,7 +62,7 @@ def process_result( meet_report_filename: str,
         'diving_long':       "Name                    Yr School                           Finals Score      Points",
         'diving_short':      "        Name                 School Yr   Seed     Final Pts",
         'relay_long':         "           Team               Relay  Seed   Finals  Pts",        
-        'relay_short':       "   Team       Relay Seed Time  Finals Time Points",    
+        'relay_short':       "   Team Relay Seed    Finals   Pts",    
     }
     result_header_dict = {
         'individual_long':   "Name                    Yr School                 Seed Time  Finals Time            ",
@@ -127,7 +128,7 @@ def process_result( meet_report_filename: str,
                 
                 ## The start of the next event finished off the last event. Go write out the last event
                 if continue_processing_current_event:
-                    num_files = create_output_file( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display, awards )
+                    num_files = create_output_file( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display, awards, awardsRelayNames )
                     num_files_generated += num_files
 
                 ## Reset and start processing the next event
@@ -186,7 +187,7 @@ def process_result( meet_report_filename: str,
             if line.lower().startswith(("(event")):
                 continue_processing_current_event = False
 
-                num_files = create_output_file( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display, awards )
+                num_files = create_output_file( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display, awards, awardsRelayNames )
                 num_files_generated += num_files
 
 
@@ -299,7 +300,7 @@ def process_result( meet_report_filename: str,
     ## Reached end of file
     ## Write out last event
     #####################################################################################
-    create_output_file( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display, awards )
+    create_output_file( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display, awards, awardsRelayNames )
     num_files_generated += 1
     
     ## Save the last event in the crawler list 
@@ -325,7 +326,8 @@ def create_output_file( output_dir: str,
                                 output_list: list, 
                                 display_relay_swimmer_names: bool,
                                 num_results_to_display: int,
-                                awards: bool  ) -> int:
+                                awards: bool,
+                                awardsRelayNames: bool  ) -> int:
 
     num_results_files_generated = 0
     num_awards_files_generated = 0
@@ -343,7 +345,7 @@ def create_output_file( output_dir: str,
             create_output_file_awards(  output_dir, 
                                         event_num, 
                                         output_list, 
-                                        True,
+                                        awardsRelayNames,
                                         3 ) 
 
     return num_results_files_generated + num_awards_files_generated
@@ -414,6 +416,8 @@ def create_output_file_awards(  output_dir: str,
     num_results_generated = 0
     output_str = ""
 
+    re_results_header = re.compile('^(.*) (Pts|Points)$')
+
     ## Ignore the case where we get event0 heat0
     if event_num == 0:
         return 0
@@ -430,19 +434,42 @@ def create_output_file_awards(  output_dir: str,
 
         ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
         if row_type == 'H4':
+            ## Awards are top justified. Start text below logo
+            # output_str += '\n' + '\n'
             output_str += row_text + '\n'
         elif row_type == 'H6':
-            output_str += row_text + '\n'
+            place_header_list = re_results_header.findall(row_text)
+            if place_header_list:
+                placeline_header   = str(place_header_list[0][0]).strip()
+                output_str += placeline_header + '\n'
+            else:
+                output_str += row_text + '\n'
+
         elif row_type == 'PLACE':
+
             ## Stop if we hit our top three winners, plus RELAY names
             if num_results_generated >= num_results_to_display:
                 break;
-            output_str += row_text + '\n'
+
+            ## Lets try to remvoe the POINTS of the PLACE since its always the first XX place winners
+            re_results_place = re.compile('^(.*) (\d){1,2}$')
+            place_line_list = re_results_place.findall(row_text)
+
+            if place_line_list:
+                placeline_place   = str(place_line_list[0][0]).strip()
+                placeline_points  = str(place_line_list[0][1]).strip()
+                logging.error(f"PLACE: 1: {placeline_place} 2: {placeline_points}")
+                output_str += placeline_place + '\n'
+            else:
+                output_str += row_text + '\n'
             num_results_generated += 1
        # elif row_type == 'NAME':
        #     output_str += row_text + '\n'
+        elif row_type == 'NAME' and display_relay_swimmer_names:
+            output_str += row_text + '\n'
 
-
+    ## One more blank line to keep last line off bottom of screen
+    output_str += '\n'
     output_file_name =  f"{g_file_name_prefix}{event_num:0>2}_{g_file_name_awards}.txt"
     sst_common.write_output_file( output_dir, output_file_name, output_str )
     num_files_generated += 1

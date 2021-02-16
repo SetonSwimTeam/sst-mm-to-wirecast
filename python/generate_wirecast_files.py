@@ -182,7 +182,6 @@ def process_main():
 
     spacerelaynames = True
     parser = argparse.ArgumentParser(add_help=False)
-   # parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="c:\\Users\\SetonSwimTeam\\mmreports",   
     parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="C:\\Users\\SetonSwimTeam\\Dropbox\\wc_meetreports",   
                                                                                                                 help="input directory for MM extract report")
     parser.add_argument('-f', '--filename',         dest='filename',            required=True        ,          help="Input file name")
@@ -194,14 +193,15 @@ def process_main():
     parser.add_argument('-n', '--numresults',       dest='numresults',          type=int, default='14',         help="Number of results listed per event")
     parser.add_argument('-x', '--lastnumevents',    dest='lastnumevents',       type=int, default='3',          help="Crawler outputs a separate file with the last N events")
     parser.add_argument('-e', '--emptyresults',     dest='emptyresults',        action='store_true',            help="Generate empty results files for wirecast template setup")
-    parser.add_argument('-F', '--relayformat',      dest='relayformat',         type=int,default=1,choices=[1,2], help="1 -- Default relay heat program.  2 -- team/name on same line")
+    parser.add_argument('-F', '--relayformat',      dest='relayformat',         type=int,default=2,choices=[1,2], help="1 -- Default relay heat program.  2 -- team/name on same line")
     parser.add_argument('-O', '--overlay',          dest='overlay',             action='store_true',            help="Generate lane overlay files with just swimmers name for use during heat")
     parser.add_argument('-C', '--champ',            dest='championshipmeet',    action='store_true',            help="Sets meet to Championsip meet. Otherwise a double dual meet")
-    parser.add_argument('-A', '--awards',           dest='awards',              action='store_true',            help="Generate Awards Result files")
+    parser.add_argument('-a', '--awards',           dest='awards',              action='store_true',            help="Generate Awards Result files")
 
     ## Parms not used as often
     parser.add_argument('-S', '--splitrelays',      dest='splitrelays',         action='store_true',            help="Split Relays into multiple files")
     parser.add_argument('-R', '--displayRelayNames',dest='displayRelayNames',   action='store_true',            help="Display relay swimmer names, not just the team name in results")
+    parser.add_argument('-A', '--awardsrelaynames', dest='awardsRelayNames',    action='store_true',            help="Display relay swimmer names for the AWARDS file")
     parser.add_argument('-N', '--namesfirstlast',   dest='namesfirstlast',      action='store_true',            help="Swap Non Relay names to First Last from Last, First")
     parser.add_argument('-T', '--reporttype',       dest='reporttype',          default="auto",                 choices=['auto','program','results', 'headers'], 
                                                                                                                 help="Program type, Meet Program or Meet Results")
@@ -212,7 +212,7 @@ def process_main():
     parser.add_argument('-h', '--help',             dest='help',                action='help', default=argparse.SUPPRESS, help="Tested with MM 8")
 
     parser.set_defaults(shortschoolrelay=False)
-    parser.set_defaults(shortschoolindividual=False)
+    parser.set_defaults(longschoolindividual=False)
     parser.set_defaults(splitrelays=False)
     parser.set_defaults(displayRelayNames=False)
     parser.set_defaults(namesfirstlast=False)
@@ -223,15 +223,9 @@ def process_main():
     parser.set_defaults(overlay=False)
     parser.set_defaults(championshipmeet=False)
     parser.set_defaults(awards=False)
+    parser.set_defaults(awardsRelayNames=False)
 
     args = parser.parse_args()
-
-
-
-    ## If the program relay is in Format2 (team abbr and swimmers on same line) then we need to force short relay names
-    #shortschoolrelay = args.shortschoolrelay
-    if args.relayformat == 2:
-        args.shortschoolrelay = True
 
     inputfile =f"{args.inputdir}/{args.filename}"
 
@@ -305,6 +299,15 @@ def process_main():
     elif (report_type_to_run == "Dual Meet Scores") or (report_type_to_run == "auto" and report_type == 'Dual Meet Scores'):
         process_to_run['scores_dualmeet'] = True
 
+
+    #####################################################################################
+    ## If the program relay is in Format2 (team abbr and swimmers on same line) then we need to force short relay names
+    #####################################################################################
+    #shortschoolrelay = args.shortschoolrelay
+    if process_to_run['program'] and args.relayformat == 2:
+        args.shortschoolrelay = True
+
+    use_short_school_names_ind = not args.longschoolindividual
     # Set the crawler flag
     process_to_run['crawler'] = args.crawler
     
@@ -315,7 +318,7 @@ def process_main():
               f"\tRoot OutputDir \t\t{output_dir} \n" + \
               f"\tChampionship Meet \t{args.championshipmeet} \n" + \
               f"\tShort Sch Names Relays \t{args.shortschoolrelay} \n" + \
-              f"\tLong Sch Names Indiv \t{args.longschoolindividual} \n" + \
+              f"\tShort Sch Names Indiv \t{use_short_school_names_ind} \n" + \
               f"\tNamesFirstlast \t\t{args.namesfirstlast} \n" + \
               f"\tSplit Relays \t\t{args.splitrelays} \n"+ \
               f"\tDisplay Relays Names \t{args.displayRelayNames} \n"+ \
@@ -329,6 +332,7 @@ def process_main():
               f"\tRelayFormat: \t\t'{args.relayformat}' \n" + \
               f"\tLane Overlay Files: \t'{args.overlay}' \n" + \
               f"\tGen Award File: \t'{args.awards}' \n" + \
+              f"\tAwards Relay Names: \t'{args.awardsRelayNames}' \n" + \
               f"\n   Headers: \n" + \
               f"\tMeet Name: \t\t'{meet_name}' \n" + \
               f"\tMeet Date: \t\t'{meet_date}' \n" + \
@@ -359,7 +363,7 @@ def process_main():
                                         output_dir, 
                                         license_name, 
                                         args.shortschoolrelay, 
-                                        args.longschoolindividual, 
+                                        use_short_school_names_ind, 
                                         args.splitrelays, 
                                         spacerelaynames, 
                                         args.displayRelayNames, 
@@ -386,7 +390,7 @@ def process_main():
                                             output_dir, 
                                             license_name, 
                                             args.shortschoolrelay, 
-                                            args.longschoolindividual, 
+                                            use_short_school_names_ind, 
                                             args.displayRelayNames, 
                                             args.displayRelayNames, 
                                             args.namesfirstlast, 
@@ -395,7 +399,8 @@ def process_main():
                                             args.lastnumevents,
                                             args.crawler,
                                             args.championshipmeet,
-                                            args.awards )
+                                            args.awards,
+                                            args.awardsRelayNames )
         total_result_scores_generated = \
          sst_result_scores.process_champsionship_results_score( inputfile, 
                                                         output_dir, 
