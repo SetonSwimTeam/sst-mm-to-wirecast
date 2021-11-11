@@ -18,13 +18,15 @@ from datetime import datetime, timedelta
 import logging
 
 ## Define the types of events in this meet (Individual, Relay and Diving)
-## 2021 Events with time trial
-# event_num_individual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22,101,102,103,104,105,106,107,108]
+## Time Trials
+event_num_individual = [1,2,3,4,5,6,7,8,9,10,11,12]
+event_num_relay      = []
+event_num_diving     = []
 
 # Standard High School Meet order of events (Dual Meet and Championship)
-event_num_individual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22]
-event_num_relay      = [1,2,17,18,23,24]
-event_num_diving     = [9,10]
+# event_num_individual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22]
+# event_num_relay      = [1,2,17,18,23,24]
+# event_num_diving     = [9,10]
 
 ## JV Invite Order of EVENTS
 # event_num_individual = [3,4,5,6,9,10,11,12,15,16,17,18]
