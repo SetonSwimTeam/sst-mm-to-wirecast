@@ -447,6 +447,10 @@ def create_output_file_awards(  output_dir: str,
 
         elif row_type == 'PLACE':
 
+
+            ## Ignore non-scoring entries (i.e. only two non-exhibition relays in event)
+            if row_text.startswith(" --- "):
+                break;
             ## Stop if we hit our top three winners, plus RELAY names
             if num_results_generated >= num_results_to_display:
                 break;
