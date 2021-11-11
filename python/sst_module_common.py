@@ -17,21 +17,9 @@ from os import path
 from datetime import datetime, timedelta
 import logging
 
-## Define the types of events in this meet (Individual, Relay and Diving)
-## Time Trials
-event_num_individual = [1,2,3,4,5,6,7,8,9,10,11,12]
+event_num_individual = []
 event_num_relay      = []
 event_num_diving     = []
-
-# Standard High School Meet order of events (Dual Meet and Championship)
-# event_num_individual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22]
-# event_num_relay      = [1,2,17,18,23,24]
-# event_num_diving     = [9,10]
-
-## JV Invite Order of EVENTS
-# event_num_individual = [3,4,5,6,9,10,11,12,15,16,17,18]
-# event_num_relay      = [1,2,7,8,13,14,19,20]
-# event_num_diving     = []
 
 
 ## Define the header types in the output list so we can include/exclude as necessary
@@ -144,6 +132,34 @@ proper_school_name_dict = {
         "Seton Family Homeschool": "SFH",
     } 
 
+
+def setEvents( meet_type: str ) -> bool:
+    global event_num_individual
+    global event_num_relay
+    global event_num_diving
+
+    success = True
+
+    if meet_type == "SetonTimeTrials":
+        # Seton time trial events
+        event_num_individual = [1,2,3,4,5,6,7,8,9,10,11,12]
+        event_num_relay      = []
+        event_num_diving     = []
+    elif meet_type == "HighSchool":
+        # Standard High School Meet order of events (Dual Meet and Championship)
+        event_num_individual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22]
+        event_num_relay      = [1,2,17,18,23,24]
+        event_num_diving     = [9,10]
+    elif meet_type == "JV":
+        ## JV Invite Order of EVENTS
+        event_num_individual = [3,4,5,6,9,10,11,12,15,16,17,18]
+        event_num_relay      = [1,2,7,8,13,14,19,20]
+        event_num_diving     = []
+    else:
+        success = False
+        logging.error(f"Unknow Meet  Type: {meet_type}")
+
+    return success
 
 #####################################################################################
 ## Some school names have -VA added to end.  Since MM often truncated the name

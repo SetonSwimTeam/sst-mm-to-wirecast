@@ -90,5 +90,12 @@ Default directory:
 Meet Program
 
 ```
-python/generate_wirecast_files.py -o /c/Users/SetonSwimTeam/Dropbox/wirecast -i /c/Users/SetonSwimTeam/Documents -f 2019icebreaker-program.txt 
+python/generate_wirecast_files.py -o /c/Users/SetonSwimTeam/Dropbox/wirecast -i /c/Users/SetonSwimTeam/Dropbox/wc_meetreports -f 20211122_setontimetrails_program.txt 
 ```
+
+
+
+
+# TODO:
+
+* eventtypes: can we determine events by name (i.e. look for relay or diving)
