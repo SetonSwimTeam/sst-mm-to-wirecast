@@ -90,11 +90,16 @@ Default directory:
 Meet Program
 
 ```
-python/generate_wirecast_files.py -o /c/Users/SetonSwimTeam/Dropbox/wirecast -i /c/Users/SetonSwimTeam/Dropbox/wc_meetreports -f 20211122_setontimetrails_program.txt 
+python/generate_wirecast_files.py -o /c/Users/SetonSwimTeam/Dropbox/wirecast -i /c/Users/SetonSwimTeam/Dropbox/wc_meetreports -f 20211122_setontimetrails_program.txt  -m SetonTimeTrials
 ```
 
+ python/generate_wirecast_files.py -o /c/Users/SetonSwimTeam/Dropbox/wirecast -i /c/Users/SetonSwimTeam/Dropbox/wc_meetreports -f 20211122_setontimetrails_results.txt  -m SetonTimeTrials
 
+python/generate_wirecast_files.py -m HighSchool -o /c/Users/SetonSwimTeam/Dropbox/wirecast -i /c/Users/SetonSwimTeam/Dropbox/wc_meetreports -f 2021-setonwinterinvite-program.txt 
 
+python/generate_wirecast_files.py -m HighSchool -o /c/Users/SetonSwimTeam/Dropbox/wirecast -i /c/Users/SetonSwimTeam/Dropbox/wc_meetreports -f 2021-setonwinterinvite-results.txt 
+
+python/generate_wirecast_files.py -m HighSchool -o /c/Users/SetonSwimTeam/Dropbox/wirecast -i /c/Users/SetonSwimTeam/Dropbox/wc_meetreports -f 2021-setonwinterinvite-score.txt 
 
 # TODO:
 
