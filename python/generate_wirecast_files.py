@@ -463,5 +463,4 @@ def process_main():
 #####################################################################################
 #####################################################################################
 if __name__ == "__main__":
-    process_main()#!/c/Users/SetonSwimTeam/AppData/Local/Programs/Python/Python39/python
-# # ! d/usr/local/bin/python3
+    process_main()
