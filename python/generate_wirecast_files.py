@@ -197,6 +197,7 @@ def process_main():
     parser.add_argument('-O', '--overlay',          dest='overlay',             action='store_true',            help="Generate lane overlay files with just swimmers name for use during heat")
     parser.add_argument('-C', '--champ',            dest='championshipmeet',    action='store_true',            help="Sets meet to Championsip meet. Otherwise a double dual meet")
     parser.add_argument('-a', '--awards',           dest='awards',              action='store_true',            help="Generate Awards Result files")
+    parser.add_argument('-m', '--meettype',         dest='meettype',            choices=["HighSchool", "SetonTimeTrials", "JV"],  default="HighSchool", help="Type of meet sets the events to be used")
 
     ## Parms not used as often
     parser.add_argument('-S', '--splitrelays',      dest='splitrelays',         action='store_true',            help="Split Relays into multiple files")
@@ -261,6 +262,15 @@ def process_main():
     total_scores_files = 0
 
     #####################################################################################
+    ## Set the Events for this meet, which need to be known
+    #####################################################################################
+    eventsSetSuccessfully = sst_common.setEvents( args.meettype )
+    if not eventsSetSuccessfully:
+        logging.error(f"No Event Definitions found for meet type: {meetType}")
+        sys.exit(3)
+
+
+    #####################################################################################
     ## We don't need an actual result report to generate empty files
     #####################################################################################
     if args.emptyresults:
@@ -316,6 +326,7 @@ def process_main():
               f"\tOutputReportType \t{args.reporttype} \n" + \
               f"\tInputFile \t\t{inputfile} \n" + \
               f"\tRoot OutputDir \t\t{output_dir} \n" + \
+              f"\tMeet Type \t\t{args.meettype} \n" + \
               f"\tChampionship Meet \t{args.championshipmeet} \n" + \
               f"\tShort Sch Names Relays \t{args.shortschoolrelay} \n" + \
               f"\tShort Sch Names Indiv \t{use_short_school_names_ind} \n" + \
@@ -452,5 +463,4 @@ def process_main():
 #####################################################################################
 #####################################################################################
 if __name__ == "__main__":
-    process_main()#!/c/Users/SetonSwimTeam/AppData/Local/Programs/Python/Python39/python
-# # ! d/usr/local/bin/python3
+    process_main()

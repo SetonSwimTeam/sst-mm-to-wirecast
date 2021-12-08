@@ -17,19 +17,9 @@ from os import path
 from datetime import datetime, timedelta
 import logging
 
-## Define the types of events in this meet (Individual, Relay and Diving)
-## 2021 Events with time trial
-# event_num_individual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22,101,102,103,104,105,106,107,108]
-
-# Standard High School Meet order of events (Dual Meet and Championship)
-event_num_individual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22]
-event_num_relay      = [1,2,17,18,23,24]
-event_num_diving     = [9,10]
-
-## JV Invite Order of EVENTS
-# event_num_individual = [3,4,5,6,9,10,11,12,15,16,17,18]
-# event_num_relay      = [1,2,7,8,13,14,19,20]
-# event_num_diving     = []
+event_num_individual = []
+event_num_relay      = []
+event_num_diving     = []
 
 
 ## Define the header types in the output list so we can include/exclude as necessary
@@ -50,6 +40,7 @@ school_name_dict = {
         "Bishop Ireton Swim and Dive": "BI",
         "Bishop Sullivan Catholic High": "BSCHS",
         "BBVST": "BVST",
+        "Brookewood School-PV": "BW",
         "Broadwater Academy-VA": "BVST",
         "Cape Henry Collegiate": "CHC",
         "Carmel School Wildcats": "WILD",
@@ -104,6 +95,8 @@ proper_school_name_dict = {
         "Bishop Sullivan Catholic High": "Bishop Sullivan Catholic High",
         "BBVST": "BVST",
         "Broadwater Academy-VA": "Broadwater Academy",
+        "Brookewood School-PV": "Brookewood",
+        "BW   School-PV": "Brookewood",
         "Cape Henry Collegiate": "Cape Henry Collegiate",
         "Carmel School Wildcats": "Carmel School Wildcats",
         "CCS-VA": "CCS",
@@ -142,6 +135,34 @@ proper_school_name_dict = {
         "Seton Family Homeschool": "SFH",
     } 
 
+
+def setEvents( meet_type: str ) -> bool:
+    global event_num_individual
+    global event_num_relay
+    global event_num_diving
+
+    success = True
+
+    if meet_type == "SetonTimeTrials":
+        # Seton time trial events
+        event_num_individual = [1,2,3,4,5,6,7,8,9,10,11,12]
+        event_num_relay      = []
+        event_num_diving     = []
+    elif meet_type == "HighSchool":
+        # Standard High School Meet order of events (Dual Meet and Championship)
+        event_num_individual = [3,4,5,6,7,8,11,12,13,14,15,16,19,20,21,22]
+        event_num_relay      = [1,2,17,18,23,24]
+        event_num_diving     = [9,10]
+    elif meet_type == "JV":
+        ## JV Invite Order of EVENTS
+        event_num_individual = [3,4,5,6,9,10,11,12,15,16,17,18]
+        event_num_relay      = [1,2,7,8,13,14,19,20]
+        event_num_diving     = []
+    else:
+        success = False
+        logging.error(f"Unknow Meet  Type: {meet_type}")
+
+    return success
 
 #####################################################################################
 ## Some school names have -VA added to end.  Since MM often truncated the name

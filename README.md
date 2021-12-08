@@ -51,11 +51,9 @@ The report needs very specific formatting options for this program to work.
 
 
 
-
-
 ## Results
 
-Its best to create a memorized repor for results as you will have to run it after every event.
+Its best to create a memorized report for results as you will have to run it after every event.
 
 ![results column/format](img/results_options_columns.png )
 
@@ -84,3 +82,25 @@ Save as Text to the default input file directory for the generate script.
 
 Default directory: 
 ```C:\Users\SetonSwimTeam\mmreports```
+
+
+
+## Example commands
+
+Meet Program
+
+```
+python/generate_wirecast_files.py -o /c/Users/SetonSwimTeam/Dropbox/wirecast -i /c/Users/SetonSwimTeam/Dropbox/wc_meetreports -f 20211122_setontimetrails_program.txt  -m SetonTimeTrials
+```
+
+ python/generate_wirecast_files.py -o /c/Users/SetonSwimTeam/Dropbox/wirecast -i /c/Users/SetonSwimTeam/Dropbox/wc_meetreports -f 20211122_setontimetrails_results.txt  -m SetonTimeTrials
+
+python/generate_wirecast_files.py -m HighSchool -o /c/Users/SetonSwimTeam/Dropbox/wirecast -i /c/Users/SetonSwimTeam/Dropbox/wc_meetreports -f 2021-setonwinterinvite-program.txt 
+
+python/generate_wirecast_files.py -m HighSchool -o /c/Users/SetonSwimTeam/Dropbox/wirecast -i /c/Users/SetonSwimTeam/Dropbox/wc_meetreports -f 2021-setonwinterinvite-results.txt 
+
+python/generate_wirecast_files.py -m HighSchool -o /c/Users/SetonSwimTeam/Dropbox/wirecast -i /c/Users/SetonSwimTeam/Dropbox/wc_meetreports -f 2021-setonwinterinvite-score.txt 
+
+# TODO:
+
+* eventtypes: can we determine events by name (i.e. look for relay or diving)
