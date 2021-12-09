@@ -748,13 +748,13 @@ def computeSeedFinalTimeDiff( seedTimeStr: str, finalTimeStr: str):
         if seedTimeDate > finalTimeDate:
             timeDiff = seedTimeDate - finalTimeDate
             plusMinusStr = "-"
-            changeTimeColorBegin = bcolors.ANSI_GREEN
-            changeTimeColorEnd =  bcolors.ANSI_RESET
+            #changeTimeColorBegin = bcolors.ANSI_GREEN
+            #changeTimeColorEnd =  bcolors.ANSI_RESET
         else:
             timeDiff = finalTimeDate - seedTimeDate
             plusMinusStr = "+"
-            changeTimeColorBegin =  bcolors.ANSI_RED
-            changeTimeColorEnd =  bcolors.ANSI_RESET
+            #changeTimeColorBegin =  bcolors.ANSI_RED
+            #changeTimeColorEnd =  bcolors.ANSI_RESET
 
 
         ## is seed time a coaches entered time?
