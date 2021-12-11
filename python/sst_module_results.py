@@ -97,11 +97,11 @@ def process_result( meet_report_filename: str,
     #     'relay_short':       "   Team       Relay Seed Time  Finals Time       ",    
     # }
     result_header_dict = {
-        'individual_long':   "Name                    Yr School                 Seed Time  Finals Time   Change   ",
-        'individual_short':  "        Name                  Sch  Yr    Seed    Finals  Change    ",
-        'diving_long':       "Name                    Yr School                           Finals Score      ",
-        'diving_short':      "        Name                 School Yr   Seed     Final     ",
-        'relay_long':         "           Team                  Relay  Seed   Finals Change",        
+        'individual_long':   "Name                    Yr School                 Finals Time   Change   ",
+        'individual_short':  "        Name                  Sch  Yr   Time    Change    ",
+        'diving_long':       "Name                    Yr School                         Time Score      ",
+        'diving_short':      "        Name                 School Yr      Final     ",
+        'relay_long':         "           Team              Relay  Time    Change  ",        
         'relay_short':       "   Team       Relay Seed Time  Finals Time  Change",    
     }
     ## Define local variables
@@ -246,8 +246,8 @@ def process_result( meet_report_filename: str,
                     placeline_finaltime   = str(place_line_list[0][5]).strip()
                     placeline_points      = str(place_line_list[0][6]).strip()        
 
-                    if placeline_points == "":
-                        placeline_points = "-"
+                    # if placeline_points == "":
+                    #     placeline_points = "-"
 
                     ## Get formatted string of positive/negative chanage in tie
                     changeInTime = computeSeedFinalTimeDiff( placeline_seedtime, placeline_finaltime )
@@ -271,12 +271,14 @@ def process_result( meet_report_filename: str,
 
                     points_str = f"{q}{placeline_points:>4}{q}" if champsionship_result_header_dict else ""
                     #output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_grade:>2}{q} {q}{full_team_name:<25}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {points_str}"
-                    output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_grade:>2}{q} {q}{full_team_name:<25}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{changeInTime:>8}{q} {points_str}" 
+                    #output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_grade:>2}{q} {q}{full_team_name:<25}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{changeInTime:>8}{q} {points_str}" 
+                    output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_grade:>2}{q} {q}{full_team_name:<25}{q} {q}{placeline_finaltime:>8}{q} {q}{changeInTime:>8}{q} {points_str}" 
                     
                     if shorten_school_names_individual:
                         #output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_school_short:<4}{q} {q}{placeline_grade:>2}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
                         #output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_school_short:<4}{q} {q}{placeline_grade:>2}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q}{points_str}"
-                        output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_school_short:<4}{q} {q}{placeline_grade:>2}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{changeInTime:>8}{q}  {points_str}"
+                        #output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_school_short:<4}{q} {q}{placeline_grade:>2}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{changeInTime:>8}{q} {points_str}"
+                        output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_school_short:<4}{q} {q}{placeline_grade:>2}{q} {q}{placeline_finaltime:>8}{q} {q}{changeInTime:>8}{q} {points_str}"
                     
                     output_list.append(('PLACE', output_str))
                     crawler_str += gen_result_crawler_ind( placeline_place, result_name, placeline_grade,placeline_school_short, placeline_school_long, placeline_seedtime, placeline_finaltime, placeline_points )
@@ -298,8 +300,8 @@ def process_result( meet_report_filename: str,
                     placeline_finaltime = str(place_line_list[0][4])
                     placeline_points    = str(place_line_list[0][5])
 
-                    if placeline_points == "":
-                        placeline_points = "-"
+                    # if placeline_points == "":
+                    #     placeline_points = "-"
 
                     ## Get formatted string of positive/negative chanage in tie
                     changeInTime = computeSeedFinalTimeDiff( placeline_seedtime, placeline_finaltime )
@@ -319,13 +321,15 @@ def process_result( meet_report_filename: str,
                         #output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_short:<4}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
                         #output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_short:<4}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {points_str}"
                         output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_short:<4}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{changeInTime:>8}{q} {points_str}"
+                        #output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_short:<4}{q} {q}{placeline_relay}{q} {q}{placeline_finaltime:>8}{q} {q}{changeInTime:>8}{q} {points_str}"
                     else:
                         #full_team_name = placeline_sch_long
                         full_team_name = sst_common.find_proper_team_name( placeline_sch_long )
 
                         #output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_long:<25}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
                         #output_str = f" {q}{placeline_place:>3}{q} {q}{full_team_name:<25}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {points_str}"
-                        output_str = f" {q}{placeline_place:>3}{q} {q}{full_team_name:<25}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{changeInTime:>8}{q} {points_str}"
+                        #output_str = f" {q}{placeline_place:>3}{q} {q}{full_team_name:<25}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{changeInTime:>8}{q} {points_str}"
+                        output_str = f" {q}{placeline_place:>3}{q} {q}{full_team_name:<25}{q} {q}{placeline_relay}{q} {q}{placeline_finaltime:>8}{q} {q}{changeInTime:>8}{q} {points_str}"
                     output_list.append(( "PLACE", output_str ))
 
             #####################################################################################
@@ -779,7 +783,7 @@ def computeSeedFinalTimeDiff( seedTimeStr: str, finalTimeStr: str):
             #print(f"totalsecs: {seedTimeStr} -> {finalTimeStr} = {plusMinusStr}{total_secs}:  {plusMinusStr}{adjusted_seconds:05.2f}")
     else:
         returnStr =  f"------"
-        #print(f"totalsecs: {seedTimeStr} -> {finalTimeStr} = ------")
+        #print(f"totalsecs: {seedTimeStr} -> {finalTimeStr} = -----")
     
     logging.debug(f"computeSeedFinalTimeDiff: st: {seedTimeMS} s: '{seedTimeStr}'' f: '{finalTimeStr}'' o: {returnStr}")
     return returnStr 
