@@ -16,6 +16,9 @@ import os
 from os import path
 from datetime import datetime, timedelta
 import logging
+import unicodedata
+
+
 
 event_num_individual = []
 event_num_relay      = []
@@ -357,3 +360,10 @@ def verify_dirs_files(  input_dir: str, input_file:str, output_dir: str ):
 
     return error_msg
  
+
+#####################################################################################
+## Remove characters such as Céilí 
+#####################################################################################
+def remove_accents(input_str):
+    nfkd_form = unicodedata.normalize('NFKD', input_str)
+    return u"".join([c for c in nfkd_form if not unicodedata.combining(c)])
