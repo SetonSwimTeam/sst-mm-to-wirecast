@@ -138,9 +138,9 @@ def process_result( meet_report_filename: str,
     ## RESULTS: Loop through each line of the input file
     #####################################################################################
     with open(meet_report_filename, "r") as meet_report_file:
-        for line in meet_report_file:
+        for in_line in meet_report_file:
 
-            #line = sst_common.remove_accents( in_line) 
+            line = sst_common.remove_accents( in_line) 
 
             #####################################################################################
             ## RESULTS: Remove the extra newline at end of line

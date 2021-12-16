@@ -53,6 +53,7 @@ school_name_dict = {
         "Collegiate School": "COOL",
         "Fredericksburg Academy-VA": "FAST",
         "Fredericksburg Christian-": "FCS",
+        "Fresta Valley Christian S": "FVCS",
         "Fresta Valley Christian": "FVCS",
         "Hampton Roads Academy": "HRA",
         "Highland Hawks": "HL",
@@ -67,6 +68,7 @@ school_name_dict = {
         "St. Paul VI Catholic HS": "PVI",
         "Seton Alumni": "ALUM",
         "Seton Swimming": "SST", 
+        "The Heights": "HTS",
         "The Covenant School-VA": "TCS",
         "The Steward School-VA": "TSS",
         "The Steward School Sparta": "TSS",
@@ -122,6 +124,7 @@ proper_school_name_dict = {
         "Seton Alumni Swimming": "Seton Alumni",
         "Seton Swimming": "Seton Swimming", 
         "The Covenant School-VA": "The Covenant School" ,
+        "The Heights": "The Heights" ,
         "The Steward School-VA": "The Steward School",
         "The Steward School Sparta": "The Steward School",
         "Trinity Christian School-": "Trinity Christian School",
@@ -132,10 +135,10 @@ proper_school_name_dict = {
         "Wakefield H2owls-VA": "WAKE",
         "H2owls-VA": "WAKE",
         "Williamsburg Christian Ac": "WCA",
-        "Woodberry Forest-VA": "WFS",
+        "Woodberry Forest-VA": "Woodberry Forest",
         "Valley Christian School": "VCS",
         "Valley Christian S": "VCS",
-        "Seton Family Homeschool": "SFH",
+        "Seton Family Homeschool": "Seton Family Homeschool",
     } 
 
 
