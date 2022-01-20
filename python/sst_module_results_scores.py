@@ -181,7 +181,7 @@ def create_output_result_scores_champ_by_gender( output_dir_root: str,
                 output_str += row_text + '\n'
                 output_str += '\n'
             elif row_type == 'H4' and row_text == f"{gender}":
-                output_str += row_text + '\n'
+                output_str += row_text.upper() + '\n'
                 output_str += '\n'
             elif row_type == 'H5':
                 output_str += row_text + '\n'
@@ -196,7 +196,7 @@ def create_output_result_scores_champ_by_gender( output_dir_root: str,
 
         gender_lowercase = gender.lower()
         logging.warning(f"SCORES: {output_str}")
-        output_file_name =  f"score_champsionship_{gender_lowercase}.txt"
+        output_file_name =  f"score_{gender_lowercase}.txt"
         sst_common.write_output_file( output_dir, output_file_name, output_str )
         num_files_generated += 1
     
@@ -227,7 +227,7 @@ def create_output_result_scores_champ_combined( output_dir_root: str,
         elif row_type == 'H3':
             pass
         elif row_type == 'H4':
-            output_str += '\n' +  row_text + '\n'
+            output_str += '\n' +  row_text.upper() + '\n'
         elif row_type == 'H5':
             output_str += row_text + '\n'
         elif row_type == 'H6':
@@ -239,7 +239,7 @@ def create_output_result_scores_champ_combined( output_dir_root: str,
         # if num_results_generated >= num_results_to_display:
         #     break;
 
-    output_file_name =  f"score_champsionship_combined.txt"
+    output_file_name =  f"score_combined.txt"
     sst_common.write_output_file( output_dir, output_file_name, output_str )
     num_files_generated += 1
     

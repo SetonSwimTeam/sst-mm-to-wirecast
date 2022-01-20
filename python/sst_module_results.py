@@ -82,7 +82,7 @@ def process_result( meet_report_filename: str,
     ##  Wirecast will center all lines and it will be in proper position then
     champsionship_result_header_dict = {
         'individual_long':   "Name                    Yr School               Final Time     Change      Points",
-        'individual_short':  "        Name                  School Yr   Final  Change   Pts",
+        'individual_short':  "        Name                 School Yr   Final   Change   Pts",
         'diving_long':       "Name                    Yr School                           Finals Score      Points",
         'diving_short':      "        Name                 School Yr  Final    Change  Pts",
         'relay_long':         "           Team               Relay  Final   Change  Pts",        
@@ -248,12 +248,12 @@ def process_result( meet_report_filename: str,
                     placeline_finaltime   = str(place_line_list[0][5]).strip()
                     placeline_points      = str(place_line_list[0][6]).strip()        
 
-                    # if placeline_points == "":
-                    #     placeline_points = "-"
+                    if placeline_points == "":
+                        placeline_points = "-"
 
                     ## Wierd case where a DQ results has part of finaltime in points column
                     if 'DQ' in placeline_finaltime:
-                        placeline_points = ""
+                        placeline_points = "-"
 
                     ## Get formatted string of positive/negative chanage in tie
                     if event_num in sst_common.event_num_individual:
@@ -310,10 +310,10 @@ def process_result( meet_report_filename: str,
                     placeline_finaltime = str(place_line_list[0][4])
                     placeline_points    = str(place_line_list[0][5])
 
-                    # if placeline_points == "":
-                    #     placeline_points = "-"
+                    if placeline_points == "":
+                        placeline_points = "-"
                     if 'DQ' in placeline_finaltime:
-                        placeline_points = ""
+                        placeline_points = "-"
 
                     ## Get formatted string of positive/negative chanage in tie
                     changeInTime = computeSeedFinalTimeDiff( placeline_seedtime, placeline_finaltime )

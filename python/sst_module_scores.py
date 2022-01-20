@@ -263,7 +263,7 @@ def create_output_file_scores_dual_by_gender( output_dir_root: str,
                     break;
 
         gender_lowercase = report_type.lower()
-        output_file_name =  f"score_dual_{gender_lowercase}.txt"
+        output_file_name =  f"score_{gender_lowercase}.txt"
         sst_common.write_output_file( output_dir, output_file_name, output_str )
         num_files_generated += 1
 
@@ -309,7 +309,7 @@ def create_output_file_scores_dual_combined( output_dir_root: str,
                 if num_results_generated >= num_results_to_display:
                     break;
 
-    output_file_name =  f"score_dual_combined.txt"
+    output_file_name =  f"score_combined.txt"
     sst_common.write_output_file( output_dir, output_file_name, output_str )
     num_files_generated += 1
 
@@ -351,7 +351,7 @@ def create_output_file_scores_champ( output_dir_root: str,
             break;
 
     gender_lowercase = gender_of_scores.lower()
-    output_file_name =  f"score_champsionship_{gender_lowercase}.txt"
+    output_file_name =  f"score_{gender_lowercase}.txt"
     sst_common.write_output_file( output_dir, output_file_name, output_str )
     num_files_generated += 1
     
