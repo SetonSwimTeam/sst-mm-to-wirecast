@@ -109,7 +109,8 @@ def process_champsionship_results_score( meet_report_filename: str,
                 gender = score_line_list[1].strip()
 
                 ## Add the header above the indivial team scores
-                output_list.append( ('H4', gender ))
+                ## Gender. Make sure its upper case so it stands out
+                output_list.append( ('H4', gender.upper() ))
 
             if start_scoring:
                 score_line = re_score_result.findall(line)
@@ -177,11 +178,12 @@ def create_output_result_scores_champ_by_gender( output_dir_root: str,
                 output_str += row_text + '\n'
             elif row_type == 'H3':
                 output_str += '\n'
-            elif row_type == 'H4' and row_text == f"Scores - {gender}":
+            ## We may change case of gender for display purposes. Do case insensitive compare
+            elif row_type == 'H4' and row_text.casefold() == f"Scores - {gender}".casefold():
                 output_str += row_text + '\n'
                 output_str += '\n'
-            elif row_type == 'H4' and row_text == f"{gender}":
-                output_str += row_text.upper() + '\n'
+            elif row_type == 'H4' and row_text.casefold() == f"{gender}".casefold():
+                output_str += row_text + '\n'
                 output_str += '\n'
             elif row_type == 'H5':
                 output_str += row_text + '\n'
@@ -227,7 +229,7 @@ def create_output_result_scores_champ_combined( output_dir_root: str,
         elif row_type == 'H3':
             pass
         elif row_type == 'H4':
-            output_str += '\n' +  row_text.upper() + '\n'
+            output_str += '\n' +  row_text + '\n'
         elif row_type == 'H5':
             output_str += row_text + '\n'
         elif row_type == 'H6':
