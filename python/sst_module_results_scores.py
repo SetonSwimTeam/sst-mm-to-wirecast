@@ -52,7 +52,6 @@ def process_champsionship_results_score( meet_report_filename: str,
     #1. Bishop O'Connell              410.25       2. St. Paul VI High School        361.25
 
     #re_score_result  = re.compile('^(\d{1,2})\.\s+([A-z\' \.\-]{32})\s+(\d+)\s*(\d{1,2})?\.?\s*([A-z\' \.\-]{32})?\s*(\d+)?')
-    #re_score_result  = re.compile('^(\d{1,2})\.\s+([A-z\' \.\-]{32})\s*([0-9.]+)\s*(\d{1,2})?\.?\s*([A-z\' \.\-]{32})?\s*([0-9.]+)?')
     re_score_result  = re.compile('^(\d{1,2})\.\s*([A-z\' \.\-]{32})\s*([0-9.]+)?\s*(\d{1,2})?\.\s*([A-z\' \.\-]{32})?\s*([0-9.]+)?')
 
     #####################################################################################
