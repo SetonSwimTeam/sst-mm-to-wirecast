@@ -110,4 +110,4 @@ python/generate_wirecast_files.py -m HighSchool -o /c/Users/SetonSwimTeam/Dropbo
 * eventtypes: can we determine events by name (i.e. look for relay or diving)
 
 
-python/generate_wirecast_files.py -m HighSchool -o /c/Users/SetonSwimTeam/Dropbox/wirecast -i /c/Users/SetonSwimTeam/Dropbox/wc_meetreports -f results_novacatholics.txt -C -v debug
+python/generate_wirecast_files.py -m HighSchool -o /c/Users/SetonSwimTeam/Dropbox/wirecast -i /c/Users/SetonSwimTeam/Dropbox/wc_meetreports -f resultstxt -C 

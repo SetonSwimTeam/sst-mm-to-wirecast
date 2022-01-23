@@ -204,8 +204,8 @@ def process_score_champsionship( meet_report_filename: str,
             score_line = re_score_result.findall(line)
             if score_line:
                 scoreline_place       = str(score_line[0][0]).strip()
-                scoreline_school1      = str(score_line[0][1]).strip()
-                scoreline_school2      = str(score_line[0][2]).strip()
+                scoreline_school1     = str(score_line[0][1]).strip()
+                scoreline_school2     = str(score_line[0][2]).strip()
                 scoreline_points      = str(score_line[0][3]).strip()
 
                 ## A decimal point comes over a space.  Convert "123 50' to '123.50' if present"

@@ -47,7 +47,13 @@ def process_champsionship_results_score( meet_report_filename: str,
     need_header_h5 = True
 
     #1. St. Paul VI Catholic HS          419       2. Seton Swimming                  384.5
-    re_score_result  = re.compile('^(\d{1,2})\.\s+([A-z\' \.\-]{32})\s+(\d+)\s*(\d{1,2})?\.?\s*([A-z\' \.\-]{32})?\s*(\d+)?')
+    #3. Seton Swimming                 199.5       4. Bishop Ireton Swim and Dive       145
+    #5. Saint John Paul the Great        133       6. Benedictine College Prep        123.5
+    #1. Bishop O'Connell              410.25       2. St. Paul VI High School        361.25
+
+    #re_score_result  = re.compile('^(\d{1,2})\.\s+([A-z\' \.\-]{32})\s+(\d+)\s*(\d{1,2})?\.?\s*([A-z\' \.\-]{32})?\s*(\d+)?')
+    #re_score_result  = re.compile('^(\d{1,2})\.\s+([A-z\' \.\-]{32})\s*([0-9.]+)\s*(\d{1,2})?\.?\s*([A-z\' \.\-]{32})?\s*([0-9.]+)?')
+    re_score_result  = re.compile('^(\d{1,2})\.\s*([A-z\' \.\-]{32})\s*([0-9.]+)?\s*(\d{1,2})?\.\s*([A-z\' \.\-]{32})?\s*([0-9.]+)?')
 
     #####################################################################################
     ## RESULTS_SCORES_CHAMP: Loop through each line of the input file
