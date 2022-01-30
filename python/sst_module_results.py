@@ -81,12 +81,12 @@ def process_result( meet_report_filename: str,
     ## NOTE: Do not align up these headers with the TXT output.  
     ##  Wirecast will center all lines and it will be in proper position then
     champsionship_result_header_dict = {
-        'individual_long':   "Name                    Yr School                 Seed Time  Finals Time      Points",
-        'individual_short':  "        Name                  School Yr   Seed   Finals   Pts",
+        'individual_long':   "Name                    Yr School               Final Time     Change      Points",
+        'individual_short':  "        Name                 School Yr   Final   Change   Pts",
         'diving_long':       "Name                    Yr School                           Finals Score      Points",
-        'diving_short':      "        Name                 School Yr   Seed     Final Pts",
-        'relay_long':         "           Team               Relay  Seed   Finals  Pts",        
-        'relay_short':       "   Team Relay Seed    Finals   Pts",    
+        'diving_short':      "        Name                 School Yr  Final    Change  Pts",
+        'relay_long':         "           Team               Relay  Final   Change  Pts",        
+        'relay_short':       "   Team Relay Final    Change   Pts",    
     }
     # result_header_dict = {
     #     'individual_long':   "Name                    Yr School                 Seed Time  Finals Time            ",
@@ -248,12 +248,20 @@ def process_result( meet_report_filename: str,
                     placeline_finaltime   = str(place_line_list[0][5]).strip()
                     placeline_points      = str(place_line_list[0][6]).strip()        
 
-                    # if placeline_points == "":
-                    #     placeline_points = "-"
+                    if placeline_points == "":
+                        placeline_points = "-"
+
+                    ## Wierd case where a DQ results has part of finaltime in points column
+                    if 'DQ' in placeline_finaltime:
+                        placeline_points = "-"
 
                     ## Get formatted string of positive/negative chanage in tie
-                    changeInTime = computeSeedFinalTimeDiff( placeline_seedtime, placeline_finaltime )
-
+                    if event_num in sst_common.event_num_individual:
+                        changeInTime = computeSeedFinalTimeDiff( placeline_seedtime, placeline_finaltime )
+                    elif event_num in sst_common.event_num_diving:
+                        changeInTime = computeDivingSeedFinalTimeDiff( placeline_seedtime, placeline_finaltime )
+                    else:
+                        changeInTime = "------"
                     logging.debug(f"RESULTS: place {placeline_place}: name {placeline_name_last_first}: grade {placeline_grade}: sch {placeline_school_long}: seed {placeline_seedtime}: final {placeline_finaltime}: points {placeline_points}:")
                     ## If we want to use Shortened School Names, run the lookup
                     ## The length of the school name in the MM report varies by event type
@@ -302,8 +310,10 @@ def process_result( meet_report_filename: str,
                     placeline_finaltime = str(place_line_list[0][4])
                     placeline_points    = str(place_line_list[0][5])
 
-                    # if placeline_points == "":
-                    #     placeline_points = "-"
+                    if placeline_points == "":
+                        placeline_points = "-"
+                    if 'DQ' in placeline_finaltime:
+                        placeline_points = "-"
 
                     ## Get formatted string of positive/negative chanage in tie
                     changeInTime = computeSeedFinalTimeDiff( placeline_seedtime, placeline_finaltime )
@@ -746,11 +756,13 @@ def computeSeedFinalTimeDiff( seedTimeStr: str, finalTimeStr: str):
 
     ## If both times are valid dates, continue.
     seedTimeMS = 0
+    total_min = 0
+    changeTimeColorBegin = ""
+    changeTimeColorEnd = ""
+    plusMinusStr = ""
+    adjusted_seconds = 0
     if not (seedTimeDate == None or finalTimeDate == None):
         ## Add a + or - sign for increse/decrease in time
-        plusMinusStr = ""
-        changeTimeColorBegin = ""
-        changeTimeColorEnd = ""
         if seedTimeDate > finalTimeDate:
             timeDiff = seedTimeDate - finalTimeDate
             plusMinusStr = "-"
@@ -776,7 +788,8 @@ def computeSeedFinalTimeDiff( seedTimeStr: str, finalTimeStr: str):
         adjusted_seconds = round(total_secs - (total_min*60),2)
 
     ## if seedTimeMS == 0 then we assume this is a coaches time and don't display a change/improvement
-    if seedTimeMS > 0:
+    ## WPD. Not liking the output of not display MS=0. Ignore for now, but leaving IF in place for easy revert back
+    if seedTimeMS >= 0:
         if total_min > 0:
             returnStr =  f"{changeTimeColorBegin}{plusMinusStr}{total_min:.0f}:{adjusted_seconds:05.2f}{changeTimeColorEnd}"
             #print(f"totalsecs: {seedTimeStr} -> {finalTimeStr} = {plusMinusStr}{total_secs}:  {plusMinusStr}{total_min:.0f}:{adjusted_seconds:05.2f}")
@@ -789,3 +802,38 @@ def computeSeedFinalTimeDiff( seedTimeStr: str, finalTimeStr: str):
     
     logging.debug(f"computeSeedFinalTimeDiff: st: {seedTimeMS} s: '{seedTimeStr}'' f: '{finalTimeStr}'' o: {returnStr}")
     return returnStr 
+
+#####################################################################################
+## computeDivingSeedFinalTimeDiff
+##
+## Given a SEED time and FINALS time in string format see if we can
+## determine the change in time.
+## a negative number is an improvement in time (faster time)
+## a positive number is an slower time
+#####################################################################################
+def computeDivingSeedFinalTimeDiff( seedTimeStr: str, finalTimeStr: str):
+    returnStr =  f"------"
+    plusMinusStr = ""
+
+    ## Remove xX for exhibition times
+    if 'X' in finalTimeStr:
+        finalTimeStr = finalTimeStr.replace('X','')
+    if 'x' in finalTimeStr:
+        finalTimeStr = finalTimeStr.replace('x','')
+
+    try:
+        # converting to integer
+        seedTime = float(seedTimeStr)
+        finalTime = float(finalTimeStr)
+        changeInTime = finalTime - seedTime
+        if changeInTime > 0:
+            plusMinusStr = "+"
+            returnStr = f"{plusMinusStr}{changeInTime:05.2f}"
+        else:
+            returnStr = f"{changeInTime:06.2f}"
+
+    except ValueError:
+        logging.info(f"computeDivingSeedFinalTimeDiff: Not a valid number: ST:{seedTimeStr} FT: {finalTimeStr}")
+
+
+    return returnStr

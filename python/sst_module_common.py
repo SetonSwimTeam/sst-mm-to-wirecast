@@ -67,9 +67,15 @@ school_name_dict = {
         "Saint John Paul the Great": "JP",
         "St. Gertrude High School": "SGHS",
         "St. Paul VI Catholic HS": "PVI",
+        "St. Paul VI High School": "PVI",
+        "St. Paul VI High Schoo": "PVI",
         "Seton Alumni": "SALUM",
         "SST  Alumni": "SALUM",
         "Seton Swimming": "SST", 
+        "St. Catherine's School-VA": "STCA",
+        "St. Christopher's School-": "STC",
+        "St. Christopher's Scho": "STC",
+        "St. Christopher's Scho": "STC",
         "The Heights": "HTS",
         "The Covenant School-VA": "TCS",
         "The Steward School-VA": "TSS",
@@ -98,7 +104,7 @@ proper_school_name_dict = {
         "Benedictine College Prep": "Benedictine College Prep",
         "Bishop O'Connell-PV": "Bishop O'Connell",
         "Bishop O'Connell": "Bishop O'Connell",
-        "Bishop Ireton Swim and Dive": "Bishop Ireton Swim and Dive",
+        "Bishop Ireton Swim and Dive": "Bishop Ireton",
         "Bishop Sullivan Catholic High": "Bishop Sullivan Catholic High",
         "BBVST": "BVST",
         "Broadwater Academy-VA": "Broadwater Academy",
@@ -124,6 +130,9 @@ proper_school_name_dict = {
         "Saint John Paul the Great": "Saint John Paul the Great",
         "St. Gertrude High School": "St. Gertrude High School",
         "St. Paul VI Catholic HS": "St. Paul VI Catholic HS",
+        "St. Paul VI High Schoo": "St. Paul VI Catholic HS",
+        "St. Christopher's Scho": "St. Christopher's School",
+        "St. Catherine's School-VA": "St. Catherine's School",
         "Seton Alumni Swimming": "Seton Alumni",
         "Seton Swimming": "Seton", 
         "The Covenant School-VA": "The Covenant School" ,
@@ -165,7 +174,7 @@ def setEvents( meet_type: str ) -> bool:
     elif meet_type == "JV":
         ## JV Invite Order of EVENTS
         event_num_individual = [3,4,5,6,9,10,11,12,15,16,17,18]
-        event_num_relay      = [1,2,7,8,13,14,19,20]
+        event_num_relay      = [1,2,7,8,13,14,19,20,101,102,103]
         event_num_diving     = []
     else:
         success = False

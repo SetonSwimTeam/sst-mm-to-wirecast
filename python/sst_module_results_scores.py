@@ -47,7 +47,12 @@ def process_champsionship_results_score( meet_report_filename: str,
     need_header_h5 = True
 
     #1. St. Paul VI Catholic HS          419       2. Seton Swimming                  384.5
-    re_score_result  = re.compile('^(\d{1,2})\.\s+([A-z\' \.\-]{32})\s+(\d+)\s*(\d{1,2})?\.?\s*([A-z\' \.\-]{32})?\s*(\d+)?')
+    #3. Seton Swimming                 199.5       4. Bishop Ireton Swim and Dive       145
+    #5. Saint John Paul the Great        133       6. Benedictine College Prep        123.5
+    #1. Bishop O'Connell              410.25       2. St. Paul VI High School        361.25
+
+    #re_score_result  = re.compile('^(\d{1,2})\.\s+([A-z\' \.\-]{32})\s+(\d+)\s*(\d{1,2})?\.?\s*([A-z\' \.\-]{32})?\s*(\d+)?')
+    re_score_result  = re.compile('^(\d{1,2})\.\s*([A-z\' \.\-]{32})\s*([0-9.]+)?\s*(\d{1,2})?\.\s*([A-z\' \.\-]{32})?\s*([0-9.]+)?')
 
     #####################################################################################
     ## RESULTS_SCORES_CHAMP: Loop through each line of the input file
@@ -109,7 +114,8 @@ def process_champsionship_results_score( meet_report_filename: str,
                 gender = score_line_list[1].strip()
 
                 ## Add the header above the indivial team scores
-                output_list.append( ('H4', gender ))
+                ## Gender. Make sure its upper case so it stands out
+                output_list.append( ('H4', gender.upper() ))
 
             if start_scoring:
                 score_line = re_score_result.findall(line)
@@ -177,10 +183,11 @@ def create_output_result_scores_champ_by_gender( output_dir_root: str,
                 output_str += row_text + '\n'
             elif row_type == 'H3':
                 output_str += '\n'
-            elif row_type == 'H4' and row_text == f"Scores - {gender}":
+            ## We may change case of gender for display purposes. Do case insensitive compare
+            elif row_type == 'H4' and row_text.casefold() == f"Scores - {gender}".casefold():
                 output_str += row_text + '\n'
                 output_str += '\n'
-            elif row_type == 'H4' and row_text == f"{gender}":
+            elif row_type == 'H4' and row_text.casefold() == f"{gender}".casefold():
                 output_str += row_text + '\n'
                 output_str += '\n'
             elif row_type == 'H5':
@@ -196,7 +203,7 @@ def create_output_result_scores_champ_by_gender( output_dir_root: str,
 
         gender_lowercase = gender.lower()
         logging.warning(f"SCORES: {output_str}")
-        output_file_name =  f"score_champsionship_{gender_lowercase}.txt"
+        output_file_name =  f"score_{gender_lowercase}.txt"
         sst_common.write_output_file( output_dir, output_file_name, output_str )
         num_files_generated += 1
     
@@ -239,7 +246,7 @@ def create_output_result_scores_champ_combined( output_dir_root: str,
         # if num_results_generated >= num_results_to_display:
         #     break;
 
-    output_file_name =  f"score_champsionship_combined.txt"
+    output_file_name =  f"score_combined.txt"
     sst_common.write_output_file( output_dir, output_file_name, output_str )
     num_files_generated += 1
     
