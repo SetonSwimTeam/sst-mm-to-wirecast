@@ -50,6 +50,7 @@ import sst_module_program as sst_program
 import sst_module_results as sst_results
 import sst_module_scores as sst_scores
 import sst_module_results_scores as sst_result_scores
+import sst_module_schools as sst_module_schools
 
 ## Globals
 report_type_results = "result"
@@ -228,7 +229,8 @@ def process_main():
 
     args = parser.parse_args()
 
-    inputfile =f"{args.inputdir}/{args.filename}"
+    inputfile = f"{args.inputdir}/{args.filename}"
+    schoolsfile = f"{args.inputdir}/schools.txt"
 
     output_dir = args.outputdir
     ## The outputdir string MUST have a trailing slash.  Check string and add it if necesssary
@@ -287,6 +289,12 @@ def process_main():
     if not error_msg == "":
         logging.error(f"Directory and/or input file error:\n{error_msg}")
         sys.exit(3)
+
+
+    #####################################################################################
+    ## Build the school name list
+    #####################################################################################
+    sst_module_schools.process_schools_report( schoolsfile )
 
     #####################################################################################
     ## Get header info from the meet file

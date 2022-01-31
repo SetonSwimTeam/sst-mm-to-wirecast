@@ -112,4 +112,5 @@ python/generate_wirecast_files.py -m HighSchool -o /c/Users/SetonSwimTeam/Dropbo
 
 python/generate_wirecast_files.py -m HighSchool -o /c/Users/SetonSwimTeam/Dropbox/wirecast -i /c/Users/SetonSwimTeam/Dropbox/wc_meetreports -f resultstxt -C 
 
+## JV Meet
 python/generate_wirecast_files.py -m HighSchool -o /c/Users/SetonSwimTeam/Dropbox/wirecast -i /c/Users/SetonSwimTeam/Dropbox/wc_meetreports -C -m JV -f results.txt 

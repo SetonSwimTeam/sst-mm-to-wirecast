@@ -17,7 +17,7 @@ from os import path
 from datetime import datetime, timedelta
 import logging
 import unicodedata
-
+import sst_module_schools as sst_module_schools
 
 
 event_num_individual = []
@@ -30,6 +30,18 @@ headerNum1 = -1   ## HyTek licensee and HytTek software
 headerNum2 = -2   ## Meet Name
 headerNum3 = -3   ## Report type
 
+
+
+#####################################################################################
+## Text used for REGEX to convert long names to short names
+## Value are now loaded from the school report (saved as a txt file)
+#####################################################################################
+
+## Contains a list of dictionaries with the following Keys:
+## {'school_abbr_full': 'BW-PV', 'school_abbr_short': 'BW', 'school_name_full': 'Brookewood School', 'school_name_short': 'Brookewood'}
+## This list is populated in the function sst_modules_schools.process_schools_report
+school_name_list = []
+long_school_name_len=23
 
 #####################################################################################
 ## Text used for REGEX to convert long names to short names
@@ -303,7 +315,7 @@ def get_header_line( event_num: int, shorten_school_names_relays: bool, shorten_
 
 
 
-def short_school_name_lookup( long_school_name: str, long_school_name_len: int, trunc_len :int = 0 ) -> str:
+def short_school_name_lookup_hardcoded_dict( long_school_name: str, long_school_name_len: int, trunc_len :int = 0 ) -> str:
     "Given a long school name, search for a shorter school name.  If not found, return the long school name"
     
     school_name_dict_short_name_len  = 4
@@ -326,9 +338,32 @@ def short_school_name_lookup( long_school_name: str, long_school_name_len: int, 
             break
     return short_school_name
 
+#####################################################################################
+#### Given long school name return the short name version
+#####################################################################################
+def short_school_name_lookup( long_school_name: str, long_school_name_len: int, trunc_len :int = 0 ) -> str:
 
+    try:
+        school_dict = sst_module_schools.get_schools_dict_by_full_name( long_school_name.strip() )
+        short_school_name = school_dict['school_name_short']
+    except Exception as nssfn:
+        short_school_name = long_school_name.strip()
 
+    return short_school_name
 
+#####################################################################################
+#### Given long school name return the short name version
+#####################################################################################
+def short_school_abbr_lookup( long_school_name: str, long_school_name_len: int, trunc_len :int = 0 ) -> str:
+
+    print(f"short_school_abbr_lookup: i: {long_school_name}")
+    #try:
+    school_dict = sst_module_schools.get_schools_dict_by_full_name( long_school_name.strip() )
+    short_school_name = school_dict['school_abbr_short']
+    #except Exception as nssfn:
+    #    short_school_name = long_school_name.strip()
+
+    return short_school_name
 def reverse_lastname_firstname( name_last_first ):
     """ Convert the string "lastnane, firstname" to "firstname lastname" """
 
