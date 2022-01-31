@@ -209,7 +209,21 @@ def clean_up_team_name( team_name_in: str) -> str:
 ## MM generatee a truncated team name.  See if we can find the full long name
 #####################################################################################
 def find_proper_team_name( team_name_in: str ):
-    team_name_out = team_name_in
+
+    short_school_name = team_name_in
+    try:
+        school_dict = sst_module_schools.get_schools_dict_by_full_name( team_name_in.strip() )
+        short_school_name = school_dict['school_name_short']
+    except Exception as nssfn:
+        short_school_name = team_name_in.strip()
+
+    return short_school_name
+
+#####################################################################################
+## MM generatee a truncated team name.  See if we can find the full long name
+#####################################################################################
+def find_proper_team_name_hardcoded_names( team_name_in: str ):
+    short_school_name = team_name_in
 
     ## Input may be a truncated version of the school name
     ## Search for a substring

@@ -6,12 +6,12 @@
     2    WILD        Carmel School Wildcats                      Carmel Wildcats
     3    FVCS-VA     Fresta Valley Christian School              Fresta
     4    ICHS        Immanuel Christian High School              Immanuel
-    5    OAK         Oakcrest School Chargers                    OAK
-    6    SFH         Seton Family Homeschool                     SFH
+    5    OAK         Oakcrest School Chargers                    Oakcrest
+    6    SFH         Seton Family Homeschool                     Seton Family Homeschool
     7    SST         Seton Swimming                              Seton
-    8    STCA-VA     St. Catherine's School                      STCA
-    9    STC-VA      St. Christopher's School                    STC
-   10    VCA-VA      Veritas Collegiate Academy                  VCA
+    8    STCA-VA     St. Catherine's School                      St. Catherine's
+    9    STC-VA      St. Christopher's School                    St. Christopher's
+   10    VCA-VA      Veritas Collegiate Academy                  Veritas Collegiate
    11    WA-VA       Walsingham Academy                          Walsingham
 
 
