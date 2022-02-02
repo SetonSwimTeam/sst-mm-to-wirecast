@@ -334,7 +334,7 @@ def process_main():
               f"\n   Params: \n" + \
               f"\tOutputReportType \t{args.reporttype} \n" + \
               f"\tInputFile \t\t{inputfile} \n" + \
-              f"\tSchool Report File Name \t{args.schoolfilename} \n" + \
+              f"\tSchool Report File Name {args.schoolfilename} \n" + \
               f"\tRoot OutputDir \t\t{output_dir} \n" + \
               f"\tMeet Type \t\t{args.meettype} \n" + \
               f"\tChampionship Meet \t{args.championshipmeet} \n" + \
