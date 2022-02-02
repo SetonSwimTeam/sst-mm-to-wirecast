@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": ["-m", "HighSchool", "-o", "output/2020-divii", "-i", "data", "-f", "results_2020_divii-e7.txt", "-C", "-m", "HighSchool", "-v", "debug"]
+            "args": ["-m", "HighSchool", "-o", "output/2022-jvinvite", "-i", "data", "-f", "results_jvinvite_e6.txt", "-C", "-m", "JV", "-s", "schools_jvinite.txt", "-v", "debug"]
         }
     ]
 }

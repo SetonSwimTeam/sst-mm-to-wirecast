@@ -80,8 +80,8 @@ def get_schools_dict_by_full_name( element_name_full ) -> dict:
                 return school_dict
 
         ## Worst case, if there is something wrong with the regex, see if the school name is a substring
-        if school_name_full in element_name_full:
-            return school_dict
+        # if school_name_full in element_name_full:
+        #     return school_dict
 
     ## Should not get here. No school match
     raise Exception(f"NoSuchSchoolFullName: {element_name_full}")
