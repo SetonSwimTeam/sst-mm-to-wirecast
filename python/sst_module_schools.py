@@ -38,8 +38,8 @@ def process_schools_report( school_report_filename: str ):
                     school_lsc = ""
 
                     ## some schools have USA swimming region attached to it, ie.e "BW-VA".
-                    ## Remove the -VA if it exists
-                    if school_abbr_full[-3] == "-":
+                    ## (Remove the -VA if it exists
+                    if len(school_abbr_full) > 3 and school_abbr_full[-3] == "-":
                         school_lsc = school_abbr_full[-2:]
                         school_abbr_short = school_abbr_full[:-3]
                     else:
@@ -75,8 +75,7 @@ def get_schools_dict_by_full_name( element_name_full ) -> dict:
         if school_name_full[:22] == element_name_full[:22]:
             return school_dict
         # Test long school names with LSC (No idea why MM access LSC to long name, but it does)
-        if element_name_full[-3] == "-":
-            print(f"get_schools_dict_by_full_name: Searching for '{element_name_full[:-3]}'")
+        if len(element_name_full) > 3 and element_name_full[-3] == "-":
             if school_name_full == element_name_full[:-3]:
                 return school_dict
 

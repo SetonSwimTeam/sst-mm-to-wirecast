@@ -1,60 +1,1 @@
-﻿    Seton School                                               HY-TEK's MEET MANAGER 8.0 - Page 1
-                   15th Annual VISAA Junior Varsity Invitational - 1/29/2022
-                                          School List
-
-    1    BW-PV       Brookewood School                           Brookewood
-    2    WILD        Carmel School Wildcats                      Carmel Wildcats
-    3    FVCS-VA     Fresta Valley Christian School              Fresta
-    4    ICHS        Immanuel Christian High School              Immanuel
-    5    OAK         Oakcrest School Chargers                    Oakcrest
-    6    SFH         Seton Family Homeschool                     Seton Family Homeschool
-    7    SST         Seton Swimming                              Seton
-    8    STCA-VA     St. Catherine's School                      St. Catherine's
-    9    STC-VA      St. Christopher's School                    St. Christopher's
-   10    VCA-VA      Veritas Collegiate Academy                  Veritas Collegiate
-   11    WA-VA       Walsingham Academy                          Walsingham
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+﻿Seton School                                               HY-TEK's MEET MANAGER 8.0 - Page 1                     15th Annual VISAA Division II Invitational - 2/6/2021                                          School List    1    WILD        Carmel School Wildcats                      Carmel Wildcats    2    HL          Highland Hawks                              Highland    3    OAK         Oakcrest School Chargers                    Oakcrest    4    R-MA-VA     Randolph-Macon Academy                      Randolph Macon    5    SST         Seton Swimming                              Seton    6    PVI         St Paul VI Catholic HS                      St. Paul VI    7    TSS-VA      The Steward School Spartans                 Steward    8    TCS!-VA     Trinity Christian School                    Trinity    9    VCA-VA      Veritas Collegiate Academy                  Veritas Collegia   10    VRTS-VA     Veritas School                              Veritas School   11    WCA         Williamsburg Christian Academy              Williamsburg   12    WFS-VA      Woodberry Forest                            Woodberry

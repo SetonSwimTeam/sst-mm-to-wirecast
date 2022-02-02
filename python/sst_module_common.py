@@ -370,7 +370,6 @@ def short_school_name_lookup( long_school_name: str, long_school_name_len: int, 
 #####################################################################################
 def short_school_abbr_lookup( long_school_name: str, long_school_name_len: int, trunc_len :int = 0 ) -> str:
 
-    print(f"short_school_abbr_lookup: i: {long_school_name}")
     #try:
     school_dict = sst_module_schools.get_schools_dict_by_full_name( long_school_name.strip() )
     short_school_name = school_dict['school_abbr_short']
@@ -404,7 +403,7 @@ def cleanup_new_files( file_prefix: str, output_dir: str ):
 #####################################################################################
 ## Verify the input file exists before opening it to determine the file type
 #####################################################################################
-def verify_dirs_files(  input_dir: str, input_file:str, output_dir: str ):
+def verify_dirs_files(  input_dir: str, input_file:str, school_file:str, output_dir: str ):
 
     ## Check input directory exists
     error_msg = ""
@@ -414,6 +413,10 @@ def verify_dirs_files(  input_dir: str, input_file:str, output_dir: str ):
         fullFile = f"{input_dir}/{input_file}"
         if not os.path.isfile( fullFile ):
             error_msg = f"\tInput file not found: {fullFile}"
+        else:
+            schoolFile = f"{input_dir}/{school_file}"
+            if not os.path.isfile( schoolFile ):
+                error_msg = f"School text report file not found: {schoolFile}"
 
     try: 
         if not os.path.isdir( output_dir ):
