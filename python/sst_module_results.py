@@ -503,14 +503,14 @@ def create_output_file_awards(  output_dir: str,
         elif row_type == 'H6':
             place_header_list = re_results_header.findall(row_text)
             if place_header_list:
-                placeline_header   = str(place_header_list[0][0]).strip()
+               # placeline_header   = str(place_header_list[0][0]).strip()
+                placeline_header   = str(place_header_list[0][0])
                 output_str += placeline_header + '\n'
             else:
                 output_str += row_text + '\n'
 
         elif row_type == 'PLACE':
-
-
+            
             ## Ignore non-scoring entries (i.e. only two non-exhibition relays in event)
             if row_text.startswith(" --- "):
                 break;
@@ -523,9 +523,11 @@ def create_output_file_awards(  output_dir: str,
             place_line_list = re_results_place.findall(row_text)
 
             if place_line_list:
-                placeline_place   = str(place_line_list[0][0]).strip()
-                placeline_points  = str(place_line_list[0][1]).strip()
-                logging.error(f"PLACE: 1: {placeline_place} 2: {placeline_points}")
+                #placeline_place   = str(place_line_list[0][0]).strip()
+                #placeline_points  = str(place_line_list[0][1]).strip()
+                placeline_place   = str(place_line_list[0][0])
+                placeline_points  = str(place_line_list[0][1])
+                logging.debug(f"PLACE: 1: {placeline_place} 2: {placeline_points}")
                 output_str += placeline_place + '\n'
             else:
                 output_str += row_text + '\n'
