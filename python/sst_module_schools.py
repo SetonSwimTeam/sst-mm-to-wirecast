@@ -27,7 +27,7 @@ def process_schools_report( school_report_filename: str ):
                 ## Ignore blank lines
                 if len(line) > 0 and line_num >= 3:
 
-                    print( f"Line {line_num}: '{line}'")
+                    logging.debug( f"Line {line_num}: '{line}'")
 
                     ## The format of the schhol report is
                     # 7    SST         Seton Swimming                              Seton
@@ -62,7 +62,7 @@ def process_schools_report( school_report_filename: str ):
     except FileNotFoundError as fnfe:
         logging.error(f"Required School Report file not found: {school_report_filename}")
         sys.exit(4)
-    print(f"process_school_reports: {sst_common.school_name_list}")
+    logging.debug(f"process_school_reports: {sst_common.school_name_list}")
 
 #####################################################################################
 ## Return a School_Dict object matching by school_full_name
