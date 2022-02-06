@@ -11,7 +11,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": ["-m", "HighSchool", "-o", "output/2022-divii", "-i", "data", "-f", "results_2022_divii.txt", "-C", "-m", "HighSchool", "-s", "schools_2022_divii.txt",  "-v", "debug","-d"]
+            "args": ["-m", "HighSchool", "-o", "output/2022-divii", "-i", "data", "-f", "results_2022_divii.txt", "-C", "-m", "HighSchool", "-s", "schools_2022_divii.txt", "-v", "debug","-d"]
         }
     ]
 }

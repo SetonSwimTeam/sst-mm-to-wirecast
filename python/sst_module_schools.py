@@ -10,6 +10,7 @@ import datetime
 ####
 #####################################################################################
 
+results_full_name_report_len  = 22
 
 #####################################################################################
 ## Readin in school report
@@ -72,11 +73,17 @@ def get_schools_dict_by_full_name( element_name_full ) -> dict:
     for school_dict in sst_common.school_name_list:
         ## Test long school names without LSC
         school_name_full = school_dict["school_name_full"]
-        if school_name_full[:22] == element_name_full[:22]:
+        if school_name_full[:results_full_name_report_len] == element_name_full[:results_full_name_report_len]:
             return school_dict
         # Test long school names with LSC (No idea why MM access LSC to long name, but it does)
         if len(element_name_full) > 3 and element_name_full[-3] == "-":
             if school_name_full == element_name_full[:-3]:
+                return school_dict
+        if len(element_name_full) > 2 and element_name_full[-2] == "-":
+            if school_name_full == element_name_full[:-2]:
+                return school_dict
+        if len(element_name_full) > 1 and element_name_full[-1] == "-":
+            if school_name_full == element_name_full[:-1]:
                 return school_dict
 
         ## Worst case, if there is something wrong with the regex, see if the school name is a substring
