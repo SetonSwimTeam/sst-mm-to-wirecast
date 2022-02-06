@@ -4,13 +4,14 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": ["-m", "HighSchool", "-o", "output/2022-jvinvite", "-i", "data", "-f", "results_jvinvite_e6.txt", "-C", "-m", "JV", "-s", "schools_jvinite.txt", "-v", "debug"]
+            "args": ["-m", "HighSchool", "-o", "output/2022-divii", "-i", "data", "-f", "results_2022_divii.txt", "-C", "-m", "HighSchool", "-s", "schools_2022_divii.txt",  "-v", "debug","-d"]
         }
     ]
 }
