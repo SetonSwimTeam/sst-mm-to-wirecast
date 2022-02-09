@@ -50,6 +50,12 @@ The report needs very specific formatting options for this program to work.
 ![program include](img/program_options_include.png )
 
 
+## Schools
+
+We need to have a school report created and saved as schools.txt
+This is how the program knows to clean up and translate school names and abbreviations.
+
+Note: If schools just put their Abbr under short name, change that to give it a meaningful name
 
 ## Results
 
@@ -114,5 +120,12 @@ python/generate_wirecast_files.py -m HighSchool -o /c/Users/SetonSwimTeam/Dropbo
 
 ## JV Meet
 python/generate_wirecast_files.py -m HighSchool -o /c/Users/SetonSwimTeam/Dropbox/wirecast -i /c/Users/SetonSwimTeam/Dropbox/wc_meetreports -C -m JV -f results.txt 
+å
 
-python/generate_wirecast_files.py -m HighSchool -o /c/Users/SetonSwimTeam/Dropbox/wirecast -i /c/Users/SetonSwimTeam/Dropbox/wc_meetreports -C -m JV -f results_2020_divii.txt -s schools_2020_divii.txt
+# 2022 VISAA Div-II Invite
+python/generate_wirecast_files.py -m HighSchool -o /c/Users/SetonSwimTeam/Dropbox/wirecast -i /c/Users/SetonSwimTeam/Dropbox/wc_meetreports -C -m HighSchool -f results_2020_divii.txt -s schools_2020_divii.txt
+
+## Test
+python3 python/generate_wirecast_files.py -m HighSchool -o output/2022_divii -i data/2022_divii -C -m HighSchool -f results.txt -s schools.txt -d
+python3 python/generate_wirecast_files.py -m HighSchool -o output/2020_dac_champs -i data/2020_dac_champs -C -m HighSchool -f results.txt -s schools.txt -d
+python3 python/generate_wirecast_files.py -m HighSchool -o output/2021_dac_champs -i data/2021_dac_champs -C -m HighSchool -f results.txt -s schools.txt -d

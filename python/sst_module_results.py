@@ -127,7 +127,7 @@ def process_result( meet_report_filename: str,
     
     #12 Salter, Jonathan        FR Immanuel Christian High S  25.55        24.85         1
     #re_results_lane_ind  = re.compile('^([*]?\d{1,2}|---)\s+([A-z\' \.]+, [A-z ]+) ([A-Z0-9]{1,2})\s+([A-Z \'.].*?)([0-9:.]+|NT|NP)\s+([X]DQ|[xX0-9:.]+)\s*([0-9]*)')
-    re_results_lane_ind  = re.compile('^([*]?\s*\d{1,2}|---)\s+(.{23})\s*([A-Z0-9 ]{1,2})\s*([A-z\- ]{25})\s*([0-9:.]+|NT|NP)\s+([X]DQ|[xX0-9:.]+)\s*([0-9]*)')
+    re_results_lane_ind  = re.compile('^([*]?\s*\d{1,2}|---)\s+(.{23})\s*([A-z0-9 ]{1,2})\s*([A-z\- ]{25})\s*([0-9:.]+|NT|NP)\s+([X]DQ|[xX0-9:.]+)\s*([0-9]*)')
     #                                     TIE? PLACE   SCHOOL           RELAY     SEEDTIME|NT    FINALTIME     POINTS
     #re_results_lane_relay = re.compile('^([*]?\d{1,2})\s+([A-Z \'.].*)\s+([A-Z])\s+([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
     re_results_lane_relay = re.compile('^([*]?\d{1,2}|---)\s+([A-Z \'.].*)\s+([A-Z])\s+([0-9:.]+|NT)\s+([X]DQ|[xX0-9:.]+)\s*([0-9]*)')
