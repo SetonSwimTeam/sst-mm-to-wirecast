@@ -1,0 +1,13 @@
+Event 18  Girls 200 Yard Freestyle Relay
+    ** UNOFFICIAL RESULTS **
+           Team               Relay  Final   Change  Pts
+   1 Trinity                   A  1:45.04   -04.62   32
+   2 Seton                     A  1:49.02   +00.97   26
+   3 FredericksburgA           A  1:56.14   -00.55   24
+   4 FredericksburgC           A  1:56.77   -00.23   22
+   5 Fresta                    A  2:06.20   +01.32   20
+   6 Randolph-Macon            A  2:29.78    00.00   18
+ --- Trinity                   B X1:55.84   -02.75    -
+ --- Seton                     B X1:59.25   +02.55    -
+ --- FredericksburgA           B X2:06.04   -05.39    -
+ --- Fresta                    B X2:26.59    00.00    -

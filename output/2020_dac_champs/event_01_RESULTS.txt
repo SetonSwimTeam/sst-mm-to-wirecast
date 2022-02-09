@@ -1,0 +1,10 @@
+Event 1  Boys 200 Yard Medley Relay
+    ** UNOFFICIAL RESULTS **
+           Team               Relay  Final   Change  Pts
+   1 Seton                     A  1:48.93   -01.52   32
+   2 FredericksburgA           A  1:50.88   -02.61   26
+   3 Wakefield                 A  1:51.93   -04.80   24
+   4 Randolph-Macon            A  1:54.47   -01.09   22
+   5 Trinity                   A  2:01.73   +04.58   20
+ --- Seton                     B X1:58.71   +03.52    -
+ --- Randolph-Macon            B X2:17.36   -03.42    -

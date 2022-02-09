@@ -1,0 +1,17 @@
+Event 19  Boys 100 Yard Backstroke
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Fisher, Joshua            VRTS JR    49.93   -00.12   16
+  2 Rouzie, Bryce             HRA  SR    52.83   -02.37   13
+  3 Fannin, Evan              CCS  SR    56.93   -03.07   12
+  4 Weiss, Cooper             TCS  SO    59.09   +00.69   11
+  5 Hough, Ryan               TCS! SO  1:00.95   +01.15   10
+  6 Rajapakse, Kyle           TCS  FR  1:01.55   -00.29    9
+  7 Eisenhart, Nic            NSA  SR  1:01.87   -00.42    7
+  8 Cox, Brody                WA    9  1:03.36   +00.22    5
+  9 McEntire, Elijah          VRTS SO  1:03.48   +00.11    4
+ 10 Fioramonti, Mick          SST  SO  1:05.26   -02.06    3
+ 11 Hudson, David             SST  SO  1:07.82   -00.45    2
+ 12 Wilson, Max               SST  FR  1:07.86   -02.68    1
+ 13 Park, Zack                TCS! SO  1:08.48   -01.47    -
+ 14 Stiles, Karsten           VRTS  8  1:09.44   +00.39    -

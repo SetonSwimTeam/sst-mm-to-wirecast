@@ -1,0 +1,17 @@
+Event 3  Boys 200 Yard Freestyle
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Wolf, Joshua              ICHS SO  1:46.26   -04.29   16
+  2 Charlton, Will            TCS   8  1:50.45   -00.73   13
+  3 Kim, Justin               TCS! SO  1:54.48   -02.23   12
+  4 Hamil, Logan              TCS  SO  1:57.63   -01.37   11
+  5 Sproull, Emory            STEW JR  1:57.83   -02.43   10
+  6 Parks, Avery              CCS  FR  1:58.87   +01.87    9
+  7 Fulkerson, McCallum       TCS  JR  2:05.45   +04.10    7
+  8 Wall, John                HMA  SO  2:05.55   -00.62    5
+  9 Robinson, Andrew          WA    9  2:06.65   -01.33    4
+ 10 Brox, Michael             SST  FR  2:16.00   +02.55    3
+ 11 Dealey, Joey              SST  JR  2:16.29   -01.62    2
+ 12 Pillsbury, Kyle           NSA  SR  2:21.21   -01.14    1
+ 13 Konstanty, Peter          SST  SO  2:22.94   -00.14    -
+ 14 Borneman, Joseph          SST  FR  2:24.50   -02.79    -

@@ -1,0 +1,10 @@
+Event 7  Boys 50 Yard Freestyle
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Santschi, Jack            SST  SR    23.74   -00.29   16
+  2 Dalrymple, Jerry          SST  SR    24.04   -00.73   13
+  3 Kim, Justin               TCS! FR    25.02   -00.24   12
+  4 Konstanty, Peter          SST  FR    28.13   -00.82   11
+  5 Halisky, Liam             SST   8    29.78   -00.35   10
+  6 Park, Zack                TCS! FR    29.87   +00.20    9
+  7 Valenzuela, Orlando       TCS! SO    34.05   -00.84    7

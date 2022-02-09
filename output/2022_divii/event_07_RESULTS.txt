@@ -1,0 +1,17 @@
+Event 7  Boys 50 Yard Freestyle
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Kiland, Jackson           CCS  SR    21.90   -00.82   16
+  2 Hough, Ryan               TCS! SO    23.66   -00.13   13
+  3 Weiss, Braeden            TCS  JR    23.84   +00.31   12
+  4 Hughes, Connor            VRTS SR    23.87   +00.59   11
+  5 Eisenhart, Nic            NSA  SR    24.06   -00.26   10
+  6 Kokolis, Michael          HRA  SR    24.07   -00.25    9
+  7 Cherry, Ryan              HRA  SO    24.23   -00.24    7
+  8 Gustafson, Cole           TCS  JR    24.26   +00.40    5
+  9 Ford, Parker              FCS  SR    24.59   +00.24    4
+ 10 Knewtson, Jack            FCS  SO    24.61   -00.27    3
+ 11 Floyd, Bryan              CCS  SR    24.69   -00.40    2
+ 12 Salter, Jonathan          ICHS FR    24.85   -00.70    1
+ 13 Granados Argul, Pablo     CCS  SO    25.03   -00.64    -
+ 14 Hudson, David             SST  SO    25.41   -00.05    -

@@ -1,0 +1,11 @@
+Event 15  Boys 500 Yard Freestyle
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Kim, Josh                 TCS! SO  5:17.45   -07.52   16
+  2 Millar, Henry             FAST SR  5:39.41   -03.42   13
+  3 Moon, Jadon               TCS! SR  6:09.61   -21.09   12
+  4 Herring, Josiah           RMA  SR  6:10.66   -11.15   11
+  5 Hudson, David             SST   8  6:40.66   -04.73   10
+  6 McGrath, John             SST  JR  6:45.07   +34.08    9
+  7 Konstanty, Peter          SST   8  6:58.10   +00.89    7
+  9 Brantley, Patrick         FAST JR  7:47.53   +01.25    4

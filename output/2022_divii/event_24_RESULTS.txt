@@ -1,0 +1,17 @@
+Event 24  Girls 400 Yard Freestyle Relay
+    ** UNOFFICIAL RESULTS **
+           Team               Relay  Final   Change  Pts
+   1 Steward                   A  3:46.20   -03.84   32
+   2 Hampton Roads             A  3:53.10   -14.57   26
+   3 Trinity                   A  4:00.41   -07.32   24
+   4 Covenant                  A  4:01.37   -08.34   22
+   5 Nansemond                 A  4:02.23   -05.21   20
+   6 Seton                     A  4:04.24   -05.52   18
+   7 Trinity                   B  4:12.60   -06.32   14
+   8 Seton                     B  4:24.82   +01.19   10
+   9 Nansemond                 B  4:34.90   -06.26    8
+  10 Oakcrest                  A  4:37.28   +17.85    6
+  11 Fredericksburg            A  4:42.48   -03.32    4
+  12 Oakcrest                  B  4:47.47   +13.01    2
+  13 Covenant                  B  4:54.40   -05.60    -
+  14 Walsingham                A  5:16.71   +26.56    -

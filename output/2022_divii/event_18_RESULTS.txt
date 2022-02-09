@@ -1,0 +1,17 @@
+Event 18  Girls 200 Yard Freestyle Relay
+    ** UNOFFICIAL RESULTS **
+           Team               Relay  Final   Change  Pts
+   1 Steward                   A  1:44.55   -00.69   32
+   2 Trinity                   A  1:48.84   -02.15   26
+   3 Seton                     A  1:48.95   +01.35   24
+   4 Nansemond                 A  1:50.25   -02.03   22
+   5 Covenant                  A  1:50.59   +00.83   20
+   6 Trinity                   B  1:53.51   +01.16   18
+   7 Seton                     B  1:55.31   +00.99   14
+   8 Nansemond                 B  1:56.06   -05.30   10
+   9 Christchurch              A  1:56.24   -00.56    8
+  10 Oakcrest                  A  1:56.62   +02.40    6
+  11 Hampton Roads             A  2:01.47   +01.37    4
+  12 Steward                   B  2:01.69   +03.69    2
+  13 Walsingham                A  2:02.06   -13.09    -
+  14 Williamsburg              A  2:02.96   +01.21    -

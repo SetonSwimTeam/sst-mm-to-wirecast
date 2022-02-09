@@ -1,0 +1,7 @@
+Event 2  Girls 200 Yard Medley Relay
+    ** UNOFFICIAL RESULTS **
+           Team               Relay  Final   Change  Pts
+   1 Seton                     A  1:58.97   +05.42   32
+   2 TCS                       A  2:02.63   +05.03   26
+ --- Seton                     B X2:07.53   +00.84    -
+ --- TCS                       B X2:10.62   -00.66    -

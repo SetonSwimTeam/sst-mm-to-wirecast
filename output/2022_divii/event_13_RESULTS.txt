@@ -1,0 +1,17 @@
+Event 13  Boys 100 Yard Freestyle
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Kiland, Jackson           CCS  SR    48.12   -02.02   16
+  2 Wolf, Joshua              ICHS SO    48.38   -00.74   13
+  3 Kim, Justin               TCS! SO    52.22   -00.29   12
+  4 Weiss, Braeden            TCS  JR    53.76   -00.61   11
+  5 Phillips, Tyler           TCS!  8    54.08   +01.34   10
+  6 McEntire, Elijah          VRTS SO    54.64   -00.17    9
+  7 Cox, Brody                WA    9    54.79   +00.86    7
+  8 Gustafson, Cole           TCS  JR    54.88   -00.87    5
+  9 Wall, John                HMA  SO    55.51   -00.93    4
+ 10 Cherry, Ryan              HRA  SO    56.17   -01.95    3
+ 11 Thibeault, Jacob          WA   11    56.57   -01.36    2
+ 12 Thomas, Cooper            STEW JR    57.41   +00.32    1
+ 13 Nguyen, Drew              SST  FR    57.42   +00.38    -
+ 14 Granados Argul, Pablo     CCS  SO    57.53   -01.70    -

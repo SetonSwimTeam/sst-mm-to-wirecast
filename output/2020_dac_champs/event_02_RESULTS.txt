@@ -1,0 +1,13 @@
+Event 2  Girls 200 Yard Medley Relay
+    ** UNOFFICIAL RESULTS **
+           Team               Relay  Final   Change  Pts
+   1 Trinity                   A  1:54.30   +00.17   32
+   2 FredericksburgA           A  1:56.24   -01.85   26
+   3 Seton                     A  1:58.98   +02.05   24
+   4 Wakefield                 A  2:09.44   +05.74   22
+   5 Fresta                    A  2:19.35   +00.03   20
+ --- Seton                     B X2:12.74   -00.77    -
+ --- FredericksburgA           B X2:14.32   -04.64    -
+ --- Trinity                   B X2:15.72   +08.22    -
+ --- FredericksburgC           B X2:27.09   -05.33    -
+ --- Fresta                    B X2:38.30    00.00    -

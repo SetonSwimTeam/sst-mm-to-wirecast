@@ -1,0 +1,17 @@
+Event 17  Boys 200 Yard Freestyle Relay
+    ** UNOFFICIAL RESULTS **
+           Team               Relay  Final   Change  Pts
+   1 Christchurch              A  1:32.40   -03.30   32
+   2 Veritas School            A  1:34.01   -00.79   26
+   3 Trinity                   A  1:35.18   -01.69   24
+   4 Covenant                  A  1:38.14   -00.97   22
+   5 Immanuel                  A  1:38.60   -01.30   20
+   6 Steward                   A  1:40.95   -01.45   18
+   7 Fredericksburg            A  1:41.69   -01.44   14
+   8 Seton                     A  1:42.24   +01.99   10
+   9 Seton                     B  1:47.97   +01.45    8
+  10 Christchurch              B  1:50.27   +02.27    6
+  11 Trinity                   B  1:53.32   +07.37    4
+  12 Hargrave                  A  1:53.83   +18.17    2
+  13 Covenant                  B  1:54.04   -00.96    -
+  14 Williamsburg              A  1:58.17   -00.50    -

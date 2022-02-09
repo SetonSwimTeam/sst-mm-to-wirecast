@@ -1,0 +1,10 @@
+Event 5  Boys 200 Yard IM
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Turbyfill, Andrew         FCS  JR  1:58.42   -01.62   16
+  2 Millar, Henry             FAST SR  2:16.88   -00.01   13
+  3 Wilson, Joe               SST  FR  2:24.98   -06.29   12
+  4 Brown, Thomas             TCS! SO  2:32.46   -06.98   11
+  5 Brox, JJ                  SST  FR  2:37.32   -02.32   10
+  6 Hudson, David             SST   8  2:41.80   -00.42    9
+  7 Park, Ian                 TCS!  8  2:51.30   -00.53    7

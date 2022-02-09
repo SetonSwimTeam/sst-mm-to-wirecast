@@ -1,0 +1,17 @@
+Event 15  Boys 500 Yard Freestyle
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Rouzie, Bryce             HRA  SR  4:49.35   -09.86   16
+  2 Charlton, Will            TCS   8  4:55.04   -05.59   13
+  3 Wolf, Caleb               ICHS SO  4:57.70   -03.51   12
+  4 Hutter, Preston           TCS  SR  5:05.27   -05.66   11
+  5 Parks, Avery              CCS  FR  5:24.13   +00.19   10
+  6 Yun, Noah                 TCS! 08  5:29.48   +03.25    9
+  7 Fulkerson, McCallum       TCS  JR  5:43.82   +14.50    7
+  8 Robinson, Andrew          WA    9  5:50.07   -03.20    5
+  9 Stiles, Karsten           VRTS  8  6:06.23   -03.20    4
+ 10 Self, Tavish              WILD FR  6:13.14   -46.86    3
+ 11 Koehr, Connor             SST  FR  6:16.42   -01.20    2
+ 12 Sokban, William           SST  FR  6:20.12   -16.35    1
+ 13 Brox, Michael             SST  FR  6:20.67   +01.07    -
+ 14 Bang, Caleb               TCS! 08  6:28.32   -30.24    -

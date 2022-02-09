@@ -1,0 +1,17 @@
+Event 7  Boys 50 Yard Freestyle
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  2 Dalrymple, Drew           SST  SR    23.51   -00.37   13
+  3 DiLeonardo, Vince         FCS  JR    23.66   -00.18   12
+  4 Henderson, Gabe           TCS! JR    23.84   -00.32   11
+  5 Gehly, Jacob              RMA  SR    24.00   +00.08   10
+  7 Ford, Parker              FCS  SO    24.77   -00.12    7
+  8 Dalrymple, Jerry          SST  JR    24.78   -00.06    5
+  9 Ceol, Christian           SST  SR    24.82   +00.43    4
+ 11 Bayo-Adeyemo, Tire        RMA  SR    25.68   -00.27    2
+ 12 Knewtson, Jack            FCS   8    26.24   +00.66    1
+ 13 Park, Ethan               RMA  SO    27.27   -00.23    -
+ 14 Fioramonti, Justin        SST  SR    27.66   +01.34    -
+ 15 Harris, Dylan             FAST 8t    27.75   -00.37    -
+ 16 Shore, Nathan             TCS! SR    28.07   -01.03    -
+ 18 Hamilton, Chris           TCS! JR    28.58    00.00    -

@@ -1,0 +1,10 @@
+Event 19  Boys 100 Yard Backstroke
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+ *1 Wilson, Evan              SST  SR  1:00.67   -00.22   14
+ *1 Hough, Ryan               TCS! FR  1:00.67   -00.48   14
+  3 Koehr, Connor             SST   8  1:11.97   -04.62   12
+  4 Miller, Dominic           SST  FR  1:12.34   -00.77   11
+  5 Hamilton, Chris           TCS! SR  1:14.03   -04.92   10
+  6 Halisky, Liam             SST   8  1:20.47   -01.62    9
+  7 Valenzuela, Orlando       TCS! SO  1:36.95   +00.98    7

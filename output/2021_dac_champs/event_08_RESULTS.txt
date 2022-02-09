@@ -1,0 +1,15 @@
+Event 8  Girls 50 Yard Freestyle
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Pennefather, Mary         SST  SO    26.15   +00.17   16
+  2 Luevano, Isabelle         SST  JR    27.41   -00.75   13
+  3 Gibbons, Maggie           SST  FR    27.62   +00.02   12
+  4 Phillips, Amy             TCS! SO    27.70   -00.18   11
+  5 Bang, Selah               TCS! SO    30.11   +00.00   10
+  6 Zadnik, Madelyn           SST  FR    30.54   +00.38    9
+  7 Cole, Paige               TCS! SR    32.83   +00.48    7
+--- Oswald, Jacqueline        SST  SO   X29.80   -01.40    -
+--- Koehr, Ceili              SST  JR   X30.76   -02.12    -
+--- Zadnik, Sophia            SST  JR   X33.71   +00.09    -
+--- Metzger, Danielle         TCS! SO   X34.57   +01.40    -
+--- Hartung, Virginia         SST  SR   X35.75   +01.56    -
