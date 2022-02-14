@@ -1,0 +1,10 @@
+Event 18  Girls 200 Yard Freestyle Relay
+    ** UNOFFICIAL RESULTS **
+           Team               Relay  Final   Change  Pts
+   1 Trinity Christian School  A  1:47.00   -01.84   32
+   2 Seton Swimming            A  1:48.25   +00.65   26
+   3 Saint John Paul the Great A  1:53.09   +01.92   24
+   4 Fredericksburg Christian  A  2:08.17   +00.60   22
+ --- Seton Swimming            B X1:52.54   -01.49    -
+ --- Trinity Christian School  B X1:55.68   -00.95    -
+ --- Saint John Paul the Great B X2:18.03   +05.03    -

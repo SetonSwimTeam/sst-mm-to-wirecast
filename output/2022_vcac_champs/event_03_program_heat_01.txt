@@ -1,0 +1,7 @@
+Event  3   Boys 200 Yard Freestyle
+Heat   1 of 2   
+
+  Lane  Name                   Yr Sch  Seed Time
+  3 Kirby, Micah              SO TCS!  3:04.08
+  4 Sicks, Campbell           JR TCS!  2:32.30
+  5 McGrath, Michael          SO SST   2:33.73

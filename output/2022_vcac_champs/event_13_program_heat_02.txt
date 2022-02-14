@@ -1,0 +1,12 @@
+Event  13   Boys 100 Yard Freestyle
+Heat   2 of 2   
+
+  Lane  Name                   Yr Sch  Seed Time
+  1 Haynes, Jacob             SO FCS   1:06.02
+  2 Rowzie, Joseph            SR SST   1:02.19
+  3 Nguyen, Drew              FR SST     57.04
+  4 Kim, Josh                 SR TCS!    50.73
+  5 Kim, Justin               SO TCS!    52.22
+  6 Brox, JJ                  JR SST     59.43
+  7 Konstanty, Peter          SO SST   1:01.11
+  8 Mastrianni, Dominic       SO JP    1:08.61

@@ -1,0 +1,12 @@
+Event  8   Girls 50 Yard Freestyle
+Heat   3 of 3   
+
+  Lane  Name                   Yr Sch  Seed Time
+  1 Womack, Kristen           SO TCS!    27.59
+  2 Roder, Mia                JR JP      27.24
+  3 Hough, Keri               08 TCS!    26.90
+  4 Davis, Gianna             FR JP      25.74
+  5 Pennefather, Mary         JR SST     26.64
+  6 Luevano, Isabelle         SR SST     26.92
+  7 Bailey, Mary Mae          SO TCS!    27.57
+  8 Brox, Elodie              FR SST     27.60

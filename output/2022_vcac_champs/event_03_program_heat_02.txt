@@ -1,0 +1,11 @@
+Event  3   Boys 200 Yard Freestyle
+Heat   2 of 2   
+
+  Lane  Name                   Yr Sch  Seed Time
+  1 Collins, Jacob            SR JP    2:31.76
+  2 Borneman, Joseph          FR SST   2:24.50
+  3 Kintz, John Paul          SR JP    2:15.73
+  4 Kim, Josh                 SR TCS!  1:49.42
+  5 Brox, Michael             FR SST   2:13.45
+  6 Dealey, Joey              JR SST   2:16.29
+  7 Bang, Caleb               08 TCS!  2:26.73

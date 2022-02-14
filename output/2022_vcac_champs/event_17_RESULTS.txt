@@ -1,0 +1,9 @@
+Event 17  Boys 200 Yard Freestyle Relay
+    ** UNOFFICIAL RESULTS **
+           Team               Relay  Final   Change  Pts
+   1 Trinity Christian School  A  1:36.04   +00.86   32
+   2 Seton Swimming            A  1:40.71   -01.09   26
+   3 Fredericksburg Christian  A  1:43.53   +01.84   24
+   4 Saint John Paul the Great A  1:47.49   +02.99   22
+ --- Seton Swimming            B X1:50.12   +04.46    -
+ --- Trinity Christian School  B X1:53.90   -01.44    -

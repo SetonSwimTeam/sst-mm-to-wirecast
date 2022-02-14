@@ -1,0 +1,7 @@
+Event  20   Girls 100 Yard Backstroke
+Heat   1 of 2   
+
+  Lane  Name                   Yr Sch  Seed Time
+  3 Blevins, Colby             8 FCS   1:52.39
+  4 Bang, Selah               JR TCS!  1:17.49
+  5 Mitchell, Ajai            SO TCS!  1:45.73

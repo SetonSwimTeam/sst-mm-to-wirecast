@@ -1,0 +1,8 @@
+Event  4   Girls 200 Yard Freestyle
+Heat   1 of 2   
+
+  Lane  Name                   Yr Sch  Seed Time
+  3 Hacsh, Ethiana            SR JP    2:48.15
+  4 Zadnik, Madelyn           SO SST   2:34.52
+  5 Moon, Ella                SR TCS!  2:40.28
+  6 Kattah, Kayla             FR JP    3:00.00

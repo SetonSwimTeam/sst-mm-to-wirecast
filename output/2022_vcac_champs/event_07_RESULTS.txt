@@ -1,0 +1,17 @@
+Event 7  Boys 50 Yard Freestyle
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Hough, Ryan               TCS! SO    23.34   -00.32   16
+  2 Ford, Parker              FCS  SR    24.46   +00.11   13
+  3 Knewtson, Jack            FCS  SO    24.53   -00.08   12
+  4 Hudson, David             SST  SO    25.30   -00.11   11
+  5 Howell, Luke              FCS  FR    25.53   -00.22   10
+  6 Rowzie, Joseph            SST  SR    25.84   -00.15    9
+  7 Fioramonti, Josh          SST   8    27.47   -00.71    7
+  8 Beltran, Ryan             SST  SO    27.99   +00.03    5
+  9 Schneider, Jack           FCS  SR    28.02   +00.50    4
+ 10 Abidin, Christian         TCS! SO    29.13   -00.16    3
+ 11 Mastrianni, Dominic       JP   SO    29.57   -00.16    2
+ 12 Vitkovitsky, Daniel       JP   SR    30.97   -00.80    1
+ 13 Jang, Elliot              TCS! SO    32.50   +00.60    -
+ 14 Lauer, Josh               TCS! SO    32.84   -02.71    -

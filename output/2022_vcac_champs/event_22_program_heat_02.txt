@@ -1,0 +1,12 @@
+Event  22   Girls 100 Yard Breaststroke
+Heat   2 of 2   
+
+  Lane  Name                   Yr Sch  Seed Time
+  1 Brox, Elodie              FR SST   1:20.60
+  2 Klanderman, Liz           FR TCS!  1:16.84
+  3 Davis, Gianna             FR JP    1:15.28
+  4 Condon, Clara             FR SST   1:09.05
+  5 Koler, Jillian            SR JP    1:12.17
+  6 Waldron, Clare            SR SST   1:16.59
+  7 Williams, Maeve           FR JP    1:18.42
+  8 Zadnik, Sophia            SR SST   1:25.24

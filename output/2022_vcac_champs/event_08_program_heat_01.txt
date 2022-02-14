@@ -1,0 +1,9 @@
+Event  8   Girls 50 Yard Freestyle
+Heat   1 of 3   
+
+  Lane  Name                   Yr Sch  Seed Time
+  2 Irish, Gabriella           8 FCS    X37.70
+  3 Sebero, Emmah              8 FCS    X32.25
+  4 Waldron, Clare            SR SST    X30.09
+  5 Mantooth, Kateri          JR SST    X30.20
+  6 Blevins, Colby             8 FCS    X34.55

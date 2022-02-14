@@ -1,0 +1,12 @@
+Event  15   Boys 500 Yard Freestyle
+Heat   1 of 1   
+
+  Lane  Name                   Yr Sch  Seed Time
+  1 Verwys, Sam               08 TCS!  7:29.42
+  2 Bang, Caleb               08 TCS!  6:28.32
+  3 Brox, Michael             FR SST   6:19.60
+  4 Yun, Noah                 08 TCS!  5:26.23
+  5 Koehr, Connor             FR SST   6:16.42
+  6 Sokban, William           FR SST   6:20.12
+  7 Albin, Jed                SO SST   6:39.73
+  8 Abidin, Christian         SO TCS!  7:56.96

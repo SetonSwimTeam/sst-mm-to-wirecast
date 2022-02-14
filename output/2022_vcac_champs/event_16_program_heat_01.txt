@@ -1,0 +1,7 @@
+Event  16   Girls 500 Yard Freestyle
+Heat   1 of 2   
+
+  Lane  Name                   Yr Sch  Seed Time
+  3 Metzger, Danielle         JR TCS!  7:51.93
+  4 Byers, Lily               SR SST   6:50.89
+  5 Mantooth, Kateri          JR SST   7:33.88

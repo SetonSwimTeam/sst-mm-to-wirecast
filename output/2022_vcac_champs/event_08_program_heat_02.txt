@@ -1,0 +1,12 @@
+Event  8   Girls 50 Yard Freestyle
+Heat   2 of 3   
+
+  Lane  Name                   Yr Sch  Seed Time
+  1 Blevins, Hannah            8 FCS     32.04
+  2 Meadows, Payton           JR FCS     31.35
+  3 Weina, Virginia           JR JP      29.50
+  4 Gibbons, Maggie           SO SST     27.60
+  5 Vitkovsky, Maggie         JR JP      28.65
+  6 Ryan, Gabbie               8 FCS     29.94
+  7 Heth, Rachel              JR FCS     31.42
+  8 Mitchell, Ajai            SO TCS!    36.12

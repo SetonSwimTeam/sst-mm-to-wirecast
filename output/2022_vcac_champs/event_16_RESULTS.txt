@@ -1,0 +1,12 @@
+Event 16  Girls 500 Yard Freestyle
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Testani, Angie            SST  FR  5:37.69   -05.60   16
+  2 Stermer, Teagan           TCS! SO  5:51.80   +08.61   13
+  3 Yaraschak, Bella          TCS! SO  6:02.35   +04.24   12
+  4 Roberson, Emma            FCS   8  6:18.78   -02.35   11
+  5 Flynn, Emily              SST  SR  6:25.52   +06.51   10
+  6 Byers, Lily               SST  SR  6:44.56   -06.33    9
+  7 Metzger, Danielle         TCS! JR  7:10.28   -41.65    7
+  8 Mantooth, Kateri          SST  JR  7:17.84   -16.04    5
+  9 Guiterrez, Ana Sophia     JP   SR  7:49.91 +1:22.32    4

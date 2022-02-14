@@ -1,0 +1,10 @@
+Event 2  Girls 200 Yard Medley Relay
+    ** UNOFFICIAL RESULTS **
+           Team               Relay  Final   Change  Pts
+   1 Seton Swimming            A  1:52.65   -00.53   32
+   2 Trinity Christian School  A  2:01.02   -03.16   26
+   3 Saint John Paul the Great A  2:07.63   +01.79   24
+   4 Fredericksburg Christian  A  2:26.28   -01.04   22
+ --- Seton Swimming            B X2:06.17   +02.58    -
+ --- Saint John Paul the Great B X2:18.17   +01.89    -
+ --- Trinity Christian School  B X2:28.79   +05.81    -

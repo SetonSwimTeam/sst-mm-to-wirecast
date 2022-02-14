@@ -5,7 +5,7 @@
 #############################################################################################
 ###
 ### generate_heat_files
-###  This program will generate files (heat program files, event results and crawler results)
+###  This program will generate files (heat program files, event results and awards)
 ### for use in WireCast livestreaming software.  This script will 
 ###  generate both meet program entry files and meet results files.
 ###
@@ -55,8 +55,6 @@ import sst_module_schools as sst_module_schools
 ## Globals
 report_type_results = "result"
 report_type_program = "program"
-report_type_crawler = "crawler"
-
 
 
 #####################################################################################
@@ -188,15 +186,12 @@ def process_main():
     parser.add_argument('-f', '--filename',         dest='filename',            required=True        ,          help="Input file name")
     parser.add_argument('-s', '--schoolfilename',   dest='schoolfilename',      default="schools.txt",          help="School text report file name")
     parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="c:\\Users\\SetonSwimTeam\\Dropbox\\wirecast",           help="root output directory for wirecast heat files.")
-    parser.add_argument('-c', '--crawler',          dest='crawler',             action='store_true',            help="Generate crawler files")
     parser.add_argument('-r', '--shortschrelay',    dest='shortschoolrelay',     action='store_true',           help="Use Short School names for Relays")
     parser.add_argument('-l', '--longschind',       dest='longschoolindividual',action='store_true',            help="Use Long School names for Indiviual Entries")
     parser.add_argument('-d', '--delete',           dest='delete',              action='store_true',            help="Delete existing files in OUTPUT_DIR")
     parser.add_argument('-n', '--numresults',       dest='numresults',          type=int, default='14',         help="Number of results listed per event")
-    parser.add_argument('-x', '--lastnumevents',    dest='lastnumevents',       type=int, default='3',          help="Crawler outputs a separate file with the last N events")
     parser.add_argument('-e', '--emptyresults',     dest='emptyresults',        action='store_true',            help="Generate empty results files for wirecast template setup")
     parser.add_argument('-F', '--relayformat',      dest='relayformat',         type=int,default=2,choices=[1,2], help="1 -- Default relay heat program.  2 -- team/name on same line")
-    parser.add_argument('-O', '--overlay',          dest='overlay',             action='store_true',            help="Generate lane overlay files with just swimmers name for use during heat")
     parser.add_argument('-C', '--champ',            dest='championshipmeet',    action='store_true',            help="Sets meet to Championsip meet. Otherwise a double dual meet")
     parser.add_argument('-a', '--awards',           dest='awards',              action='store_true',            help="Generate Awards Result files")
     parser.add_argument('-m', '--meettype',         dest='meettype',            choices=["HighSchool", "SetonTimeTrials", "JV"],  default="HighSchool", help="Type of meet sets the events to be used")
@@ -221,9 +216,7 @@ def process_main():
     parser.set_defaults(namesfirstlast=False)
     parser.set_defaults(delete=False)
     parser.set_defaults(quote=False)
-    parser.set_defaults(crawler=False)
     parser.set_defaults(emptyresults=False)
-    parser.set_defaults(overlay=False)
     parser.set_defaults(championshipmeet=False)
     parser.set_defaults(awards=False)
     parser.set_defaults(awardsRelayNames=False)
@@ -254,14 +247,13 @@ def process_main():
     # logging.basicConfig( format='%(levelname)s:%(message)s', level=logging.INFO)
     logging.basicConfig( format='%(message)s', level=loglevel)
 
-    process_to_run = {"program": False, "results": False, "crawler": False, "scores_champsionship": False, "scores_dualmeet": False }
+    process_to_run = {"program": False, "results": False, "scores_champsionship": False, "scores_dualmeet": False }
     
     report_type_to_run = args.reporttype
 
     ## Set global debug flag
     total_files_generated_program = 0
     total_files_generated_results = 0
-    total_crawler_files = 0
     total_scores_files = 0
 
     #####################################################################################
@@ -327,8 +319,6 @@ def process_main():
         args.shortschoolrelay = True
 
     use_short_school_names_ind = not args.longschoolindividual
-    # Set the crawler flag
-    process_to_run['crawler'] = args.crawler
     
     logargs = f"{Path(__file__).stem}  \n" + \
               f"\n   Params: \n" + \
@@ -345,13 +335,11 @@ def process_main():
               f"\tDisplay Relays Names \t{args.displayRelayNames} \n"+ \
               f"\tSpaces in Relay Names \t{spacerelaynames}\n" + \
               f"\tDelete exiting files \t{args.delete}\n" + \
-              f"\tCrawler last XX files \t{args.lastnumevents}\n" + \
               f"\tNum Reslts Generate \t{args.numresults}\n" + \
               f"\tQuote output fields \t{args.quote}\n" + \
               f"\tLog Level \t\t{args.loglevel}\n" + \
               f"\tEmptyResults: \t\t'{args.emptyresults}' \n" + \
               f"\tRelayFormat: \t\t'{args.relayformat}' \n" + \
-              f"\tLane Overlay Files: \t'{args.overlay}' \n" + \
               f"\tGen Award File: \t'{args.awards}' \n" + \
               f"\tAwards Relay Names: \t'{args.awardsRelayNames}' \n" + \
               f"\n   Headers: \n" + \
@@ -377,9 +365,8 @@ def process_main():
              ## Remove files from last run as we may have old events/heats mixed in
             remove_files_from_dir( 'program', output_dir )
             remove_files_from_dir( 'PROGRAM', output_dir )
-            remove_files_from_dir( 'LANE_OVERLAY', output_dir )
 
-        total_files_generated_program , total_crawler_files = \
+        total_files_generated_program  = \
             sst_program.process_program( inputfile, 
                                         output_dir, 
                                         license_name, 
@@ -390,12 +377,10 @@ def process_main():
                                         args.displayRelayNames, 
                                         args.namesfirstlast, 
                                         args.quote,
-                                        args.crawler,
-                                        args.relayformat,
-                                        args.overlay )
+                                        args.relayformat )
 
     #####################################################################################
-    ## Generate wirecast files RESULTS and CRAWLER from a MEET RESULTS txt file
+    ## Generate wirecast files RESULTS and AWARDS from a MEET RESULTS txt file
     #####################################################################################
     if process_to_run['results']:
 
@@ -406,7 +391,7 @@ def process_main():
             remove_files_from_dir( 'AWARDS', output_dir )
 
 
-        total_files_generated_results, total_crawler_files = \
+        total_files_generated_results = \
                sst_results.process_result(  inputfile, 
                                             output_dir, 
                                             license_name, 
@@ -417,8 +402,6 @@ def process_main():
                                             args.namesfirstlast, 
                                             args.quote ,
                                             args.numresults,
-                                            args.lastnumevents,
-                                            args.crawler,
                                             args.championshipmeet,
                                             args.awards,
                                             args.awardsRelayNames )
@@ -460,8 +443,6 @@ def process_main():
         logging.warning(f"\tNumber of 'Program' files generated: {total_files_generated_program}")
     if total_files_generated_results > 0:
         logging.warning(f"\tNumber of 'Results' files generated: {total_files_generated_results}")
-    if total_crawler_files > 0:
-        logging.warning(f"\tNumber of 'Crawler' files generated: {total_crawler_files}")
     if total_scores_files > 0:
         logging.warning(f"\tNumber of 'Score' files generated: {total_scores_files}")
 

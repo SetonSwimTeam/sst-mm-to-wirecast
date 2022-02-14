@@ -1,0 +1,7 @@
+Event  21   Boys 100 Yard Breaststroke
+Heat   1 of 2   
+
+  Lane  Name                   Yr Sch  Seed Time
+  3 Lynch, Chris              SO SST  X1:20.39
+  4 Kellogg, Seth             FR SST   1:19.98
+  5 Lauer, Josh               SO TCS!  1:43.78

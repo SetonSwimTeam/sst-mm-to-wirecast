@@ -3,7 +3,6 @@ import re
 
 import sst_module_common as sst_common
 
-crawler_name_prefix = "x_crawler_program"
 file_name_prefix = "event_"
 file_name_suffix = "program"
 
@@ -36,9 +35,7 @@ def process_program( meet_report_filename: str,
                      display_relay_swimmer_names: bool,
                      namesfirstlast: bool, 
                      quote_output: bool,
-                     generate_crawler:bool,
-                     relayformat:int,
-                     gen_overlay_files:bool ) -> int:
+                     relayformat:int  ) -> int:
     """ Given the input file formatted in a specific manner,
         generate indiviual Event/Heat files for use in Wirecast displays """
     
@@ -70,11 +67,9 @@ def process_program( meet_report_filename: str,
     event_num = 0
     heat_num = 0
     num_files_generated = 0
-    num_crawler_files_generated = 0
     num_header_lines = 3
     found_header_line = 0
     output_list = []
-    crawler_str = ""
 
     ## Define the regular expression to pase the meet program
     re_program_lane = re.compile('^[*]?\d{1,2} ')
@@ -120,11 +115,7 @@ def process_program( meet_report_filename: str,
             if re.search("^%s" % mm_license_name, line):
                 found_header_line = 1
                 
-                num_files = create_output_file_program( output_dir, event_num, heat_num, output_list, display_relay_swimmer_names, split_relays_to_multiple_files, relayformat, gen_overlay_files )
-                if generate_crawler and event_num > 0 and heat_num > 0:
-                    num_files_crawler = create_output_file_program_crawler( output_dir, event_num, heat_num, crawler_str )
-                    num_crawler_files_generated += num_files_crawler
-
+                num_files = create_output_file_program( output_dir, event_num, heat_num, output_list, display_relay_swimmer_names, split_relays_to_multiple_files, relayformat )
                 
                 num_files_generated += num_files
 
@@ -166,9 +157,6 @@ def process_program( meet_report_filename: str,
                 ## H6 is the Heat info, save it in case we want to output it later
                 output_list.append(('H5', f"{line}" ))
 
-                # Define the beginning of a new heat crawler string
-                crawler_str = f"Event {event_num} Heat {heat_num}: "
-
                 #####################################################################################
                 ## PROGRAM: Set name_list_header to be displayed above the list of swimmers
                 ##          This is only set once per Event/Heat so moving this is probablimetic
@@ -198,7 +186,8 @@ def process_program( meet_report_filename: str,
                     ## In case we want to use Shortened School Names, run the lookup
                     ## The length of the school name in the MM report varies by event type
                     school_name_len = program_header_len_dict['diving_long'] if event_num in sst_common.event_num_diving else program_header_len_dict['individual_long']
-                    entry_sch_short = sst_common.short_school_name_lookup( entry_sch_long, school_name_len )
+                    #WPD entry_sch_short = sst_common.short_school_name_lookup( entry_sch_long, school_name_len )
+                    entry_sch_short = sst_common.short_school_abbr_lookup( entry_sch_long, school_name_len )
 
                     ## We can display name as given (Last, First) or change it to First Last with cli parameter
                     entry_name = sst_common.reverse_lastname_firstname( entry_name_last_first ) if namesfirstlast else entry_name_last_first
@@ -214,12 +203,7 @@ def process_program( meet_report_filename: str,
                         output_str = f" {q}{entry_lane:>2}{q} {q}{entry_name:<25}{q} {q}{entry_grade:>2}{q} {q}{entry_sch_short:<4}{q} {q}{entry_seedtime:>8}{q}"
                     
                     output_list.append(('LANE', output_str))
-                    crawler_str += gen_program_crawler_ind( entry_lane, entry_name, entry_grade,entry_sch_short, entry_sch_long, entry_seedtime )
                     
-                    ## Prepare to generate a NAME ONLY (may contain lane#) for use on overlaying the lanes while swimmer in water
-                    nameonly_str = f"{q}{entry_lane:>2}{q} {q}{entry_name:<25}{q}"
-                    output_list.append(('NAMEONLY', nameonly_str))
-
             
             #####################################################################################
             ## PROGRAM: RELAY Find the replay line with LANE, SCHOOL, RELAY TEAM SEEDTIME
@@ -237,7 +221,9 @@ def process_program( meet_report_filename: str,
                     #####################################################################################
                     ## PROGRAM: Replace long school name with short name for RELAY events
                     #####################################################################################
-                    entryline_sch_short = sst_common.short_school_name_lookup( entryline_sch_long, len(entryline_sch_long) )
+                    #WPD entryline_sch_short = sst_common.short_school_name_lookup( entryline_sch_long, len(entryline_sch_long) )
+                    entryline_sch_short = sst_common.short_school_abbr_lookup( entryline_sch_long, len(entryline_sch_long) )
+                    
                     ## Still issues with School names ending in - or -VA
                     entryline_sch_long = re_program_sch_cleanup2.sub(r'\1', entryline_sch_long)
                     
@@ -246,12 +232,10 @@ def process_program( meet_report_filename: str,
                         full_team_name = entryline_sch_short
                         output_str = f"{q}{entryline_lane:>2}{q} {q}{entryline_sch_short:<4}{q} {q}{entryline_relay:1}{q} {q}{entryline_seedtime:>8}{q}"
                     else:
-                        full_team_name = sst_common.find_proper_team_name( entryline_sch_long )
+                        full_team_name = sst_common.find_short_team_name( entryline_sch_long )
                         output_str = f"{q}{entryline_lane:>2}{q} {q}{full_team_name:<28}{q} {q}{entryline_relay:1}{q} {q}{entryline_seedtime:>8}{q}"
 
                     output_list.append(( "LANE", output_str ))
-                    nameonly_str = f"{q}{entryline_lane:>2}{q} {q}{full_team_name:<25}{q}"
-                    output_list.append(('NAMEONLY', nameonly_str))
 
             #####################################################################################
             ## PROGRAM: RELAY Add the swimmers name to the list. It may or may not be use for output
@@ -262,26 +246,19 @@ def process_program( meet_report_filename: str,
             if event_num in sst_common.event_num_relay and re_program_check_relay_name_line.search(line):
                 output_str = re_program_space_relay_name.sub( r'\1 \2',line )
                 output_list.append(( "NAME", output_str ))
-                crawler_str += gen_program_crawler_relay(entryline_lane, entryline_relay, entryline_sch_short, entryline_sch_long, output_str, entryline_seedtime)
-
 
     #####################################################################################
     ## Reached end of file
     ## Write out last event
     #####################################################################################
 
-    num_files = create_output_file_program( output_dir, event_num, heat_num, output_list, display_relay_swimmer_names, split_relays_to_multiple_files, relayformat, gen_overlay_files )
+    num_files = create_output_file_program( output_dir, event_num, heat_num, output_list, display_relay_swimmer_names, split_relays_to_multiple_files, relayformat )
     num_files_generated += num_files
-
-    if generate_crawler:
-        num_files_crawler = create_output_file_program_crawler( output_dir, event_num, heat_num, crawler_str )
-        num_crawler_files_generated += num_files_crawler
-
 
     #####################################################################################
     ## PROGRAM: All done. Return counts of files created
     #####################################################################################
-    return num_files_generated, num_crawler_files_generated
+    return num_files_generated
 
 
 ####################################################################################
@@ -293,17 +270,9 @@ def create_output_file_program( output_dir_root: str,
                                 output_list: list, 
                                 display_relay_swimmer_names: bool,
                                 split_relays_to_multiple_files: bool,
-                                relayformat: int,
-                                gen_overlay_files: bool ) -> int:
+                                relayformat: int ) -> int:
 
     num_files_created = 0
-    overlay_files_created = 0
-    if gen_overlay_files:
-        overlay_files_created = create_output_file_program_nameonly(output_dir_root, 
-                                                                    event_num, 
-                                                                    heat_num,
-                                                                    output_list, 
-                                                                    display_relay_swimmer_names)
 
     ## Puts Short Team, Relay and swimmers on same line
     ##  6 SST  A 1) Garvey, L       2) Flynn, E        3) Condon, C       4) Pennefather, M 
@@ -326,7 +295,7 @@ def create_output_file_program( output_dir_root: str,
                                 display_relay_swimmer_names,
                                 split_relays_to_multiple_files )
     
-    return num_files_created + overlay_files_created
+    return num_files_created
 
 
 
@@ -406,104 +375,6 @@ def create_output_file_program_format1( output_dir_root: str,
     num_files_created += 1
 
     return num_files_created
-
-
-
-####################################################################################
-## Given an array of PROGRAM lines PER HEAT, generate the output file
-## This version only contains NAME, not Headers, or swimminer info besides NAME
-## Its used to test an overlay of names on the pool
-#####################################################################################
-def create_output_file_program_nameonly( output_dir_root: str, 
-                                event_num: int, 
-                                heat_num: int,
-                                output_list: list, 
-                                display_relay_swimmer_names: bool ) -> int:
-    """ Generate the filename and open the next file """
-   
-    global event_num_relay
-    num_files_created = 0
-    split_num = 1
-    output_str = ""
-    
-    ## Ignore the case where we get event0 heat0
-    if event_num == 0:
-        return 0
-
-    output_dir = f"{output_dir_root}/"
-    
-    ## For non relay events
-    output_file_name = f"{file_name_prefix}{event_num:0>2}_LANE_OVERLAY_heat_{heat_num:0>2}.txt"
-
-    #header_list = ['H4', 'H5', 'H6']
-    header_list = ['H4', 'H5']
-
-    count =0 
-    for output_tuple in output_list:
-        row_type = output_tuple[0]
-        row_text = output_tuple[1]
-
-        logging.debug(f"NAMEONLY: e: {event_num} h: {event_num} id: {row_type} t: {row_text}")
-
-        ## May want header info, if it fits on screen
-        if row_type == 'H4':
-            output_str += row_text + '\n'
-        elif row_type == 'H5':
-              output_str += row_text + '\n'+ '\n'
-        elif row_type == 'NAMEONLY':
-            output_str += row_text + '\n'
-
-    sst_common.write_output_file(output_dir, output_file_name, output_str)
-    num_files_created += 1
-
-    return num_files_created
-
-####################################################################################
-## Given an array of PROGRAM lines PER HEAT, generate the crawler file for individuals
-#####################################################################################
-def gen_program_crawler_ind( entry_lane, entry_name, entry_grade,entry_sch_short, entry_sch_long, entry_seedtime ):
-
-    seperator_str = " | "
-    crawler_sep = "" if entry_lane == 1 else seperator_str
-
-    school_name = entry_sch_short.strip()
-    lane_str = f"LANE {entry_lane}: {entry_name} {entry_grade} {school_name}{crawler_sep}"
-
-    return lane_str
-
-
-####################################################################################
-## Given an array of PROGRAM lines PER HEAT, generate the crawler file for relays
-#####################################################################################
-def gen_program_crawler_relay( entry_lane, entry_name, entry_sch_short, entry_sch_long, swimmers_names ,entry_seedtime ):
-
-    seperator_str = " | "
-    crawler_sep = "" if entry_lane == 1 else seperator_str
-
-    school_name = entry_sch_short.strip()
-    # lane_str = f"LANE {entry_lane}: {school_name} {entry_name} {crawler_sep}"
-    lane_str = f"LANE {entry_lane}: {school_name} {entry_name} {swimmers_names}{crawler_sep}"
-
-    return lane_str
-
-####################################################################################
-## Generate the crawler output
-#####################################################################################
-def create_output_file_program_crawler( output_dir_root: str, 
-                                event_num: int, 
-                                heat_num: int,
-                                crawlwer_str: str ) -> int:
-    """ Generate the filename and open the next file """
-
-    output_dir = f"{output_dir_root}"
-
-    logging.debug( f"CRW OUT: e: {event_num} h: {heat_num} {crawlwer_str}")
-    output_file_name = f"{crawler_name_prefix}_event{event_num:0>2}_heat_{heat_num:0>2}.txt"
-
-    sst_common.write_output_file( output_dir, output_file_name, crawlwer_str)
-
-    return 1
-
 
 
 ####################################################################################
