@@ -1,0 +1,14 @@
+Event 20  Girls 100 Yard Backstroke
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Garvey, Lucy              SST  SR  1:01.68   -01.00   16
+  2 Stermer, Teagan           TCS! SO  1:04.49   -01.03   13
+  3 Womack, Kristen           TCS! SO  1:07.13   -02.96   12
+  4 Roder, Mia                JP   JR  1:08.30   -02.99   11
+  5 Gibbons, Maggie           SST  SO  1:11.98   +00.67   10
+  6 Oswald, Jacqueline        SST  JR  1:14.75   -00.32    9
+  7 Fifield, Haley            SST  FR  1:14.96   -00.50    7
+  8 Bang, Selah               TCS! JR  1:16.13   -01.36    5
+  9 Weina, Virginia           JP   JR  1:16.29   -00.15    4
+ 10 Mitchell, Ajai            TCS! SO  1:39.39   -06.34    3
+ 11 Blevins, Colby            FCS   8  1:43.73   -08.66    2

@@ -1,0 +1,10 @@
+Event  16   Girls 500 Yard Freestyle
+Heat   2 of 2   
+
+  Lane  Name                   Yr Sch  Seed Time
+  2 Roberson, Emma             8 FCS   6:21.13
+  3 Yaraschak, Bella          SO TCS!  5:58.11
+  4 Stermer, Teagan           SO TCS!  5:43.19
+  5 Testani, Angie            FR SST   5:43.29
+  6 Flynn, Emily              SR SST   6:19.01
+  7 Guiterrez, Ana Sophia     SR JP    6:27.59

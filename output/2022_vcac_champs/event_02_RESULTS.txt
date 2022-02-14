@@ -1,0 +1,10 @@
+Event 2  Girls 200 Yard Medley Relay
+    ** UNOFFICIAL RESULTS **
+           Team               Relay  Final   Change  Pts
+   1 Seton                     A  1:52.65   -00.53   32
+   2 Trinity                   A  2:01.02   -03.16   26
+   3 John Paul                 A  2:07.63   +01.79   24
+   4 Fredericksburg            A  2:26.28   -01.04   22
+ --- Seton                     B X2:06.17   +02.58    -
+ --- John Paul                 B X2:18.17   +01.89    -
+ --- Trinity                   B X2:28.79   +05.81    -

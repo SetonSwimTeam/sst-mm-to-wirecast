@@ -1,0 +1,8 @@
+Event 24  Girls 400 Yard Freestyle Relay
+    ** UNOFFICIAL RESULTS **
+           Team               Relay  Final   Change  Pts
+   1 Seton                     A  3:55.18   -09.06   32
+   2 Trinity                   A  3:57.85   -02.56   26
+   3 Fredericksburg            A  4:33.81   -08.67   24
+ --- Trinity                   B X4:13.46   -11.37    -
+ --- Seton                     B X4:17.88   -06.94    -

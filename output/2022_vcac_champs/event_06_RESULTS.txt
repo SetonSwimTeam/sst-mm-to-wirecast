@@ -1,0 +1,11 @@
+Event 6  Girls 200 Yard IM
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Testani, Angie            SST  FR  2:20.84   -02.02   16
+  2 Schlieter, Audrey         TCS! 08  2:27.64   +00.32   13
+  3 Bingham, Teresa           SST  SR  2:37.15   -01.23   12
+  4 Roberson, Emma            FCS   8  2:37.32   +00.39   11
+  5 Fifield, Haley            SST  FR  2:45.53   -07.39   10
+  6 Zadnik, Madelyn           SST  SO  2:49.68   +04.80    9
+  7 Metzger, Danielle         TCS! JR  2:53.47   -11.11    7
+  8 Gallagher, Francesca      JP   SR  2:54.15   -10.63    5

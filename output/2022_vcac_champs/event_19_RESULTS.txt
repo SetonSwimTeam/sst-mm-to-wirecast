@@ -1,0 +1,14 @@
+Event 19  Boys 100 Yard Backstroke
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Hough, Ryan               TCS! SO    58.82   -00.98   16
+  2 Howell, Luke              FCS  FR    59.87   -00.54   13
+  3 Phillips, Tyler           TCS!  8  1:00.11   -04.68   12
+  4 Fioramonti, Mick          SST  SO  1:05.23   -00.03   11
+  5 Hudson, David             SST  SO  1:08.59   +00.77   10
+  6 Ong, Marcus               JP   SR  1:08.96   +06.03    9
+  7 Park, Zack                TCS! SO  1:09.43   +00.95    7
+  8 Beltran, Ryan             SST  SO  1:13.57   -00.92    5
+  9 Albin, Jed                SST  SO  1:16.63   -04.40    4
+ 10 Smith, James              JP   SO  1:27.70   -01.66    3
+ 11 Valenzuela, Orlando       TCS! JR  1:31.59   +00.19    2

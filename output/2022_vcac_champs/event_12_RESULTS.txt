@@ -1,0 +1,11 @@
+Event 12  Girls 100 Yard Butterfly
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Condon, Clara             SST  FR  1:00.23   -00.03   16
+  2 Klanderman, Liz           TCS! FR  1:05.92   +00.73   13
+  3 Schlieter, Audrey         TCS! 08  1:08.77   +01.31   12
+  4 Flynn, Emily              SST  SR  1:09.73   -00.59   11
+  5 Bingham, Teresa           SST  SR  1:11.71   -01.04   10
+  6 Zadnik, Sophia            SST  SR  1:16.74   -00.82    9
+  7 Bang, Selah               TCS! JR  1:18.27   -02.81    7
+  8 Gallagher, Francesca      JP   SR  1:26.42   +00.31    5

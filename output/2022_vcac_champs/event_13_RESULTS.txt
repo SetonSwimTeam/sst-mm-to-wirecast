@@ -1,0 +1,17 @@
+Event 13  Boys 100 Yard Freestyle
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Kim, Josh                 TCS! SR    48.84   -01.89   16
+  2 Kim, Justin               TCS! SO    52.12   -00.10   13
+  3 Brox, JJ                  SST  JR    56.95   -02.48   12
+  4 Nguyen, Drew              SST  FR    57.56   +00.52   11
+  5 Rowzie, Joseph            SST  SR  1:02.00   -00.19   10
+  6 Konstanty, Peter          SST  SO  1:03.33   +02.22    9
+  7 Haynes, Jacob             FCS  SO  1:05.81   -00.21    7
+  8 Mastrianni, Dominic       JP   SO  1:07.35   -01.26    5
+  9 Smith, James              JP   SO  1:11.45   -00.06    4
+ 10 Vitkovitsky, Daniel       JP   SR  1:11.76   +00.99    3
+ 11 Delage, Aaron             FCS  JR  1:17.88   -02.65    2
+ 12 Kirby, Micah              TCS! SO  1:24.30   +02.08    1
+ 13 Misiano, Thomas           FCS  JR  1:28.26   -04.04    -
+--- McGrath, Michael          SST  SO X1:03.44   +00.27    -

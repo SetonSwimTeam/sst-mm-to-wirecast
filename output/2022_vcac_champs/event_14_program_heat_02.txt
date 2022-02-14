@@ -1,0 +1,12 @@
+Event  14   Girls 100 Yard Freestyle
+Heat   2 of 2   
+
+  Lane  Name                   Yr Sch  Seed Time
+  1 Vitkovsky, Maggie         JR JP    1:05.16
+  2 Koler, Jillian            SR JP    1:02.22
+  3 Phillips, Amy             JR TCS!  1:00.25
+  4 Buff, Reagan              SO TCS!    58.59
+  5 Luevano, Isabelle         SR SST     59.80
+  6 Pennefather, Mary         JR SST   1:00.94
+  7 O'Malley, Mary            SR SST   1:01.22
+  8 Bailey, Mary Mae          SO TCS!  1:05.69

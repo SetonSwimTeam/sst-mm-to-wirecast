@@ -1,0 +1,10 @@
+Event 18  Girls 200 Yard Freestyle Relay
+    ** UNOFFICIAL RESULTS **
+           Team               Relay  Final   Change  Pts
+   1 Trinity                   A  1:47.00   -01.84   32
+   2 Seton                     A  1:48.25   +00.65   26
+   3 John Paul                 A  1:53.09   +01.92   24
+   4 Fredericksburg            A  2:08.17   +00.60   22
+ --- Seton                     B X1:52.54   -01.49    -
+ --- Trinity                   B X1:55.68   -00.95    -
+ --- John Paul                 B X2:18.03   +05.03    -

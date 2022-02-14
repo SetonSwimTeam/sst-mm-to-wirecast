@@ -1,0 +1,8 @@
+Event 23  Boys 400 Yard Freestyle Relay
+    ** UNOFFICIAL RESULTS **
+           Team               Relay  Final   Change  Pts
+   1 Trinity                   A  3:40.27   +11.83   32
+   2 Fredericksburg            A  3:50.74   -02.31   26
+   3 Seton                     A  3:55.84   +05.97   24
+ --- Seton                     B X4:05.85   -00.22    -
+ --- Trinity                   B X4:36.33   -18.70    -

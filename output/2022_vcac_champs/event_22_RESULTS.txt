@@ -1,0 +1,15 @@
+Event 22  Girls 100 Yard Breaststroke
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Condon, Clara             SST  FR  1:09.91   +00.86   16
+  2 Davis, Gianna             JP   FR  1:10.70   -04.58   13
+  3 Koler, Jillian            JP   SR  1:15.00   +02.83   12
+  4 Klanderman, Liz           TCS! FR  1:15.75   -01.09   11
+  5 Waldron, Clare            SST  SR  1:15.97   -00.62   10
+  6 Brox, Elodie              SST  FR  1:19.49   -01.11    9
+  7 Williams, Maeve           JP   FR  1:25.20   +06.78    7
+  8 Zadnik, Sophia            SST  SR  1:26.39   +01.15    5
+  9 Ratcliffe, Eliana         TCS!  9  1:30.52   +00.53    4
+ 10 Ryan, Gabbie              FCS   8  1:32.29   +03.03    3
+ 11 Moon, Ella                TCS! SR  1:35.20   -01.78    2
+ 12 McCormick, Madison        JP   FR  1:38.62   -00.05    1
