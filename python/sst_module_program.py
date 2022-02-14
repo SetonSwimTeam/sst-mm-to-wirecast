@@ -232,7 +232,7 @@ def process_program( meet_report_filename: str,
                         full_team_name = entryline_sch_short
                         output_str = f"{q}{entryline_lane:>2}{q} {q}{entryline_sch_short:<4}{q} {q}{entryline_relay:1}{q} {q}{entryline_seedtime:>8}{q}"
                     else:
-                        full_team_name = sst_common.find_proper_team_name( entryline_sch_long )
+                        full_team_name = sst_common.find_short_team_name( entryline_sch_long )
                         output_str = f"{q}{entryline_lane:>2}{q} {q}{full_team_name:<28}{q} {q}{entryline_relay:1}{q} {q}{entryline_seedtime:>8}{q}"
 
                     output_list.append(( "LANE", output_str ))

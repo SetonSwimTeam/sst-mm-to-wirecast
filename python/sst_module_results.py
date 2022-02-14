@@ -269,7 +269,7 @@ def process_result( meet_report_filename: str,
                     # with points
                     
                     #full_team_name = placeline_school_long
-                    full_team_name = sst_common.find_proper_team_name( placeline_school_long )
+                    full_team_name = sst_common.find_short_team_name( placeline_school_long )
 
                     # output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_grade:>2}{q} {q}{placeline_school_long:<25}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
 
@@ -323,17 +323,11 @@ def process_result( meet_report_filename: str,
                     points_str = f"{q}{placeline_points:>4}{q}" if champsionship_result_header_dict else ""
 
                     if shorten_school_names_relays:                        
-                        #output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_short:<4}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
-                        #output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_short:<4}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {points_str}"
-                        output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_short:<4}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{changeInTime:>8}{q} {points_str}"
-                        #output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_short:<4}{q} {q}{placeline_relay}{q} {q}{placeline_finaltime:>8}{q} {q}{changeInTime:>8}{q} {points_str}"
+                        output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_short:<25}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{changeInTime:>8}{q} {points_str}"
                     else:
                         #full_team_name = placeline_sch_long
-                        full_team_name = sst_common.find_proper_team_name( placeline_sch_long )
+                        full_team_name = sst_common.find_full_team_name( placeline_sch_long )
 
-                        #output_str = f" {q}{placeline_place:>3}{q} {q}{placeline_sch_long:<25}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{placeline_points:>2}{q}"
-                        #output_str = f" {q}{placeline_place:>3}{q} {q}{full_team_name:<25}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {points_str}"
-                        #output_str = f" {q}{placeline_place:>3}{q} {q}{full_team_name:<25}{q} {q}{placeline_relay}{q} {q}{placeline_seedtime:>8}{q} {q}{placeline_finaltime:>8}{q} {q}{changeInTime:>8}{q} {points_str}"
                         output_str = f" {q}{placeline_place:>3}{q} {q}{full_team_name:<25}{q} {q}{placeline_relay}{q} {q}{placeline_finaltime:>8}{q} {q}{changeInTime:>8}{q} {points_str}"
                     output_list.append(( "PLACE", output_str ))
 
