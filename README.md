@@ -129,6 +129,7 @@ python/generate_wirecast_files.py -m HighSchool -o /c/Users/SetonSwimTeam/Dropbo
 python3 python/generate_wirecast_files.py -m HighSchool -o output/2022_divii -i data/2022_divii -C -m HighSchool -f results.txt -s schools.txt -d
 python3 python/generate_wirecast_files.py -m HighSchool -o output/2020_dac_champs -i data/2020_dac_champs -C -m HighSchool -f results.txt -s schools.txt -d
 python3 python/generate_wirecast_files.py -m HighSchool -o output/2021_dac_champs -i data/2021_dac_champs -C -m HighSchool -f results.txt -s schools.txt -d
+python3 python/generate_wirecast_files.py -m HighSchool -o output/2022_vcac_champs -i data/2022_vcac_champs -C -m HighSchool -f results.txt -s schools.txt -d
 
 ## VCAC
 python/generate_wirecast_files.py -m HighSchool -o /c/Users/SetonSwimTeam/Dropbox/wirecast -i /c/Users/SetonSwimTeam/Dropbox/wc_meetreports -f results.txt -C -a

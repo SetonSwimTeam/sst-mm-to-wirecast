@@ -9,7 +9,6 @@ g_unofficial_results = "    ** UNOFFICIAL RESULTS **"
 g_file_name_prefix = "event_"
 g_file_name_suffix = "RESULTS"
 g_file_name_awards = "AWARDS"
-g_crawler_name_prefix = "x_crawler_results"
 
 #####################################################################################
 ### If we can display colors on wirecast
@@ -63,8 +62,6 @@ def process_result( meet_report_filename: str,
                     namesfirstlast: bool, 
                     quote_output: bool,
                     num_results_to_display: int,
-                    crawler_last_xx_results: int,
-                    generate_crawler: bool,
                     championshipmeet: bool,
                     awards:bool,
                     awardsRelayNames: bool ) -> int:
@@ -107,12 +104,9 @@ def process_result( meet_report_filename: str,
     ## Define local variables
     event_num = 0
     num_files_generated = 0
-    num_crawler_files_generated = 0
     num_header_lines = 3
     found_header_line = 0
     output_list = []
-    crawler_list = []
-    crawler_str = ""
     continue_processing_current_event = True
 
     # re_results_lane = re.compile('^[*]?\d{1,2} ')
@@ -196,14 +190,7 @@ def process_result( meet_report_filename: str,
                 logging.info(f"RESULTS: EVENT LINE: {line}")
                 continue_processing_current_event = True
 
-                # # Starting a new event. Save crawler string for this past event in the list for later procesing
-                if event_num > 0:
-                    crawler_list.append( (event_num, crawler_str  ))
-
                 event_num, event_str = sst_common.get_event_num_from_eventline( line )
-
-                ## Start new crawler_str for next event
-                crawler_str = f"Unofficial Results: Event {event_num} {event_str}: "
 
                 ## H4 is the Event number/name line
                 # output_list.append(('H4', f"{line} {g_unofficial_results}" ))
@@ -298,7 +285,6 @@ def process_result( meet_report_filename: str,
                         output_str = f"{q}{placeline_place:>3}{q} {q}{result_name:<25}{q} {q}{placeline_school_short:<4}{q} {q}{placeline_grade:>2}{q} {q}{placeline_finaltime:>8}{q} {q}{changeInTime:>8}{q} {points_str}"
                     
                     output_list.append(('PLACE', output_str))
-                    crawler_str += gen_result_crawler_ind( placeline_place, result_name, placeline_grade,placeline_school_short, placeline_school_long, placeline_seedtime, placeline_finaltime, placeline_points )
 
             #####################################################################################
             ## RESULTS: RELAY Find the Place Winner line, place, name, school, time, points, etc
@@ -358,8 +344,6 @@ def process_result( meet_report_filename: str,
             if event_num in sst_common.event_num_relay and re_results_check_relay_name_line.search(line):
                 line = re_results_space_relay_name.sub( r'\1 \2',line )
                 output_list.append(( "NAME", line ))  
-                # crawler_str += gen_result_crawler_relay( placeline_place, placeline_sch_long, placeline_sch_short,placeline_relay, placeline_seedtime, placeline_finaltime, placeline_points )
-
 
     #####################################################################################
     ## Reached end of file
@@ -367,18 +351,11 @@ def process_result( meet_report_filename: str,
     #####################################################################################
     create_output_file( output_dir, event_num, output_list, display_relay_swimmer_names, num_results_to_display, awards, awardsRelayNames )
     num_files_generated += 1
-    
-    ## Save the last event in the crawler list 
-    crawler_list.append( (event_num, crawler_str  ))
-    
-    ## Write out all crawler files now that processing of the result file has completed
-    if generate_crawler:
-        num_crawler_files_generated = create_output_file_results_crawler( output_dir, crawler_list, crawler_last_xx_results)
-
+        
     #####################################################################################
     ## RESULTS: All done. Return counts of files created
     #####################################################################################
-    return num_files_generated, num_crawler_files_generated
+    return num_files_generated
 
 
 
@@ -543,130 +520,6 @@ def create_output_file_awards(  output_dir: str,
     output_str += '\n'
     output_file_name =  f"{g_file_name_prefix}{event_num:0>2}_{g_file_name_awards}.txt"
     sst_common.write_output_file( output_dir, output_file_name, output_str )
-    num_files_generated += 1
-
-    return num_files_generated
-
-####################################################################################
-## Given an array of PROGRAM lines PER HEAT, generate the crawler file for individuals
-#####################################################################################
-def gen_result_crawler_ind( place: str, 
-                            name: str, 
-                            grade: str,
-                            school_short: str, 
-                            school_long: str, 
-                            seedtime: str, 
-                            finaltime: str, 
-                            points: str ) -> int:
-
-    seperator_str = " | "
-    crawler_sep = "" if place == "1" else seperator_str
-
-    ## There are cases where special characters are added to place (i.e. * for ties)
-    place = re.sub("[^\d\.]", "", place)
-    ## Place may be a string represenatation of a int, or it could be --- for exhibition swimmers
-    try:
-        place_str = get_ordinal(int(place))
-    except Exception as e:
-        place_str = place
-
-    school_name = school_short.strip()
-    results_str = f"{crawler_sep}{place_str}: {name} {grade} {school_name} {finaltime}"
-
-    return results_str
-
-
-####################################################################################
-## Given an array of PROGRAM lines PER HEAT, generate the crawler file for relays
-####################################################################################
-def gen_result_crawler_relay( place: str, 
-                              sch_long: str, 
-                              sch_short: str,
-                              relay: str, 
-                              seedtime: str, 
-                              finaltime: str, 
-                              points: str ) -> str:
-
-    seperator_str = " | "
-    crawler_sep = "" if place == "1" else seperator_str
-
-    ## There are cases where special characters are added to place (i.e. * for ties)
-    place = re.sub("[^\d\.]", "", place)
-    place_str = get_ordinal(int(place))
-
-    school_name = sch_short.strip()
-    results_str = f"{crawler_sep}{place_str}: {school_name} {relay} {finaltime}"
-
-    return results_str
-
-
-
-#####################################################################################
-## create_output_file_results_crawler
-##
-## Given a list of tuples (evnt num, crawler_string), generate output files
-## Generate crawler files for actual events (event_num > 0) and for meet name (event_num = -2)
-#####################################################################################
-def create_output_file_results_crawler( output_dir_root: str, crawler_list: list, last_num_events: int ):
-    """ Given a list of tuples (evnt num, crawler_string), generate output files """
-    
-    output_dir = f"{output_dir_root}/"
-    num_files_generated=0
-
-
-    ## Generate individual files per meet
-    for crawler_event in crawler_list:
-        event_num = crawler_event[0]
-        crawler_text = crawler_event[1]
-
-        logging.debug(f"crawler: e: {event_num} t: {crawler_text}")
-        ## Generate event specific file
-        if event_num > 0:
-            #output_file_name = f"{g_crawler_name_prefix}_result_event{event_num:0>2}.txt"
-            output_file_name = f"{g_crawler_name_prefix}_result_event{event_num:0>2}.txt"
-            sst_common.write_output_file( output_dir, output_file_name, crawler_text )
-            num_files_generated += 1
-        ## Genreate special file for the meet name
-        elif event_num == sst_common.headerNum2:
-            output_file_name = f"{g_crawler_name_prefix}__MeetName.txt"
-            sst_common.write_output_file( output_dir, output_file_name, crawler_text )
-            num_files_generated += 1
-
-    ## Generate single file for all scored events in reverse order
-    crawler_text = ""
-    crawler_text_last_num_events = ""
-    meet_name = ""
-    num_events = len(crawler_list)
-    last_num_events_generated = 0
-
-    ## Loop through list in reverse order to generate crawler string with multiple events
-    for num in range( num_events-1, -1, -1):
-        crawler_event = crawler_list[num]
-        event_num = crawler_event[0]
-        event_text = crawler_event[1]
-
-        ## Save off the meet name, which somes at the end of the procesing as we are looping in reverse order
-        if event_num > 0:
-            crawler_text += f" | {event_text}"
-            if last_num_events_generated < last_num_events:
-                crawler_text_last_num_events += f" | {event_text}"
-                last_num_events_generated += 1
-        elif event_num == sst_common.headerNum2:
-            meet_name = event_text        
-
-    ## Add meet_name to front of string
-    crawler_text = f"{meet_name} {crawler_text}"
-    ## Create the crawler file with ALL events completed so far
-    all_events_file_name = f"{g_crawler_name_prefix}__AllEventsReverse.txt"
-    output_file_name = all_events_file_name
-    sst_common.write_output_file( output_dir, output_file_name, crawler_text )
-    num_files_generated += 1
-
-    ## Create the crawler file with last_num events
-    #last_xx_events_file_name = f"{g_crawler_name_prefix}__Last_{last_num_events:0>2}_events.txt"
-    last_xx_events_file_name = f"{g_crawler_name_prefix}__Last_XX_events.txt"
-    output_file_name = last_xx_events_file_name
-    sst_common.write_output_file( output_dir, output_file_name, crawler_text_last_num_events )
     num_files_generated += 1
 
     return num_files_generated
