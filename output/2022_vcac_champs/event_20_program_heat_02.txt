@@ -1,0 +1,12 @@
+Event  20   Girls 100 Yard Backstroke
+Heat   2 of 2   
+
+  Lane  Name                   Yr Sch  Seed Time
+  1 Weina, Virginia           JR JP    1:16.44
+  2 Gibbons, Maggie           SO SST   1:11.31
+  3 Womack, Kristen           SO TCS!  1:10.09
+  4 Garvey, Lucy              SR SST   1:02.68
+  5 Stermer, Teagan           SO TCS!  1:05.52
+  6 Roder, Mia                JR JP    1:11.29
+  7 Oswald, Jacqueline        JR SST   1:15.07
+  8 Fifield, Haley            FR SST   1:15.46

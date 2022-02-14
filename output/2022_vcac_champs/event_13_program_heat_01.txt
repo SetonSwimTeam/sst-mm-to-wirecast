@@ -1,0 +1,11 @@
+Event  13   Boys 100 Yard Freestyle
+Heat   1 of 2   
+
+  Lane  Name                   Yr Sch  Seed Time
+  1 McGrath, Michael          SO SST  X1:03.17
+  2 Kirby, Micah              SO TCS!  1:22.22
+  3 Jang, Elliot              SO TCS!  1:17.26
+  4 Vitkovitsky, Daniel       SR JP    1:10.77
+  5 Smith, James              SO JP    1:11.51
+  6 Delage, Aaron             JR FCS   1:20.53
+  7 Misiano, Thomas           JR FCS   1:32.30

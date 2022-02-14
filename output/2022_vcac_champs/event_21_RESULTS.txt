@@ -1,0 +1,11 @@
+Event 21  Boys 100 Yard Breaststroke
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Hopkins, Liam             JP   SR  1:04.57   +00.81   16
+  2 Brox, JJ                  SST  JR  1:08.66   -00.73   13
+  3 Nguyen, Drew              SST  FR  1:14.26   -00.15   12
+  4 Sicks, Campbell           TCS! JR  1:17.44   -00.23   11
+  5 Wang, Luke                TCS! SO  1:18.51   -00.70   10
+  6 Dealey, Joey              SST  JR  1:19.70   +00.01    9
+  7 Kellogg, Seth             SST  FR  1:21.15   +01.17    7
+  8 Lauer, Josh               TCS! SO  1:44.29   +00.51    5

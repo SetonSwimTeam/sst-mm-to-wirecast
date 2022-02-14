@@ -1,0 +1,12 @@
+Event 11  Boys 100 Yard Butterfly
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Phillips, Tyler           TCS!  8    55.57   -01.26   16
+  2 Wilson, Joe               SST  JR    59.97   +00.60   13
+  3 Ong, Marcus               JP   SR  1:01.28   +00.08   12
+  4 Williams, Charlie         JP   JR  1:03.08   -00.10   11
+  5 Park, Ian                 TCS! SO  1:06.57   -00.19   10
+  6 Sokban, William           SST  FR  1:12.86   -02.50    9
+  7 Borneman, Joseph          SST  FR  1:15.30   -01.64    7
+  8 Wilson, Max               SST  FR  1:15.50   +01.90    5
+  9 Valenzuela, Orlando       TCS! JR  1:37.57   -03.02    4

@@ -1,0 +1,7 @@
+Event  19   Boys 100 Yard Backstroke
+Heat   1 of 2   
+
+  Lane  Name                   Yr Sch  Seed Time
+  3 Valenzuela, Orlando       JR TCS!  1:31.40
+  4 Albin, Jed                SO SST   1:21.03
+  5 Smith, James              SO JP    1:29.36

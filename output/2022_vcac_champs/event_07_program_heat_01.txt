@@ -1,0 +1,9 @@
+Event  7   Boys 50 Yard Freestyle
+Heat   1 of 3   
+
+  Lane  Name                   Yr Sch  Seed Time
+  2 Misiano, Thomas           JR FCS    X36.53
+  3 Lynch, Chris              SO SST    X29.53
+  4 Salafia, Luca              8 FCS    X27.48
+  5 Haynes, Jacob             SO FCS    X27.88
+  6 Delage, Aaron             JR FCS    X32.28

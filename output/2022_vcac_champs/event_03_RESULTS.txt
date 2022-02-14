@@ -1,0 +1,13 @@
+Event 3  Boys 200 Yard Freestyle
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Kim, Josh                 TCS! SR  1:46.54   -02.88   16
+  2 Kintz, John Paul          JP   SR  2:11.01   -04.72   13
+  3 Bang, Caleb               TCS! 08  2:14.50   -12.23   12
+  4 Brox, Michael             SST  FR  2:14.65   +01.20   11
+  5 Dealey, Joey              SST  JR  2:14.95   -01.34   10
+  6 McGrath, Michael          SST  SO  2:22.64   -11.09    9
+  7 Borneman, Joseph          SST  FR  2:23.67   -00.83    7
+  8 Collins, Jacob            JP   SR  2:29.18   -02.58    5
+  9 Sicks, Campbell           TCS! JR  2:35.14   +02.84    4
+ 10 Kirby, Micah              TCS! SO  3:12.53   +08.45    3

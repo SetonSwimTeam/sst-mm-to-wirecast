@@ -1,0 +1,12 @@
+Event  19   Boys 100 Yard Backstroke
+Heat   2 of 2   
+
+  Lane  Name                   Yr Sch  Seed Time
+  1 Park, Zack                SO TCS!  1:08.48
+  2 Fioramonti, Mick          SO SST   1:05.26
+  3 Ong, Marcus               SR JP    1:02.93
+  4 Hough, Ryan               SO TCS!    59.80
+  5 Howell, Luke              FR FCS   1:00.41
+  6 Phillips, Tyler            8 TCS!  1:04.79
+  7 Hudson, David             SO SST   1:07.82
+  8 Beltran, Ryan             SO SST   1:14.49
