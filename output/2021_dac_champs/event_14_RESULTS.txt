@@ -1,0 +1,12 @@
+Event 14  Girls 100 Yard Freestyle
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Thornburg, Paris          HL   SR    53.63   -03.19   16
+  2 Pennefather, Mary         SST  SO    58.39   -00.92   13
+  3 Phillips, Jenna           TCS! SR    59.51   +00.83   12
+  4 Sykes, Caroline           TCS! SR  1:00.39   -01.62   11
+  5 O'Malley, Mary            SST  JR  1:01.65   +00.43   10
+  6 Gibbons, Maggie           SST  FR  1:02.50   -00.36    9
+  7 Luevano, Isabelle         SST  JR  1:02.81   +02.78    7
+  8 Ratcliffe, Eliana         TCS!  8  1:11.97   -00.97    5
+  9 Metzger, Danielle         TCS! SO  1:16.08   +00.04    4

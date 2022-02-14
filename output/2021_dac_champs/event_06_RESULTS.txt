@@ -1,0 +1,10 @@
+Event 6  Girls 200 Yard IM
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Testani, Angie            SST   8  2:23.80   +00.18   16
+  2 Klanderman, Liz           TCS!  8  2:26.67   -00.43   13
+  3 Klanderman, Teresa        TCS! SR  2:34.21   +01.59   12
+  4 Womack, Kristen           TCS! FR  2:39.67   -03.24   11
+  5 Bingham, Teresa           SST  JR  2:40.05   +01.67   10
+  6 Zadnik, Madelyn           SST  FR  2:44.88   -03.00    9
+  7 Hudson, Ava               SST  FR  2:50.56   +05.58    7

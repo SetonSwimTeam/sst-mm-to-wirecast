@@ -1,0 +1,8 @@
+Event 15  Boys 500 Yard Freestyle
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Hough, Ryan               TCS! FR  5:47.27   +00.16   16
+  2 Luevano, Nathan           SST  SO  6:04.18   +03.92   13
+  3 Fioramonti, Mick          SST  FR  6:32.25   +11.43   12
+  4 Dealey, Joey              SST  SO  6:58.14   -28.97   11
+  5 Lynch, Chris              SST  FR  7:40.60   -06.38   10

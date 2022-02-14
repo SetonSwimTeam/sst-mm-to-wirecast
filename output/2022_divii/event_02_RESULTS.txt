@@ -1,0 +1,17 @@
+Event 2  Girls 200 Yard Medley Relay
+    ** UNOFFICIAL RESULTS **
+           Team               Relay  Final   Change  Pts
+   1 Seton                     A  1:53.18   -00.46   32
+   2 Hampton Roads             A  1:57.41   -06.13   26
+   3 Seton                     B  2:03.59   -02.42   24
+   4 Trinity                   A  2:04.18   -00.30   22
+   5 Christchurch              A  2:07.06   -04.60   20
+   6 Nansemond                 A  2:09.90   -03.10   18
+   7 Covenant                  A  2:10.41   +06.13   14
+   8 Oakcrest                  A  2:11.46   +01.96   10
+   9 Steward                   A  2:13.17   +13.67    8
+  10 Walsingham                A  2:13.46   -03.64    6
+  11 Williamsburg              A  2:14.93   -05.27    4
+  12 Oakcrest                  B  2:19.37   +02.58    2
+  13 Hampton Roads             B  2:21.10   -02.44    -
+  14 Nansemond                 B  2:23.83   +01.83    -

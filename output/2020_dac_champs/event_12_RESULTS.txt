@@ -1,0 +1,14 @@
+Event 12  Girls 100 Yard Butterfly
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Carter, Madisyn           HL    8    58.49   -00.30   16
+  2 Klanderman, Teresa        TCS! JR  1:06.76   -04.67   13
+  3 Flynn, Emily              SST  SO  1:06.98   -00.42   12
+  4 Griffin, Caroline         SST  SR  1:07.38   +00.02   11
+  5 Smith, Anna               FAST SO  1:08.96   -01.29   10
+  6 Zerrenner, Keira          TCS! SR  1:12.41    00.00    9
+  7 Gibbons, Maggie           SST   8  1:18.40   -02.36    7
+  8 Zadnik, Sophia            SST  SO  1:18.56   -03.44    5
+  9 Torres, Elena             FAST SO  1:29.36   -12.55    4
+ 10 Hall, Annika              FAST SO  1:29.64   -05.04    3
+ 11 Cole, Paige               TCS! JR  1:33.65    00.00    2

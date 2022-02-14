@@ -1,0 +1,11 @@
+Event 4  Girls 200 Yard Freestyle
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Cornett, Annalise         TCS! SR  1:55.31   -00.10   16
+  2 Buff, Reagan              TCS! FR  2:09.19   -06.60   13
+  3 Garvey, Lucy              SST  JR  2:10.99   -00.96   12
+  4 Yaraschak, Bella          TCS! FR  2:15.81   +00.25   11
+  5 O'Malley, Mary            SST  JR  2:16.63   -02.18   10
+  6 Flynn, Emily              SST  JR  2:17.75   -11.79    9
+  7 Phillips, Amy             TCS! SO  2:23.13   +01.87    7
+  8 Mosimann, Teresa          SST  SR  2:32.45   +00.71    5

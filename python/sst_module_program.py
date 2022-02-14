@@ -589,6 +589,17 @@ def create_output_file_program_format2( output_dir_root: str,
 
     return num_files_created
 
+
+## Parse out the last name and first name of the given string, given delimeter
+def split_lastname_firstname_from_string(fullname: str, delim=','):
+    lastname = fullname
+    firstname = ""
+
+    if delim in fullname:
+        lastname, firstname = fullname.split(delim)
+
+    return lastname, firstname
+
 ####################################################################################
 ## Given names in this format
 #1) Herrick, Julia 2) Rutherford, Lil 3) Sypal, Clare 8 4) Vogler, Kate SO
@@ -600,6 +611,13 @@ def reformat_relay_swimmers_names( name_line_in:str ) -> str:
 
     new_name_str = name_line_in
     #re_name_line = re.compile('^1\)([A-z0-9\'\-, ]+?)2\)([A-z0-9\'\-, ]+?)3\)([A-z0-9\'\-, ]+?)4\)([A-z0-9\'\-, ]+?)$')
+
+    ## WPD Ran into issue with a hyphenated name.  For now remove the hyphen
+    ##name_line_in = name_line_in.replace('-',' ')
+    ## WPD if last name too long, there may not be a command and a first name. Force a comma
+    # if not ',' in name_line_in:
+    #     name_line_in = f"{name_line_in},"
+
     re_name_line = re.compile('^1\)(.*?)2\)(.*?)3\)(.*?)4\)(.*?)$')
     re_program_space_relay_name = re.compile(r'(\S)([2-4]\))')
 
@@ -613,11 +631,11 @@ def reformat_relay_swimmers_names( name_line_in:str ) -> str:
         s3_fullname = str(re_name_list[0][2]).strip()
         s4_fullname = str(re_name_list[0][3]).strip()
  
-        # Parse out swimmers last name and first name (sometimes including grade)
-        s1_lname, s1_fname = s1_fullname.split(',')
-        s2_lname, s2_fname = s2_fullname.split(',')
-        s3_lname, s3_fname = s3_fullname.split(',')
-        s4_lname, s4_fname = s4_fullname.split(',')
+        ## Split name string "Last, First" into separate fields
+        s1_lname, s1_fname = split_lastname_firstname_from_string( s1_fullname )
+        s2_lname, s2_fname = split_lastname_firstname_from_string( s2_fullname )
+        s3_lname, s3_fname = split_lastname_firstname_from_string( s3_fullname )
+        s4_lname, s4_fname = split_lastname_firstname_from_string( s4_fullname )
 
         ## Remove extra whitespace
         s1_lname = s1_lname.strip()[:8]
@@ -628,7 +646,6 @@ def reformat_relay_swimmers_names( name_line_in:str ) -> str:
         s3_fname = s3_fname.strip()
         s4_lname = s4_lname.strip()[:8]
         s4_fname = s4_fname.strip()
-
 
         ## Its possible last name is too long there is no first name
         s1_name = f"{s1_lname}, {s1_fname[0]}" if len(s1_fname) > 0 else f"{s1_lname}"

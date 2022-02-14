@@ -16,6 +16,9 @@ import os
 from os import path
 from datetime import datetime, timedelta
 import logging
+import unicodedata
+import sst_module_schools as sst_module_schools
+
 
 event_num_individual = []
 event_num_relay      = []
@@ -27,6 +30,18 @@ headerNum1 = -1   ## HyTek licensee and HytTek software
 headerNum2 = -2   ## Meet Name
 headerNum3 = -3   ## Report type
 
+
+
+#####################################################################################
+## Text used for REGEX to convert long names to short names
+## Value are now loaded from the school report (saved as a txt file)
+#####################################################################################
+
+## Contains a list of dictionaries with the following Keys:
+## {'school_abbr_full': 'BW-PV', 'school_abbr_short': 'BW', 'school_name_full': 'Brookewood School', 'school_name_short': 'Brookewood'}
+## This list is populated in the function sst_modules_schools.process_schools_report
+school_name_list = []
+long_school_name_len=23
 
 #####################################################################################
 ## Text used for REGEX to convert long names to short names
@@ -50,6 +65,7 @@ school_name_dict = {
         "Collegiate School": "COOL",
         "Fredericksburg Academy-VA": "FAST",
         "Fredericksburg Christian-": "FCS",
+        "Fresta Valley Christian S": "FVCS",
         "Fresta Valley Christian": "FVCS",
         "Hampton Roads Academy": "HRA",
         "Highland Hawks": "HL",
@@ -57,13 +73,22 @@ school_name_dict = {
         "Middleburg Academy-VA": "MA",
         "Nansemond Suffolk Academy": "NSA",
         "Oakcrest School Chargers": "OAK",
+        "Peninsula Catholic High S": "PCHS",
         "Randolph-Macon Academy-VA": "RMA",
         "Randolph-Macon Academy": "RMA",
         "Saint John Paul the Great": "JP",
         "St. Gertrude High School": "SGHS",
         "St. Paul VI Catholic HS": "PVI",
-        "Seton Alumni": "ALUM",
+        "St. Paul VI High School": "PVI",
+        "St. Paul VI High Schoo": "PVI",
+        "Seton Alumni": "SALUM",
+        "SST  Alumni": "SALUM",
         "Seton Swimming": "SST", 
+        "St. Catherine's School-VA": "STCA",
+        "St. Christopher's School-": "STC",
+        "St. Christopher's Scho": "STC",
+        "St. Christopher's Scho": "STC",
+        "The Heights": "HTS",
         "The Covenant School-VA": "TCS",
         "The Steward School-VA": "TSS",
         "The Steward School Sparta": "TSS",
@@ -91,7 +116,7 @@ proper_school_name_dict = {
         "Benedictine College Prep": "Benedictine College Prep",
         "Bishop O'Connell-PV": "Bishop O'Connell",
         "Bishop O'Connell": "Bishop O'Connell",
-        "Bishop Ireton Swim and Dive": "Bishop Ireton Swim and Dive",
+        "Bishop Ireton Swim and Dive": "Bishop Ireton",
         "Bishop Sullivan Catholic High": "Bishop Sullivan Catholic High",
         "BBVST": "BVST",
         "Broadwater Academy-VA": "Broadwater Academy",
@@ -108,17 +133,22 @@ proper_school_name_dict = {
         "Fresta Valley Christian": "Fresta Valley Christian",
         "Hampton Roads Academy": "Hampton Roads Academy",
         "Highland Hawks": "Highland Hawks",
-        "Immanuel Christian High S": "Immanuel Christian HS",
+        "Immanuel Christian High S": "Immanuel Christian",
         "Middleburg Academy-VA": "Middleburg Academy",
         "Nansemond Suffolk Academy": "Nansemond Suffolk Academy",
         "Oakcrest School Chargers": "Oakcrest School Chargers",
+        "Peninsula Catholic High S": "Peninsula Catholic",
         "Randolph-Macon Academy-VA": "Randolph-Macon Academy",
         "Saint John Paul the Great": "Saint John Paul the Great",
         "St. Gertrude High School": "St. Gertrude High School",
         "St. Paul VI Catholic HS": "St. Paul VI Catholic HS",
+        "St. Paul VI High Schoo": "St. Paul VI Catholic HS",
+        "St. Christopher's Scho": "St. Christopher's School",
+        "St. Catherine's School-VA": "St. Catherine's School",
         "Seton Alumni Swimming": "Seton Alumni",
-        "Seton Swimming": "Seton Swimming", 
+        "Seton Swimming": "Seton", 
         "The Covenant School-VA": "The Covenant School" ,
+        "The Heights": "The Heights" ,
         "The Steward School-VA": "The Steward School",
         "The Steward School Sparta": "The Steward School",
         "Trinity Christian School-": "Trinity Christian School",
@@ -128,11 +158,11 @@ proper_school_name_dict = {
         "Walsingham Academy-VA": "WA",
         "Wakefield H2owls-VA": "WAKE",
         "H2owls-VA": "WAKE",
-        "Williamsburg Christian Ac": "WCA",
-        "Woodberry Forest-VA": "WFS",
+        "Williamsburg Christian Ac": "Williamsburg Christian",
+        "Woodberry Forest-VA": "Woodberry Forest",
         "Valley Christian School": "VCS",
         "Valley Christian S": "VCS",
-        "Seton Family Homeschool": "SFH",
+        "Seton Family Homeschool": "Seton Family Homeschool",
     } 
 
 
@@ -156,7 +186,7 @@ def setEvents( meet_type: str ) -> bool:
     elif meet_type == "JV":
         ## JV Invite Order of EVENTS
         event_num_individual = [3,4,5,6,9,10,11,12,15,16,17,18]
-        event_num_relay      = [1,2,7,8,13,14,19,20]
+        event_num_relay      = [1,2,7,8,13,14,19,20,101,102,103]
         event_num_diving     = []
     else:
         success = False
@@ -179,7 +209,21 @@ def clean_up_team_name( team_name_in: str) -> str:
 ## MM generatee a truncated team name.  See if we can find the full long name
 #####################################################################################
 def find_proper_team_name( team_name_in: str ):
-    team_name_out = team_name_in
+
+    short_school_name = team_name_in
+    try:
+        school_dict = sst_module_schools.get_schools_dict_by_full_name( team_name_in.strip() )
+        short_school_name = school_dict['school_name_short']
+    except Exception as nssfn:
+        short_school_name = team_name_in.strip()
+
+    return short_school_name
+
+#####################################################################################
+## MM generatee a truncated team name.  See if we can find the full long name
+#####################################################################################
+def find_proper_team_name_hardcoded_names( team_name_in: str ):
+    short_school_name = team_name_in
 
     ## Input may be a truncated version of the school name
     ## Search for a substring
@@ -285,7 +329,7 @@ def get_header_line( event_num: int, shorten_school_names_relays: bool, shorten_
 
 
 
-def short_school_name_lookup( long_school_name: str, long_school_name_len: int, trunc_len :int = 0 ) -> str:
+def short_school_name_lookup_hardcoded_dict( long_school_name: str, long_school_name_len: int, trunc_len :int = 0 ) -> str:
     "Given a long school name, search for a shorter school name.  If not found, return the long school name"
     
     school_name_dict_short_name_len  = 4
@@ -308,9 +352,31 @@ def short_school_name_lookup( long_school_name: str, long_school_name_len: int, 
             break
     return short_school_name
 
+#####################################################################################
+#### Given long school name return the short name version
+#####################################################################################
+def short_school_name_lookup( long_school_name: str, long_school_name_len: int, trunc_len :int = 0 ) -> str:
 
+    try:
+        school_dict = sst_module_schools.get_schools_dict_by_full_name( long_school_name.strip() )
+        short_school_name = school_dict['school_name_short']
+    except Exception as nssfn:
+        short_school_name = long_school_name.strip()
 
+    return short_school_name
 
+#####################################################################################
+#### Given long school name return the short name version
+#####################################################################################
+def short_school_abbr_lookup( long_school_name: str, long_school_name_len: int, trunc_len :int = 0 ) -> str:
+
+    #try:
+    school_dict = sst_module_schools.get_schools_dict_by_full_name( long_school_name.strip() )
+    short_school_name = school_dict['school_abbr_short']
+    #except Exception as nssfn:
+    #    short_school_name = long_school_name.strip()
+
+    return short_school_name
 def reverse_lastname_firstname( name_last_first ):
     """ Convert the string "lastnane, firstname" to "firstname lastname" """
 
@@ -337,7 +403,7 @@ def cleanup_new_files( file_prefix: str, output_dir: str ):
 #####################################################################################
 ## Verify the input file exists before opening it to determine the file type
 #####################################################################################
-def verify_dirs_files(  input_dir: str, input_file:str, output_dir: str ):
+def verify_dirs_files(  input_dir: str, input_file:str, school_file:str, output_dir: str ):
 
     ## Check input directory exists
     error_msg = ""
@@ -347,6 +413,10 @@ def verify_dirs_files(  input_dir: str, input_file:str, output_dir: str ):
         fullFile = f"{input_dir}/{input_file}"
         if not os.path.isfile( fullFile ):
             error_msg = f"\tInput file not found: {fullFile}"
+        else:
+            schoolFile = f"{input_dir}/{school_file}"
+            if not os.path.isfile( schoolFile ):
+                error_msg = f"School text report file not found: {schoolFile}"
 
     try: 
         if not os.path.isdir( output_dir ):
@@ -357,3 +427,10 @@ def verify_dirs_files(  input_dir: str, input_file:str, output_dir: str ):
 
     return error_msg
  
+
+#####################################################################################
+## Remove characters such as Céilí 
+#####################################################################################
+def remove_accents(input_str):
+    nfkd_form = unicodedata.normalize('NFKD', input_str)
+    return u"".join([c for c in nfkd_form if not unicodedata.combining(c)])

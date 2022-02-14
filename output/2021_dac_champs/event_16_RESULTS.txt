@@ -1,0 +1,11 @@
+Event 16  Girls 500 Yard Freestyle
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Cornett, Annalise         TCS! SR  5:03.43   -06.15   16
+  2 Stermer, Teagan           TCS! FR  6:01.93   +08.91   13
+  3 Fletcher, Larkin          TCS!  8  6:09.56   -01.68   12
+  4 Yaraschak, Bella          TCS! FR  6:13.86   +04.90   11
+  5 Flynn, Emily              SST  JR  6:19.01   -16.25   10
+  6 Pennefather, Lucy         SST   8  6:37.94   -07.19    9
+  7 Koehr, Ceili              SST  JR  7:06.61   -06.32    7
+  8 Mosimann, Teresa          SST  SR  7:20.23   +20.23    5

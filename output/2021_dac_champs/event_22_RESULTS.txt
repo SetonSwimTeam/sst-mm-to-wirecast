@@ -1,0 +1,11 @@
+Event 22  Girls 100 Yard Breaststroke
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Thornburg, Paris          HL   SR  1:06.79   -00.25   16
+  2 Testani, Angie            SST   8  1:07.65   -00.62   13
+  3 Condon, Clara             SST   8  1:10.93   +00.58   12
+  4 Klanderman, Teresa        TCS! SR  1:17.39   -00.04   11
+  5 Pennefather, Lucy         SST   8  1:19.61   -03.94   10
+  6 Waldron, Clare            SST  JR  1:21.15   +01.33    9
+  7 Cole, Paige               TCS! SR  1:31.84   +06.99    7
+  8 Moon, Ella                TCS! JR  1:33.83   -01.97    5

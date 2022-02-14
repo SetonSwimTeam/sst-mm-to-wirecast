@@ -1,0 +1,11 @@
+Event 11  Boys 100 Yard Butterfly
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Geddes, Owen              FAST SO    56.36   -01.32   16
+  2 Bishop, Ashton            FAST SR    56.37   -02.62   13
+  3 Alsup, Jacob              SST  SR  1:00.83   -02.95   12
+  4 Wilson, Joe               SST  FR  1:02.47   +00.02   11
+  5 Dalrymple, Jerry          SST  JR  1:03.94   -00.74   10
+  6 Clawes, Michael           TCS! JR  1:12.80   -01.27    9
+  7 Hailey, Jake              FVCS XX  1:16.72   +02.12    7
+  8 Nelson, David             RMA  XX  1:22.13   +00.56    5

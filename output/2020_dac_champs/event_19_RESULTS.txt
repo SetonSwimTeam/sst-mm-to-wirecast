@@ -1,0 +1,17 @@
+Event 19  Boys 100 Yard Backstroke
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Bishop, Ashton            FAST SR    56.41   -05.83   16
+  2 Koehr, Shane              SST  SR  1:00.60   -00.47   13
+  3 Wilson, Evan              SST  JR  1:03.32   -01.57   12
+  4 Stanford, Tyler           RMA  SR  1:07.21   +01.64   11
+  6 Brown, Thomas             TCS! SO  1:08.51   -06.79    9
+  7 Kleb, Jeremy              SST  SR  1:09.85   +00.44    7
+  8 Fioramonti, Justin        SST  SR  1:11.20   -01.26    5
+ 10 Hailey, Jake              FVCS XX  1:17.39   +00.09    3
+ 11 Hamilton, Chris           TCS! JR  1:19.09   -01.92    2
+ 12 Nelson, David             RMA  XX  1:22.59   -00.88    1
+ 13 Carvana, Lawrence         RMA  SR  1:23.84   -05.18    -
+ 14 Shaw, Clay                FVCS XX  1:24.74   -00.25    -
+ 15 Burkholder, Ryan          FAST 8t  1:30.30   -12.74    -
+ 16 Harrison, Ryan            FCS   8  1:30.64   +01.46    -

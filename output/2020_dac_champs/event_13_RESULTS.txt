@@ -1,0 +1,17 @@
+Event 13  Boys 100 Yard Freestyle
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Kim, Josh                 TCS! SO    51.17   -02.37   16
+  2 Henderson, Gabe           TCS! JR    52.73   -01.17   13
+  3 Dalrymple, Drew           SST  SR    53.51   -00.62   12
+  4 Ford, Parker              FCS  SO    55.02   -01.54   11
+  5 Ceol, Christian           SST  SR    55.50   -00.18   10
+  6 Stanford, Tyler           RMA  SR    56.60   +00.64    9
+  8 Knewtson, Jack            FCS   8    58.01   +00.87    5
+  9 Kim, Justin               TCS!  8    58.37   -01.07    4
+ 10 Kleb, Jeremy              SST  SR    58.47   -00.06    3
+ 11 Schweigert-Opas, Reill    RMA  SR  1:00.46   -01.77    2
+ 13 Park, Ethan               RMA  SO  1:02.91    00.00    -
+ 14 Gill, Jackson             HL   JR  1:06.08   -02.52    -
+ 16 Konstanty, Peter          SST   8  1:09.25   +00.03    -
+ 17 Embrey, Gryphon           FCS   8  1:09.90   -02.80    -

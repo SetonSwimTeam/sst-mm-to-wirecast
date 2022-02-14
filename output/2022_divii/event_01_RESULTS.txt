@@ -1,0 +1,17 @@
+Event 1  Boys 200 Yard Medley Relay
+    ** UNOFFICIAL RESULTS **
+           Team               Relay  Final   Change  Pts
+   1 Veritas School            A  1:42.68   -01.29   32
+   2 Christchurch              A  1:44.33   -01.74   26
+   3 Hampton Roads             A  1:47.37   -02.35   24
+   4 Covenant                  A  1:47.70   -00.19   22
+   5 Steward                   A  1:51.40   -00.34   20
+   6 Trinity                   A  1:52.05   +03.92   18
+   7 Covenant                  B  1:55.65   +01.06   14
+   8 Seton                     B  1:56.26   -04.08   10
+   9 Walsingham                A  1:56.74   -00.35    8
+  10 Nansemond                 A  1:57.89   +00.07    6
+  11 Fredericksburg            A  1:59.94   +02.82    4
+  12 Trinity                   B  2:03.71   -01.49    2
+  13 Williamsburg              A  2:10.71   +00.50    -
+  14 Christchurch              B  2:11.22   -03.78    -

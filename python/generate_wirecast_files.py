@@ -50,6 +50,7 @@ import sst_module_program as sst_program
 import sst_module_results as sst_results
 import sst_module_scores as sst_scores
 import sst_module_results_scores as sst_result_scores
+import sst_module_schools as sst_module_schools
 
 ## Globals
 report_type_results = "result"
@@ -185,6 +186,7 @@ def process_main():
     parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="C:\\Users\\SetonSwimTeam\\Dropbox\\wc_meetreports",   
                                                                                                                 help="input directory for MM extract report")
     parser.add_argument('-f', '--filename',         dest='filename',            required=True        ,          help="Input file name")
+    parser.add_argument('-s', '--schoolfilename',   dest='schoolfilename',      default="schools.txt",          help="School text report file name")
     parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="c:\\Users\\SetonSwimTeam\\Dropbox\\wirecast",           help="root output directory for wirecast heat files.")
     parser.add_argument('-c', '--crawler',          dest='crawler',             action='store_true',            help="Generate crawler files")
     parser.add_argument('-r', '--shortschrelay',    dest='shortschoolrelay',     action='store_true',           help="Use Short School names for Relays")
@@ -227,8 +229,9 @@ def process_main():
     parser.set_defaults(awardsRelayNames=False)
 
     args = parser.parse_args()
-
-    inputfile =f"{args.inputdir}/{args.filename}"
+    
+    inputfile = f"{args.inputdir}/{args.filename}"
+    schoolsfile = f"{args.inputdir}/{args.schoolfilename}"
 
     output_dir = args.outputdir
     ## The outputdir string MUST have a trailing slash.  Check string and add it if necesssary
@@ -283,10 +286,16 @@ def process_main():
     #####################################################################################
     ## Verify the directories and input file exists
     #####################################################################################
-    error_msg = sst_common.verify_dirs_files( args.inputdir, args.filename,  args.outputdir )
+    error_msg = sst_common.verify_dirs_files( args.inputdir, args.filename, args.schoolfilename,  args.outputdir )
     if not error_msg == "":
         logging.error(f"Directory and/or input file error:\n{error_msg}")
         sys.exit(3)
+
+
+    #####################################################################################
+    ## Build the school name list
+    #####################################################################################
+    sst_module_schools.process_schools_report( schoolsfile )
 
     #####################################################################################
     ## Get header info from the meet file
@@ -325,6 +334,7 @@ def process_main():
               f"\n   Params: \n" + \
               f"\tOutputReportType \t{args.reporttype} \n" + \
               f"\tInputFile \t\t{inputfile} \n" + \
+              f"\tSchool Report File Name {args.schoolfilename} \n" + \
               f"\tRoot OutputDir \t\t{output_dir} \n" + \
               f"\tMeet Type \t\t{args.meettype} \n" + \
               f"\tChampionship Meet \t{args.championshipmeet} \n" + \

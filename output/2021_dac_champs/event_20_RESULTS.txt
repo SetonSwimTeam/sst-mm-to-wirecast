@@ -1,0 +1,12 @@
+Event 20  Girls 100 Yard Backstroke
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Carter, Madisyn           HL   FR  1:00.34   -01.04   16
+  2 Garvey, Lucy              SST  JR  1:03.32   -00.50   13
+  3 Stermer, Teagan           TCS! FR  1:07.05   -00.96   12
+  4 Fletcher, Larkin          TCS!  8  1:07.26   -00.74   11
+  5 Sykes, Caroline           TCS! SR  1:10.42   -00.43   10
+  6 Womack, Kristen           TCS! FR  1:11.84   +02.00    9
+  7 Byers, Lily               SST  JR  1:14.93   +00.72    7
+  8 Oswald, Jacqueline        SST  SO  1:15.87   +00.32    5
+  9 Hudson, Ava               SST  FR  1:16.49   +00.37    4

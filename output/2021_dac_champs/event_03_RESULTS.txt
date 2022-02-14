@@ -1,0 +1,9 @@
+Event 3  Boys 200 Yard Freestyle
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Kim, Josh                 TCS! JR  1:48.47   +00.09   16
+  2 Kellogg, Liam             SST  SR  2:07.06   -03.73   13
+  3 Dealey, Joey              SST  SO  2:22.80   +00.12   12
+  4 Nagurny, Nicolas          SST  FR  2:25.25   +02.74   11
+  5 Valdez, Ricky             TCS! SR  2:25.45   -05.94   10
+  6 Konstanty, Peter          SST  FR  2:26.43   +00.99    9

@@ -1,0 +1,15 @@
+Event 5  Boys 200 Yard IM
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Kim, Josh                 TCS! SR  2:02.39   -05.04   16
+  2 Stauffer, Carl            HRA  FR  2:08.19   -04.76   13
+  3 Medina, Sebastian         HMA  JR  2:09.74   +00.02   12
+  4 Hutter, Preston           TCS  SR  2:09.88   -02.50   11
+  5 Cullaty, Owen             TCS   8  2:11.42   -04.43   10
+  6 Wang, Hank                STEW JR  2:17.05   -00.26    9
+  7 Wilson, Joe               SST  JR  2:23.24   +05.01    7
+  8 Park, Zack                TCS! SO  2:33.18   -01.42    5
+  9 Starr, Taylor             TCS   8  2:42.61   -04.12    4
+ 10 Kellogg, Seth             SST  FR  2:43.71   -04.94    3
+ 11 Russell, Max              NSA  JR  2:50.86   +03.13    2
+ 12 Verwys, Sam               TCS! 08  3:23.32   +18.55    1

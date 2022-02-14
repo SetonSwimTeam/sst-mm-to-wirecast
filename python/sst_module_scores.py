@@ -106,7 +106,8 @@ def process_score_dualmeet( meet_report_filename: str,
 
                 #logging.debug(f"SCORE: t1 {score_team1}: s1 {score_score1}: s2 {score_score2}: t2: {score_team2}")
 
-                output_str = f"{q}{score_team1:>22}{q} {q}{score_score1:>5}{q} {q}{score_score2:>5}{q} {q}{score_team2:<30}{q}"
+                #output_str = f"{q}{score_team1:>22}{q} {q}{score_score1:>5}{q} {q}{score_score2:>5}{q} {q}{score_team2:<30}{q}"
+                output_str = f"{q}{score_team1[:30]:<31}{q} {q}{score_score1:<6}{q} {q}{score_score2:<6}{q} {q}{score_team2:<30}{q}"
                 logging.debug(f"SCORE: {output_str}")
 
                 ## Add the score to the output list
@@ -203,8 +204,8 @@ def process_score_champsionship( meet_report_filename: str,
             score_line = re_score_result.findall(line)
             if score_line:
                 scoreline_place       = str(score_line[0][0]).strip()
-                scoreline_school1      = str(score_line[0][1]).strip()
-                scoreline_school2      = str(score_line[0][2]).strip()
+                scoreline_school1     = str(score_line[0][1]).strip()
+                scoreline_school2     = str(score_line[0][2]).strip()
                 scoreline_points      = str(score_line[0][3]).strip()
 
                 ## A decimal point comes over a space.  Convert "123 50' to '123.50' if present"
@@ -262,7 +263,7 @@ def create_output_file_scores_dual_by_gender( output_dir_root: str,
                     break;
 
         gender_lowercase = report_type.lower()
-        output_file_name =  f"score_dual_{gender_lowercase}.txt"
+        output_file_name =  f"score_{gender_lowercase}.txt"
         sst_common.write_output_file( output_dir, output_file_name, output_str )
         num_files_generated += 1
 
@@ -308,7 +309,7 @@ def create_output_file_scores_dual_combined( output_dir_root: str,
                 if num_results_generated >= num_results_to_display:
                     break;
 
-    output_file_name =  f"score_dual_combined.txt"
+    output_file_name =  f"score_combined.txt"
     sst_common.write_output_file( output_dir, output_file_name, output_str )
     num_files_generated += 1
 
@@ -350,7 +351,7 @@ def create_output_file_scores_champ( output_dir_root: str,
             break;
 
     gender_lowercase = gender_of_scores.lower()
-    output_file_name =  f"score_champsionship_{gender_lowercase}.txt"
+    output_file_name =  f"score_{gender_lowercase}.txt"
     sst_common.write_output_file( output_dir, output_file_name, output_str )
     num_files_generated += 1
     
