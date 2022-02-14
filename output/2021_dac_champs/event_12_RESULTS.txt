@@ -1,0 +1,12 @@
+Event 12  Girls 100 Yard Butterfly
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Carter, Madisyn           HL   FR    57.15   -00.72   16
+  2 Condon, Clara             SST   8  1:03.85   -00.93   13
+  3 Buff, Reagan              TCS! FR  1:05.41   -02.09   12
+  4 Klanderman, Liz           TCS!  8  1:08.84   +00.99   11
+  5 Bingham, Teresa           SST  JR  1:13.38   +00.63   10
+  6 Byers, Lily               SST  JR  1:15.22   +00.88    9
+  7 Zadnik, Sophia            SST  JR  1:21.00   +01.73    7
+  8 Bang, Selah               TCS! SO  1:21.75   -00.12    5
+  9 Moon, Ella                TCS! JR  1:27.61   +01.73    4

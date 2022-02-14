@@ -1,0 +1,13 @@
+Event 20  Girls 100 Yard Backstroke
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Williams, Brooke          TCS! SR    58.46   -03.07   16
+  4 Woodworth, Marissa        FAST JR  1:01.78   -01.94   11
+  5 Griffin, Caroline         SST  SR  1:06.73   +01.53   10
+  6 Phillips, Amy             TCS! FR  1:12.66   -01.29    9
+  7 Albin, Katie              SST  SR  1:15.81   -02.57    7
+  8 Hudson, Ava               SST   8  1:16.21   -00.90    5
+  9 Koehr, Ceili              SST  SO  1:20.11   -00.31    4
+ 10 Hall, Annika              FAST SO  1:20.79   -02.29    3
+ 11 Bang, Selah               TCS! FR  1:22.91   +02.05    2
+ 12 Lattig, Georgia           TCS! SO  1:45.58   -02.77    1

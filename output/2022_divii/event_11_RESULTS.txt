@@ -1,0 +1,17 @@
+Event 11  Boys 100 Yard Butterfly
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Fisher, Joshua            VRTS JR    50.43   -00.56   16
+  2 Wolf, Caleb               ICHS SO    53.50   -02.49   13
+  3 Kim, Josh                 TCS! SR    54.15   -00.85   12
+  4 Fannin, Evan              CCS  SR    54.43   -01.08   11
+  5 Phillips, Tyler           TCS!  8    56.83   -02.01   10
+  6 Medina, Sebastian         HMA  JR    58.41   -00.43    9
+  7 Self, Ronan               WILD JR  1:00.71   -01.43    7
+  8 Wilson, Joe               SST  JR  1:00.93   +01.56    5
+  9 Rajapakse, Kyle           TCS  FR  1:02.11   -00.36    4
+ 10 Cullaty, Owen             TCS   8  1:02.18   +05.25    3
+ 11 Hopp, Carter              STEW SR  1:04.68   -01.93    2
+ 12 Priebus, Jack             ICHS JR  1:08.59   -02.64    1
+ 13 Rutkowski, Juan           ICHS SO  1:09.44   +00.20    -
+ 14 Wilson, Max               SST  FR  1:13.60   -00.42    -

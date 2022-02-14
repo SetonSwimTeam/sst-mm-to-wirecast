@@ -122,8 +122,12 @@ def process_result( meet_report_filename: str,
 
     # #                                 TIE? PLACE       LAST          FIRST     GR           SCHOOL           SEEDTIME|NT|NP    [xX]FINALTIME      POINTS
     #re_results_lane_ind  = re.compile('^([*]?\d{1,2})\s+([A-z\' \.]+, [A-z ]+?) ([A-Z0-9]{1,2})\s+([A-Z \'.].*?)([0-9:.]+|NT)\s+([0-9:.]+)\s*([X]?[0-9]*)')
-    re_results_lane_ind  = re.compile('^([*]?\d{1,2}|---)\s+([A-z\' \.]+, [A-z ]+?) ([A-Z0-9]{1,2})\s+([A-Z \'.].*?)([0-9:.]+|NT|NP)\s+([X]DQ|[xX0-9:.]+)\s*([0-9]*)')
-
+    #re_results_lane_ind  = re.compile('^([*]?\d{1,2}|---)\s+([A-z\' \.]+, [A-z ]+?) ([A-Z0-9]{1,2})\s+([A-Z \'.].*?)([0-9:.]+|NT|NP)\s+([X]DQ|[xX0-9:.]+)\s*([0-9]*)')
+    #re_results_lane_ind  = re.compile('^([*]?\d{1,2}|---)\s+([A-z\' \.]{4,25}) ([A-Z0-9]{1,2})\s+([A-Z \'.].*?)([0-9:.]+|NT|NP)\s+([X]DQ|[xX0-9:.]+)\s*([0-9]*)')
+    
+    #12 Salter, Jonathan        FR Immanuel Christian High S  25.55        24.85         1
+    #re_results_lane_ind  = re.compile('^([*]?\d{1,2}|---)\s+([A-z\' \.]+, [A-z ]+) ([A-Z0-9]{1,2})\s+([A-Z \'.].*?)([0-9:.]+|NT|NP)\s+([X]DQ|[xX0-9:.]+)\s*([0-9]*)')
+    re_results_lane_ind  = re.compile('^([*]?\s*\d{1,2}|---)\s+(.{23})\s*([A-z0-9 ]{1,2})\s*([A-z\- ]{25})\s*([0-9:.]+|NT|NP)\s+([X]DQ|[xX0-9:.]+)\s*([0-9]*)')
     #                                     TIE? PLACE   SCHOOL           RELAY     SEEDTIME|NT    FINALTIME     POINTS
     #re_results_lane_relay = re.compile('^([*]?\d{1,2})\s+([A-Z \'.].*)\s+([A-Z])\s+([0-9:.]+|NT)\s+([0-9:.]+)\s*([0-9]*)')
     re_results_lane_relay = re.compile('^([*]?\d{1,2}|---)\s+([A-Z \'.].*)\s+([A-Z])\s+([0-9:.]+|NT)\s+([X]DQ|[xX0-9:.]+)\s*([0-9]*)')
@@ -243,7 +247,7 @@ def process_result( meet_report_filename: str,
                     placeline_place       = str(place_line_list[0][0]).strip()
                     placeline_name_last_first = str(place_line_list[0][1]).strip()
                     placeline_grade       = str(place_line_list[0][2]).strip()
-                    placeline_school_long = str(place_line_list[0][3]).strip()
+                    placeline_school_raw= str(place_line_list[0][3]).strip()
                     placeline_seedtime    = str(place_line_list[0][4]).strip()
                     placeline_finaltime   = str(place_line_list[0][5]).strip()
                     placeline_points      = str(place_line_list[0][6]).strip()        
@@ -262,11 +266,14 @@ def process_result( meet_report_filename: str,
                         changeInTime = computeDivingSeedFinalTimeDiff( placeline_seedtime, placeline_finaltime )
                     else:
                         changeInTime = "------"
-                    logging.debug(f"RESULTS: place {placeline_place}: name {placeline_name_last_first}: grade {placeline_grade}: sch {placeline_school_long}: seed {placeline_seedtime}: final {placeline_finaltime}: points {placeline_points}:")
+
+                    logging.debug(f"RESULTS: place {placeline_place}: name {placeline_name_last_first}: grade {placeline_grade}: sch {placeline_school_raw}: seed {placeline_seedtime}: final {placeline_finaltime}: points {placeline_points}:")
                     ## If we want to use Shortened School Names, run the lookup
                     ## The length of the school name in the MM report varies by event type
                     school_name_len = result_header_len_dict['individual_long']  if event_num in sst_common.event_num_individual else result_header_len_dict['diving_long']
-                    placeline_school_short = sst_common.short_school_name_lookup( placeline_school_long, school_name_len )
+                    ## Normalize the long school name to clean it up to the "short full name" we want to display
+                    placeline_school_long =  sst_common.short_school_name_lookup(placeline_school_raw, school_name_len)
+                    placeline_school_short = sst_common.short_school_abbr_lookup( placeline_school_raw, school_name_len )
 
                     ## We can display name as given (Last, First) or change it to First Last with cli parameter
                     result_name = sst_common.reverse_lastname_firstname( placeline_name_last_first ) if namesfirstlast else placeline_name_last_first
@@ -498,14 +505,14 @@ def create_output_file_awards(  output_dir: str,
         elif row_type == 'H6':
             place_header_list = re_results_header.findall(row_text)
             if place_header_list:
-                placeline_header   = str(place_header_list[0][0]).strip()
+               # placeline_header   = str(place_header_list[0][0]).strip()
+                placeline_header   = str(place_header_list[0][0])
                 output_str += placeline_header + '\n'
             else:
                 output_str += row_text + '\n'
 
         elif row_type == 'PLACE':
-
-
+            
             ## Ignore non-scoring entries (i.e. only two non-exhibition relays in event)
             if row_text.startswith(" --- "):
                 break;
@@ -518,9 +525,11 @@ def create_output_file_awards(  output_dir: str,
             place_line_list = re_results_place.findall(row_text)
 
             if place_line_list:
-                placeline_place   = str(place_line_list[0][0]).strip()
-                placeline_points  = str(place_line_list[0][1]).strip()
-                logging.error(f"PLACE: 1: {placeline_place} 2: {placeline_points}")
+                #placeline_place   = str(place_line_list[0][0]).strip()
+                #placeline_points  = str(place_line_list[0][1]).strip()
+                placeline_place   = str(place_line_list[0][0])
+                placeline_points  = str(place_line_list[0][1])
+                logging.debug(f"PLACE: 1: {placeline_place} 2: {placeline_points}")
                 output_str += placeline_place + '\n'
             else:
                 output_str += row_text + '\n'

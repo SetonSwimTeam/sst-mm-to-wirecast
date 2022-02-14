@@ -89,7 +89,7 @@ def process_main():
     #####################################################################################
     ## Verify the directories and input file exists
     #####################################################################################
-    error_msg = sst_common.verify_dirs_files( args.inputdir, inputfilename,  args.outputdir )
+    error_msg = sst_common.verify_dirs_files( args.inputdir, inputfilename,  inputfilename, args.outputdir )
     if not error_msg == "":
         logging.error(f"Directory and/or input file error:\n{error_msg}")
         sys.exit(3)

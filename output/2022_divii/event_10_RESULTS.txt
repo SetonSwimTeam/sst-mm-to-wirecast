@@ -1,0 +1,7 @@
+Event 10  Girls 1 mtr Diving
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr  Final    Change  Pts
+  1 Hough, Keri               TCS! 08   256.90   +92.30   16
+  2 Waldron, Clare            SST  SR   251.30   +99.80   13
+  3 Catabui, Emma             SST  SR   199.70   +99.35   12
+  4 Waldron, Rose             SST  FR   197.60   +87.05   11

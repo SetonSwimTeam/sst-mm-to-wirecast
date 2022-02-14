@@ -1,0 +1,10 @@
+Event 13  Boys 100 Yard Freestyle
+    ** UNOFFICIAL RESULTS **
+        Name                 School Yr   Final   Change   Pts
+  1 Kim, Josh                 TCS! JR    49.35   -00.05   16
+  2 Kellogg, Liam             SST  SR    53.03   -01.39   13
+  3 Dalrymple, Jerry          SST  SR    53.30   -01.97   12
+  4 Kim, Justin               TCS! FR    55.53   -00.21   11
+  5 Nagurny, Nicolas          SST  FR  1:02.91   +02.28   10
+  6 Park, Zack                TCS! FR  1:08.70   -01.42    9
+  7 Kellogg, Seth             SST   8  1:09.39   -03.28    7
