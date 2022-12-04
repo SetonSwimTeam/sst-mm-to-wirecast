@@ -3,6 +3,16 @@
 This program will take a Meet Manager generated MeetProgram or a Results file, saved as a text file, and reformat that text file for optimal display in wirecast.
 
 ## How to Run
+The watch_mm_reports app gets started once and will run continuously.  Its job is to montior the reports input directory
+and will process any reports that gets CREATED.  
+Note:  MeetManager will delete/create a file when its being overwritten, so that will invoke the report generataion script simple by overwriting an existing file
+
+```
+python/watch_mm_reports -m HighSchool <other parameters>
+``
+
+
+### Old Method
 ```
 python/generate_wirecast_files.py -f dec-results.txt
 python/generate_wirecast_files.py -h
