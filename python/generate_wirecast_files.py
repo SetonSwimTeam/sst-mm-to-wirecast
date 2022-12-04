@@ -174,7 +174,7 @@ def get_report_header_info( meet_report_filename: str ):
 ##  M A I N
 #####################################################################################
 #####################################################################################
-def process_main():
+def generate_wc_files():
     #####################################################################################
     ## Parse out command line arguments
     #####################################################################################
@@ -183,7 +183,8 @@ def process_main():
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument('-i', '--inputdir',         dest='inputdir',            default="C:\\Users\\SetonSwimTeam\\Dropbox\\wc_meetreports",   
                                                                                                                 help="input directory for MM extract report")
-    parser.add_argument('-f', '--filename',         dest='filename',            required=True        ,          help="Input file name")
+    parser.add_argument('-f', '--filename',         dest='filename',            required=False,                 help="Input file name")
+    parser.add_argument('-W', '--watch',            dest='watcher',             required=False,                 help="Watch the input directory for any file change")
     parser.add_argument('-s', '--schoolfilename',   dest='schoolfilename',      default="schools.txt",          help="School text report file name")
     parser.add_argument('-o', '--outputdir',        dest='outputdir',           default="c:\\Users\\SetonSwimTeam\\Dropbox\\wirecast",           help="root output directory for wirecast heat files.")
     parser.add_argument('-r', '--shortschrelay',    dest='shortschoolrelay',     action='store_true',           help="Use Short School names for Relays")
@@ -220,6 +221,7 @@ def process_main():
     parser.set_defaults(championshipmeet=False)
     parser.set_defaults(awards=False)
     parser.set_defaults(awardsRelayNames=False)
+    parser.set_defaults(watcher=False)
 
     args = parser.parse_args()
     
@@ -447,11 +449,10 @@ def process_main():
         logging.warning(f"\tNumber of 'Score' files generated: {total_scores_files}")
 
 
-
 #####################################################################################
 #####################################################################################
 ##  M A I N
 #####################################################################################
 #####################################################################################
 if __name__ == "__main__":
-    process_main()
+    generate_wc_files()
