@@ -328,7 +328,7 @@ def process_result( meet_report_filename: str,
                         #full_team_name = placeline_sch_long
                         full_team_name = sst_common.find_full_team_name( placeline_sch_long )
 
-                        output_str = f" {q}{placeline_place:>3}{q} {q}{full_team_name:<25}{q} {q}{placeline_relay}{q} {q}{placeline_finaltime:>8}{q} {q}{changeInTime:>8}{q} {points_str}"
+                        output_str = f" {q}{placeline_place:>3}{q} {q}{full_team_name[:25]:<25}{q} {q}{placeline_relay}{q} {q}{placeline_finaltime:>8}{q} {q}{changeInTime:>8}{q} {points_str}"
                     output_list.append(( "PLACE", output_str ))
 
             #####################################################################################
