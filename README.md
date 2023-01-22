@@ -22,20 +22,21 @@ Command Line Parameters
 
 ```
 optional arguments:
+
+   NOTE:  If running via watch_mm_reports.py, do not specify INPUTDIR or FILENAME. 
+          These will automatically be generated based on new filename saved to directory.
   -i INPUTDIR, --inputdir INPUTDIR
                         input directory for MM extract report
   -f FILENAME, --filename FILENAME
                         Input file name
+
   -o OUTPUTDIR, --outputdir OUTPUTDIR
                         root output directory for wirecast heat files.
-  -c, --crawler         Generate crawler files
   -r, --shortschrelay   Use Short School names for Relays
   -l, --longschind      Use Long School names for Indiviual Entries
   -d, --delete          Delete existing files in OUTPUT_DIR
   -n NUMRESULTS, --numresults NUMRESULTS
                         Number of results listed per event
-  -x LASTNUMEVENTS, --lastnumevents LASTNUMEVENTS
-                        Crawler outputs a separate file with the last N events
   -e, --emptyresults    Generate empty results files for wirecast template setup
   -F {1,2}, --relayformat {1,2}
                         1 -- Default relay heat program. 2 -- team/name on same line
@@ -144,8 +145,3 @@ python3 python/generate_wirecast_files.py -m HighSchool -o output/2022_vcac_cham
 ## VCAC
 python/generate_wirecast_files.py -m HighSchool -o /c/Users/SetonSwimTeam/Dropbox/wirecast -i /c/Users/SetonSwimTeam/Dropbox/wc_meetreports -f results.txt -C -a
 
-
-## TODO:
-## Individual results. Use short name instead of abbrev?
-## Remove unused functions
-##   Crawlers

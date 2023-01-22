@@ -283,7 +283,7 @@ def has_file_been_modified_recently( file_name: str, secs: int) -> bool:
 ## Write the actual output file from the generated string
 #####################################################################################
 def write_output_file( output_dir: str, output_file_name: str, output_str: str ):
-    """ generate the actual crawler output file """
+    """ generate the actual output file """
     
     ## Create output dir if not exists
     if not os.path.exists( output_dir ):
